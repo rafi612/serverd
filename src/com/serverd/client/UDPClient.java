@@ -9,6 +9,9 @@ import java.net.UnknownHostException;
 import com.serverd.log.Log;
 import com.serverd.util.Util;
 
+/**
+ * UDP client class
+ */
 public class UDPClient extends Client
 {
 	DatagramSocket udp_sock;
@@ -16,6 +19,14 @@ public class UDPClient extends Client
 	public InetAddress ip;
 	public int port;
 
+	/**
+	 * UDPClient class constructor
+	 * @param id Client's ID
+	 * @param sock Datagram socket instance
+	 * @param ip Client's IP
+	 * @param port Client's port
+	 * @throws UnknownHostException
+	 */
 	public UDPClient(int id,DatagramSocket sock,InetAddress ip,int port) throws UnknownHostException
 	{
 		super(id);

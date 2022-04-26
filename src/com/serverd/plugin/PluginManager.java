@@ -11,6 +11,9 @@ import com.serverd.plugin.command.Command;
 import com.serverd.plugin.listener.ConnectListener;
 import com.serverd.plugin.listener.UpdateIDListener;
 
+/**
+ * Plugin manager
+ */
 public class PluginManager 
 {
 	public static String plugindir = getPluginDir();
@@ -22,6 +25,9 @@ public class PluginManager
 //	public static ArrayList<UpdateIDListener> updateidlisteners = new ArrayList<UpdateIDListener>();
 //	public static ArrayList<Command> commands = new ArrayList<Command>();
 
+	/**
+	 * Loading all plugins
+	 */
 	public static void loadPlugins()
 	{
 		//create plugin dir
@@ -41,6 +47,11 @@ public class PluginManager
 		
 	}
 	
+	/**
+	 * Load plugin from specific file
+	 * @param file Flie to plugin
+	 * @return Error message
+	 */
 	public static String load(File file)
 	{
 		Log.log("Plugin Manager","Loading plugin " + file.getName());
@@ -82,20 +93,19 @@ public class PluginManager
 		return "";
 	}
 	
-	public static void addPlugin(Plugin p)
+	/**
+	 * Adding plugin to manager
+	 * @param plugin Plugin instance
+	 */
+	public static void addPlugin(Plugin plugin)
 	{
-		plugins.add(p);
+		plugins.add(plugin);
 	}
 	
-	private static String path(String... path)
-	{
-		String p = "";
-		
-		for (String s : path) p += s + File.separator;
-		
-		return p;
-	}
-	
+	/**
+	 * List all plugins names
+	 * @return Array of names
+	 */
 	public static String[] listPluginsName()
 	{
 		String[] s = new String[plugins.size()];
@@ -108,6 +118,11 @@ public class PluginManager
 		return s;
 	}
 	
+	/**
+	 * Returning plugin instance by name
+	 * @param name Plugin name
+	 * @return Plugin instance
+	 */
 	public static Plugin getByFileName(String name)
 	{
 		for (Plugin p : plugins)
@@ -115,6 +130,10 @@ public class PluginManager
 		return null;
 	}
 	
+	/**
+	 * Returning plugins folder path for specific platform
+	 * @return Plugins folder path
+	 */
 	public static String getPluginDir()
 	{
 		if (System.getProperty("os.name").startsWith("Windows"))

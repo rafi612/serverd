@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 import com.serverd.log.Log;
 
+/**
+ * Plugin instance class
+ */
 public class Plugin
 {
 	public Info info = new Info();
@@ -24,12 +27,21 @@ public class Plugin
 	
 	public File file;
 	
+	/**
+	 * Plugin class constructor
+	 * @param file File to plugin
+	 * @param instance Instance of loaded plugin
+	 */
 	public Plugin(File file,ServerdPlugin instance)
 	{
 		this.file = file;
 		this.instance = instance;
 	}
 	
+	/**
+	 * Start Plugin
+	 * @return Plugin error code
+	 */
 	public int start()
 	{
 		instance.metadata(info);
@@ -50,16 +62,23 @@ public class Plugin
 		return 0;
 	}
 	
-	public void Log(String text)
+	/**
+	 * Print plugin message to stdin
+	 * @param message Message
+	 */
+	public void Log(String message)
 	{
-		Log.log(info.name,text);
+		Log.log(info.name,message);
 	}
 	
+	/**
+	 * Stop plugin
+	 */
 	public void stop()
 	{
 		isRunned = false;
 		
-		instance.stop();
+		instance.stop(this);
 		
 		//removing listeners
 		connectlisteners.clear();
@@ -75,47 +94,81 @@ public class Plugin
 		PluginManager.plugins_loaded--;
 	}
 	
+	/**
+	 * Print plugin warning
+	 * @param message Message
+	 */
 	public void warn(String message)
 	{
 		Log("WARN: " + message);
 	}
 	
+	/**
+	 * Print plugin error
+	 * @param message Message
+	 */
 	public void error(String message)
 	{
 		Log("ERROR: " + message);
 		stop();
 	}
 	
-	public void addConnectListener(ConnectListener c)
+	/**
+	 * Adding ConnectListener
+	 * @param listener Listener instance
+	 */
+	public void addConnectListener(ConnectListener listener)
 	{
-		connectlisteners.add(c);
+		connectlisteners.add(listener);
 	}
 	
-	public void removeConnectListener(ConnectListener c)
+	/**
+	 * Removing ConnectListener
+	 * @param listener Listener instance
+	 */
+	public void removeConnectListener(ConnectListener listener)
 	{
-		connectlisteners.remove(c);
+		connectlisteners.remove(listener);
 	}
 	
-	public void addCommand(Command c)
+	/**
+	 * Adding command
+	 * @param command Command instance
+	 */
+	public void addCommand(Command command)
 	{
-		commands.add(c);
+		commands.add(command);
 	}
 	
-	public void removeCommand(Command c)
+	/**
+	 * Removing command
+	 * @param command Command instance
+	 */
+	public void removeCommand(Command command)
 	{
-		commands.remove(c);
+		commands.remove(command);
 	}
 	
-	public void addUpdateIDListener(UpdateIDListener c)
+	/**
+	 * Adding UpdateIDListener
+	 * @param listener Listener instance
+	 */
+	public void addUpdateIDListener(UpdateIDListener listener)
 	{
-		updateidlisteners.add(c);
+		updateidlisteners.add(listener);
 	}
-	
-	public void removeUpdateIDListener(UpdateIDListener c)
+	/**
+	 * Removing UpdateIDListener
+	 * @param listener Listener instance
+	 */
+	public void removeUpdateIDListener(UpdateIDListener listener)
 	{
-		updateidlisteners.remove(c);
+		updateidlisteners.remove(listener);
 	}
 
+	/**
+	 * Plugin information class
+	 */
 	public class Info
 	{
 		public String name,author,decription,version;

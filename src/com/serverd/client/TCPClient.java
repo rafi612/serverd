@@ -8,6 +8,9 @@ import java.net.Socket;
 
 import com.serverd.log.Log;
 
+/**
+ * TCP client class
+ */
 public class TCPClient extends Client
 {	
 	//tcp
@@ -16,6 +19,11 @@ public class TCPClient extends Client
 	public InputStream in;
 	public OutputStream out;
 	
+	/**
+	 * TCPClient class constructor
+	 * @param id Client's ID
+	 * @param s Socket instance
+	 */
 	public TCPClient(int id, Socket s)
 	{
 		super(id);
@@ -114,16 +122,21 @@ public class TCPClient extends Client
 		}
 	}
 	
-	public void closeSocket() throws IOException
+	public void closeSocket() 
 	{
 		connected = false;
 		
-		in.close();
-		out.close();
-		tcp_sock.close();
+		try {
+			in.close();
+			out.close();
+			tcp_sock.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public void closeClient() throws IOException
+	public void closeClient()
 	{
 		closeSocket();
 	}

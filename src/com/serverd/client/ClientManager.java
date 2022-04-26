@@ -60,7 +60,7 @@ public class ClientManager
 				//plugin connect listener
 				for (Plugin p : PluginManager.plugins)
 					for (ConnectListener cl : p.connectlisteners)
-						cl.onConnect(c);
+						cl.onConnect(p,c);
 				
 				Log.log("ServerD TCP","Created client thread!");
 			}
@@ -118,7 +118,7 @@ public class ClientManager
 					//plugin connect listener
 					for (Plugin p : PluginManager.plugins)
 						for (ConnectListener cl : p.connectlisteners)
-							cl.onConnect(c);
+							cl.onConnect(p,c);
 					
 					Log.log("ServerD UDP","Created client thread!");
 				}
@@ -168,50 +168,43 @@ public class ClientManager
 	{	
 		if (clients.size() == 0)
 			return;
-		try 
-		{
-			//stopping
-			Client c = clients.get(clientid);
+		
+		//stopping
+		Client c = clients.get(clientid);
 
-			//plugin connect listener
-			for (Plugin p : PluginManager.plugins)
-				for (ConnectListener cl : p.connectlisteners)
-					cl.onDisconnect(c);
+		//plugin connect listener
+		for (Plugin p : PluginManager.plugins)
+			for (ConnectListener cl : p.connectlisteners)
+				cl.onDisconnect(p,c);
 			
-			c.closeClient();
+		c.closeClient();
 			
-			clients_connected--;
-			if (c.protocol == Protocol.TCP)
-				tcp_connected--;
-			else
-			{
-				udp_connected--;
-				udp_clients.remove(c);
-			}
-
-			clients.remove(clientid);
-			
-			
-			//updating id
-			for (int i =0;i<clients.size();i++)
-			{
-				Client cl = getClient(i);
-				
-				for (Plugin p : PluginManager.plugins)
-					for (UpdateIDListener u : p.updateidlisteners)
-						u.updateID(cl.id, i);
-				
-				cl.id = i;
-				cl.joinedid = clients.lastIndexOf(cl.joiner);
-			}
-			
-			Log.log("ServerD","Client " + clientid + " has been closed");
-		} 
-		catch (IOException e) 
+		clients_connected--;
+		if (c.protocol == Protocol.TCP)
+			tcp_connected--;
+		else
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			udp_connected--;
+			udp_clients.remove(c);
 		}
+
+		clients.remove(clientid);
+			
+		
+		//updating id
+		for (int i = 0;i<clients.size();i++)
+		{
+			Client cl = getClient(i);
+				
+			for (Plugin p : PluginManager.plugins)
+				for (UpdateIDListener u : p.updateidlisteners)
+					u.updateID(p,cl.id, i);
+				
+			cl.id = i;
+			cl.joinedid = clients.lastIndexOf(cl.joiner);
+		}
+			
+		Log.log("ServerD","Client " + clientid + " has been closed");
 
 	}
 	

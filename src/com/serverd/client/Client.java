@@ -9,6 +9,9 @@ import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.command.Command;
 
+/**
+ * Client class
+ */
 public class Client implements Runnable
 {
 	
@@ -26,11 +29,16 @@ public class Client implements Runnable
 	
 	public String name;
 	
+	/**
+	 * Client type
+	 */
 	public enum Type
 	{
 		SENDER,RECEIVER,NONE;
 	}
-	
+	/**
+	 * Client protocol
+	 */
 	public enum Protocol
 	{
 		TCP,UDP;
@@ -39,6 +47,10 @@ public class Client implements Runnable
 	public Type type = Type.NONE;
 	public Protocol protocol;
 	
+	/**
+	 * Client class constructor
+	 * @param id Client ID
+	 */
 	public Client(int id)
 	{
 		connected = true;
@@ -47,73 +59,119 @@ public class Client implements Runnable
 		
 		name = "Client " + id;
 	}
-	
-	public String[] getWords(String s)
+	/**
+	 * Spliting text into words array
+	 * @param text
+	 * @return Array of words
+	 */
+	public String[] getWords(String text)
 	{
-		return s.split(" ");
+		return text.split(" ");
 	}
-	
-	protected boolean checkArgs(String[] s,int l)
+
+	/**
+	 * Checking amount of arguments
+	 * @param args Arguments
+	 * @param length Arguments length
+	 * @return Good of arguments
+	 */
+	protected boolean checkArgs(String[] args,int length)
 	{
-		
-		if (s.length < l) 
+		if (args.length < length) 
 		{
 			send("Missing Argument");
 			return false;
 		}
-		else if (s.length > l)
+		else if (args.length > length)
 		{
 			send("Too much Arguments");
 			return false;
 		}
 		else return true;
 	}
+	/**
+	 * Receiving message
+	 * @return Received message
+	 */
 	public String receive()
 	{
 		return "";
 	}
 	
+	/**
+	 * Sending message
+	 * @param mess Message to send
+	 */
 	public void send(String mess)
 	{
 
 	}
-	
+	/**
+	 * Receiving raw data
+	 * @param buflen Buffer length
+	 * @return byte array of data
+	 */
 	public byte[] rawdata_receive(int buflen)
 	{
 		return new byte[buflen];
 	}
 	
+	/**
+	 * Sending raw data
+	 * @param b Byte array
+	 */
 	public void rawdata_send(byte[] b)
 	{
 
 	}
 	
-	public void closeSocket() throws IOException
+	/**
+	 * Closing client
+	 */
+	public void closeSocket()
 	{
 		
 	}
 	
-	public void closeClient() throws IOException
+	/**
+	 * Closing socket
+	 */
+	public void closeClient()
 	{
 
 	}
 	
+	/**
+	 * Return Client's IP
+	 * @return Client's IP
+	 */
 	public String getIP()
 	{
 		return "";
 	}
 	
+	/**
+	 * Return Client's port
+	 * @return Client's port
+	 */
 	public int getPort()
 	{
 		return 0;
 	}
 	
+	/**
+	 * Returning status 
+	 * @return Status message
+	 */
 	public String status()
 	{
 		return name + ": ID:" + id + " Connected:" + connected + " Joined:" + joinedid + " Type:" + type.toString() + " Protocol:" + protocol.toString() +" IP:" + getIP() + ":" + getPort() +"\n";
 	}
 	
-
+	/**
+	 * Crash handler
+	 * @param e Exception
+	 */
 	protected void crash(Exception e)
 	{
 		if (!crashed)
@@ -122,12 +180,7 @@ public class Client implements Runnable
 			crashed = true;
 			Log.log("ClientThread " + id, "Client " + id + " crashed: " + e.getMessage());
 			
-			try {
-				closeClient();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			closeClient();
 			ClientManager.delete(id);
 		}
 	}
@@ -145,6 +198,10 @@ public class Client implements Runnable
 		}
 	}
 	
+	/**
+	 * Client's main loop
+	 * @throws Exception
+	 */
 	public void clientLoop() throws Exception
 	{
 		Log.log("ClientThread " + id,"Started working.");

@@ -6,8 +6,22 @@ import java.lang.reflect.InvocationTargetException;
 
 import com.serverd.main.Main;
 
+/**
+ * Allows to running ServerD inside plugin for debugging
+ */
 public class Debug 
 {
+	/**
+	 * Loading plugin from classpath by plugin name
+	 * @param classname Main plugin class name
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 */
 	public static void loadPluginFromClassName(String classname) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
 	{
 		File classfile = new File(classname.replace(".", File.separator) + ".class");
@@ -22,6 +36,12 @@ public class Debug
 		PluginManager.addPlugin(plugin);
 	}
 	
+	/**
+	 * 
+	 * @param classname Plugin main classname
+	 * @param plugins Want to load another plugins?
+	 * @return ServerD/Java exitcode
+	 */
 	public static int testPlugin(String classname,boolean plugins)
 	{
 		ProcessBuilder builder = new ProcessBuilder();
