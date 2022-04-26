@@ -29,9 +29,13 @@ public class ClientManager
 	
 	static String udp_mess = "Connection founded!";
 	
+	public static boolean runned = false;
+	
 	public static void start(String ip,int tcpport,int udpport)
 	{
 		deleteThread();
+		
+		runned = true;
 		
 		Thread tcp = new Thread(() -> tcp_server(ip, tcpport));
 		Thread udp = new Thread(() -> udp_server(ip, udpport));
@@ -45,7 +49,7 @@ public class ClientManager
 		try 
 		{
 			ServerSocket server = new ServerSocket(port,50,InetAddress.getByName(ip));			
-			while (true)
+			while (runned)
 			{
 				
 				Socket sock = server.accept();
@@ -64,6 +68,7 @@ public class ClientManager
 				
 				Log.log("ServerD TCP","Created client thread!");
 			}
+			server.close();
 		} 
 		catch (IOException e)
 		{
@@ -78,7 +83,7 @@ public class ClientManager
 			
 			DatagramSocket socket = new DatagramSocket(port);
 			
-			while (true)
+			while (runned)
 			{
 				byte[] buffer = new byte[Client.BUFFER];
 				DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
@@ -124,6 +129,7 @@ public class ClientManager
 				}
 				
 			}
+			socket.close();
 			
 		} 
 		catch (IOException e)

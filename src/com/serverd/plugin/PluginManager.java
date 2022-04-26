@@ -7,9 +7,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import com.serverd.log.Log;
-import com.serverd.plugin.command.Command;
-import com.serverd.plugin.listener.ConnectListener;
-import com.serverd.plugin.listener.UpdateIDListener;
 
 /**
  * Plugin manager
