@@ -2,8 +2,8 @@
 <project name="ServerD" basedir="." default="jar">
     <property name="source.dir"     value="src"/>
     <property name="lib.dir"        value="libs"/>
-    <property name="class.dir"      value="bin"/>
-    <property name="jar.dir"        value="dist"/>
+    <property name="class.dir"      value="target/classes"/>
+    <property name="jar.dir"        value="target"/>
     <property name="jar.file"        value="${jar.dir}/${ant.project.name}.jar"/>
     <property name="main-class"     value="com.serverd.main.Main"/>
 
