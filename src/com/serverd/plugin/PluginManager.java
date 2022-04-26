@@ -3,6 +3,7 @@ package com.serverd.plugin;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import com.serverd.log.Log;
@@ -117,10 +118,10 @@ public class PluginManager
 	public static String getPluginDir()
 	{
 		if (System.getProperty("os.name").startsWith("Windows"))
-			return path(System.getenv("APPDATA"),"serverd","plugins").toString();
+			return Paths.get(System.getenv("APPDATA"),"serverd","plugins").toString();
 		
 		else if (System.getProperty("os.name").contains("nux") || System.getProperty("os.name").contains("mac") )
-			return path(System.getProperty("user.home"),".config","serverd","plugins").toString();
+			return Paths.get(System.getProperty("user.home"),".config","serverd","plugins").toString();
 		return "";
 	}
 
