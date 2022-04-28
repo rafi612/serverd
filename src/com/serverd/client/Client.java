@@ -417,7 +417,7 @@ public class Client implements Runnable
 				{
 					if (command.equals(com.command))
 					{
-						com.execute(args, this);
+						com.execute(args, this, p);
 						command_execute = true;
 					}
 				}

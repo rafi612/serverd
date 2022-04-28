@@ -114,6 +114,16 @@ public class Plugin
 	}
 	
 	/**
+	 * Returning instance of plugin object, can be use to access 
+	 * static variables in plugin main object, before use must be casted to plugin main class
+	 * @return instance of plugin object
+	 */
+	public ServerdPlugin getInstance()
+	{
+		return instance;
+	}
+	
+	/**
 	 * Adding ConnectListener
 	 * @param listener Listener instance
 	 */

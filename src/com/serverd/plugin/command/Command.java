@@ -1,6 +1,7 @@
 package com.serverd.plugin.command;
 
 import com.serverd.client.Client;
+import com.serverd.plugin.Plugin;
 
 /**
  * Abstract class to creating custom commands
@@ -38,8 +39,9 @@ public abstract class Command
 	 * Executing when command is called
 	 * @param args Command arguments
 	 * @param client Current client instance
+	 * @param plugin Plugin instance
 	 */
-	public abstract void execute(String[] args,Client client);
+	public abstract void execute(String[] args,Client client,Plugin plugin);
 	
 
 }
