@@ -28,6 +28,8 @@ public class Client implements Runnable
 	
 	public String name;
 	
+	public Log log;
+	
 	/**
 	 * Client type
 	 */
@@ -57,6 +59,8 @@ public class Client implements Runnable
 		this.id = id;
 		
 		name = "Client " + id;
+		
+		log = new Log("ClientThread " + id);
 	}
 	/**
 	 * Spliting text into words array
@@ -177,7 +181,7 @@ public class Client implements Runnable
 		{
 			connected = false;
 			crashed = true;
-			Log.log("ClientThread " + id, "Client " + id + " crashed: " + e.getMessage());
+			log.log("Client " + id + " crashed: " + e.getMessage());
 			
 			closeClient();
 			ClientManager.delete(id);
@@ -203,7 +207,7 @@ public class Client implements Runnable
 	 */
 	public void clientLoop() throws Exception
 	{
-		Log.log("ClientThread " + id,"Started working.");
+		log.log("Started working.");
 		while (connected)
 		{			
 			String command_str = receive();
@@ -290,8 +294,7 @@ public class Client implements Runnable
 					
 					if (joinedid != -1)
 					{
-						Log.log("ClientThread " + id,"Raw data mode started," + buffersize
-								+ " bytes can be sended");
+						log.log("Raw data mode started," + buffersize+ " bytes can be sended");
 						int i = 0;
 						while (i < buffersize)
 						{
@@ -379,7 +382,8 @@ public class Client implements Runnable
 				
 				if (plu.length > 0) 
 				{
-					for (String s : plu) {
+					for (String s : plu) 
+					{
 						message += s + "    Enable:" + PluginManager.getByFileName(s).isRunned + "\n\n";
 					}
 					send(message);

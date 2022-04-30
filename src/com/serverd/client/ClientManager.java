@@ -31,6 +31,9 @@ public class ClientManager
 	
 	public static boolean runned = false;
 	
+	static Log tcplog = new Log("ServerD TCP");
+	static Log udplog = new Log("ServerD UDP");
+	
 	public static void start(String ip,int tcpport,int udpport)
 	{
 		deleteThread();
@@ -53,7 +56,7 @@ public class ClientManager
 			{
 				
 				Socket sock = server.accept();
-				Log.log("ServerD TCP","Connection accepted from client!");
+				tcplog.log("Connection accepted from client!");
 				
 				TCPClient c = new TCPClient(ClientManager.clients.size(),sock);
 				clients.add(c);
@@ -66,7 +69,7 @@ public class ClientManager
 					for (ConnectListener cl : p.connectlisteners)
 						cl.onConnect(p,c);
 				
-				Log.log("ServerD TCP","Created client thread!");
+				tcplog.log("Created client thread!");
 			}
 			server.close();
 		} 
@@ -108,7 +111,7 @@ public class ClientManager
 				
 				if (new_)
 				{
-					Log.log("ServerD UDP", "Connection founded in " +packet.getAddress().getHostAddress() + ":" + packet.getPort() +" Message: " + msg);
+					udplog.log("Connection founded in " +packet.getAddress().getHostAddress() + ":" + packet.getPort() +" Message: " + msg);
 					DatagramPacket echopacket = new DatagramPacket(udp_mess.getBytes(), udp_mess.length(),packet.getAddress(),packet.getPort());
 					if (!msg.equals("not"))
 						socket.send(echopacket);
@@ -125,7 +128,7 @@ public class ClientManager
 						for (ConnectListener cl : p.connectlisteners)
 							cl.onConnect(p,c);
 					
-					Log.log("ServerD UDP","Created client thread!");
+					udplog.log("Created client thread!");
 				}
 				
 			}
@@ -141,7 +144,8 @@ public class ClientManager
 	public static void deleteThread()
 	{
 		//deleting thread
-		Log.log("ServerD","Starting deleting thread");
+		new Log("ServerD").log("Starting deleting thread");
+		
 		Thread deletethread = new Thread("Delete thread")
 		{
 			public void run()
@@ -210,7 +214,7 @@ public class ClientManager
 			cl.joinedid = clients.lastIndexOf(cl.joiner);
 		}
 			
-		Log.log("ServerD","Client " + clientid + " has been closed");
+		new Log("ServerD").log("Client " + clientid + " has been closed");
 
 	}
 	

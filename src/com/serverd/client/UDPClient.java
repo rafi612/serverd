@@ -50,13 +50,15 @@ public class UDPClient extends Client
 			Util.sleep(1);
 		String msg = new String(buffer.getData(),buffer.getOffset(),buffer.getLength());
 		buffer = null;
-		Log.log("Client Program " + id,msg);
+		
+		new Log("Client Program " + id).log(msg);
 		return msg;
 	}
 	
 	public void send(String message)
 	{
-		Log.log("ClientThread " + id,message);
+		new Log("Client Program " + id).log(message);
+		
 		DatagramPacket out = new DatagramPacket(message.getBytes(),message.length(),ip,port);
 		try
 		{

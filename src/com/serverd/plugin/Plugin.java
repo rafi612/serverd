@@ -25,6 +25,8 @@ public class Plugin
 	
 	public boolean isRunned = false;
 	
+	Log log;
+	
 	public File file;
 	
 	/**
@@ -45,6 +47,9 @@ public class Plugin
 	public int start()
 	{
 		instance.metadata(info);
+		
+		log = new Log(info.name);
+		
 		String errormessage = instance.init(this);
 		
 		if (errormessage != null)
@@ -68,7 +73,7 @@ public class Plugin
 	 */
 	public void Log(String message)
 	{
-		Log.log(info.name,message);
+		log.log(message);
 	}
 	
 	/**
@@ -87,9 +92,6 @@ public class Plugin
 		commands.clear();
 		
 		updateidlisteners.clear();
-		
-		if (thread.isAlive())
-			thread.interrupt();
 		
 		PluginManager.plugins_loaded--;
 	}

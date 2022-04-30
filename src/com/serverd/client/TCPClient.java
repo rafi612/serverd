@@ -60,18 +60,19 @@ public class TCPClient extends Client
 		catch (Exception e)
 		{
 			//crash(e);
-			Log.log("ClientThread " + id,"Receive message failed");
+			log.log("Receive message failed");
 		}
 		
 		if (!message.equals(""))
-			Log.log("Client Program " + id,message);
+			new Log("Client Program " + id).log(message);
 		
 		return message;
 	}
 	
 	public void send(String mess)
 	{
-		Log.log("ClientThread " + id,mess);
+		
+		log.log(mess);
 		try 
 		{
 			out.write(mess.getBytes());
@@ -80,7 +81,7 @@ public class TCPClient extends Client
 		catch (Exception e) 
 		{
 			//crash(e);
-			Log.log("ClientThread " + id,"Send message failed");
+			log.log("Send message failed");
 		}
 	}
 	

@@ -21,6 +21,8 @@ public class PluginManager
 //	public static ArrayList<ConnectListener> connectlisteners = new ArrayList<ConnectListener>();
 //	public static ArrayList<UpdateIDListener> updateidlisteners = new ArrayList<UpdateIDListener>();
 //	public static ArrayList<Command> commands = new ArrayList<Command>();
+	
+	static Log log = new Log("Plugin Manager");
 
 	/**
 	 * Loading all plugins
@@ -39,7 +41,7 @@ public class PluginManager
 			String message = load(f);
 			
 			if (!message.equals(""))
-				Log.log("Plugin Manager", message);
+				log.log(message);
 		}
 		
 	}
@@ -51,7 +53,7 @@ public class PluginManager
 	 */
 	public static String load(File file)
 	{
-		Log.log("Plugin Manager","Loading plugin " + file.getName());
+		log.log("Loading plugin " + file.getName());
 		
 		try 
 		{

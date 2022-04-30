@@ -10,6 +10,8 @@ public class Main
 	public static final String VERSION = "v1.1.0";
 	public static void main(String[] args)
 	{
+		Log log = new Log("ServerD");
+		
 		boolean plugins = true;
 		boolean pluginDebug = false;
 		String pluginDebugClass = ""; 
@@ -54,13 +56,13 @@ public class Main
 		
 		if (plugins) 
 		{
-			Log.log("ServerD", "Loading plugins...");
+			log.log("Loading plugins...");
 			PluginManager.loadPlugins();
 		}
 		
 		if (pluginDebug)
 		{
-			Log.log("ServerD", "Loading debug plugin " + pluginDebugClass + "...");
+			log.log("Loading debug plugin " + pluginDebugClass + "...");
 			try {
 				Debug.loadPluginFromClassName(pluginDebugClass);
 			} catch (ClassNotFoundException e) {
@@ -71,7 +73,7 @@ public class Main
 			}
 		}
 		
-		Log.log("ServerD","Starting listening clients...");
+		log.log("Starting listening clients...");
 		ClientManager.start("0.0.0.0",9999,9998);
 
 	}	
