@@ -7,6 +7,7 @@ import com.serverd.log.Log;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.command.Command;
+import com.serverd.plugin.listener.ExecutionController;
 
 /**
  * Client class
@@ -215,10 +216,29 @@ public class Client implements Runnable
 			if (command_str.equals(""))
 				throw new Exception("Empty buffer");
 			
-			
 			String[] command_raw = getWords(command_str);
 			String[] args = Arrays.copyOfRange(command_raw,1,command_raw.length);
 			String command = command_raw[0];
+		
+			//execution controller
+			boolean command_accepted = true;
+			for (Plugin p : PluginManager.plugins)
+			{
+				if (!command_accepted)
+					break;
+				for (ExecutionController e : p.executioncontrollers)
+				{
+					String message = e.controlCommand(command, this, p);
+					if (message.equals(null) || message.equals(""));
+					{
+						send(message);
+						command_accepted = false;
+						break;
+					}
+				}
+			}
+			if (!command_accepted)
+				continue;
 			
 			//if (!command.equals(""))
 			if (command.equals("/disconnect")) 

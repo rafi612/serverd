@@ -7,13 +7,16 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import com.serverd.log.Log;
+import com.serverd.main.Main;
 
 /**
  * Plugin manager
  */
 public class PluginManager 
 {
-	public static String plugindir = getPluginDir();
+	public static String plugindir = Paths.get(Main.workingdir,"plugins").toString();
+	public static String plugindatadir = Paths.get(Main.workingdir,"pluginsdata").toString();
+	
 	public static ArrayList<Plugin> plugins = new ArrayList<Plugin>();
 	
 	public static int plugins_loaded = 0;
@@ -128,19 +131,4 @@ public class PluginManager
 			if (p.file.getName().equals(name)) return p;
 		return null;
 	}
-	
-	/**
-	 * Returning plugins folder path for specific platform
-	 * @return Plugins folder path
-	 */
-	public static String getPluginDir()
-	{
-		if (System.getProperty("os.name").startsWith("Windows"))
-			return Paths.get(System.getenv("APPDATA"),"serverd","plugins").toString();
-		
-		else if (System.getProperty("os.name").contains("nux") || System.getProperty("os.name").contains("mac") )
-			return Paths.get(System.getProperty("user.home"),".config","serverd","plugins").toString();
-		return "";
-	}
-
 }

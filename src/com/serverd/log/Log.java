@@ -18,14 +18,13 @@ public class Log
 		this.name = name;
 	}
 
+	/**
+	 * Log to stdin
+	 * @param message Message
+	 */
 	public void log(String message)
 	{
 		System.out.println("["  + name  + "] " + message);
 	}
-	
-//	public static void log(String thread,String message)
-//	{
-//		System.out.println("["  + thread  + "] " + message);
-//	}
 
 }

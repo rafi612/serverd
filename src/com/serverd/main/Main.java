@@ -1,5 +1,7 @@
 package com.serverd.main;
 
+import java.nio.file.Paths;
+
 import com.serverd.client.ClientManager;
 import com.serverd.log.Log;
 import com.serverd.plugin.Debug;
@@ -8,6 +10,9 @@ import com.serverd.plugin.PluginManager;
 public class Main
 {
 	public static final String VERSION = "v1.1.0";
+	
+	public static String workingdir = getWorkDir();
+	
 	public static void main(String[] args)
 	{
 		Log log = new Log("ServerD");
@@ -33,13 +38,13 @@ public class Main
 					pluginDebug = true;
 					pluginDebugClass = args[i + 1];
 					break;
-				case "--plugin-loc":
+				case "--working-loc":
 					if (i + 1 > args.length)
 					{
-						System.err.println("--plugin-loc: missing argument");
+						System.err.println("--working-loc: missing argument");
 						break;
 					}
-					PluginManager.plugindir = args[i + 1];
+					workingdir = args[i + 1];
 					break;
 				case "--property":
 					if (i + 2 > args.length)
@@ -76,6 +81,17 @@ public class Main
 		log.log("Starting listening clients...");
 		ClientManager.start("0.0.0.0",9999,9998);
 
-	}	
+	}
+	public static String getWorkDir()
+	{
+		String osname = System.getProperty("os.name");
+		if (osname.startsWith("Windows"))
+			return Paths.get(System.getenv("APPDATA"),"serverd").toString();
+		else if (osname.contains("nux"))
+			return Paths.get(System.getProperty("user.home"),".config","serverd").toString();
+		else if (osname.contains("mac") || osname.contains("darwin"))
+			return Paths.get(System.getProperty("user.home"),"Library","Application Support","serverd").toString();
+		return "";
+	}
 
 }

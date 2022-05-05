@@ -2,6 +2,7 @@ package com.serverd.plugin;
 
 import com.serverd.plugin.command.Command;
 import com.serverd.plugin.listener.ConnectListener;
+import com.serverd.plugin.listener.ExecutionController;
 import com.serverd.plugin.listener.UpdateIDListener;
 
 import java.io.File;
@@ -19,6 +20,7 @@ public class Plugin
 	public ArrayList<ConnectListener> connectlisteners = new ArrayList<ConnectListener>();
 	public ArrayList<UpdateIDListener> updateidlisteners = new ArrayList<UpdateIDListener>();
 	public ArrayList<Command> commands = new ArrayList<Command>();
+	public ArrayList<ExecutionController> executioncontrollers = new ArrayList<ExecutionController>();
 	
 	public ServerdPlugin instance;
 	Thread thread;
@@ -85,13 +87,11 @@ public class Plugin
 		
 		instance.stop(this);
 		
-		//removing listeners
-		connectlisteners.clear();
-		
-		//removing commands
+		//clear interfaces
 		commands.clear();
-		
+		connectlisteners.clear();
 		updateidlisteners.clear();
+		executioncontrollers.clear();
 		
 		PluginManager.plugins_loaded--;
 	}
@@ -123,6 +123,17 @@ public class Plugin
 	public ServerdPlugin getInstance()
 	{
 		return instance;
+	}
+	
+	public File loadWorkspace()
+	{
+		File f = new File(PluginManager.plugindatadir,info.name);
+		if (!f.exists())
+		{
+			f.mkdir();
+			return f;
+		}
+		else return f;
 	}
 	
 	/**
@@ -176,6 +187,23 @@ public class Plugin
 	public void removeUpdateIDListener(UpdateIDListener listener)
 	{
 		updateidlisteners.remove(listener);
+	}
+	
+	/**
+	 * Adding ExecutionController
+	 * @param listener Listener instance
+	 */
+	public void addExecutionController(ExecutionController listener)
+	{
+		executioncontrollers.add(listener);
+	}
+	/**
+	 * Removing ExecutionController
+	 * @param listener Listener instance
+	 */
+	public void removeExecutionController(ExecutionController listener)
+	{
+		executioncontrollers.remove(listener);
 	}
 
 	/**
