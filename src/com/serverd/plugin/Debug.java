@@ -40,13 +40,14 @@ public class Debug
 	 * 
 	 * @param classname Plugin main classname
 	 * @param plugins Want to load another plugins?
+	 * @param args ServerD arguments
 	 * @return ServerD/Java exitcode
 	 */
-	public static int testPlugin(String classname,boolean plugins)
+	public static int testPlugin(String classname,boolean plugins,String[] args)
 	{
 		ProcessBuilder builder = new ProcessBuilder();
 		//command
-		builder.command("java","-cp",System.getProperty("java.class.path"),Main.class.getName(),plugins ? "" : "--noplugins","--plugin-debug",classname);
+		builder.command("java","-cp",System.getProperty("java.class.path"),Main.class.getName(),plugins ? "" : "--noplugins","--plugin-debug",classname,String.join(" ", args));
 		builder.directory(new File(System.getProperty("user.dir")));
 		
 		//redirect output to terminal

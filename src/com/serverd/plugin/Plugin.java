@@ -125,6 +125,10 @@ public class Plugin
 		return instance;
 	}
 	
+	/**
+	 * Loading plugin workspace folder, if not exists, creating it
+	 * @return File object
+	 */
 	public File loadWorkspace()
 	{
 		File f = new File(PluginManager.plugindatadir,info.name);

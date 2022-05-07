@@ -404,7 +404,7 @@ public class Client implements Runnable
 				{
 					for (String s : plu) 
 					{
-						message += s + "    Enable:" + PluginManager.getByFileName(s).isRunned + "\n\n";
+						message += s + "    Enable:" + PluginManager.getByFileName(s).isRunned + "\n";
 					}
 					send(message);
 				}

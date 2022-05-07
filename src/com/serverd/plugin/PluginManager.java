@@ -5,6 +5,9 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import com.serverd.log.Log;
 import com.serverd.main.Main;
@@ -37,6 +40,10 @@ public class PluginManager
 		if (!pdir.exists())
 			pdir.mkdirs();
 		
+		File pdatadir = new File(plugindatadir);
+		if (!pdatadir.exists())
+			pdatadir.mkdirs();
+		
 		File[] files = pdir.listFiles();
 		
 		for (File f : files)
@@ -50,7 +57,8 @@ public class PluginManager
 	}
 	
 	/**
-	 * Load plugin from specific file
+	 * Load plugin from specific file, plugin must have <b>Plugin-Main-Class</b> attribute with class name 
+	 * in <b>manifest</b> to detect main class
 	 * @param file Flie to plugin
 	 * @return Error message
 	 */
@@ -64,9 +72,11 @@ public class PluginManager
 			        new URL[] {file.toURI().toURL()}
 			);
 			
-			String classname = file.getName().replace(".jar", "");
+			//getting class name
+			Manifest manifest = new Manifest(new URL("jar:" + file.toURI().toURL() + "!/" + JarFile.MANIFEST_NAME).openStream());
+			Attributes attribs = manifest.getMainAttributes();
 			
-			String classpath = "com." + classname.toLowerCase() + "." + classname;
+			String classpath = attribs.getValue("Plugin-Main-Class");
 			
 			Class<?> classToLoad = Class.forName(classpath, true, child);
 
@@ -89,6 +99,7 @@ public class PluginManager
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			return file.getName() + ": Plugin load failed: " + e.getMessage();
 		}
 		
@@ -102,6 +113,16 @@ public class PluginManager
 	public static void addPlugin(Plugin plugin)
 	{
 		plugins.add(plugin);
+	}
+	
+	/**
+	 * Unloading plugin from manager
+	 * @param plugin Plugin instance
+	 */
+	public static void unloadPlugin(Plugin plugin)
+	{
+		plugin.stop();
+		plugins.remove(plugin);
 	}
 	
 	/**
