@@ -112,7 +112,6 @@ public class Plugin
 	public void error(String message)
 	{
 		Log("ERROR: " + message);
-		stop();
 	}
 	
 	/**
