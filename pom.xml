@@ -12,7 +12,6 @@
 
   <build>
 	<defaultGoal>package</defaultGoal>
-    <sourceDirectory>src</sourceDirectory>
     <plugins>
     <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

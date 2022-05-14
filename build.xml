@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="ServerD" basedir="." default="jar">
-    <property name="source.dir"     value="src"/>
+    <property name="source.dir"     value="src/main/java"/>
     <property name="lib.dir"        value="libs"/>
     <property name="class.dir"      value="target/classes"/>
     <property name="jar.dir"        value="target"/>
