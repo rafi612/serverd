@@ -229,7 +229,8 @@ public class Client implements Runnable
 				for (ExecutionController e : p.executioncontrollers)
 				{
 					String message = e.controlCommand(command, this, p);
-					if (message.equals(null) || message.equals(""));
+					
+					if (!message.equals("") && message != null)
 					{
 						send(message);
 						command_accepted = false;
