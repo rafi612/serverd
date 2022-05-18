@@ -367,7 +367,7 @@ public class Client implements Runnable
 						}
 						else
 						{
-							if (p.start() != 0)
+							if (PluginManager.enablePlugin(p) != 0)
 								send("Plugin load failed");
 							else
 								send("Plugin load succesfully");
@@ -381,7 +381,7 @@ public class Client implements Runnable
 						}
 						else 
 						{
-							p.stop();
+							PluginManager.disablePlugin(p);
 							send("Plugin was disabled");
 						}
 					}

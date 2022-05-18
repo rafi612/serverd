@@ -21,6 +21,9 @@ public class Main
 		boolean pluginDebug = false;
 		String pluginDebugClass = ""; 
 		
+		String ip = "0.0.0.0";
+		int tcp_port = 9999,udp_port = 9998;
+		
 		for (int i = 0;i < args.length;i++)
 			if(args[i].startsWith("--"))
 		{
@@ -45,6 +48,30 @@ public class Main
 						break;
 					}
 					workingdir = args[i + 1];
+					break;
+				case "--ip":
+					if (i + 1 > args.length)
+					{
+						System.err.println("--ip: missing argument");
+						break;
+					}
+					ip = args[i + 1];
+					break;
+				case "--tcp-port":
+					if (i + 1 > args.length)
+					{
+						System.err.println("--tcp-port: missing argument");
+						break;
+					}
+					tcp_port = Integer.parseInt(args[i + 1]);
+					break;
+				case "--udp-port":
+					if (i + 1 > args.length)
+					{
+						System.err.println("--udp-port: missing argument");
+						break;
+					}
+					udp_port = Integer.parseInt(args[i + 1]);
 					break;
 				case "--property":
 					if (i + 2 > args.length)
@@ -79,7 +106,7 @@ public class Main
 		}
 		
 		log.log("Starting listening clients...");
-		ClientManager.start("0.0.0.0",9999,9998);
+		ClientManager.start(ip,tcp_port,udp_port);
 
 	}
 	public static String getWorkDir()
