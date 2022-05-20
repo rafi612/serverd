@@ -21,13 +21,9 @@ public class ClientManager
 	public static ArrayList<Client> clients = new ArrayList<Client>();
 	public static ArrayList<UDPClient> udp_clients = new ArrayList<UDPClient>();
 	
-	public static int deleteid = -1;
-	
 	public static int clients_connected = 0;
 	public static int tcp_connected = 0;
 	public static int udp_connected = 0;
-	
-	static String udp_mess = "Connection founded!";
 	
 	public static boolean runned = false;
 	
@@ -35,9 +31,7 @@ public class ClientManager
 	static Log udplog = new Log("ServerD UDP");
 	
 	public static void start(String ip,int tcpport,int udpport)
-	{
-		deleteThread();
-		
+	{		
 		runned = true;
 		
 		Thread tcp = new Thread(() -> tcp_server(ip, tcpport));
@@ -83,7 +77,6 @@ public class ClientManager
 	{
 		try 
 		{
-			
 			DatagramSocket socket = new DatagramSocket(port);
 			
 			while (runned)
@@ -110,9 +103,12 @@ public class ClientManager
 				}
 				
 				if (new_)
-				{
-					udplog.log("Connection founded in " +packet.getAddress().getHostAddress() + ":" + packet.getPort() +" Message: " + msg);
+				{	
+					String udp_mess = "Connection founded!";
+				
+					udplog.log("Connection founded in " + packet.getAddress().getHostAddress() + ":" + packet.getPort() +" Message: " + msg);
 					DatagramPacket echopacket = new DatagramPacket(udp_mess.getBytes(), udp_mess.length(),packet.getAddress(),packet.getPort());
+					
 					if (!msg.equals("not"))
 						socket.send(echopacket);
 					
@@ -141,46 +137,13 @@ public class ClientManager
 		}
 	}
 	
-	public static void deleteThread()
-	{
-		//deleting thread
-		new Log("ServerD").log("Starting deleting thread");
-		
-		Thread deletethread = new Thread("Delete thread")
-		{
-			public void run()
-			{
-				while (true) 
-				{
-					if (deleteid != -1)
-					{
-						destroy_client(deleteid);
-						deleteid = -1;
-					}
-					try {
-						Thread.sleep(10);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} 
-				}
-			}
-		};
-		deletethread.start();
-	}
-	
-	public static void delete(int id)
-	{
-		deleteid = id;
-	}
-	
-	public static void destroy_client(int clientid)
+	public static void delete(int clientid)
 	{	
 		if (clients.size() == 0)
 			return;
 		
 		//stopping
-		Client c = clients.get(clientid);
+		Client c = getClient(clientid);
 
 		//plugin connect listener
 		for (Plugin p : PluginManager.plugins)
@@ -225,8 +188,9 @@ public class ClientManager
 	
 	public static String statusall()
 	{
-		String message = "";
-		for (int i =0;i<clients.size();i++) 
+		String message = clients.size() == 0 ? "No clients connected" : "";
+		
+		for (int i = 0;i < clients.size();i++) 
 		{
 			message = message + clients.get(i).status();
 		}
