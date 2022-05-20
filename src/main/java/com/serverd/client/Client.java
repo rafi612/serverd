@@ -178,7 +178,7 @@ public class Client implements Runnable
 	 */
 	protected void crash(Exception e)
 	{
-		if (!crashed)
+		if (!crashed && connected)
 		{
 			connected = false;
 			crashed = true;
