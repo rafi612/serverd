@@ -37,7 +37,6 @@ public class TCPClient extends Client
 		} 
 		catch (IOException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -59,7 +58,6 @@ public class TCPClient extends Client
 		} 
 		catch (Exception e)
 		{
-			//crash(e);
 			log.log("Receive message failed");
 		}
 		
@@ -131,7 +129,6 @@ public class TCPClient extends Client
 			out.close();
 			tcp_sock.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -150,6 +147,4 @@ public class TCPClient extends Client
 	{
 		return tcp_sock.getPort();
 	}
-	
-
 }
