@@ -1,6 +1,7 @@
 # serverd
 ![License](https://img.shields.io/github/license/rafi612/serverd)
 ![Repo size](https://img.shields.io/github/repo-size/rafi612/serverd)
+![Total lines](https://img.shields.io/tokei/lines/github/rafi612/serverd)
 
 ServerD is TCP and UDP server which allows to communicate between clients and manage them.
 
