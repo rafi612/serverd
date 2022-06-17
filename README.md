@@ -20,7 +20,7 @@ You can also build using Ant by command: `ant`
 # Plugins
 ServerD have plugin API which allows to create advanced plugins to extends program functionality.
 
-#####API includes:
+##### API includes:
 - Events (Connection and Disconnection event etc.) support
 - Custom commands support
 - Debugger
@@ -28,7 +28,7 @@ ServerD have plugin API which allows to create advanced plugins to extends progr
 
 And much more.
 
-#####Example plugin:
+##### Example plugin:
 
 ```java
 package example;
