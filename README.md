@@ -1,4 +1,5 @@
 # serverd
+![Build](https://img.shields.io/github/workflow/status/rafi612/serverd/Maven)
 ![License](https://img.shields.io/github/license/rafi612/serverd)
 ![Repo size](https://img.shields.io/github/repo-size/rafi612/serverd)
 ![Total lines](https://img.shields.io/tokei/lines/github/rafi612/serverd)
