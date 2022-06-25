@@ -43,7 +43,24 @@ public class Client implements Runnable
 	 */
 	public enum Protocol
 	{
-		TCP,UDP;
+		TCP("TCP"),UDP("UDP"),CUSTOM("");
+		
+		public String name;
+		
+		Protocol(String name)
+		{
+			this.name = name;
+		}
+		
+		public String getName()
+		{
+			return name;
+		}
+		
+		public void setName(String name)
+		{
+			this.name = name;
+		}
 	}
 	
 	public Type type = Type.NONE;
@@ -169,7 +186,7 @@ public class Client implements Runnable
 	 */
 	public String status()
 	{
-		return name + ": ID:" + id + " Connected:" + connected + " Joined:" + joinedid + " Type:" + type.toString() + " Protocol:" + protocol.toString() +" IP:" + getIP() + ":" + getPort() +"\n";
+		return name + ": ID:" + id + " Connected:" + connected + " Joined:" + joinedid + " Type:" + type.toString() + " Protocol:" + protocol.getName() +" IP:" + getIP() + ":" + getPort() +"\n";
 	}
 	
 	/**
