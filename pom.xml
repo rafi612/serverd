@@ -29,6 +29,8 @@
 			<manifest>
 			  <addClasspath>true</addClasspath>
 			  <mainClass>com.serverd.main.Main</mainClass>
+    		  <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+    		  <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 			</manifest>
 		  </archive>
 		</configuration>
