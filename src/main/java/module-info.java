@@ -1,4 +1,4 @@
-module ServerD 
+module serverd 
 {
 	exports com.serverd.util;
 	exports com.serverd.log;
