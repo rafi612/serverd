@@ -30,6 +30,8 @@ public class ClientManager
 	static Log tcplog = new Log("ServerD TCP");
 	static Log udplog = new Log("ServerD UDP");
 	
+	static boolean tcpenable = true,udpenable = true;
+	
 	public static void start(String ip,int tcpport,int udpport)
 	{		
 		runned = true;
@@ -45,6 +47,12 @@ public class ClientManager
 	{
 		try 
 		{
+			if (!tcpenable)
+			{
+				tcplog.log("TCP server was disabled");
+				return;
+			}
+			
 			ServerSocket server = new ServerSocket(port,50,InetAddress.getByName(ip));			
 			while (runned)
 			{
@@ -77,6 +85,12 @@ public class ClientManager
 	{
 		try 
 		{
+			if (!udpenable)
+			{
+				udplog.log("UDP server was disabled");
+				return;
+			}
+			
 			DatagramSocket socket = new DatagramSocket(port);
 			
 			while (runned)
@@ -195,6 +209,26 @@ public class ClientManager
 			message = message + clients.get(i).status();
 		}
 		return message;
+	}
+	
+	public static void setTCPEnable(boolean enable)
+	{
+		tcpenable = enable;
+	}
+	
+	public static  void setUDPEnable(boolean enable)
+	{
+		udpenable = enable;
+	}
+	
+	public static boolean isTCPEnable()
+	{
+		return tcpenable;
+	}
+	
+	public static boolean isUDPEnable()
+	{
+		return tcpenable;
 	}
 
 }
