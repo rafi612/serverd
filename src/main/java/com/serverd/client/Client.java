@@ -199,7 +199,7 @@ public class Client implements Runnable
 	
 	/**
 	 * Joining to another client
-	 * @param targetid Client ID to join
+	 * @param joinid Client ID to join
 	 * @return Exit code (0 if succesfully joined)
 	 */
 	public int join(int joinid)
@@ -235,11 +235,6 @@ public class Client implements Runnable
 		joiner = null;
 	}
 	
-	/**
-	 * Setting if client is Joined once. After receiving of message client will be automatic unjoin.
-	 * @param oncejoin true/false value
-	 * @param joinid Once join client ID
-	 */
 	public void setOnceJoin(boolean oncejoin,int joinid)
 	{
 		if (joinedid != -1)
