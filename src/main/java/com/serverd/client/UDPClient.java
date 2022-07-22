@@ -51,13 +51,17 @@ public class UDPClient extends Client
 		String msg = new String(buffer.getData(),buffer.getOffset(),buffer.getLength());
 		buffer = null;
 		
+		msg = encoder.decode(msg, this);
+		
 		new Log("Client Program " + id).log(msg);
 		return msg;
 	}
 	
-	public void send(String message)
+	public void send(String mess)
 	{
-		new Log("Client Program " + id).log(message);
+		new Log("Client Program " + id).log(mess);
+		
+		String message = encoder.encode(mess, this); 
 		
 		DatagramPacket out = new DatagramPacket(message.getBytes(),message.length(),ip,port);
 		try

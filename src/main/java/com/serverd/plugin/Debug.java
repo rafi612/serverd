@@ -52,6 +52,8 @@ public class Debug
 		
 		//redirect output to terminal
 		builder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+		builder.redirectError(ProcessBuilder.Redirect.INHERIT);
+		builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
 		
 		//run
 		Process p;

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 
 import com.serverd.log.Log;
+import com.serverd.plugin.Encoder;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.command.Command;
@@ -14,7 +15,6 @@ import com.serverd.plugin.listener.ExecutionController;
  */
 public class Client implements Runnable
 {
-	
 	public Thread thread;
 	
 	public int id;
@@ -30,6 +30,10 @@ public class Client implements Runnable
 	public String name;
 	
 	public Log log;
+	
+	boolean onceJoin = false;
+	
+	Encoder encoder;
 	
 	/**
 	 * Client type
@@ -79,7 +83,19 @@ public class Client implements Runnable
 		name = "Client " + id;
 		
 		log = new Log("ClientThread " + id);
+		
+		encoder = new Encoder();
 	}
+	
+	/**
+	 * Setting encoder on client
+	 * @param encoder Encoder instance
+	 */
+	public void setEncoder(Encoder encoder)
+	{
+		this.encoder = encoder;
+	}
+	
 	/**
 	 * Spliting text into words array
 	 * @param text
@@ -180,6 +196,60 @@ public class Client implements Runnable
 		return 0;
 	}
 	
+	
+	/**
+	 * Joining to another client
+	 * @param targetid Client ID to join
+	 * @return Exit code (0 if succesfully joined)
+	 */
+	public int join(int joinid)
+	{
+		Client cl = ClientManager.getClient(joinid);
+		
+		if (cl == null)
+			return 1;
+		
+		joinedid = joinid;
+		type = Type.SENDER;
+		joiner = cl;
+		
+		cl.joinedid = id;
+		cl.type = Type.RECEIVER;
+		cl.joiner = this;
+		
+		return 0;
+	}
+	
+	/**
+	 * Unjoining client
+	 */
+	public void unjoin()
+	{
+		Client cl = ClientManager.getClient(joinedid);
+		cl.joinedid = -1;
+		cl.type = Type.NONE;
+		cl.joiner = null;
+		
+		joinedid = -1;
+		type = Type.NONE;
+		joiner = null;
+	}
+	
+	/**
+	 * Setting if client is Joined once. After receiving of message client will be automatic unjoin.
+	 * @param oncejoin true/false value
+	 * @param joinid Once join client ID
+	 */
+	public void setOnceJoin(boolean oncejoin,int joinid)
+	{
+		if (joinedid != -1)
+			return;
+		
+		onceJoin = oncejoin;
+		join(joinid);
+	}
+	
+	
 	/**
 	 * Returning status 
 	 * @return Status message
@@ -237,6 +307,7 @@ public class Client implements Runnable
 		}
 	}
 	
+	
 	/**
 	 * Executes command on client
 	 * @param command_str Command to execute
@@ -288,23 +359,29 @@ public class Client implements Runnable
 			}
 			case "/id": { send("your id is: " + id); break; }
 			case "/status": { send(ClientManager.statusall()); break;}
+			case "/to":
+			{
+				if (args.length < 1) 
+					send("Missing Argument");
+				else
+				{
+					String com = String.join(" ", Arrays.copyOfRange(args,1,args.length));
+					int id = Integer.parseInt(args[0]);
+					
+					Client client = ClientManager.getClient(id);
+					client.setOnceJoin(true, this.id);
+					client.send(com);
+				}
+				break;
+			}
 			case "/join": 
 			{
 				if (checkArgs(args, 1))
 				{
-					
-					int joinid = Integer.parseInt(args[0]);
-					Client cl = ClientManager.getClient(joinid);
-					
-					joinedid = joinid;
-					type = Type.SENDER;
-					joiner = cl;
-					
-					cl.joinedid = id;
-					cl.type = Type.RECEIVER;
-					cl.joiner = this;
-					
-					send("Joined, now you are in joined mode.");
+					if (join(Integer.parseInt(args[0])) == 0)
+						send("Joined, now you are in joined mode.");
+					else 
+						send("Can't join: wrong client ID");
 				}
 				break;
 			}
@@ -312,7 +389,6 @@ public class Client implements Runnable
 			{
 				if (checkArgs(args, 1))
 				{
-					
 					int closeid = Integer.parseInt(args[0]);
 					
 					ClientManager.delete(closeid);
@@ -322,16 +398,8 @@ public class Client implements Runnable
 				break;
 			}
 			case "/unjoin": 
-			{
-				Client cl = ClientManager.getClient(joinedid);
-				cl.joinedid = -1;
-				cl.type = Type.NONE;
-				cl.joiner = null;
-				
-				joinedid = -1;
-				type = Type.NONE;
-				joiner = null;
-				
+			{	
+				unjoin();
 				send("Returning back to command mode");
 				break;
 			}
@@ -366,9 +434,7 @@ public class Client implements Runnable
 			case "/setname":
 			{
 				if (args.length < 1) 
-				{
 					send("Missing Argument");
-				}
 				else
 				{
 					String newname = "";
@@ -452,6 +518,7 @@ public class Client implements Runnable
 				String help = "/disconnect - disconnect client\n"
 						+ "/id - shows id\n"
 						+ "/status - shows status of all clients\n"
+						+ "/to <id> <command> - sending command without joining to client"
 						+ "/join <id> - join to client\n"
 						+ "/close <id> - close another client connection\n"
 						+ "/unjoin - unjoin current client\n"
@@ -492,6 +559,9 @@ public class Client implements Runnable
 					else 
 					{
 						ClientManager.clients.get(joinedid).send(command_str);
+						
+						if (onceJoin)
+							unjoin();
 					} 
 				}
 			}

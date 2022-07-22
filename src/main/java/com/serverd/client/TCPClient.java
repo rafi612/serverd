@@ -61,6 +61,8 @@ public class TCPClient extends Client
 			log.log("Receive message failed");
 		}
 		
+		message = encoder.decode(message, this);
+		
 		if (!message.equals(""))
 			new Log("Client Program " + id).log(message);
 		
@@ -69,11 +71,10 @@ public class TCPClient extends Client
 	
 	public void send(String mess)
 	{
-		
 		log.log(mess);
 		try 
 		{
-			out.write(mess.getBytes());
+			out.write(encoder.encode(mess, this).getBytes());
 			out.flush();
 		} 
 		catch (Exception e) 
