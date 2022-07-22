@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import com.serverd.log.Log;
 
 /**
  * TCP client class
@@ -64,7 +63,7 @@ public class TCPClient extends Client
 		message = encoder.decode(message, this);
 		
 		if (!message.equals(""))
-			new Log("Client Program " + id).log(message);
+			programlog.log(message);
 		
 		return message;
 	}

@@ -6,7 +6,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import com.serverd.log.Log;
 import com.serverd.util.Util;
 
 /**
@@ -53,13 +52,13 @@ public class UDPClient extends Client
 		
 		msg = encoder.decode(msg, this);
 		
-		new Log("Client Program " + id).log(msg);
+		programlog.log(msg);
 		return msg;
 	}
 	
 	public void send(String mess)
 	{
-		new Log("Client Program " + id).log(mess);
+		log.log(mess);
 		
 		String message = encoder.encode(mess, this); 
 		

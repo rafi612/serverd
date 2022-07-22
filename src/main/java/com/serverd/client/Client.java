@@ -29,7 +29,7 @@ public class Client implements Runnable
 	
 	public String name;
 	
-	public Log log;
+	public Log log,programlog;
 	
 	boolean onceJoin = false;
 	
@@ -82,7 +82,8 @@ public class Client implements Runnable
 		
 		name = "Client " + id;
 		
-		log = new Log("ClientThread " + id);
+		log = new Log("Client Thread " + id);
+		programlog = new Log("Client Program " + id);
 		
 		encoder = new Encoder();
 	}
