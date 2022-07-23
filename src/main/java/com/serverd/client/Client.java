@@ -514,7 +514,7 @@ public class Client implements Runnable
 				String help = "/disconnect - disconnect client\n"
 						+ "/id - shows id\n"
 						+ "/status - shows status of all clients\n"
-						+ "/to <id> <command> - sending command without joining to client"
+						+ "/to <id> <command> - sending command without joining to client\n"
 						+ "/join <id> - join to client\n"
 						+ "/close <id> - close another client connection\n"
 						+ "/unjoin - unjoin current client\n"
