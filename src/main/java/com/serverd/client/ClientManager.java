@@ -117,18 +117,15 @@ public class ClientManager
 				}
 				
 				if (new_)
-				{	
-					String udp_mess = "Connection founded!";
-				
+				{					
 					udplog.log("Connection founded in " + packet.getAddress().getHostAddress() + ":" + packet.getPort() +" Message: " + msg);
-					DatagramPacket echopacket = new DatagramPacket(udp_mess.getBytes(), udp_mess.length(),packet.getAddress(),packet.getPort());
 					
-					if (!msg.equals("not"))
-						socket.send(echopacket);
+					UDPClient client = new UDPClient(ClientManager.clients.size(), socket, packet.getAddress(), packet.getPort());
+					clients.add(client);
+					udp_clients.add(client);
 					
-					UDPClient c = new UDPClient(ClientManager.clients.size(), socket, packet.getAddress(), packet.getPort());
-					clients.add(c);
-					udp_clients.add(c);
+					//redirecting message to client loop
+					client.buffer = packet;
 					
 					clients_connected++;
 					udp_connected++;
@@ -136,7 +133,7 @@ public class ClientManager
 					//plugin connect listener
 					for (Plugin p : PluginManager.plugins)
 						for (ConnectListener cl : p.connectlisteners)
-							cl.onConnect(p,c);
+							cl.onConnect(p,client);
 					
 					udplog.log("Created client thread!");
 				}
