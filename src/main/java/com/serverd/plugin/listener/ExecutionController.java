@@ -12,5 +12,5 @@ public interface ExecutionController
 	 * @param plugin Plugin instance
 	 * @return Error message, if null or "" then command can be executed
 	 */
-	public String controlCommand(String command,Client client,Plugin plugin);
+	public String controlCommand(String command,String[] args,Client client,Plugin plugin);
 }

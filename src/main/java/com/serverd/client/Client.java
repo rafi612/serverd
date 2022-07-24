@@ -323,7 +323,7 @@ public class Client implements Runnable
 				break;
 			for (ExecutionController e : p.executioncontrollers)
 			{
-				String message = e.controlCommand(command, this, p);
+				String message = e.controlCommand(command, args, this, p);
 				
 				if (!message.equals("") && message != null)
 				{
