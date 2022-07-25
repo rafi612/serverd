@@ -95,12 +95,17 @@ public class Main
 		if (pluginDebug)
 		{
 			log.log("Loading debug plugin " + pluginDebugClass + "...");
-			try {
+			try 
+			{
 				Debug.loadPluginFromClassName(pluginDebugClass);
-			} catch (ClassNotFoundException e) {
+			} 
+			catch (ClassNotFoundException e)
+			{
 				System.err.println("Class " + pluginDebugClass + " not found");
 				System.exit(-1);
-			} catch (Exception e) {
+			} 
+			catch (Exception e)
+			{
 				System.err.println("Debug plugin load error:" + e.getMessage());
 			}
 		}

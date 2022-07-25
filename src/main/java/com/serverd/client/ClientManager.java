@@ -27,10 +27,10 @@ public class ClientManager
 	
 	public static boolean runned = false;
 	
-	static Log tcplog = new Log("ServerD TCP");
-	static Log udplog = new Log("ServerD UDP");
+	private static Log tcplog = new Log("ServerD TCP");
+	private static Log udplog = new Log("ServerD UDP");
 	
-	static boolean tcpenable = true,udpenable = true;
+	private static boolean tcpenable = true,udpenable = true;
 	
 	public static void start(String ip,int tcpport,int udpport)
 	{		
@@ -176,7 +176,7 @@ public class ClientManager
 			
 		
 		//updating id
-		for (int i = 0;i<clients.size();i++)
+		for (int i = 0;i < clients.size();i++)
 		{
 			Client cl = getClient(i);
 				
@@ -203,7 +203,7 @@ public class ClientManager
 		
 		for (int i = 0;i < clients.size();i++) 
 		{
-			message = message + clients.get(i).status();
+			message += clients.get(i).status();
 		}
 		return message;
 	}
