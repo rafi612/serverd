@@ -77,7 +77,7 @@ public class ClientManager
 		} 
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			tcplog.log("Error while creating server: " + e.getMessage());
 		}
 	}
 	
@@ -144,7 +144,7 @@ public class ClientManager
 		} 
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			udplog.log("Error while creating server: " + e.getMessage());
 		}
 	}
 	
