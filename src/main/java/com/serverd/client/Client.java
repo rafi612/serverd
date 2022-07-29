@@ -342,15 +342,11 @@ public class Client implements Runnable
 			{
 				//unjoining
 				if (joinedid != -1)
-				{
-					ClientManager.clients.get(joinedid).joinedid = -1;
-					ClientManager.clients.get(joinedid).type = Type.NONE;
-					
-					joinedid = -1;
-					type = null;
-				}
+					unjoin();
+				
 				closeClient();
 				ClientManager.delete(id);
+				
 				break;
 			}
 			case "/id": { send("your id is: " + id); break; }
