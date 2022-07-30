@@ -236,6 +236,11 @@ public class Client implements Runnable
 		joiner = null;
 	}
 	
+	/**
+	 * Join once to client
+	 * @param oncejoin true/false
+	 * @param joinid Client ID to join once
+	 */
 	public void setOnceJoin(boolean oncejoin,int joinid)
 	{
 		if (joinedid != -1)
