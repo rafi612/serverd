@@ -174,18 +174,27 @@ public class PluginManager
 		return null;
 	}
 	
-	public static int enablePlugin(Plugin p)
+	/**
+	 * Enabling plugin
+	 * @param plugin Plugin instance
+	 * @return
+	 */
+	public static int enablePlugin(Plugin plugin)
 	{
-		pluginsdisabled.remove(p.file.getName());
+		pluginsdisabled.remove(plugin.file.getName());
 		rewritePluginDisableFile();
-		return p.start();
+		return plugin.start();
 	}
 	
-	public static void disablePlugin(Plugin p)
+	/**
+	 * Disabling plugin
+	 * @param plugin Plugin instance
+	 */
+	public static void disablePlugin(Plugin plugin)
 	{
-		pluginsdisabled.add(p.file.getName());
+		pluginsdisabled.add(plugin.file.getName());
 		rewritePluginDisableFile();
-		p.stop();
+		plugin.stop();
 	}
 	
 	private static void rewritePluginDisableFile()
