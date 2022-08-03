@@ -207,7 +207,9 @@ public class PluginManager
 				writer.write(str + System.lineSeparator());
 			}
 			writer.close();
-		} catch (IOException e) {
+		} 
+		catch (IOException e) 
+		{
 			log.log("Error writing file");
 		}
 	}
