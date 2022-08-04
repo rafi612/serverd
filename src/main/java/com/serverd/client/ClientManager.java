@@ -108,9 +108,13 @@ public class ClientManager
 				{
 					if (client.ip.equals(packet.getAddress()) && client.port == packet.getPort())
 					{						
-						client.buffer = packet;
+						client.buffer = packet.getData();
+						client.bufferOffset = packet.getOffset();
+						client.bufferLength = packet.getLength();
+						
 						while (client.buffer != null)
 							Util.sleep(1);
+						
 						new_ = false;
 						break;
 					}
@@ -125,7 +129,9 @@ public class ClientManager
 					udp_clients.add(client);
 					
 					//redirecting message to client loop
-					client.buffer = packet;
+					client.buffer = packet.getData();
+					client.bufferOffset = packet.getOffset();
+					client.bufferLength = packet.getLength();
 					
 					clients_connected++;
 					udp_connected++;

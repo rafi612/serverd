@@ -41,13 +41,16 @@ public class UDPClient extends Client
 		thread.start();
 	}
 	
-	DatagramPacket buffer = null;
+	byte[] buffer = null;
+	int bufferOffset = 0;
+	int bufferLength = 0;
 	
 	public String receive()
 	{
 		while (buffer == null)
 			Util.sleep(1);
-		String msg = new String(buffer.getData(),buffer.getOffset(),buffer.getLength());
+		
+		String msg = new String(buffer,bufferOffset,bufferLength);
 		buffer = null;
 		
 		msg = encoder.decode(msg, this);
@@ -77,14 +80,14 @@ public class UDPClient extends Client
 	{
 		while (buffer == null)
 			Util.sleep(1);
-		int len = buffer.getLength();
-		byte[] ret = new byte[len];
-		byte[] buf = buffer.getData();
 		
-		buffer = null;
+		int len = bufferLength;
+		byte[] ret = new byte[len];
 		
 		for (int i = 0;i < len;i++)
-			ret[i] = buf[i];
+			ret[i] = buffer[i];
+		
+		buffer = null;
 		
 		return ret;
 	}
