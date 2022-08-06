@@ -51,9 +51,7 @@ public class TCPClient extends Client
 			byte[] buffer = new byte[BUFFER];
 			int len = in.read(buffer);
 
-			for (int i = 0; i < len;i++)
-				if(buffer[i] != 0)
-					message += Character.toString((char)buffer[i]);
+			message = new String(buffer,0,len);
 		} 
 		catch (Exception e)
 		{
