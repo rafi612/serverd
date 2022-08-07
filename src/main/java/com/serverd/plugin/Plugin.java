@@ -23,11 +23,11 @@ public class Plugin
 	public ArrayList<ExecutionController> executioncontrollers = new ArrayList<ExecutionController>();
 	
 	public ServerdPlugin instance;
-	Thread thread;
+	private Thread thread;
 	
 	public boolean isRunned = false;
 	
-	Log log;
+	private Log log;
 	
 	public File file;
 	
