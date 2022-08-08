@@ -14,7 +14,7 @@ import com.serverd.plugin.variable.VariableStorage;
 /**
  * Client class
  */
-public class Client implements Runnable,VariableStorage
+public class Client extends VariableStorage implements Runnable
 {
 	public Thread thread;
 	
