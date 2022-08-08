@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.serverd</groupId>
   <artifactId>ServerD</artifactId>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
   <name>ServerD</name>
   <description>Server for TCP and UDP clients</description>
 
