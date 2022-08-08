@@ -4,9 +4,10 @@ public class Variable<T>
 {
 	private T value;
 
-	public Variable<T> set(T value)
+	@SuppressWarnings("unchecked")
+	public Variable<T> set(Object value)
 	{
-		this.value = value;
+		this.value = (T) value;
 		return this;
 	}
 	
