@@ -9,11 +9,12 @@ import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.command.Command;
 import com.serverd.plugin.listener.ExecutionController;
+import com.serverd.plugin.variable.VariableStorage;
 
 /**
  * Client class
  */
-public class Client implements Runnable
+public class Client implements Runnable,VariableStorage
 {
 	public Thread thread;
 	
