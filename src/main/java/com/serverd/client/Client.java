@@ -338,6 +338,7 @@ public class Client implements Runnable
 				}
 			}
 		}
+
 		if (!command_accepted)
 			return;
 		
