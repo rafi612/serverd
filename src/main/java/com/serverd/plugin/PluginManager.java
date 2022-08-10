@@ -197,6 +197,9 @@ public class PluginManager
 		plugin.stop();
 	}
 	
+	/**
+	 * Rewriting plugins_disabled.conf
+	 */
 	private static void rewritePluginDisableFile()
 	{
 		try 
