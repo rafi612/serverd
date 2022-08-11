@@ -18,8 +18,8 @@ import com.serverd.util.Util;
 
 public class ClientManager
 {
-	public static ArrayList<Client> clients = new ArrayList<Client>();
-	public static ArrayList<UDPClient> udp_clients = new ArrayList<UDPClient>();
+	public static ArrayList<Client> clients = new ArrayList<>();
+	public static ArrayList<UDPClient> udp_clients = new ArrayList<>();
 	
 	public static int clients_connected = 0;
 	public static int tcp_connected = 0;
