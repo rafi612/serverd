@@ -30,7 +30,7 @@ public class Log
 	 * Log to stdin
 	 * @param message Message
 	 */
-	public void log(String message)
+	public synchronized void log(String message)
 	{
 		System.out.println("["  + name  + "] " + message);
 	}
