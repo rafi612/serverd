@@ -91,8 +91,7 @@ public class TCPClient extends Client
 			int len = in.read(buffer);
 			ret = new byte[len];
 			
-			for (int i = 0;i < len;i++)
-				ret[i] = buffer[i];
+			System.arraycopy(buffer, 0, ret, 0, len);
 			
 		} 
 		catch (IOException e)
