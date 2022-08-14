@@ -72,6 +72,7 @@ public class UDPClient extends Client
 		} 
 		catch (IOException e)
 		{
+			log.log("Send message failed: " + e.getMessage());
 			crash(e);
 		}
 	}
@@ -100,6 +101,7 @@ public class UDPClient extends Client
 		} 
 		catch (IOException e) 
 		{
+			log.log("Rawdata send failed: " + e.getMessage());
 			crash(e);
 		}
 	}

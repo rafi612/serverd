@@ -55,7 +55,7 @@ public class TCPClient extends Client
 		} 
 		catch (Exception e)
 		{
-			log.log("Receive message failed");
+			log.log("Receive message failed: " + e.getMessage());
 		}
 		
 		message = encoder.decode(message, this);
@@ -77,7 +77,7 @@ public class TCPClient extends Client
 		catch (Exception e) 
 		{
 			//crash(e);
-			log.log("Send message failed");
+			log.log("Send message failed: " + e.getMessage());
 		}
 	}
 	
@@ -96,6 +96,7 @@ public class TCPClient extends Client
 		} 
 		catch (IOException e)
 		{
+			log.log("Rawdata receive failed: " + e.getMessage());
 			crash(e);
 		}
 		
@@ -113,6 +114,7 @@ public class TCPClient extends Client
 		}
 		catch (IOException e)
 		{
+			log.log("Rawdata send failed: " + e.getMessage());
 			crash(e);
 		}
 	}
