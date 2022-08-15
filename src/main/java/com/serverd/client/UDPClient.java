@@ -126,8 +126,6 @@ public class UDPClient extends Client
 	public void closeClient()
 	{
 		super.closeClient();
-		
-		udp_sock.close();
 	}
 
 }
