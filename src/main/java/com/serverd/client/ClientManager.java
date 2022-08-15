@@ -27,8 +27,7 @@ public class ClientManager
 	
 	public static boolean runned = false;
 	
-	private static Log tcplog = new Log("ServerD TCP");
-	private static Log udplog = new Log("ServerD UDP");
+	private static Log log = new Log("ServerD");
 	
 	private static boolean tcpenable = true,udpenable = true;
 	
@@ -45,6 +44,8 @@ public class ClientManager
 	
 	public static void tcp_server(String ip,int port)
 	{
+		Log tcplog = new Log("ServerD TCP");
+		 
 		try 
 		{
 			if (!tcpenable)
@@ -83,6 +84,8 @@ public class ClientManager
 	
 	public static void udp_server(String ip,int port)
 	{
+		Log udplog = new Log("ServerD UDP");
+		
 		try 
 		{
 			if (!udpenable)
@@ -198,8 +201,21 @@ public class ClientManager
 			cl.joinedid = clients.lastIndexOf(cl.joiner);
 		}
 			
-		new Log("ServerD").log("Client " + clientid + " has been closed");
+		log.log("Client " + clientid + " has been closed");
 
+	}
+	
+	public static void shutdown()
+	{
+		log.log("Server shutting down...");
+	
+		log.log("Closing clients...");
+		for (Client client : clients)
+			client.closeClient();
+		
+		log.log("Stopping plugins...");
+		for (Plugin plugin : PluginManager.plugins)
+			plugin.stop();
 	}
 	
 	public static Client getClient(int id)
