@@ -45,6 +45,7 @@ public class UDPClient extends Client
 	int bufferOffset = 0;
 	int bufferLength = 0;
 	
+	@Override
 	public String receive()
 	{
 		while (buffer == null)
@@ -59,6 +60,7 @@ public class UDPClient extends Client
 		return msg;
 	}
 	
+	@Override
 	public void send(String mess)
 	{
 		log.log(mess);
@@ -76,7 +78,8 @@ public class UDPClient extends Client
 			crash(e);
 		}
 	}
-	
+
+	@Override
 	public byte[] rawdata_receive(int buflen)
 	{
 		while (buffer == null)
@@ -92,6 +95,7 @@ public class UDPClient extends Client
 		return ret;
 	}
 	
+	@Override
 	public void rawdata_send(byte[] b)
 	{
 		DatagramPacket p = new DatagramPacket(b, b.length, ip, port);
@@ -106,19 +110,24 @@ public class UDPClient extends Client
 		}
 	}
 	
+	@Override
 	public String getIP()
 	{
 		return ip.getHostAddress();
 	}
 	
+	@Override
 	public int getPort()
 	{
 		return port;
 	}
 	
+	@Override
 	public void closeClient()
 	{
+		super.closeClient();
 		
+		udp_sock.close();
 	}
 
 }

@@ -164,19 +164,11 @@ public class Client implements Runnable
 	}
 	
 	/**
-	 * Closing client
-	 */
-	public void closeSocket()
-	{
-		
-	}
-	
-	/**
 	 * Closing socket
 	 */
 	public void closeClient()
 	{
-
+		connected = false;
 	}
 	
 	/**
@@ -266,9 +258,11 @@ public class Client implements Runnable
 	 */
 	protected void crash(Exception e)
 	{
-		if (!crashed && connected)
+		if (!crashed)
 		{
-			connected = false;
+			if (joinedid != -1)
+				unjoin();
+			
 			crashed = true;
 			log.log("Client " + id + " crashed: " + e.getMessage());
 			

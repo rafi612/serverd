@@ -43,6 +43,7 @@ public class TCPClient extends Client
 		thread.start();
 	}
 	
+	@Override
 	public String receive()
 	{
 		String message = "";
@@ -50,12 +51,16 @@ public class TCPClient extends Client
 		{
 			byte[] buffer = new byte[BUFFER];
 			int len = in.read(buffer);
+			
+			if (len == -1)
+				throw new IOException("Connection closed");
 
 			message = new String(buffer,0,len);
 		} 
 		catch (Exception e)
 		{
 			log.log("Receive message failed: " + e.getMessage());
+			crash(e);
 		}
 		
 		message = encoder.decode(message, this);
@@ -66,6 +71,7 @@ public class TCPClient extends Client
 		return message;
 	}
 	
+	@Override
 	public void send(String mess)
 	{
 		log.log(mess);
@@ -76,11 +82,12 @@ public class TCPClient extends Client
 		} 
 		catch (Exception e) 
 		{
-			//crash(e);
 			log.log("Send message failed: " + e.getMessage());
+			crash(e);
 		}
 	}
 	
+	@Override
 	public byte[] rawdata_receive(int buflen)
 	{
 		byte[] buffer = new byte[buflen];
@@ -89,6 +96,10 @@ public class TCPClient extends Client
 		try 
 		{
 			int len = in.read(buffer);
+			
+			if (len == -1)
+				throw new IOException("Connection closed");
+			
 			ret = new byte[len];
 			
 			System.arraycopy(buffer, 0, ret, 0, len);
@@ -105,6 +116,7 @@ public class TCPClient extends Client
 		
 	}
 	
+	@Override
 	public void rawdata_send(byte[] b)
 	{
 		try 
@@ -119,29 +131,30 @@ public class TCPClient extends Client
 		}
 	}
 	
-	public void closeSocket() 
+	@Override
+	public void closeClient()
 	{
-		connected = false;
+		super.closeClient();
 		
-		try {
+		try
+		{
 			in.close();
 			out.close();
 			tcp_sock.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} 
+		catch (IOException e)
+		{
+			log.log("Client closing failed: " + e.getMessage());
 		}
 	}
 	
-	public void closeClient()
-	{
-		closeSocket();
-	}
-	
+	@Override
 	public String getIP()
 	{
 		return tcp_sock.getInetAddress().getHostAddress();
 	}
 	
+	@Override
 	public int getPort()
 	{
 		return tcp_sock.getPort();
