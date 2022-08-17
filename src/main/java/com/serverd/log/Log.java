@@ -34,5 +34,20 @@ public class Log
 	{
 		System.out.println("["  + name  + "] " + message);
 	}
+	
+	public synchronized void info(String message)
+	{
+		System.out.println("["  + name  + "] INFO:" + message);
+	}
+	
+	public synchronized void warn(String message)
+	{
+		System.out.println("["  + name  + "] WARN:" + message);
+	}
+	
+	public synchronized void error(String message)
+	{
+		System.out.println("["  + name  + "] ERROR:" + message);
+	}
 
 }
