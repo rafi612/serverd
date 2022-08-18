@@ -59,14 +59,14 @@ public class TCPClient extends Client
 		} 
 		catch (Exception e)
 		{
-			log.log("Receive message failed: " + e.getMessage());
+			log.error("Receive message failed: " + e.getMessage());
 			crash(e);
 		}
 		
 		message = encoder.decode(message, this);
 		
 		if (!message.equals(""))
-			programlog.log(message);
+			programlog.info("<Reveived> " + message);
 		
 		return message;
 	}
@@ -74,7 +74,7 @@ public class TCPClient extends Client
 	@Override
 	public void send(String mess)
 	{
-		log.log(mess);
+		log.info("<Sended> " + mess);
 		try 
 		{
 			out.write(encoder.encode(mess, this).getBytes());
@@ -82,7 +82,7 @@ public class TCPClient extends Client
 		} 
 		catch (Exception e) 
 		{
-			log.log("Send message failed: " + e.getMessage());
+			log.error("Send message failed: " + e.getMessage());
 			crash(e);
 		}
 	}
@@ -107,7 +107,7 @@ public class TCPClient extends Client
 		} 
 		catch (IOException e)
 		{
-			log.log("Rawdata receive failed: " + e.getMessage());
+			log.error("Rawdata receive failed: " + e.getMessage());
 			crash(e);
 		}
 		
@@ -126,7 +126,7 @@ public class TCPClient extends Client
 		}
 		catch (IOException e)
 		{
-			log.log("Rawdata send failed: " + e.getMessage());
+			log.error("Rawdata send failed: " + e.getMessage());
 			crash(e);
 		}
 	}
@@ -144,7 +144,7 @@ public class TCPClient extends Client
 		} 
 		catch (IOException e)
 		{
-			log.log("Client closing failed: " + e.getMessage());
+			log.error("Client closing failed: " + e.getMessage());
 		}
 	}
 	

@@ -50,7 +50,7 @@ public class ClientManager
 		{
 			if (!tcpenable)
 			{
-				tcplog.log("TCP server was disabled");
+				tcplog.info("TCP server was disabled");
 				return;
 			}
 			
@@ -59,7 +59,7 @@ public class ClientManager
 			{
 				
 				Socket sock = server.accept();
-				tcplog.log("Connection accepted from client!");
+				tcplog.info("Connection accepted from client!");
 				
 				TCPClient c = new TCPClient(ClientManager.clients.size(),sock);
 				clients.add(c);
@@ -72,13 +72,13 @@ public class ClientManager
 					for (ConnectListener cl : p.connectlisteners)
 						cl.onConnect(p,c);
 				
-				tcplog.log("Created client thread!");
+				tcplog.info("Created client thread!");
 			}
 			server.close();
 		} 
 		catch (IOException e)
 		{
-			tcplog.log("Error while creating server: " + e.getMessage());
+			tcplog.error("Error while creating server: " + e.getMessage());
 		}
 	}
 	
@@ -90,7 +90,7 @@ public class ClientManager
 		{
 			if (!udpenable)
 			{
-				udplog.log("UDP server was disabled");
+				udplog.info("UDP server was disabled");
 				return;
 			}
 			
@@ -125,7 +125,7 @@ public class ClientManager
 				
 				if (new_)
 				{					
-					udplog.log("Connection founded in " + packet.getAddress().getHostAddress() + ":" + packet.getPort() +" Message: " + msg);
+					udplog.info("Connection founded in " + packet.getAddress().getHostAddress() + ":" + packet.getPort() +" Message: " + msg);
 					
 					UDPClient client = new UDPClient(ClientManager.clients.size(), socket, packet.getAddress(), packet.getPort());
 					clients.add(client);
@@ -144,7 +144,7 @@ public class ClientManager
 						for (ConnectListener cl : p.connectlisteners)
 							cl.onConnect(p,client);
 					
-					udplog.log("Created client thread!");
+					udplog.info("Created client thread!");
 				}
 				
 			}
@@ -153,7 +153,7 @@ public class ClientManager
 		} 
 		catch (IOException e)
 		{
-			udplog.log("Error while creating server: " + e.getMessage());
+			udplog.error("Error while creating server: " + e.getMessage());
 		}
 	}
 	
@@ -201,19 +201,19 @@ public class ClientManager
 			cl.joinedid = clients.lastIndexOf(cl.joiner);
 		}
 			
-		log.log("Client " + clientid + " has been closed");
+		log.info("Client " + clientid + " has been closed");
 
 	}
 	
 	public static void shutdown()
 	{
-		log.log("Server shutting down...");
+		log.info("Server shutting down...");
 	
-		log.log("Closing clients...");
+		log.info("Closing clients...");
 		for (Client client : clients)
 			client.closeClient();
 		
-		log.log("Stopping plugins...");
+		log.info("Stopping plugins...");
 		for (Plugin plugin : PluginManager.plugins)
 			plugin.stop();
 	}

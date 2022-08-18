@@ -56,14 +56,14 @@ public class UDPClient extends Client
 		
 		msg = encoder.decode(msg, this);
 		
-		programlog.log(msg);
+		programlog.info(msg);
 		return msg;
 	}
 	
 	@Override
 	public void send(String mess)
 	{
-		log.log(mess);
+		log.info(mess);
 		
 		String message = encoder.encode(mess, this); 
 		
@@ -74,7 +74,7 @@ public class UDPClient extends Client
 		} 
 		catch (IOException e)
 		{
-			log.log("Send message failed: " + e.getMessage());
+			log.error("Send message failed: " + e.getMessage());
 			crash(e);
 		}
 	}
@@ -105,7 +105,7 @@ public class UDPClient extends Client
 		} 
 		catch (IOException e) 
 		{
-			log.log("Rawdata send failed: " + e.getMessage());
+			log.error("Rawdata send failed: " + e.getMessage());
 			crash(e);
 		}
 	}

@@ -1,7 +1,20 @@
 package com.serverd.log;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Log 
 {
+	public static final String ANSI_RESET = "\u001B[0m";
+	public static final String ANSI_BLACK = "\u001B[30m";
+	public static final String ANSI_RED = "\u001B[31m";
+	public static final String ANSI_GREEN = "\u001B[32m";
+	public static final String ANSI_YELLOW = "\u001B[33m";
+	public static final String ANSI_BLUE = "\u001B[34m";
+	public static final String ANSI_PURPLE = "\u001B[35m";
+	public static final String ANSI_CYAN = "\u001B[36m";
+	public static final String ANSI_WHITE = "\u001B[37m";
+	
 	public String name;
 	public Log(String name)
 	{
@@ -26,28 +39,25 @@ public class Log
 		this.name = name;
 	}
 
-	/**
-	 * Log to stdin
-	 * @param message Message
-	 */
-	public synchronized void log(String message)
-	{
-		System.out.println("["  + name  + "] " + message);
-	}
-	
 	public synchronized void info(String message)
 	{
-		System.out.println("["  + name  + "] INFO:" + message);
+		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
+		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_GREEN + 
+				"INFO " + ANSI_RESET + message);
 	}
 	
 	public synchronized void warn(String message)
 	{
-		System.out.println("["  + name  + "] WARN:" + message);
+		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
+		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_YELLOW + 
+				"WARN " + ANSI_RESET + message);
 	}
 	
 	public synchronized void error(String message)
 	{
-		System.out.println("["  + name  + "] ERROR:" + message);
+		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
+		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_RED + 
+				"ERROR " + ANSI_RESET + message);
 	}
 
 }

@@ -264,7 +264,7 @@ public class Client implements Runnable
 				unjoin();
 			
 			crashed = true;
-			log.log("Client " + id + " crashed: " + e.getMessage());
+			log.error("Client " + id + " crashed: " + e.getMessage());
 			
 			closeClient();
 			ClientManager.delete(id);
@@ -290,7 +290,7 @@ public class Client implements Runnable
 	 */
 	public void clientLoop() throws Exception
 	{
-		log.log("Started working.");
+		log.info("Started working.");
 		while (connected)
 		{			
 			String command_str = receive();
@@ -407,7 +407,7 @@ public class Client implements Runnable
 					
 					if (joinedid != -1)
 					{
-						log.log("Raw data mode started," + buffersize+ " bytes can be sended");
+						log.info("Raw data mode started," + buffersize+ " bytes can be sended");
 						int i = 0;
 						while (i < buffersize)
 						{

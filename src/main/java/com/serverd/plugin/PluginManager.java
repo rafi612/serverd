@@ -53,13 +53,13 @@ public class PluginManager
 			try {
 				pluginsdisabled_file.createNewFile();
 			} catch (IOException e) {
-				log.log("Error creating file:" + e.getMessage());
+				log.error("Error creating file:" + e.getMessage());
 			}
 		
 		try {
 			pluginsdisabled = Files.readAllLines(pluginsdisabled_file.toPath(), Charset.defaultCharset());
 		} catch (IOException e) {
-			log.log("Error reading file:" + e.getMessage());
+			log.error("Error reading file:" + e.getMessage());
 		}
 		
 		File[] files = pdir.listFiles();
@@ -71,7 +71,7 @@ public class PluginManager
 				message = load(f,true);
 			
 			if (!message.equals(""))
-				log.log(message);
+				log.error(message);
 		}
 		
 	}
@@ -85,7 +85,7 @@ public class PluginManager
 	 */
 	public static String load(File file,boolean enable)
 	{
-		log.log("Loading plugin " + file.getName());
+		log.info("Loading plugin " + file.getName());
 		
 		try 
 		{
@@ -213,7 +213,7 @@ public class PluginManager
 		} 
 		catch (IOException e) 
 		{
-			log.log("Error writing file");
+			log.error("Error writing file");
 		}
 	}
 }

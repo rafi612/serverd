@@ -57,7 +57,7 @@ public class Plugin
 		if (errormessage != null)
 			if (!errormessage.equals(""))
 		{
-			Log("Plugin init failed: " + errormessage);
+			info("Plugin init failed: " + errormessage);
 			return 1;
 		}
 		
@@ -69,14 +69,6 @@ public class Plugin
 		return 0;
 	}
 	
-	/**
-	 * Print plugin message to stdin
-	 * @param message Message
-	 */
-	public void Log(String message)
-	{
-		log.log(message);
-	}
 	
 	/**
 	 * Stop plugin
@@ -96,13 +88,24 @@ public class Plugin
 		PluginManager.plugins_loaded--;
 	}
 	
+	
+	
+	/**
+	 * Print plugin info message
+	 * @param message Message
+	 */
+	public void info(String message)
+	{
+		log.info(message);
+	}
+	
 	/**
 	 * Print plugin warning
 	 * @param message Message
 	 */
 	public void warn(String message)
 	{
-		Log("WARN: " + message);
+		log.warn(message);
 	}
 	
 	/**
@@ -111,7 +114,7 @@ public class Plugin
 	 */
 	public void error(String message)
 	{
-		Log("ERROR: " + message);
+		log.error(message);
 	}
 	
 	/**

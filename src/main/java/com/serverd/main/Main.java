@@ -88,13 +88,13 @@ public class Main
 		
 		if (plugins) 
 		{
-			log.log("Loading plugins...");
+			log.info("Loading plugins...");
 			PluginManager.loadPlugins();
 		}
 		
 		if (pluginDebug)
 		{
-			log.log("Loading debug plugin " + pluginDebugClass + "...");
+			log.info("Loading debug plugin " + pluginDebugClass + "...");
 			try 
 			{
 				Debug.loadPluginFromClassName(pluginDebugClass);
@@ -112,7 +112,7 @@ public class Main
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(ClientManager::shutdown));
 		
-		log.log("Starting listening clients...");
+		log.info("Starting listening clients...");
 		ClientManager.start(ip,tcp_port,udp_port);
 
 	}
