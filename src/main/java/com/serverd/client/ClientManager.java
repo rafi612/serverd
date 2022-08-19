@@ -145,6 +145,7 @@ public class ClientManager
 							cl.onConnect(p,client);
 					
 					udplog.info("Created client thread!");
+					
 				}
 				
 			}

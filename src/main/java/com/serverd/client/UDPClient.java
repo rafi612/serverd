@@ -56,14 +56,14 @@ public class UDPClient extends Client
 		
 		msg = encoder.decode(msg, this);
 		
-		programlog.info(msg);
+		programlog.info("<Received> " + msg);
 		return msg;
 	}
 	
 	@Override
 	public void send(String mess)
 	{
-		log.info(mess);
+		log.info("<Sended> " + mess);
 		
 		String message = encoder.encode(mess, this); 
 		
