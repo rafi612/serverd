@@ -39,6 +39,10 @@ public class Log
 		this.name = name;
 	}
 
+	/**
+	 * Logging as Info level
+	 * @param message Message to log
+	 */
 	public synchronized void info(String message)
 	{
 		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
@@ -46,6 +50,10 @@ public class Log
 				"INFO " + ANSI_RESET + message);
 	}
 	
+	/**
+	 * Logging as Warn level
+	 * @param message Message to log
+	 */
 	public synchronized void warn(String message)
 	{
 		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
@@ -53,6 +61,10 @@ public class Log
 				"WARN " + ANSI_RESET + message);
 	}
 	
+	/**
+	 * Logging as Error level
+	 * @param message Message to log
+	 */
 	public synchronized void error(String message)
 	{
 		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
