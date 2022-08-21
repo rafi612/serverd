@@ -38,7 +38,6 @@ public class UDPClient extends Client
 		this.port = port;
 		
 		thread = new Thread(this, "UDP Client " + id);
-		thread.start();
 	}
 	
 	byte[] buffer = null;

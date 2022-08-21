@@ -40,7 +40,6 @@ public class TCPClient extends Client
 		}
 		
 		thread = new Thread(this,"Client " + id);
-		thread.start();
 	}
 	
 	@Override

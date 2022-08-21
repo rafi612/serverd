@@ -61,8 +61,8 @@ public class ClientManager
 				Socket sock = server.accept();
 				tcplog.info("Connection accepted from client!");
 				
-				TCPClient c = new TCPClient(ClientManager.clients.size(),sock);
-				clients.add(c);
+				TCPClient client = new TCPClient(ClientManager.clients.size(),sock);
+				clients.add(client);
 				
 				clients_connected++;
 				tcp_connected++;
@@ -70,9 +70,10 @@ public class ClientManager
 				//plugin connect listener
 				for (Plugin p : PluginManager.plugins)
 					for (ConnectListener cl : p.connectlisteners)
-						cl.onConnect(p,c);
+						cl.onConnect(p,client);
 				
-				tcplog.info("Created client thread!");
+				tcplog.info("Creating client thread...");
+				client.thread.start();
 			}
 			server.close();
 		} 
@@ -144,8 +145,8 @@ public class ClientManager
 						for (ConnectListener cl : p.connectlisteners)
 							cl.onConnect(p,client);
 					
-					udplog.info("Created client thread!");
-					
+					udplog.info("Creating client thread...");
+					client.thread.start();
 				}
 				
 			}
