@@ -23,7 +23,6 @@ public abstract class Command
 	 */
 	protected int checkArgs(String[] args,int length)
 	{
-		
 		if (args.length < length) 
 		{
 			return -1;
