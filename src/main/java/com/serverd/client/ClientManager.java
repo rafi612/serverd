@@ -35,8 +35,8 @@ public class ClientManager
 	{		
 		runned = true;
 		
-		Thread tcp = new Thread(() -> tcp_server(ip, tcpport));
-		Thread udp = new Thread(() -> udp_server(ip, udpport));
+		Thread tcp = new Thread(() -> tcp_server(ip, tcpport),"TCP Server");
+		Thread udp = new Thread(() -> udp_server(ip, udpport),"UDP Server");
 		tcp.start();
 		udp.start();
 	}
