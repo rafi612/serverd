@@ -45,7 +45,7 @@ public class ClientManager
 	public static void tcp_server(String ip,int port)
 	{
 		Log tcplog = new Log("ServerD TCP");
-		 
+
 		try 
 		{
 			if (!tcpenable)

@@ -1,7 +1,6 @@
 package com.serverd.main;
 
 import java.nio.file.Paths;
-
 import com.serverd.client.ClientManager;
 import com.serverd.log.Log;
 import com.serverd.plugin.Debug;
