@@ -54,6 +54,8 @@ class ClientManagerTest
 	void tearDown() throws Exception
 	{
 		ClientManager.runned = false;
+		
+		ClientManager.clients.clear();
 	}
 	
 	@Test
