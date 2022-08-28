@@ -37,9 +37,10 @@ public class PluginManager
 
 	/**
 	 * Loading all plugins
+	 * @throws IOException 
 	 */
-	public static void loadPlugins()
-	{
+	public static void loadPlugins() throws IOException
+	{		
 		//create plugin dir
 		File pdir = new File(plugindir);
 		if (!pdir.exists())
@@ -50,17 +51,11 @@ public class PluginManager
 			pdatadir.mkdirs();
 		
 		if (!pluginsdisabled_file.exists())
-			try {
-				pluginsdisabled_file.createNewFile();
-			} catch (IOException e) {
-				log.error("Error creating file:" + e.getMessage());
-			}
-		
-		try {
-			pluginsdisabled = Files.readAllLines(pluginsdisabled_file.toPath(), Charset.defaultCharset());
-		} catch (IOException e) {
-			log.error("Error reading file:" + e.getMessage());
+		{
+			pluginsdisabled_file.createNewFile();
 		}
+		
+		pluginsdisabled = Files.readAllLines(pluginsdisabled_file.toPath(), Charset.defaultCharset());
 		
 		File[] files = pdir.listFiles();
 		

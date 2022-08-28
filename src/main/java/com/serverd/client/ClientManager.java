@@ -222,6 +222,8 @@ public class ClientManager
 	
 	public static Client getClient(int id)
 	{
+		if (id < 0 || id > clients.size())
+			return null;
 		return clients.get(id);
 	}
 	

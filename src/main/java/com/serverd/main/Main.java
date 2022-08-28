@@ -1,5 +1,6 @@
 package com.serverd.main;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import com.serverd.client.ClientManager;
 import com.serverd.log.Log;
@@ -88,7 +89,15 @@ public class Main
 		if (plugins) 
 		{
 			log.info("Loading plugins...");
-			PluginManager.loadPlugins();
+			try 
+			{
+				PluginManager.loadPlugins();
+			} 
+			catch (IOException e)
+			{
+				log.error("Error: " + e.getMessage());
+				System.exit(-1);
+			}
 		}
 		
 		if (pluginDebug)

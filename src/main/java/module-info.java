@@ -7,4 +7,12 @@ module serverd
 	exports com.serverd.main;
 	exports com.serverd.plugin.command;
 	exports com.serverd.plugin;
+	
+	opens com.serverd.util;
+	opens com.serverd.log;
+	opens com.serverd.client;
+	opens com.serverd.plugin.listener;
+	opens com.serverd.main;
+	opens com.serverd.plugin.command;
+	opens com.serverd.plugin;
 }

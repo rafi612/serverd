@@ -196,11 +196,14 @@ public class Client implements Runnable
 	 * @return Exit code (0 if succesfully joined)
 	 */
 	public int join(int joinid)
-	{
+	{		
 		Client cl = ClientManager.getClient(joinid);
 		
 		if (cl == null)
 			return 1;
+		
+		if (joinedid != -1)
+			return 2;
 		
 		joinedid = joinid;
 		type = Type.SENDER;
