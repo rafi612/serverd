@@ -35,16 +35,24 @@ public class ClientManager
 	{		
 		runned = true;
 		
-		Thread tcp = new Thread(() -> tcp_server(ip, tcpport),"TCP Server");
-		Thread udp = new Thread(() -> udp_server(ip, udpport),"UDP Server");
+		Thread tcp = new Thread(() -> startTcpServer(ip, tcpport),"TCP Server");
+		Thread udp = new Thread(() -> startUdpServer(ip, udpport),"UDP Server");
 		tcp.start();
 		udp.start();
 	}
 	
+	private static ServerSocket tcpSocket;
 	
-	public static void tcp_server(String ip,int port)
+	/**
+	 * Starting TCP Server
+	 * @param ip IP of server
+	 * @param port Port of server
+	 */
+	public static void startTcpServer(String ip,int port)
 	{
 		Log tcplog = new Log("ServerD TCP");
+		
+		tcplog.info("Starting TCP Server...");
 
 		try 
 		{
@@ -54,11 +62,11 @@ public class ClientManager
 				return;
 			}
 			
-			ServerSocket server = new ServerSocket(port,50,InetAddress.getByName(ip));			
+			tcpSocket = new ServerSocket(port,50,InetAddress.getByName(ip));			
 			while (runned)
 			{
 				
-				Socket sock = server.accept();
+				Socket sock = tcpSocket.accept();
 				tcplog.info("Connection accepted from client!");
 				
 				TCPClient client = new TCPClient(ClientManager.clients.size(),sock);
@@ -75,7 +83,7 @@ public class ClientManager
 				tcplog.info("Creating client thread...");
 				client.thread.start();
 			}
-			server.close();
+			tcpSocket.close();
 		} 
 		catch (IOException e)
 		{
@@ -83,9 +91,28 @@ public class ClientManager
 		}
 	}
 	
-	public static void udp_server(String ip,int port)
+	/**
+	 * Stopping TCP server
+	 * @throws IOException 
+	 */
+	public static void stopTcpServer() throws IOException
+	{
+		log.info("Stopping TCP server..");
+		tcpSocket.close();
+	}
+	
+	private static DatagramSocket udpSocket;
+	
+	/**
+	 * Starting UDP Server
+	 * @param ip IP of server
+	 * @param port Port of server
+	 */
+	public static void startUdpServer(String ip,int port)
 	{
 		Log udplog = new Log("ServerD UDP");
+		
+		udplog.info("Starting UDP Server...");
 		
 		try 
 		{
@@ -95,14 +122,14 @@ public class ClientManager
 				return;
 			}
 			
-			DatagramSocket socket = new DatagramSocket(port);
+			udpSocket = new DatagramSocket(port);
 			
 			while (runned)
 			{
 				byte[] buffer = new byte[Client.BUFFER];
 				DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 				
-				socket.receive(packet);
+				udpSocket.receive(packet);
 				
 				String msg = new String(packet.getData(),packet.getOffset(),packet.getLength());
 				
@@ -128,7 +155,7 @@ public class ClientManager
 				{					
 					udplog.info("Connection founded in " + packet.getAddress().getHostAddress() + ":" + packet.getPort() +" Message: " + msg);
 					
-					UDPClient client = new UDPClient(ClientManager.clients.size(), socket, packet.getAddress(), packet.getPort());
+					UDPClient client = new UDPClient(ClientManager.clients.size(), udpSocket, packet.getAddress(), packet.getPort());
 					clients.add(client);
 					udp_clients.add(client);
 					
@@ -150,13 +177,22 @@ public class ClientManager
 				}
 				
 			}
-			socket.close();
+			udpSocket.close();
 			
 		} 
 		catch (IOException e)
 		{
 			udplog.error("Error while creating server: " + e.getMessage());
 		}
+	}
+	
+	/**
+	 * Closing UDP server
+	 */
+	public static void stopUdpServer()
+	{
+		log.info("Stopping UDP server..");
+		udpSocket.close();
 	}
 	
 	/**
@@ -209,15 +245,24 @@ public class ClientManager
 	
 	public static void shutdown()
 	{
-		log.info("Server shutting down...");
-	
-		log.info("Closing clients...");
-		for (Client client : clients)
-			client.closeClient();
-		
-		log.info("Stopping plugins...");
-		for (Plugin plugin : PluginManager.plugins)
-			plugin.stop();
+		try
+		{
+			log.info("Server shutting down...");
+			stopTcpServer();
+			stopUdpServer();
+
+			log.info("Closing clients...");
+			for (Client client : clients)
+				client.closeClient();
+			
+			log.info("Stopping plugins...");
+			for (Plugin plugin : PluginManager.plugins)
+				plugin.stop();
+		} 
+		catch (IOException e) 
+		{
+			log.error("Error stopping server:" + e.getMessage());
+		}
 	}
 	
 	public static Client getClient(int id)

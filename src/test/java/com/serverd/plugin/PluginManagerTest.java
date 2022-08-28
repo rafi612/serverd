@@ -3,8 +3,9 @@ package com.serverd.plugin;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import java.io.IOException;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -15,18 +16,80 @@ class PluginManagerTest {
 	@TempDir
 	File tempDir;
 	
+	Plugin plugin;
+	int pluginid;
+	
+	@BeforeEach
+	void setUp() throws Exception
+	{
+		pluginid = Debug.loadPluginFromClassName(TestPlugin2.class.getName());
+		plugin = PluginManager.getPluginByID(pluginid);
+	}
+	
+	@AfterEach
+	void tearDown() throws Exception
+	{
+		PluginManager.unloadPlugin(plugin);
+	}
+	
 	@Test
 	void loadPlugins_Test() 
 	{
-		try
-		{
-			Main.workingdir = tempDir.getAbsolutePath();
-			PluginManager.loadPlugins();
-		} 
-		catch (IOException e) 
-		{
-			fail(e.getMessage());
-		}
+		Main.workingdir = tempDir.getAbsolutePath();
+		assertDoesNotThrow(PluginManager::loadPlugins);
+		
+		PluginManager.unloadAllPlugins();
+	}
+	
+	@Test
+	void getByFileName_Test()
+	{
+		assertNotNull(PluginManager.getByFileName(plugin.file.getName()));
+	}
+	
+	@Test
+	void getPluginByID_Test()
+	{
+		assertNotNull(PluginManager.getPluginByID(0));
+	}
+	
+	@Test
+	void shouldGetPluginByIDReturnNullOnWrongID()
+	{
+		assertNull(PluginManager.getPluginByID(10));
+	}
+
+	@Test
+	void shouldGetByFileNameReturnNullOnWrongName()
+	{
+		assertNull(PluginManager.getByFileName("Test"));
+	}
+	
+	@Test
+	void listPluginsName_Test()
+	{
+		assertAll(
+			() -> assertEquals(PluginManager.listPluginsName().length,PluginManager.getPluginsAmountLoaded()),
+			() -> assertEquals(PluginManager.listPluginsName()[pluginid],plugin.file.getName())
+		);
+	}
+	
+	@Test
+	void disablePlugin_Test()
+	{
+		PluginManager.disablePlugin(plugin);
+		
+		assertFalse(plugin.isRunned);
+	}
+	
+	@Test
+	void EnablePlugin_Test()
+	{
+		PluginManager.disablePlugin(plugin);
+		assertFalse(plugin.isRunned);
+		
+		PluginManager.enablePlugin(plugin);
+		assertTrue(plugin.isRunned);
 	}
 
 }

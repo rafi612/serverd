@@ -2,13 +2,13 @@ package com.serverd.client;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ClientTest 
 {
-	static Client client,client2;
+	Client client,client2;
 		
 	private static class TestClient extends Client
 	{
@@ -24,8 +24,8 @@ class ClientTest
 		}
 	}
 	
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception 
+	@BeforeEach
+	void setUpBeforeClass() throws Exception 
 	{
 		client = new TestClient(0);
 		client2 = new TestClient(1);
@@ -34,8 +34,8 @@ class ClientTest
 		ClientManager.clients.add(client2);
 	}
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception 
+	@AfterEach
+	void tearDownAfterClass() throws Exception 
 	{
 		ClientManager.clients.clear();
 	}
@@ -44,38 +44,43 @@ class ClientTest
 	@Test
 	void join_Test() 
 	{
-		//client of of range
-		assertEquals(client.join(10),1);
+		assertAll(
+			//client of of range
+			() -> assertEquals(client.join(10),1),
+			
+			//correct join
+			() -> assertEquals(client.join(1),0),
+			
+			//client already joined
+			() -> assertEquals(client.join(1),2),
+			
+			() -> assertEquals(client.joinedid,client2.id),
+			() -> assertEquals(client2.joinedid,client.id),
 		
-		//correct join
-		assertEquals(client.join(1),0);
-		
-		//client already joined
-		assertEquals(client.join(1),2);
-		
-		assertEquals(client.joinedid,client2.id);
-		assertEquals(client2.joinedid,client.id);
-	
-		assertEquals(client.joiner,client2);
-		assertEquals(client2.joiner,client);
-		
-		assertEquals(client.type, Client.Type.SENDER);
-		assertEquals(client2.type, Client.Type.RECEIVER);
+			() -> assertEquals(client.joiner,client2),
+			() -> assertEquals(client2.joiner,client),
+			
+			() -> assertEquals(client.type, Client.Type.SENDER),
+			() -> assertEquals(client2.type, Client.Type.RECEIVER)
+		);
 	}
 	
 	@Test
 	void unjoin_Test()
 	{
+		client.join(1);
 		client.unjoin();
 		
-		assertEquals(client.joinedid,-1);
-		assertEquals(client2.joinedid,-1);
-	
-		assertEquals(client.joiner,null);
-		assertEquals(client2.joiner,null);
-		
-		assertEquals(client.type, Client.Type.NONE);
-		assertEquals(client2.type, Client.Type.NONE);
+		assertAll(
+			() -> assertEquals(client.joinedid,-1),
+			() -> assertEquals(client2.joinedid,-1),
+			
+			() -> assertNull(client.joiner),
+			() -> assertNull(client2.joiner),
+				
+			() -> assertEquals(client.type, Client.Type.NONE),
+			() -> assertEquals(client2.type, Client.Type.NONE)
+		);
 	}
 	
 	@Test
@@ -85,35 +90,33 @@ class ClientTest
 		String[] args2 = {"Test","test"};
 		String[] args3 = {"Test","test","test","test","Test","test","test","test"};
 		
-		assertTrue(client.checkArgs(args1, 4));
-		assertFalse(client.checkArgs(args2, 3));
-		assertFalse(client.checkArgs(args3, 5));
+		assertAll(
+			() -> assertTrue(client.checkArgs(args1, 4)),
+			() -> assertFalse(client.checkArgs(args2, 3)),
+			() -> assertFalse(client.checkArgs(args3, 5))
+		);
 	}
 	
 	@Test
 	void setOnceJoin_Test()
 	{		
-		try 
-		{
+		assertDoesNotThrow(() -> {
 			client.setOnceJoin(true,1);
 			
 			//simulating receiving response
 			client.executeCommand("Test");
 			
-			assertEquals(client.joinedid,-1);
-			assertEquals(client2.joinedid,-1);
-		
-			assertEquals(client.joiner,null);
-			assertEquals(client2.joiner,null);
-			
-			assertEquals(client.type, Client.Type.NONE);
-			assertEquals(client2.type, Client.Type.NONE);
-			
-		} 
-		catch (Exception e) 
-		{
-			fail(e.getMessage());
-		}
+			assertAll(
+				() -> assertEquals(client.joinedid,-1),
+				() -> assertEquals(client2.joinedid,-1),
+				
+				() -> assertNull(client.joiner),
+				() -> assertNull(client2.joiner),
+					
+				() -> assertEquals(client.type, Client.Type.NONE),
+				() -> assertEquals(client2.type, Client.Type.NONE)
+			); 
+		});
 	}
 
 }

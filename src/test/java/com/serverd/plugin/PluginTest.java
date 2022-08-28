@@ -3,14 +3,20 @@ package com.serverd.plugin;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import com.serverd.plugin.Plugin.Info;
 
 class PluginTest 
 {
+	@TempDir
+	static File tempDir;
+	
 	Plugin plugin;
 	TestPlugin instance;
 	
@@ -48,6 +54,7 @@ class PluginTest
 	void setUp() throws Exception 
 	{
 		plugin = new Plugin(new File("Test"), instance = new TestPlugin());
+		plugin.info.name = "Test";
 	}
 
 	@Test
@@ -61,14 +68,26 @@ class PluginTest
 	{
 		plugin.stop();
 		
-		assertEquals(plugin.isRunned, false);
-		assertEquals(instance.stopped, true);
+		assertAll(
+			() -> assertEquals(plugin.isRunned, false),
+			() -> assertEquals(instance.stopped, true)
+		);
 	}
 	
 	@Test
 	void getInstance_Test()
 	{
 		assertEquals(plugin.getInstance(), instance);
+	}
+	
+	@RepeatedTest(value = 2)
+	void loadWorkspace_Test()
+	{
+		PluginManager.plugindatadir = tempDir.getAbsolutePath();
+		
+		File workspace = plugin.loadWorkspace();
+		
+		assertEquals(workspace.getAbsolutePath(), Path.of(PluginManager.plugindatadir, plugin.info.name).toString());
 	}
 
 }

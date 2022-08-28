@@ -21,8 +21,9 @@ public class Debug
 	 * @throws InvocationTargetException
 	 * @throws NoSuchMethodException
 	 * @throws SecurityException
+	 * @return ID of loaded plugin
 	 */
-	public static void loadPluginFromClassName(String classname) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
+	public static int loadPluginFromClassName(String classname) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
 	{
 		File classfile = new File(classname.replace(".", File.separator) + ".class");
 		
@@ -34,6 +35,8 @@ public class Debug
 		plugin.start();
 		
 		PluginManager.addPlugin(plugin);
+		
+		return PluginManager.getPluginsAmountLoaded() - 1;
 	}
 	
 	/**
@@ -55,7 +58,6 @@ public class Debug
 		builder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 		builder.redirectError(ProcessBuilder.Redirect.INHERIT);
 		builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
-		
 		//run
 		Process p;
 		try 

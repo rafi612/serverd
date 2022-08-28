@@ -68,7 +68,6 @@ public class PluginManager
 			if (!message.equals(""))
 				log.error(message);
 		}
-		
 	}
 	
 	/**
@@ -141,6 +140,12 @@ public class PluginManager
 		plugins.remove(plugin);
 	}
 	
+	public static void unloadAllPlugins()
+	{
+		for (Plugin plugin : plugins)
+			unloadPlugin(plugin);
+	}
+	
 	/**
 	 * List all plugins names
 	 * @return Array of names
@@ -167,6 +172,18 @@ public class PluginManager
 		for (Plugin p : plugins)
 			if (p.file.getName().equals(name)) return p;
 		return null;
+	}
+	
+	public static Plugin getPluginByID(int id)
+	{
+		if (id < 0 || id > plugins.size())
+			return null;
+		return plugins.get(id);
+	}
+	
+	public static int getPluginsAmountLoaded()
+	{
+		return plugins.size();
 	}
 	
 	/**

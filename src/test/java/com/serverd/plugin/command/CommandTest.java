@@ -28,9 +28,11 @@ class CommandTest
 		String[] args2 = {"Test","test"};
 		String[] args3 = {"Test","test","test","test","Test","test","test","test"};
 		
-		assertEquals(command.checkArgs(args1, 4), 0);
-		assertEquals(command.checkArgs(args2, 3), -1);
-		assertEquals(command.checkArgs(args3, 5), 1);
+		assertAll(
+			() -> assertEquals(command.checkArgs(args1, 4), 0),
+			() -> assertEquals(command.checkArgs(args2, 3), -1),
+			() -> assertEquals(command.checkArgs(args3, 5), 1)
+		);
 	}
 
 }
