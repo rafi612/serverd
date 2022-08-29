@@ -210,7 +210,16 @@ public class ClientManager
 		//plugin connect listener
 		for (Plugin p : PluginManager.plugins)
 			for (ConnectListener cl : p.connectlisteners)
-				cl.onDisconnect(p,c);
+			{
+				try 
+				{
+					cl.onDisconnect(p,c);
+				} 
+				catch (IOException e) 
+				{
+					log.error("Error in Disconnect Listener: " + e.getMessage());
+				}
+			}
 			
 		c.closeClient();
 			
@@ -246,11 +255,11 @@ public class ClientManager
 	public static void shutdown()
 	{
 		try
-		{
+		{	
 			log.info("Server shutting down...");
 			stopTcpServer();
 			stopUdpServer();
-
+			
 			log.info("Closing clients...");
 			for (Client client : clients)
 				client.closeClient();
@@ -276,9 +285,9 @@ public class ClientManager
 	{
 		String message = clients.size() == 0 ? "No clients connected" : "";
 		
-		for (int i = 0;i < clients.size();i++) 
+		for (Client client : clients) 
 		{
-			message += clients.get(i).status();
+			message += client.status();
 		}
 		return message;
 	}

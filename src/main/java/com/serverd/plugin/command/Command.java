@@ -1,5 +1,7 @@
 package com.serverd.plugin.command;
 
+import java.io.IOException;
+
 import com.serverd.client.Client;
 import com.serverd.plugin.Plugin;
 
@@ -39,7 +41,8 @@ public abstract class Command
 	 * @param args Command arguments
 	 * @param client Current client instance
 	 * @param plugin Plugin instance
+	 * @throws IOException
 	 */
-	public abstract void execute(String[] args,Client client,Plugin plugin);
+	public abstract void execute(String[] args,Client client,Plugin plugin) throws IOException;
 	
 }

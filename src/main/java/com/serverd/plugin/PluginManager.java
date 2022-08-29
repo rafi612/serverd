@@ -142,8 +142,8 @@ public class PluginManager
 	
 	public static void unloadAllPlugins()
 	{
-		for (Plugin plugin : plugins)
-			unloadPlugin(plugin);
+		for (int i = 0;i < plugins.size();i++)
+			unloadPlugin(plugins.get(i));
 	}
 	
 	/**

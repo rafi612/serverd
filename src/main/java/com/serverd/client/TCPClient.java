@@ -43,26 +43,15 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public String receive()
+	public String receive() throws IOException
 	{
-		String message = "";
-		try 
-		{
-			byte[] buffer = new byte[BUFFER];
-			int len = in.read(buffer);
+		byte[] buffer = new byte[BUFFER];
+		int len = in.read(buffer);
 			
-			if (len == -1)
-				throw new IOException("Connection closed");
-
-			message = new String(buffer,0,len);
-		} 
-		catch (Exception e)
-		{
-			log.error("Receive message failed: " + e.getMessage());
-			crash(e);
-		}
+		if (len == -1)
+			throw new IOException("Connection closed");
 		
-		message = encoder.decode(message, this);
+		String message = encoder.decode(new String(buffer,0,len), this);
 		
 		if (!message.equals(""))
 			programlog.info("<Reveived> " + message);
@@ -71,44 +60,28 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public void send(String mess)
+	public void send(String mess) throws IOException
 	{
 		log.info("<Sended> " + mess);
-		try 
-		{
-			out.write(encoder.encode(mess, this).getBytes());
-			out.flush();
-		} 
-		catch (Exception e) 
-		{
-			log.error("Send message failed: " + e.getMessage());
-			crash(e);
-		}
+
+		out.write(encoder.encode(mess, this).getBytes());
+		out.flush();
 	}
 	
 	@Override
-	public byte[] rawdata_receive(int buflen)
+	public byte[] rawdata_receive(int buflen) throws IOException
 	{
 		byte[] buffer = new byte[buflen];
 		byte[] ret = null;
-		
-		try 
-		{
-			int len = in.read(buffer);
+
+		int len = in.read(buffer);
 			
-			if (len == -1)
-				throw new IOException("Connection closed");
+		if (len == -1)
+			throw new IOException("Connection closed");
 			
-			ret = new byte[len];
+		ret = new byte[len];
 			
-			System.arraycopy(buffer, 0, ret, 0, len);
-			
-		} 
-		catch (IOException e)
-		{
-			log.error("Rawdata receive failed: " + e.getMessage());
-			crash(e);
-		}
+		System.arraycopy(buffer, 0, ret, 0, len);
 		
 		
 		return ret;
@@ -116,18 +89,10 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public void rawdata_send(byte[] b)
+	public void rawdata_send(byte[] b) throws IOException
 	{
-		try 
-		{
-			out.write(b);
-			out.flush();
-		}
-		catch (IOException e)
-		{
-			log.error("Rawdata send failed: " + e.getMessage());
-			crash(e);
-		}
+		out.write(b);
+		out.flush();
 	}
 	
 	@Override

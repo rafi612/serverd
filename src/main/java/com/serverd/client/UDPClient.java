@@ -45,7 +45,7 @@ public class UDPClient extends Client
 	int bufferLength = 0;
 	
 	@Override
-	public String receive()
+	public String receive() 
 	{
 		while (buffer == null)
 			Util.sleep(1);
@@ -60,22 +60,15 @@ public class UDPClient extends Client
 	}
 	
 	@Override
-	public void send(String mess)
+	public void send(String mess) throws IOException
 	{
 		log.info("<Sended> " + mess);
 		
 		String message = encoder.encode(mess, this); 
 		
 		DatagramPacket out = new DatagramPacket(message.getBytes(),message.length(),ip,port);
-		try
-		{
-			udp_sock.send(out);
-		} 
-		catch (IOException e)
-		{
-			log.error("Send message failed: " + e.getMessage());
-			crash(e);
-		}
+		
+		udp_sock.send(out);
 	}
 
 	@Override
@@ -95,18 +88,11 @@ public class UDPClient extends Client
 	}
 	
 	@Override
-	public void rawdata_send(byte[] b)
+	public void rawdata_send(byte[] b) throws IOException
 	{
 		DatagramPacket p = new DatagramPacket(b, b.length, ip, port);
-		try 
-		{
-			udp_sock.send(p);
-		} 
-		catch (IOException e) 
-		{
-			log.error("Rawdata send failed: " + e.getMessage());
-			crash(e);
-		}
+		
+		udp_sock.send(p);
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package com.serverd.client;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 import com.serverd.log.Log;
@@ -113,7 +114,7 @@ public class Client implements Runnable
 	 * @param length Arguments length
 	 * @return Good of arguments
 	 */
-	protected boolean checkArgs(String[] args,int length)
+	protected boolean checkArgs(String[] args,int length) throws IOException
 	{
 		if (args.length < length) 
 		{
@@ -131,7 +132,7 @@ public class Client implements Runnable
 	 * Receiving message
 	 * @return Received message
 	 */
-	public String receive()
+	public String receive() throws IOException
 	{
 		return "";
 	}
@@ -140,7 +141,7 @@ public class Client implements Runnable
 	 * Sending message
 	 * @param mess Message to send
 	 */
-	public void send(String mess)
+	public void send(String mess) throws IOException
 	{
 
 	}
@@ -149,7 +150,7 @@ public class Client implements Runnable
 	 * @param buflen Buffer length
 	 * @return byte array of data
 	 */
-	public byte[] rawdata_receive(int buflen)
+	public byte[] rawdata_receive(int buflen) throws IOException
 	{
 		return new byte[buflen];
 	}
@@ -158,7 +159,7 @@ public class Client implements Runnable
 	 * Sending raw data
 	 * @param b Byte array
 	 */
-	public void rawdata_send(byte[] b)
+	public void rawdata_send(byte[] b) throws IOException
 	{
 
 	}
@@ -325,11 +326,9 @@ public class Client implements Runnable
 				break;
 			for (ExecutionController e : p.executioncontrollers)
 			{
-				String message = e.controlCommand(command, args, this, p);
-				
-				if (!message.equals("") && message != null)
+			
+				if (!e.controlCommand(command, args, this, p))
 				{
-					send(message);
 					command_accepted = false;
 					break;
 				}
