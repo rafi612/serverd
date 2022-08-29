@@ -25,7 +25,7 @@ public class ClientManager
 	public static int tcp_connected = 0;
 	public static int udp_connected = 0;
 	
-	public static boolean runned = false;
+	public static boolean tcpRunned = false,udpRunned = false;
 	
 	private static Log log = new Log("ServerD");
 	
@@ -33,8 +33,6 @@ public class ClientManager
 	
 	public static void start(String ip,int tcpport,int udpport)
 	{		
-		runned = true;
-		
 		Thread tcp = new Thread(() -> startTcpServer(ip, tcpport),"TCP Server");
 		Thread udp = new Thread(() -> startUdpServer(ip, udpport),"UDP Server");
 		tcp.start();
@@ -53,6 +51,7 @@ public class ClientManager
 		Log tcplog = new Log("ServerD TCP");
 		
 		tcplog.info("Starting TCP Server...");
+		tcpRunned = true;
 
 		try 
 		{
@@ -63,7 +62,7 @@ public class ClientManager
 			}
 			
 			tcpSocket = new ServerSocket(port,50,InetAddress.getByName(ip));			
-			while (runned)
+			while (tcpRunned)
 			{
 				
 				Socket sock = tcpSocket.accept();
@@ -87,7 +86,8 @@ public class ClientManager
 		} 
 		catch (IOException e)
 		{
-			tcplog.error("Error while creating server: " + e.getMessage());
+			if(tcpRunned)
+				tcplog.error("Server error: " + e.getMessage());
 		}
 	}
 	
@@ -97,6 +97,8 @@ public class ClientManager
 	 */
 	public static void stopTcpServer() throws IOException
 	{
+		tcpRunned = false;
+		
 		log.info("Stopping TCP server..");
 		tcpSocket.close();
 	}
@@ -114,6 +116,8 @@ public class ClientManager
 		
 		udplog.info("Starting UDP Server...");
 		
+		udpRunned = true;
+		
 		try 
 		{
 			if (!udpenable)
@@ -124,7 +128,7 @@ public class ClientManager
 			
 			udpSocket = new DatagramSocket(port);
 			
-			while (runned)
+			while (tcpRunned)
 			{
 				byte[] buffer = new byte[Client.BUFFER];
 				DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
@@ -182,7 +186,8 @@ public class ClientManager
 		} 
 		catch (IOException e)
 		{
-			udplog.error("Error while creating server: " + e.getMessage());
+			if (udpRunned)
+				udplog.error("Server error: " + e.getMessage());
 		}
 	}
 	
@@ -191,6 +196,8 @@ public class ClientManager
 	 */
 	public static void stopUdpServer()
 	{
+		udpRunned = false;
+		
 		log.info("Stopping UDP server..");
 		udpSocket.close();
 	}

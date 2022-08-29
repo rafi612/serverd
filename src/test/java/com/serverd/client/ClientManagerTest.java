@@ -47,13 +47,13 @@ class ClientManagerTest
 	@BeforeEach
 	void setUp() throws Exception
 	{
-		ClientManager.runned = true;
+		ClientManager.tcpRunned = true;
 	}
 
 	@AfterEach
 	void tearDown() throws Exception
 	{
-		ClientManager.runned = false;
+		ClientManager.tcpRunned = false;
 		
 		ClientManager.clients.clear();
 	}
