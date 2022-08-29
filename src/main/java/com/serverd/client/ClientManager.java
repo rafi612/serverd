@@ -206,7 +206,7 @@ public class ClientManager
 	 * Deleting client
 	 * @param clientid Client ID to remove
 	 */
-	public static void delete(int clientid)
+	public static synchronized void delete(int clientid)
 	{	
 		if (clients.size() == 0)
 			return;

@@ -132,7 +132,7 @@ public class Client implements Runnable
 	 * Receiving message
 	 * @return Received message
 	 */
-	public String receive() throws IOException
+	public synchronized String receive() throws IOException
 	{
 		return "";
 	}
@@ -150,7 +150,7 @@ public class Client implements Runnable
 	 * @param buflen Buffer length
 	 * @return byte array of data
 	 */
-	public byte[] rawdata_receive(int buflen) throws IOException
+	public synchronized byte[] rawdata_receive(int buflen) throws IOException
 	{
 		return new byte[buflen];
 	}
@@ -223,6 +223,10 @@ public class Client implements Runnable
 	public void unjoin()
 	{
 		Client cl = ClientManager.getClient(joinedid);
+		
+		if (cl == null)
+			return;
+		
 		cl.joinedid = -1;
 		cl.type = Type.NONE;
 		cl.joiner = null;

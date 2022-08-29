@@ -43,7 +43,7 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public String receive() throws IOException
+	public synchronized String receive() throws IOException
 	{
 		byte[] buffer = new byte[BUFFER];
 		int len = in.read(buffer);
@@ -69,7 +69,7 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public byte[] rawdata_receive(int buflen) throws IOException
+	public synchronized byte[] rawdata_receive(int buflen) throws IOException
 	{
 		byte[] buffer = new byte[buflen];
 		byte[] ret = null;

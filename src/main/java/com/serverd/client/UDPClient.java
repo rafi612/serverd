@@ -45,7 +45,7 @@ public class UDPClient extends Client
 	int bufferLength = 0;
 	
 	@Override
-	public String receive() 
+	public synchronized String receive() 
 	{
 		while (buffer == null)
 			Util.sleep(1);
@@ -72,7 +72,7 @@ public class UDPClient extends Client
 	}
 
 	@Override
-	public byte[] rawdata_receive(int buflen)
+	public synchronized byte[] rawdata_receive(int buflen)
 	{
 		while (buffer == null)
 			Util.sleep(1);
