@@ -266,7 +266,7 @@ public class Client implements Runnable
 	 */
 	protected void crash(Exception e)
 	{
-		if (!crashed)
+		if (!crashed && connected)
 		{
 			if (joinedid != -1)
 				unjoin();
