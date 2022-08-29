@@ -208,7 +208,7 @@ public class ClientManager
 	 */
 	public static synchronized void delete(int clientid)
 	{	
-		if (clients.size() == 0)
+		if (clients.size() == 0 || clientid > clients.size())
 			return;
 		
 		//stopping
