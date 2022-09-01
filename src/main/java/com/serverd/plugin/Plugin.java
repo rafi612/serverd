@@ -220,7 +220,7 @@ public class Plugin
 		public String name,author,decription,version;
 		public String toString()
 		{
-			return "Name: " + name + "\nAuthor: " + author + "\nDescription: " + decription + "\nVersion:" + version;
+			return "Name: " + name + "\nAuthor: " + author + "\nDescription: " + decription + "\nVersion: " + version;
 		}
 	}
 }
