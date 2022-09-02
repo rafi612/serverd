@@ -58,6 +58,7 @@ public class Debug
 		builder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 		builder.redirectError(ProcessBuilder.Redirect.INHERIT);
 		builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
+
 		//run
 		Process p;
 		try 
