@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import com.serverd.util.Util;
 
 /**
  * UDP client class
@@ -14,6 +11,7 @@ import com.serverd.util.Util;
 public class UDPClient extends Client
 {
 	DatagramSocket udp_sock;
+	DatagramPacket firstPacket;
 	
 	public InetAddress ip;
 	public int port;
@@ -22,36 +20,43 @@ public class UDPClient extends Client
 	 * UDPClient class constructor
 	 * @param id Client's ID
 	 * @param sock Datagram socket instance
+	 * @param firstPacket first packet received
 	 * @param ip Client's IP
 	 * @param port Client's port
-	 * @throws UnknownHostException
+	 * @throws IOException
 	 */
-	public UDPClient(int id,DatagramSocket sock,InetAddress ip,int port) throws UnknownHostException
+	public UDPClient(int id,DatagramSocket sock,DatagramPacket firstPacket,InetAddress ip,int port) throws IOException
 	{
 		super(id);
 		
 		protocol = Protocol.UDP;
 		
-		udp_sock = sock;
+		udp_sock = new DatagramSocket(null);
+		udp_sock.setReuseAddress(true);
+		udp_sock.bind(sock.getLocalSocketAddress());
+		udp_sock.connect(ip,port);
 		
 		this.ip = ip;
 		this.port = port;
+		this.firstPacket = firstPacket;
 		
 		thread = new Thread(this, "UDP Client " + id);
 	}
 	
-	byte[] buffer = null;
-	int bufferOffset = 0;
-	int bufferLength = 0;
-	
 	@Override
-	public synchronized String receive() 
+	public synchronized String receive() throws IOException
 	{
-		while (buffer == null)
-			Util.sleep(1);
+		byte[] buffer = new byte[Client.BUFFER];
+		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 		
-		String msg = new String(buffer,bufferOffset,bufferLength);
-		buffer = null;
+		if (firstPacket == null)
+			udp_sock.receive(packet);
+		else
+			packet = firstPacket;
+		
+		String msg = new String(packet.getData(),packet.getOffset(),packet.getLength());
+		
+		firstPacket = null;
 		
 		msg = encoder.decode(msg, this);
 		
@@ -72,17 +77,21 @@ public class UDPClient extends Client
 	}
 
 	@Override
-	public synchronized byte[] rawdata_receive(int buflen)
+	public synchronized byte[] rawdata_receive(int buflen) throws IOException
 	{
-		while (buffer == null)
-			Util.sleep(1);
+		byte[] buffer = new byte[Client.BUFFER];
+		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 		
-		int len = bufferLength;
-		byte[] ret = new byte[len];
+		if (firstPacket == null)
+			udp_sock.receive(packet);
+		else
+			packet = firstPacket;
 		
-		System.arraycopy(buffer, 0, ret, 0, len);
+		byte[] ret = new byte[buffer.length];
 		
-		buffer = null;
+		System.arraycopy(buffer, 0, ret, 0, buffer.length);
+		
+		firstPacket = null;
 		
 		return ret;
 	}
@@ -111,6 +120,8 @@ public class UDPClient extends Client
 	public void closeClient()
 	{
 		super.closeClient();
+		udp_sock.disconnect();
+		udp_sock.close();
 	}
 
 }

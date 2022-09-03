@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -14,12 +15,10 @@ import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.listener.ConnectListener;
 import com.serverd.plugin.listener.UpdateIDListener;
-import com.serverd.util.Util;
 
 public class ClientManager
 {
 	public static ArrayList<Client> clients = new ArrayList<>();
-	public static ArrayList<UDPClient> udp_clients = new ArrayList<>();
 	
 	public static int clients_connected = 0;
 	public static int tcp_connected = 0;
@@ -68,7 +67,7 @@ public class ClientManager
 				Socket sock = tcpSocket.accept();
 				tcplog.info("Connection accepted from client!");
 				
-				TCPClient client = new TCPClient(ClientManager.clients.size(),sock);
+				TCPClient client = new TCPClient(clients.size(),sock);
 				clients.add(client);
 				
 				clients_connected++;
@@ -99,8 +98,11 @@ public class ClientManager
 	{
 		tcpRunned = false;
 		
-		log.info("Stopping TCP server..");
-		tcpSocket.close();
+		if (tcpSocket != null) 
+		{
+			log.info("Stopping TCP server..");
+			tcpSocket.close();
+		}
 	}
 	
 	private static DatagramSocket udpSocket;
@@ -126,9 +128,11 @@ public class ClientManager
 				return;
 			}
 			
-			udpSocket = new DatagramSocket(port);
+			udpSocket = new DatagramSocket(null);
+			udpSocket.setReuseAddress(true);
+			udpSocket.bind(new InetSocketAddress(ip,port));
 			
-			while (tcpRunned)
+			while (udpRunned)
 			{
 				byte[] buffer = new byte[Client.BUFFER];
 				DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
@@ -136,49 +140,22 @@ public class ClientManager
 				udpSocket.receive(packet);
 				
 				String msg = new String(packet.getData(),packet.getOffset(),packet.getLength());
-				
-				boolean new_ = true;
-				
-				for (UDPClient client : udp_clients)
-				{
-					if (client.ip.equals(packet.getAddress()) && client.port == packet.getPort())
-					{						
-						client.buffer = packet.getData();
-						client.bufferOffset = packet.getOffset();
-						client.bufferLength = packet.getLength();
-						
-						while (client.buffer != null)
-							Util.sleep(1);
-						
-						new_ = false;
-						break;
-					}
-				}
-				
-				if (new_)
-				{					
-					udplog.info("Connection founded in " + packet.getAddress().getHostAddress() + ":" + packet.getPort() +" Message: " + msg);
+								
+				udplog.info("Connection founded in " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " Message: " + msg);	
 					
-					UDPClient client = new UDPClient(ClientManager.clients.size(), udpSocket, packet.getAddress(), packet.getPort());
-					clients.add(client);
-					udp_clients.add(client);
+				UDPClient client = new UDPClient(clients.size(), udpSocket, packet, packet.getAddress(), packet.getPort());
+				clients.add(client);
 					
-					//redirecting message to client loop
-					client.buffer = packet.getData();
-					client.bufferOffset = packet.getOffset();
-					client.bufferLength = packet.getLength();
+				clients_connected++;
+				udp_connected++;
 					
-					clients_connected++;
-					udp_connected++;
+				//plugin connect listener
+				for (Plugin p : PluginManager.plugins)
+					for (ConnectListener cl : p.connectlisteners)
+						cl.onConnect(p,client);
 					
-					//plugin connect listener
-					for (Plugin p : PluginManager.plugins)
-						for (ConnectListener cl : p.connectlisteners)
-							cl.onConnect(p,client);
-					
-					udplog.info("Creating client thread...");
-					client.thread.start();
-				}
+				udplog.info("Creating client thread...");
+				client.thread.start();
 				
 			}
 			udpSocket.close();
@@ -198,8 +175,11 @@ public class ClientManager
 	{
 		udpRunned = false;
 		
-		log.info("Stopping UDP server..");
-		udpSocket.close();
+		if (udpSocket != null) 
+		{
+			log.info("Stopping UDP server..");
+			udpSocket.close();
+		}
 	}
 	
 	/**
@@ -234,10 +214,7 @@ public class ClientManager
 		if (c.protocol == Protocol.TCP)
 			tcp_connected--;
 		else
-		{
 			udp_connected--;
-			udp_clients.remove(c);
-		}
 
 		clients.remove(clientid);
 			
