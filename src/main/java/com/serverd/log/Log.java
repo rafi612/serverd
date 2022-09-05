@@ -71,5 +71,16 @@ public class Log
 		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_RED + 
 				"ERROR " + ANSI_RESET + message);
 	}
+	
+	/**
+	 * Logging as Debug level
+	 * @param message Message to log
+	 */
+	public synchronized void debug(String message)
+	{
+		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
+		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_BLUE + 
+				"DEBUG " + ANSI_RESET + message);
+	}
 
 }

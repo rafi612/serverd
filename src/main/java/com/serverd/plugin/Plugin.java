@@ -118,6 +118,15 @@ public class Plugin
 	}
 	
 	/**
+	 * Print plugin debug message
+	 * @param message Message
+	 */
+	public void debug(String message)
+	{
+		log.debug(message);
+	}
+	
+	/**
 	 * Returning instance of plugin object, can be use to access 
 	 * static variables in plugin main object, before use must be casted to plugin main class
 	 * @return instance of plugin object
