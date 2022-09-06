@@ -75,6 +75,8 @@ class ClientManagerTest
 				sock.getOutputStream().write("/id".getBytes());
 				
 				sock.getInputStream().read();
+				
+				sock.getOutputStream().write("/disconnect".getBytes());
 			}
 		});
 		assertFalse(availableTCP(9999));
@@ -106,6 +108,11 @@ class ClientManagerTest
 				DatagramPacket receive = new DatagramPacket(buffer, buffer.length);
 				
 				sock.receive(receive);
+				
+				String msg2 = "/disconnect";
+				DatagramPacket packet2 = new DatagramPacket(msg2.getBytes(), msg2.length(), InetAddress.getByName("0.0.0.0"), 9998);
+				
+				sock.send(packet2);
 			}
 		});
 		assertFalse(availableUDP(9998));

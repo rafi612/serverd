@@ -11,7 +11,6 @@ import java.net.Socket;
  */
 public class TCPClient extends Client
 {	
-	//tcp
 	public Socket tcp_sock;
 	
 	public InputStream in;
@@ -43,7 +42,7 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public synchronized String receive() throws IOException
+	public String receive() throws IOException
 	{
 		byte[] buffer = new byte[BUFFER];
 		int len = in.read(buffer);
@@ -69,7 +68,7 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public synchronized byte[] rawdata_receive(int buflen) throws IOException
+	public byte[] rawdata_receive(int buflen) throws IOException
 	{
 		byte[] buffer = new byte[buflen];
 		byte[] ret = null;
@@ -83,9 +82,7 @@ public class TCPClient extends Client
 			
 		System.arraycopy(buffer, 0, ret, 0, len);
 		
-		
 		return ret;
-		
 	}
 	
 	@Override

@@ -132,7 +132,7 @@ public class Client implements Runnable
 	 * Receiving message
 	 * @return Received message
 	 */
-	public synchronized String receive() throws IOException
+	public String receive() throws IOException
 	{
 		return "";
 	}
@@ -150,7 +150,7 @@ public class Client implements Runnable
 	 * @param buflen Buffer length
 	 * @return byte array of data
 	 */
-	public synchronized byte[] rawdata_receive(int buflen) throws IOException
+	public byte[] rawdata_receive(int buflen) throws IOException
 	{
 		return new byte[buflen];
 	}
@@ -284,29 +284,20 @@ public class Client implements Runnable
 	{
 		try 
 		{
-			clientLoop();
+			log.info("Started working.");
+			while (connected)
+			{			
+				String command_str = receive();
+				
+				if (command_str.equals(""))
+					throw new Exception("Empty buffer");
+			
+				executeCommand(command_str);
+			}
 		} 
 		catch (Exception e) 
 		{
 			crash(e);
-		}
-	}
-	
-	/**
-	 * Client's main loop
-	 * @throws Exception
-	 */
-	public void clientLoop() throws Exception
-	{
-		log.info("Started working.");
-		while (connected)
-		{			
-			String command_str = receive();
-			
-			if (command_str.equals(""))
-				throw new Exception("Empty buffer");
-		
-			executeCommand(command_str);
 		}
 	}
 	

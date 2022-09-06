@@ -191,16 +191,15 @@ public class ClientManager
 		if (clients.size() == 0 || clientid > clients.size())
 			return;
 		
-		//stopping
-		Client c = getClient(clientid);
-
+		Client client = getClient(clientid);
+		
 		//plugin connect listener
 		for (Plugin p : PluginManager.plugins)
 			for (ConnectListener cl : p.connectlisteners)
 			{
 				try 
 				{
-					cl.onDisconnect(p,c);
+					cl.onDisconnect(p,client);
 				} 
 				catch (IOException e) 
 				{
@@ -208,16 +207,15 @@ public class ClientManager
 				}
 			}
 			
-		c.closeClient();
-			
+		client.closeClient();
+		
 		clients_connected--;
-		if (c.protocol == Protocol.TCP)
+		if (client.protocol == Protocol.TCP)
 			tcp_connected--;
 		else
-			udp_connected--;
+			udp_connected--;	
 
 		clients.remove(clientid);
-			
 		
 		//updating id
 		for (int i = 0;i < clients.size();i++)
@@ -233,7 +231,6 @@ public class ClientManager
 		}
 			
 		log.info("Client " + clientid + " has been closed");
-
 	}
 	
 	public static void shutdown()
@@ -281,7 +278,7 @@ public class ClientManager
 		tcpenable = enable;
 	}
 	
-	public static  void setUDPEnable(boolean enable)
+	public static void setUDPEnable(boolean enable)
 	{
 		udpenable = enable;
 	}

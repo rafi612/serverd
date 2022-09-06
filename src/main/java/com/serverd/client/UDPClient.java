@@ -44,7 +44,7 @@ public class UDPClient extends Client
 	}
 	
 	@Override
-	public synchronized String receive() throws IOException
+	public String receive() throws IOException
 	{
 		byte[] buffer = new byte[Client.BUFFER];
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
@@ -77,7 +77,7 @@ public class UDPClient extends Client
 	}
 
 	@Override
-	public synchronized byte[] rawdata_receive(int buflen) throws IOException
+	public byte[] rawdata_receive(int buflen) throws IOException
 	{
 		byte[] buffer = new byte[Client.BUFFER];
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
@@ -120,7 +120,6 @@ public class UDPClient extends Client
 	public void closeClient()
 	{
 		super.closeClient();
-		udp_sock.disconnect();
 		udp_sock.close();
 	}
 
