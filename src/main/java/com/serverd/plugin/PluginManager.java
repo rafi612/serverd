@@ -33,7 +33,7 @@ public class PluginManager
 	
 	public static int plugins_loaded = 0;
 
-	static Log log = new Log("Plugin Manager");
+	private static Log log = new Log("Plugin Manager");
 
 	/**
 	 * Loading all plugins
