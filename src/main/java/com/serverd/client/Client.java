@@ -20,9 +20,9 @@ public class Client implements Runnable
 	
 	public int id;
 	
-	public boolean connected;
+	private boolean connected;
 	private boolean crashed = false;
-	public int joinedid = -1;
+	int joinedid = -1;
 	
 	Client joiner = null;
 	
@@ -173,7 +173,6 @@ public class Client implements Runnable
 	}
 	
 	/**
-	 * Return Client's IP
 	 * @return Client's IP
 	 */
 	public String getIP()
@@ -182,12 +181,51 @@ public class Client implements Runnable
 	}
 	
 	/**
-	 * Return Client's port
 	 * @return Client's port
 	 */
 	public int getPort()
 	{
 		return 0;
+	}
+	
+	/**
+	 * @return Is client connected?
+	 */
+	public boolean isConnected()
+	{
+		return connected;
+	}
+	
+	/**
+	 * @return Is client joined?
+	 */
+	public boolean isJoined()
+	{
+		return joinedid != -1;
+	}
+	
+	/**
+	 * @return Client's joined ID
+	 */
+	public int getJoinedID()
+	{
+		return joinedid;
+	}
+	
+	/**
+	 * @return Client's ID
+	 */
+	public int getID()
+	{
+		return id;
+	}
+	
+	/**
+	 * @return Client's name
+	 */
+	public String getName()
+	{
+		return name;
 	}
 	
 	
@@ -203,7 +241,7 @@ public class Client implements Runnable
 		if (cl == null)
 			return 1;
 		
-		if (joinedid != -1)
+		if (isJoined())
 			return 2;
 		
 		joinedid = joinid;
