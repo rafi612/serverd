@@ -227,6 +227,7 @@ public class Plugin
 	public class Info
 	{
 		public String name,author,decription,version;
+
 		public String toString()
 		{
 			return "Name: " + name + "\nAuthor: " + author + "\nDescription: " + decription + "\nVersion: " + version;
