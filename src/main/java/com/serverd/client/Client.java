@@ -228,7 +228,6 @@ public class Client implements Runnable
 		return name;
 	}
 	
-	
 	/**
 	 * Joining to another client
 	 * @param joinid Client ID to join
