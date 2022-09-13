@@ -77,10 +77,9 @@ public class Client implements Runnable
 	 */
 	public Client(int id)
 	{
-		connected = true;
-		
 		this.id = id;
 		
+		connected = true;
 		name = "Client " + id;
 		
 		log = new Log("Client Thread " + id);
@@ -462,13 +461,8 @@ public class Client implements Runnable
 				if (args.length < 1) 
 					send("Missing Argument");
 				else
-				{
-					String newname = "";
-					
-					for (int i = 0;i < args.length;i++)
-						newname = newname + args[i] + (i < args.length - 1 ? " " : "");
-					
-					name = newname;
+				{					
+					name = String.join(" ", args);
 					
 					send("Name has been set to \"" + name + "\"");
 				}
