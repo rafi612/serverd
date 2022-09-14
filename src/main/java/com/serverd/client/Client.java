@@ -274,15 +274,14 @@ public class Client implements Runnable
 	
 	/**
 	 * Join once to client
-	 * @param oncejoin true/false
 	 * @param joinid Client ID to join once
 	 */
-	public void setOnceJoin(boolean oncejoin,int joinid)
+	public void onceJoin(int joinid)
 	{
 		if (joinedid != -1)
 			return;
 		
-		onceJoin = oncejoin;
+		onceJoin = true;
 		join(joinid);
 	}
 	
@@ -394,7 +393,7 @@ public class Client implements Runnable
 					int id = Integer.parseInt(args[0]);
 					
 					Client client = ClientManager.getClient(id);
-					client.setOnceJoin(true, this.id);
+					client.onceJoin(this.id);
 					client.send(com);
 				}
 				break;

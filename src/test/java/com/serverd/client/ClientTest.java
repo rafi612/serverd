@@ -27,7 +27,7 @@ class ClientTest
 	}
 	
 	@BeforeEach
-	void setUpBeforeClass() throws Exception 
+	void setUp() throws Exception 
 	{
 		client = new TestClient(0);
 		client2 = new TestClient(1);
@@ -37,7 +37,7 @@ class ClientTest
 	}
 
 	@AfterEach
-	void tearDownAfterClass() throws Exception 
+	void tearDown() throws Exception 
 	{
 		ClientManager.clients.clear();
 	}
@@ -100,10 +100,10 @@ class ClientTest
 	}
 	
 	@Test
-	void setOnceJoin_Test()
+	void onceJoin_Test()
 	{		
 		assertDoesNotThrow(() -> {
-			client.setOnceJoin(true,1);
+			client.onceJoin(1);
 			
 			//simulating receiving response
 			client.executeCommand("Test");
