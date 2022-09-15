@@ -31,4 +31,10 @@ class LogTest
 		logger.error("Test error message");
 	}
 
+	@Test
+	void debug_Test() 
+	{
+		logger.debug("Test debug message");
+	}
+
 }
