@@ -3,6 +3,9 @@ package com.serverd.log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Logger class
+ */
 public class Log 
 {
 	public static final String ANSI_RESET = "\u001B[0m";

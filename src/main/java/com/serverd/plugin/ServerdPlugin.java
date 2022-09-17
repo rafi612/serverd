@@ -5,25 +5,28 @@ package com.serverd.plugin;
  */
 public interface ServerdPlugin
 {
+	/** Plugin init succesfully code */
+	String INIT_SUCCESS = "";
+	
 	/**
 	 * Executing before initializing plugin, use to set plugin name, author etc.
 	 * @param info Info instance
 	 */
-	public void metadata(Plugin.Info info);
+	void metadata(Plugin.Info info);
 	/**
 	 * Initializing plugin
 	 * @param plugin Plugin instance
-	 * @return When method return "null" or "" then plugin is succesfully loaded
+	 * @return When return {@link ServerdPlugin#INIT_SUCCESS} then plugin is succesfully loaded, when return String, plugin throw error
 	 */
-	public String init(Plugin plugin);
+	String init(Plugin plugin);
 	/**
 	 * Main function of plugin
 	 * @param plugin Plugin instance
 	 */
-	public void work(Plugin plugin);
+	void work(Plugin plugin);
 	/**
 	 * Executing on plugin end of work
 	 * @param plugin Plugin instance
 	 */
-	public void stop(Plugin plugin);
+	void stop(Plugin plugin);
 }

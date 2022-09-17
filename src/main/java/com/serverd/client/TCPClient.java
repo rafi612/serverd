@@ -19,15 +19,15 @@ public class TCPClient extends Client
 	/**
 	 * TCPClient class constructor
 	 * @param id Client's ID
-	 * @param s Socket instance
+	 * @param socket Socket instance
 	 */
-	public TCPClient(int id, Socket s)
+	public TCPClient(int id, Socket socket)
 	{
 		super(id);
 		
 		protocol = Protocol.TCP;
 		
-		tcp_sock = s;
+		tcp_sock = socket;
 		try 
 		{
 			in = tcp_sock.getInputStream();

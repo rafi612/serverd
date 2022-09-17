@@ -140,6 +140,9 @@ public class PluginManager
 		plugins.remove(plugin);
 	}
 	
+	/**
+	 * Unloading all plugins
+	 */
 	public static void unloadAllPlugins()
 	{
 		for (int i = 0;i < plugins.size();i++)
@@ -174,6 +177,11 @@ public class PluginManager
 		return null;
 	}
 	
+	/**
+	 * Getting plugin instance by ID
+	 * @param id Plugin ID
+	 * @return Plugin instance by ID
+	 */
 	public static Plugin getPluginByID(int id)
 	{
 		if (id < 0 || id > plugins.size())
@@ -181,6 +189,10 @@ public class PluginManager
 		return plugins.get(id);
 	}
 	
+	/**
+	 * Get plugins loaded amount
+	 * @return plugin loaded amount
+	 */
 	public static int getPluginsAmountLoaded()
 	{
 		return plugins.size();
@@ -189,7 +201,7 @@ public class PluginManager
 	/**
 	 * Enabling plugin
 	 * @param plugin Plugin instance
-	 * @return
+	 * @return plugin error code
 	 */
 	public static int enablePlugin(Plugin plugin)
 	{
@@ -214,9 +226,8 @@ public class PluginManager
 	 */
 	private static void rewritePluginDisableFile()
 	{
-		try 
+		try (FileWriter writer = new FileWriter(pluginsdisabled_file)) 
 		{
-			FileWriter writer = new FileWriter(pluginsdisabled_file); 
 			for(String str : pluginsdisabled) 
 			{
 				writer.write(str + System.lineSeparator());

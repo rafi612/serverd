@@ -10,7 +10,7 @@ import com.serverd.plugin.Plugin;
 public interface UpdateIDListener
 {
 	/**
-	 * Executing when client's id is swapped
+	 * Executing when client's id is swapped, use {@link UpdateIDListener#updateIDInList updateIDInList} to swap ID in lists
 	 * @param plugin Plugin instance
 	 * @param oldid Old client id
 	 * @param newid New client id
