@@ -263,6 +263,15 @@ public class Client implements Runnable
 	}
 	
 	/**
+	 * Setting client name
+	 * @param name Client new name
+	 */
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	
+	/**
 	 * Returns client protocol enum
 	 * @return Client protocol enum
 	 */
