@@ -89,7 +89,8 @@ public class PluginManager
 			Manifest manifest = new Manifest(new URL("jar:" + file.toURI().toURL() + "!/" + JarFile.MANIFEST_NAME).openStream());
 			Attributes attribs = manifest.getMainAttributes();
 			
-			if (!attribs.containsKey("Plugin-Main-Class"))
+			
+			if (attribs.getValue("Plugin-Main-Class") == null)
 			{
 				classloader.close();
 				return file.getName() + ": Broken plugin, Plugin-Main-Class manifest attribute not found";
