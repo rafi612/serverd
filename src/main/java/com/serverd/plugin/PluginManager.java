@@ -73,7 +73,7 @@ public class PluginManager
 	 * in <b>manifest</b> to detect main class
 	 * @param file Flie to plugin
 	 * @param enable Enable plugin on load
-	 * @return Error message
+	 * @return Error message ("" if success)
 	 */
 	public static String load(File file,boolean enable)
 	{
@@ -81,7 +81,7 @@ public class PluginManager
 		
 		try 
 		{
-			URLClassLoader child = new URLClassLoader(
+			URLClassLoader classloader = new URLClassLoader(
 			        new URL[] {file.toURI().toURL()}
 			);
 			
@@ -89,9 +89,15 @@ public class PluginManager
 			Manifest manifest = new Manifest(new URL("jar:" + file.toURI().toURL() + "!/" + JarFile.MANIFEST_NAME).openStream());
 			Attributes attribs = manifest.getMainAttributes();
 			
-			String classpath = attribs.getValue("Plugin-Main-Class");
+			if (!attribs.containsKey("Plugin-Main-Class"))
+			{
+				classloader.close();
+				return file.getName() + ": Broken plugin, Plugin-Main-Class manifest attribute not found";
+			}
 			
-			Class<?> classToLoad = Class.forName(classpath, true, child);
+			String classname = attribs.getValue("Plugin-Main-Class");
+			
+			Class<?> classToLoad = Class.forName(classname, true, classloader);
 
 			ServerdPlugin instance = (ServerdPlugin) classToLoad.getDeclaredConstructor().newInstance();
 			Plugin plugin = new Plugin(file,instance);
