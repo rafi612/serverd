@@ -16,25 +16,28 @@ import com.serverd.plugin.listener.ExecutionController;
  */
 public class Client implements Runnable
 {
-	public Thread thread;
+	Thread thread;
 	
-	public int id;
+	int id;
 	
 	private boolean connected;
 	private boolean crashed = false;
-	int joinedid = -1;
 	
+	int joinedid = -1;
 	Client joiner = null;
 	
+	/** Max buffer size */
 	public static final int BUFFER = 65536;
 	
-	public String name;
+	private String name;
 	
+	/** Logger */
 	public Log log,programlog;
 	
-	boolean onceJoin = false;
+	private boolean onceJoin = false;
 	
-	Encoder encoder;
+	/** Client's encoder*/
+	protected Encoder encoder;
 	
 	/**
 	 * Client type
@@ -68,8 +71,10 @@ public class Client implements Runnable
 		}
 	}
 	
-	public Type type = Type.NONE;
-	public Protocol protocol;
+	/** Client's type*/
+	protected Type type = Type.NONE;
+	/** Client's protocol*/
+	protected Protocol protocol;
 	
 	/**
 	 * Client class constructor
@@ -95,6 +100,15 @@ public class Client implements Runnable
 	public void setEncoder(Encoder encoder)
 	{
 		this.encoder = encoder;
+	}
+	
+	/**
+	 * Returns client encoder
+	 * @return Client's Encoder
+	 */
+	public Encoder getEncoder()
+	{
+		return encoder;
 	}
 	
 	/**
@@ -130,6 +144,7 @@ public class Client implements Runnable
 	/**
 	 * Receiving message
 	 * @return Received message
+	 * @throws IOException when socket throw error
 	 */
 	public String receive() throws IOException
 	{
@@ -139,6 +154,7 @@ public class Client implements Runnable
 	/**
 	 * Sending message
 	 * @param mess Message to send
+	 * @throws IOException when socket throw error
 	 */
 	public void send(String mess) throws IOException
 	{
@@ -148,6 +164,7 @@ public class Client implements Runnable
 	 * Receiving raw data
 	 * @param buflen Buffer length
 	 * @return byte array of data
+	 * @throws IOException when socket throw error
 	 */
 	public byte[] rawdata_receive(int buflen) throws IOException
 	{
@@ -156,9 +173,10 @@ public class Client implements Runnable
 	
 	/**
 	 * Sending raw data
-	 * @param b Byte array
+	 * @param bytes Byte array
+	 * @throws IOException when socket throw error
 	 */
-	public void rawdata_send(byte[] b) throws IOException
+	public void rawdata_send(byte[] bytes) throws IOException
 	{
 
 	}
@@ -172,6 +190,7 @@ public class Client implements Runnable
 	}
 	
 	/**
+	 * Returns client ID
 	 * @return Client's IP
 	 */
 	public String getIP()
@@ -180,6 +199,7 @@ public class Client implements Runnable
 	}
 	
 	/**
+	 * Returns client connected port
 	 * @return Client's port
 	 */
 	public int getPort()
@@ -188,7 +208,8 @@ public class Client implements Runnable
 	}
 	
 	/**
-	 * @return Is client connected?
+	 * Returns client connection state
+	 * @return true if client is connected
 	 */
 	public boolean isConnected()
 	{
@@ -196,7 +217,8 @@ public class Client implements Runnable
 	}
 	
 	/**
-	 * @return Is client joined?
+	 * Returns client joined state
+	 * @return true if client is joined
 	 */
 	public boolean isJoined()
 	{
@@ -204,6 +226,17 @@ public class Client implements Runnable
 	}
 	
 	/**
+	 * State of once join
+	 * @return true if client is once joined
+	 * @see Client#onceJoin
+	 */
+	public boolean isOnceJoined()
+	{
+		return onceJoin;
+	}
+	
+	/**
+	 * Returns the ID of the client that is joined
 	 * @return Client's joined ID
 	 */
 	public int getJoinedID()
@@ -212,7 +245,8 @@ public class Client implements Runnable
 	}
 	
 	/**
-	 * @return Client's ID
+	 * Returns client ID
+	 * @return Client's ID 
 	 */
 	public int getID()
 	{
@@ -220,6 +254,7 @@ public class Client implements Runnable
 	}
 	
 	/**
+	 * Returns client name
 	 * @return Client's name
 	 */
 	public String getName()
@@ -228,9 +263,27 @@ public class Client implements Runnable
 	}
 	
 	/**
+	 * Returns client protocol enum
+	 * @return Client protocol enum
+	 */
+	public Protocol getProtocol()
+	{
+		return protocol;
+	}
+	
+	/**
+	 * Returns client type enum
+	 * @return Client type enum
+	 */
+	public Type getType()
+	{
+		return type;
+	}
+	
+	/**
 	 * Joining to another client
 	 * @param joinid Client ID to join
-	 * @return Exit code (0 if succesfully joined)
+	 * @return 0 if succesfully joined
 	 */
 	public int join(int joinid)
 	{		
@@ -273,7 +326,8 @@ public class Client implements Runnable
 	}
 	
 	/**
-	 * Join once to client
+	 * Join once to client, after receive response, 
+	 * client will disconnect automatically (used by <b>/to</b> command)
 	 * @param joinid Client ID to join once
 	 */
 	public void onceJoin(int joinid)
@@ -297,9 +351,9 @@ public class Client implements Runnable
 	
 	/**
 	 * Crash handler
-	 * @param e Exception
+	 * @param exception Exception
 	 */
-	protected void crash(Exception e)
+	protected void crash(Exception exception)
 	{
 		if (!crashed && connected)
 		{
@@ -307,7 +361,7 @@ public class Client implements Runnable
 				unjoin();
 			
 			crashed = true;
-			log.error("Client " + id + " crashed: " + e.getMessage());
+			log.error("Client " + id + " crashed: " + exception.getMessage());
 			
 			closeClient();
 			ClientManager.delete(id);
@@ -480,7 +534,7 @@ public class Client implements Runnable
 					else if (args[0].equals("enable"))
 					{
 						
-						if (p.isRunned)
+						if (p.isRunned())
 						{
 							send("Plugin " + args[1] + " is runned now");
 						}
@@ -494,7 +548,7 @@ public class Client implements Runnable
 					}
 					else if (args[0].equals("disable"))
 					{
-						if (!p.isRunned)
+						if (!p.isRunned())
 						{
 							send("Plugin " + args[1] + " is stopped now");
 						}
@@ -506,7 +560,7 @@ public class Client implements Runnable
 					}
 					else if (args[0].equals("info"))
 					{
-						String message = "=============\n" + args[1] + ":\n=============\n" + p.info.toString();
+						String message = "=============\n" + args[1] + ":\n=============\n" + p.getInfo().toString();
 						send(message);
 					}
 				}
@@ -517,7 +571,7 @@ public class Client implements Runnable
 				String message = "";
 				String[] plu = PluginManager.listPluginsName();
 				
-				String absolutepath = new File(PluginManager.plugindir).getCanonicalPath();
+				String absolutepath = new File(PluginManager.pluginDir).getCanonicalPath();
 				
 				message += "Plugins installed in: " + absolutepath + "\n";
 				
@@ -525,7 +579,7 @@ public class Client implements Runnable
 				{
 					for (String s : plu) 
 					{
-						message += s + "    Enable:" + PluginManager.getByFileName(s).isRunned + "\n";
+						message += s + "    Enable:" + PluginManager.getByFileName(s).isRunned() + "\n";
 					}
 					send(message);
 				}

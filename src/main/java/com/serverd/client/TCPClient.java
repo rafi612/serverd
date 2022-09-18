@@ -11,10 +11,13 @@ import java.net.Socket;
  */
 public class TCPClient extends Client
 {	
-	public Socket tcp_sock;
+	/** Socket*/
+	protected Socket tcp_sock;
 	
-	public InputStream in;
-	public OutputStream out;
+	/** Input stream*/
+	protected InputStream in;
+	/** Output stream*/
+	protected OutputStream out;
 	
 	/**
 	 * TCPClient class constructor
@@ -86,9 +89,9 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public void rawdata_send(byte[] b) throws IOException
+	public void rawdata_send(byte[] bytes) throws IOException
 	{
-		out.write(b);
+		out.write(bytes);
 		out.flush();
 	}
 	

@@ -79,17 +79,17 @@ class PluginManagerTest {
 	{
 		PluginManager.disablePlugin(plugin);
 		
-		assertFalse(plugin.isRunned);
+		assertFalse(plugin.isRunned());
 	}
 	
 	@Test
 	void EnablePlugin_Test()
 	{
 		PluginManager.disablePlugin(plugin);
-		assertFalse(plugin.isRunned);
+		assertFalse(plugin.isRunned());
 		
 		PluginManager.enablePlugin(plugin);
-		assertTrue(plugin.isRunned);
+		assertTrue(plugin.isRunned());
 	}
 
 }

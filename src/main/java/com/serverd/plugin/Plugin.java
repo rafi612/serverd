@@ -15,17 +15,17 @@ import com.serverd.log.Log;
  */
 public class Plugin
 {
-	public Info info = new Info();
+	private Info info = new Info();
 	
 	public ArrayList<ConnectListener> connectlisteners = new ArrayList<ConnectListener>();
 	public ArrayList<UpdateIDListener> updateidlisteners = new ArrayList<UpdateIDListener>();
 	public ArrayList<Command> commands = new ArrayList<Command>();
 	public ArrayList<ExecutionController> executioncontrollers = new ArrayList<ExecutionController>();
 	
-	public ServerdPlugin instance;
+	private ServerdPlugin instance;
 	private Thread thread;
 	
-	public boolean isRunned = false;
+	private boolean isRunned = false;
 	
 	private Log log;
 	
@@ -54,8 +54,7 @@ public class Plugin
 		
 		String errormessage = instance.init(this);
 		
-		if (errormessage != null)
-			if (!errormessage.equals(""))
+		if (errormessage != null && !errormessage.equals(""))
 		{
 			info("Plugin init failed: " + errormessage);
 			return 1;
@@ -84,8 +83,6 @@ public class Plugin
 		connectlisteners.clear();
 		updateidlisteners.clear();
 		executioncontrollers.clear();
-		
-		PluginManager.plugins_loaded--;
 	}
 	
 	
@@ -128,7 +125,7 @@ public class Plugin
 	
 	/**
 	 * Returning instance of plugin object, can be use to access 
-	 * static variables in plugin main object, before use must be casted to plugin main class
+	 * variables in plugin main object, before use must be casted to plugin main class
 	 * @return instance of plugin object
 	 */
 	public ServerdPlugin getInstance()
@@ -137,18 +134,36 @@ public class Plugin
 	}
 	
 	/**
+	 * Returns info about plugin
+	 * @return Info object
+	 */
+	public Info getInfo()
+	{
+		return info;
+	}
+	
+	/**
+	 * Returns plugin run state
+	 * @return true if plugin is runned
+	 */
+	public boolean isRunned() 
+	{
+		return isRunned;
+	}
+
+	/**
 	 * Loading plugin workspace folder, if not exists, creating it
 	 * @return File object
 	 */
 	public File loadWorkspace()
 	{
-		File f = new File(PluginManager.plugindatadir,info.name);
-		if (!f.exists())
+		File file = new File(PluginManager.pluginDataDir,info.name);
+		if (!file.exists())
 		{
-			f.mkdir();
-			return f;
+			file.mkdir();
+			return file;
 		}
-		else return f;
+		else return file;
 	}
 	
 	/**
@@ -226,6 +241,7 @@ public class Plugin
 	 */
 	public class Info
 	{
+		/** Info fields*/
 		public String name,author,decription,version;
 
 		public String toString()

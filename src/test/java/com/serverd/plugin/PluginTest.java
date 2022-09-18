@@ -54,7 +54,7 @@ class PluginTest
 	void setUp() throws Exception 
 	{
 		plugin = new Plugin(new File("Test"), instance = new TestPlugin());
-		plugin.info.name = "Test";
+		plugin.getInfo().name = "Test";
 	}
 
 	@Test
@@ -69,7 +69,7 @@ class PluginTest
 		plugin.stop();
 		
 		assertAll(
-			() -> assertEquals(plugin.isRunned, false),
+			() -> assertEquals(plugin.isRunned(), false),
 			() -> assertEquals(instance.stopped, true)
 		);
 	}
@@ -83,11 +83,11 @@ class PluginTest
 	@RepeatedTest(value = 2)
 	void loadWorkspace_Test()
 	{
-		PluginManager.plugindatadir = tempDir.getAbsolutePath();
+		PluginManager.pluginDataDir = tempDir.getAbsolutePath();
 		
 		File workspace = plugin.loadWorkspace();
 		
-		assertEquals(workspace.getAbsolutePath(), Path.of(PluginManager.plugindatadir, plugin.info.name).toString());
+		assertEquals(workspace.getAbsolutePath(), Path.of(PluginManager.pluginDataDir, plugin.getInfo().name).toString());
 	}
 
 }

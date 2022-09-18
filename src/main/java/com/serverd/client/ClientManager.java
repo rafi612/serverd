@@ -18,18 +18,24 @@ import com.serverd.plugin.listener.UpdateIDListener;
 
 public class ClientManager
 {
+	/** Client's arraylist*/
 	public static ArrayList<Client> clients = new ArrayList<>();
 	
-	public static int clients_connected = 0;
-	public static int tcp_connected = 0;
-	public static int udp_connected = 0;
+	/** Client's connected amount*/
+	public static int clientsConnected = 0,tcpConnected = 0,udpConnected = 0;
 	
-	public static boolean tcpRunned = false,udpRunned = false;
+	static boolean tcpRunned = false,udpRunned = false;
 	
 	private static Log log = new Log("ServerD");
 	
-	private static boolean tcpenable = true,udpenable = true;
+	private static boolean tcpEnabled = true,udpEnabled = true;
 	
+	/**
+	 * Starting server
+	 * @param ip IP
+	 * @param tcpport TCP port
+	 * @param udpport UDP port
+	 */
 	public static void start(String ip,int tcpport,int udpport)
 	{		
 		Thread tcp = new Thread(() -> startTcpServer(ip, tcpport),"TCP Server");
@@ -54,7 +60,7 @@ public class ClientManager
 
 		try 
 		{
-			if (!tcpenable)
+			if (!tcpEnabled)
 			{
 				tcplog.info("TCP server was disabled");
 				return;
@@ -70,8 +76,8 @@ public class ClientManager
 				TCPClient client = new TCPClient(clients.size(),sock);
 				clients.add(client);
 				
-				clients_connected++;
-				tcp_connected++;
+				clientsConnected++;
+				tcpConnected++;
 				
 				//plugin connect listener
 				for (Plugin p : PluginManager.plugins)
@@ -122,7 +128,7 @@ public class ClientManager
 		
 		try 
 		{
-			if (!udpenable)
+			if (!udpEnabled)
 			{
 				udplog.info("UDP server was disabled");
 				return;
@@ -146,8 +152,8 @@ public class ClientManager
 				UDPClient client = new UDPClient(clients.size(), udpSocket, packet, packet.getAddress(), packet.getPort());
 				clients.add(client);
 					
-				clients_connected++;
-				udp_connected++;
+				clientsConnected++;
+				udpConnected++;
 					
 				//plugin connect listener
 				for (Plugin p : PluginManager.plugins)
@@ -209,11 +215,11 @@ public class ClientManager
 			
 		client.closeClient();
 		
-		clients_connected--;
+		clientsConnected--;
 		if (client.protocol == Protocol.TCP)
-			tcp_connected--;
+			tcpConnected--;
 		else
-			udp_connected--;	
+			udpConnected--;	
 
 		clients.remove(clientid);
 		
@@ -233,6 +239,9 @@ public class ClientManager
 		log.info("Client " + clientid + " has been closed");
 	}
 	
+	/**
+	 * Shutting down server
+	 */
 	public static void shutdown()
 	{
 		try
@@ -255,6 +264,11 @@ public class ClientManager
 		}
 	}
 	
+	/**
+	 * Returns client instance by ID
+	 * @param id Client ID
+	 * @return Client instance
+	 */
 	public static Client getClient(int id)
 	{
 		if (id < 0 || id > clients.size() - 1)
@@ -262,35 +276,57 @@ public class ClientManager
 		return clients.get(id);
 	}
 	
+	/**
+	 * Returns status message for all clients
+	 * @return Status message for all clients
+	 */
 	public static String statusall()
 	{
 		String message = clients.size() == 0 ? "No clients connected" : "";
 		
 		for (Client client : clients) 
-		{
 			message += client.status();
-		}
 		return message;
 	}
 	
-	public static void setTCPEnable(boolean enable)
+	/**
+	 * Setting TCP server enabled
+	 * @param enable true if TCP server may be enabled
+	 * @see ClientManager#isTCPEnabled()
+	 */
+	public static void setTCPEnabled(boolean enable)
 	{
-		tcpenable = enable;
+		tcpEnabled = enable;
 	}
 	
-	public static void setUDPEnable(boolean enable)
+	/**
+	 * Setting UDP server enabled
+	 * @param enable true if UDP server may be enabled
+	 * @see ClientManager#isUDPEnabled()
+	 */
+	public static void setUDPEnabled(boolean enable)
 	{
-		udpenable = enable;
+		udpEnabled = enable;
 	}
 	
-	public static boolean isTCPEnable()
+	/**
+	 * TCP server enabled state
+	 * @return true id TCP Server is enabled
+	 * @see ClientManager#setTCPEnabled
+	 */
+	public static boolean isTCPEnabled()
 	{
-		return tcpenable;
+		return tcpEnabled;
 	}
 	
-	public static boolean isUDPEnable()
+	/**
+	 * UDP server enabled state
+	 * @return true id UDP Server is enabled
+	 * @see ClientManager#setUDPEnabled
+	 */
+	public static boolean isUDPEnabled()
 	{
-		return tcpenable;
+		return tcpEnabled;
 	}
 
 }

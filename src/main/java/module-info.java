@@ -1,3 +1,6 @@
+/**
+ * ServerD server and plugins framework module
+ */
 module serverd 
 {
 	exports com.serverd.util;

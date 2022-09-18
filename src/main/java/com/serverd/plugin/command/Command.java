@@ -10,18 +10,21 @@ import com.serverd.plugin.Plugin;
  */
 public abstract class Command
 {
-	public String command = "",help = "";
+	/** Command name*/
+	public String command = "";
+	/** Command help*/
+	public String help = "";
 	
-	public Command()
-	{
-		
-	}
+	/** Default constructor*/
+	public Command() {}
 	
 	/**
 	 * Checking amount of arguments
 	 * @param args Arguments
 	 * @param length Arguments length
-	 * @return Good of arguments
+	 * @return <b>0</b> when arguments are good,
+	 * <b>-1</b> when there are too few arguments,
+	 * <b>1</b> when there are too many arguments
 	 */
 	protected int checkArgs(String[] args,int length)
 	{
@@ -41,7 +44,7 @@ public abstract class Command
 	 * @param args Command arguments
 	 * @param client Current client instance
 	 * @param plugin Plugin instance
-	 * @throws IOException
+	 * @throws IOException when client throw {@link IOException}
 	 */
 	public abstract void execute(String[] args,Client client,Plugin plugin) throws IOException;
 	

@@ -22,16 +22,14 @@ import com.serverd.main.Main;
  */
 public class PluginManager 
 {
-	public static String plugindir = Paths.get(Main.workingdir,"plugins").toString();
-	public static String plugindatadir = Paths.get(Main.workingdir,"pluginsdata").toString();
+	public static String pluginDir = Paths.get(Main.workingdir,"plugins").toString();
+	public static String pluginDataDir = Paths.get(Main.workingdir,"pluginsdata").toString();
 	
-	public static File pluginsdisabled_file = Paths.get(Main.workingdir,"plugins_disabled.conf").toFile();
+	public static File pluginDisabledFile = Paths.get(Main.workingdir,"plugins_disabled.conf").toFile();
 	
-	public static List<String> pluginsdisabled;
+	public static List<String> pluginsDisabled;
 	
 	public static ArrayList<Plugin> plugins = new ArrayList<Plugin>();
-	
-	public static int plugins_loaded = 0;
 
 	private static Log log = new Log("Plugin Manager");
 
@@ -42,27 +40,27 @@ public class PluginManager
 	public static void loadPlugins() throws IOException
 	{		
 		//create plugin dir
-		File pdir = new File(plugindir);
+		File pdir = new File(pluginDir);
 		if (!pdir.exists())
 			pdir.mkdirs();
 		
-		File pdatadir = new File(plugindatadir);
+		File pdatadir = new File(pluginDataDir);
 		if (!pdatadir.exists())
 			pdatadir.mkdirs();
 		
-		if (!pluginsdisabled_file.exists())
+		if (!pluginDisabledFile.exists())
 		{
-			pluginsdisabled_file.createNewFile();
+			pluginDisabledFile.createNewFile();
 		}
 		
-		pluginsdisabled = Files.readAllLines(pluginsdisabled_file.toPath(), Charset.defaultCharset());
+		pluginsDisabled = Files.readAllLines(pluginDisabledFile.toPath(), Charset.defaultCharset());
 		
 		File[] files = pdir.listFiles();
 		
 		for (File f : files)
 		{
 			String message = "";
-			if (pluginsdisabled.indexOf(f.getName()) == -1)
+			if (pluginsDisabled.indexOf(f.getName()) == -1)
 				message = load(f,true);
 			
 			if (!message.equals(""))
@@ -99,8 +97,6 @@ public class PluginManager
 			Plugin plugin = new Plugin(file,instance);
 			
 			if (enable) plugin.start();
-			
-			plugins_loaded++;
 			
 			plugins.add(plugin);
 		} 
@@ -205,7 +201,7 @@ public class PluginManager
 	 */
 	public static int enablePlugin(Plugin plugin)
 	{
-		pluginsdisabled.remove(plugin.file.getName());
+		pluginsDisabled.remove(plugin.file.getName());
 		rewritePluginDisableFile();
 		return plugin.start();
 	}
@@ -216,7 +212,7 @@ public class PluginManager
 	 */
 	public static void disablePlugin(Plugin plugin)
 	{
-		pluginsdisabled.add(plugin.file.getName());
+		pluginsDisabled.add(plugin.file.getName());
 		rewritePluginDisableFile();
 		plugin.stop();
 	}
@@ -226,9 +222,9 @@ public class PluginManager
 	 */
 	private static void rewritePluginDisableFile()
 	{
-		try (FileWriter writer = new FileWriter(pluginsdisabled_file)) 
+		try (FileWriter writer = new FileWriter(pluginDisabledFile)) 
 		{
-			for(String str : pluginsdisabled) 
+			for(String str : pluginsDisabled) 
 			{
 				writer.write(str + System.lineSeparator());
 			}

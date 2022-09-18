@@ -10,11 +10,15 @@ import java.net.InetAddress;
  */
 public class UDPClient extends Client
 {
-	DatagramSocket udp_sock;
-	DatagramPacket firstPacket;
+	/** UDP Socket*/
+	protected DatagramSocket udp_sock;
+	/** First package*/
+	protected DatagramPacket firstPacket;
 	
-	public InetAddress ip;
-	public int port;
+	/** IP*/
+	protected InetAddress ip;
+	/** Port*/
+	protected int port;
 
 	/**
 	 * UDPClient class constructor
@@ -23,7 +27,7 @@ public class UDPClient extends Client
 	 * @param firstPacket first packet received
 	 * @param ip Client's IP
 	 * @param port Client's port
-	 * @throws IOException
+	 * @throws IOException if socket throw error
 	 */
 	public UDPClient(int id,DatagramSocket sock,DatagramPacket firstPacket,InetAddress ip,int port) throws IOException
 	{
@@ -97,9 +101,9 @@ public class UDPClient extends Client
 	}
 	
 	@Override
-	public void rawdata_send(byte[] b) throws IOException
+	public void rawdata_send(byte[] bytes) throws IOException
 	{
-		DatagramPacket p = new DatagramPacket(b, b.length, ip, port);
+		DatagramPacket p = new DatagramPacket(bytes, bytes.length, ip, port);
 		
 		udp_sock.send(p);
 	}
