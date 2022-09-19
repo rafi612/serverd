@@ -57,11 +57,11 @@ public class PluginManager
 		
 		File[] files = pdir.listFiles();
 		
-		for (File f : files)
+		for (File file : files)
 		{
 			String message = "";
-			if (pluginsDisabled.indexOf(f.getName()) == -1)
-				message = load(f,true);
+			if (pluginsDisabled.indexOf(file.getName()) == -1)
+				message = load(file,true);
 			
 			if (!message.equals(""))
 				log.error(message);
@@ -239,7 +239,7 @@ public class PluginManager
 		} 
 		catch (IOException e) 
 		{
-			log.error("Error writing file");
+			log.error("Error writing file plugins_disabled.conf");
 		}
 	}
 }
