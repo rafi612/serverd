@@ -49,9 +49,7 @@ public class PluginManager
 			pdatadir.mkdirs();
 		
 		if (!pluginDisabledFile.exists())
-		{
 			pluginDisabledFile.createNewFile();
-		}
 		
 		pluginsDisabled = Files.readAllLines(pluginDisabledFile.toPath(), Charset.defaultCharset());
 		
