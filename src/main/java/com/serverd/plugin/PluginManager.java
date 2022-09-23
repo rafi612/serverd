@@ -156,14 +156,12 @@ public class PluginManager
 	 */
 	public static String[] listPluginsName()
 	{
-		String[] s = new String[plugins.size()];
+		String[] pluginsNames = new String[plugins.size()];
 		
-		for (int i = 0;i < s.length;i++)
-		{
-			s[i] = plugins.get(i).file.getName();
-		}
+		for (int i = 0;i < pluginsNames.length;i++)
+			pluginsNames[i] = plugins.get(i).file.getName();
 		
-		return s;
+		return pluginsNames;
 	}
 	
 	/**
