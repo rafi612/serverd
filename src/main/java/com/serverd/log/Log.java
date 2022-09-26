@@ -16,6 +16,7 @@ public class Log
 	ANSI_CYAN = "\u001B[36m",ANSI_WHITE = "\u001B[37m";
 	
 	private String name;
+	
 	/**
 	 * Default constructor
 	 * @param name Logger name
