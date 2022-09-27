@@ -91,7 +91,7 @@ public class ClientManager
 		} 
 		catch (IOException e)
 		{
-			if(tcpRunned)
+			if (tcpRunned)
 				tcplog.error("Server error: " + e.getMessage());
 		}
 	}

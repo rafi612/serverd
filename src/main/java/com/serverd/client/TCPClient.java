@@ -23,24 +23,19 @@ public class TCPClient extends Client
 	 * TCPClient class constructor
 	 * @param id Client's ID
 	 * @param socket Socket instance
+	 * @throws IOException when InputStream or OutputStream throws {@link IOException}
 	 */
-	public TCPClient(int id, Socket socket)
+	public TCPClient(int id, Socket socket) throws IOException
 	{
 		super(id);
 		
 		protocol = Protocol.TCP;
 		
 		tcp_sock = socket;
-		try 
-		{
-			in = tcp_sock.getInputStream();
-			out = tcp_sock.getOutputStream();
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
 		
+		in = tcp_sock.getInputStream();
+		out = tcp_sock.getOutputStream();
+			
 		thread = new Thread(this,"Client " + id);
 	}
 	
@@ -55,8 +50,7 @@ public class TCPClient extends Client
 		
 		String message = encoder.decode(new String(buffer,0,len), this);
 		
-		if (!message.equals(""))
-			programlog.info("<Reveived> " + message);
+		programlog.info("<Reveived> " + message);
 		
 		return message;
 	}
@@ -74,14 +68,13 @@ public class TCPClient extends Client
 	public byte[] rawdata_receive(int buflen) throws IOException
 	{
 		byte[] buffer = new byte[buflen];
-		byte[] ret = null;
 
 		int len = in.read(buffer);
 			
 		if (len == -1)
 			throw new IOException("Connection closed");
 			
-		ret = new byte[len];
+		byte[] ret = new byte[len];
 			
 		System.arraycopy(buffer, 0, ret, 0, len);
 		
