@@ -86,18 +86,19 @@ public class Main
 		
 		System.out.println("ServerD " + VERSION);
 		
-		if (plugins) 
+		try 
 		{
-			log.info("Loading plugins...");
-			try 
+			PluginManager.init();
+			if (plugins) 
 			{
+				log.info("Loading plugins...");
 				PluginManager.loadPlugins();
-			} 
-			catch (IOException e)
-			{
-				log.error("Error: " + e.getMessage());
-				System.exit(-1);
 			}
+		} 
+		catch (IOException e)
+		{
+			log.error("Error: " + e.getMessage());
+			System.exit(-1);
 		}
 		
 		if (pluginDebug)

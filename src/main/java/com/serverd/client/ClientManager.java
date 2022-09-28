@@ -16,6 +16,9 @@ import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.listener.ConnectListener;
 import com.serverd.plugin.listener.UpdateIDListener;
 
+/**
+ * Client Manager
+ */
 public class ClientManager
 {
 	/** Client's arraylist*/

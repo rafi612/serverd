@@ -22,6 +22,8 @@ class PluginManagerTest {
 	@BeforeEach
 	void setUp() throws Exception
 	{
+		PluginManager.init();
+		
 		pluginid = Debug.loadPluginFromClassName(TestPlugin2.class.getName());
 		plugin = PluginManager.getPluginByID(pluginid);
 	}

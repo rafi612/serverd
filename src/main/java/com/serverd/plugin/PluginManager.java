@@ -32,6 +32,14 @@ public class PluginManager
 	public static ArrayList<Plugin> plugins = new ArrayList<Plugin>();
 
 	private static Log log = new Log("Plugin Manager");
+	
+	/**
+	 * Init method
+	 */
+	public static void init() throws IOException
+	{
+		pluginsDisabled = Files.readAllLines(pluginDisabledFile.toPath(), Charset.defaultCharset());
+	}
 
 	/**
 	 * Loading all plugins
@@ -50,8 +58,6 @@ public class PluginManager
 		
 		if (!pluginDisabledFile.exists())
 			pluginDisabledFile.createNewFile();
-		
-		pluginsDisabled = Files.readAllLines(pluginDisabledFile.toPath(), Charset.defaultCharset());
 		
 		File[] files = pdir.listFiles();
 		
