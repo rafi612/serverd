@@ -38,15 +38,6 @@ public class PluginManager
 	 */
 	public static void init() throws IOException
 	{
-		pluginsDisabled = Files.readAllLines(pluginDisabledFile.toPath(), Charset.defaultCharset());
-	}
-
-	/**
-	 * Loading all plugins
-	 * @throws IOException 
-	 */
-	public static void loadPlugins() throws IOException
-	{		
 		//create plugin dir
 		File pdir = new File(pluginDir);
 		if (!pdir.exists())
@@ -59,6 +50,16 @@ public class PluginManager
 		if (!pluginDisabledFile.exists())
 			pluginDisabledFile.createNewFile();
 		
+		pluginsDisabled = Files.readAllLines(pluginDisabledFile.toPath(), Charset.defaultCharset());
+	}
+
+	/**
+	 * Loading all plugins
+	 * @throws IOException 
+	 */
+	public static void loadPlugins() throws IOException
+	{		
+		File pdir = new File(pluginDir);
 		File[] files = pdir.listFiles();
 		
 		for (File file : files)
