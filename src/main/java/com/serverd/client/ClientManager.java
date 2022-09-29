@@ -197,7 +197,7 @@ public class ClientManager
 	 */
 	public static synchronized void delete(int clientid)
 	{	
-		if (clients.size() == 0 || clientid > clients.size())
+		if (clients.size() == 0 || clientid > clients.size() - 1)
 			return;
 		
 		Client client = getClient(clientid);
