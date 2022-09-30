@@ -75,7 +75,8 @@ public class UDPClient extends Client
 		
 		String message = encoder.encode(mess, this); 
 		
-		DatagramPacket out = new DatagramPacket(message.getBytes(),message.length(),ip,port);
+		byte[] bytes = message.getBytes();
+		DatagramPacket out = new DatagramPacket(bytes,bytes.length,ip,port);
 		
 		udp_sock.send(out);
 	}
