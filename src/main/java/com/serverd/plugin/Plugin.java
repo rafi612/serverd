@@ -68,7 +68,6 @@ public class Plugin
 		return 0;
 	}
 	
-	
 	/**
 	 * Stop plugin
 	 */
@@ -84,8 +83,6 @@ public class Plugin
 		updateidlisteners.clear();
 		executioncontrollers.clear();
 	}
-	
-	
 	
 	/**
 	 * Print plugin info message
