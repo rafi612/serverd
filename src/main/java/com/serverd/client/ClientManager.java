@@ -202,6 +202,9 @@ public class ClientManager
 		
 		Client client = getClient(clientid);
 		
+		if (client.isJoined())
+			client.unjoin();
+		
 		//plugin connect listener
 		for (Plugin p : PluginManager.plugins)
 			for (ConnectListener cl : p.connectlisteners)
@@ -233,7 +236,8 @@ public class ClientManager
 				
 			for (Plugin p : PluginManager.plugins)
 				for (UpdateIDListener u : p.updateidlisteners)
-					u.updateID(p,cl.id, i);
+					if (cl.id != i)
+						u.updateID(p,cl.id, i);
 				
 			cl.id = i;
 			cl.joinedid = clients.lastIndexOf(cl.joiner);
