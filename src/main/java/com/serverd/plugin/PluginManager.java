@@ -94,7 +94,6 @@ public class PluginManager
 			Manifest manifest = new Manifest(new URL("jar:" + file.toURI().toURL() + "!/" + JarFile.MANIFEST_NAME).openStream());
 			Attributes attribs = manifest.getMainAttributes();
 			
-			
 			if (attribs.getValue("Plugin-Main-Class") == null)
 			{
 				classloader.close();
@@ -124,8 +123,7 @@ public class PluginManager
 		{
 			e.printStackTrace();
 			return file.getName() + ": Plugin load failed: " + e.getMessage();
-		}
-		
+		}		
 		return "";
 	}
 	
@@ -234,11 +232,10 @@ public class PluginManager
 	{
 		try (FileWriter writer = new FileWriter(pluginDisabledFile)) 
 		{
-			for(String str : pluginsDisabled) 
+			for (String str : pluginsDisabled) 
 			{
 				writer.write(str + System.lineSeparator());
 			}
-			writer.close();
 		} 
 		catch (IOException e) 
 		{
