@@ -123,7 +123,6 @@ public class Main
 		
 		log.info("Starting listening clients...");
 		ClientManager.start(ip,tcp_port,udp_port);
-
 	}
 	public static String getWorkDir()
 	{
