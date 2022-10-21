@@ -127,12 +127,14 @@ public class Main
 	public static String getWorkDir()
 	{
 		String osname = System.getProperty("os.name");
+		String userhome = System.getProperty("user.home");
+		
 		if (osname.startsWith("Windows"))
 			return Paths.get(System.getenv("APPDATA"),"serverd").toString();
 		else if (osname.contains("nux") || osname.contains("freebsd"))
-			return Paths.get(System.getProperty("user.home"),".config","serverd").toString();
+			return Paths.get(userhome,".config","serverd").toString();
 		else if (osname.contains("mac") || osname.contains("darwin"))
-			return Paths.get(System.getProperty("user.home"),"Library","Application Support","serverd").toString();
+			return Paths.get(userhome,"Library","Application Support","serverd").toString();
 		return "";
 	}
 
