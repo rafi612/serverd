@@ -156,11 +156,9 @@ public class Plugin
 	{
 		File file = new File(PluginManager.pluginDataDir,info.name);
 		if (!file.exists())
-		{
 			file.mkdir();
-			return file;
-		}
-		else return file;
+		
+		return file;
 	}
 	
 	/**
