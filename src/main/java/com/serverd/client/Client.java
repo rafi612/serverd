@@ -309,7 +309,7 @@ public class Client implements Runnable
 	/**
 	 * Joining to another client
 	 * @param joinid Client ID to join
-	 * @return Error code: 
+	 * @throws JoinException when join error occur 
 	 */
 	public void join(int joinid) throws JoinException
 	{		
@@ -353,6 +353,7 @@ public class Client implements Runnable
 	 * Join once to client, after receive response, 
 	 * client will disconnect automatically (used by <b>/to</b> command)
 	 * @param joinid Client ID to join once
+	 * @throws JoinException when join error occur 
 	 */
 	public void onceJoin(int joinid) throws JoinException
 	{
