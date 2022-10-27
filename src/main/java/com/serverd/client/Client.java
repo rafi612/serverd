@@ -290,19 +290,36 @@ public class Client implements Runnable
 	}
 	
 	/**
+	 * Join exception
+	 */
+	public class JoinException extends Exception 
+	{
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * JoinException class constructor
+		 * @param message Message
+		 */
+		public JoinException(String message)
+		{
+			super(message);
+		}
+	}
+	
+	/**
 	 * Joining to another client
 	 * @param joinid Client ID to join
-	 * @return 0 if succesfully joined
+	 * @return Error code: 
 	 */
-	public int join(int joinid)
+	public void join(int joinid) throws JoinException
 	{		
 		Client cl = ClientManager.getClient(joinid);
 		
 		if (cl == null)
-			return 1;
+			throw new JoinException("Can't join: wrong client ID");
 		
 		if (isJoined())
-			return 2;
+			throw new JoinException("Can't join: client already joined");
 		
 		joinedid = joinid;
 		type = Type.SENDER;
@@ -311,8 +328,6 @@ public class Client implements Runnable
 		cl.joinedid = id;
 		cl.type = Type.RECEIVER;
 		cl.joiner = this;
-		
-		return 0;
 	}
 	
 	/**
@@ -339,12 +354,15 @@ public class Client implements Runnable
 	 * client will disconnect automatically (used by <b>/to</b> command)
 	 * @param joinid Client ID to join once
 	 */
-	public void onceJoin(int joinid)
+	public void onceJoin(int joinid) throws JoinException
 	{
-		if (joinedid != -1)
-			return;
+		if (joinid == id)
+			throw new JoinException("Can't join to self");
 		
+		Client joinClient = ClientManager.getClient(joinid);
 		onceJoin = true;
+		joinClient.onceJoin = true;
+		
 		join(joinid);
 	}
 	
@@ -366,7 +384,7 @@ public class Client implements Runnable
 	{
 		if (!crashed && connected)
 		{
-			if (joinedid != -1)
+			if (isJoined())
 				unjoin();
 			
 			crashed = true;
@@ -417,6 +435,7 @@ public class Client implements Runnable
 		{
 			if (!command_accepted)
 				break;
+			
 			for (ExecutionController e : p.executioncontrollers)
 			{
 			
@@ -436,7 +455,7 @@ public class Client implements Runnable
 			case "/disconnect": 
 			{
 				//unjoining
-				if (joinedid != -1)
+				if (isJoined())
 					unjoin();
 				
 				closeClient();
@@ -454,10 +473,17 @@ public class Client implements Runnable
 				{
 					String com = String.join(" ", Arrays.copyOfRange(args,1,args.length));
 					int id = Integer.parseInt(args[0]);
-					
+
 					Client client = ClientManager.getClient(id);
-					client.onceJoin(this.id);
-					client.send(com);
+					try 
+					{
+						onceJoin(id);
+						client.send(com);
+					}
+					catch (JoinException e)
+					{
+						send(e.getMessage());
+					}
 				}
 				break;
 			}
@@ -465,10 +491,16 @@ public class Client implements Runnable
 			{
 				if (checkArgs(args, 1))
 				{
-					if (join(Integer.parseInt(args[0])) == 0)
+					try
+					{
+						join(Integer.parseInt(args[0]));
 						send("Joined, now you are in joined mode.");
-					else 
-						send("Can't join: wrong client ID");
+					}
+					catch (JoinException e)
+					{
+						send(e.getMessage());
+					}
+						
 				}
 				break;
 			}

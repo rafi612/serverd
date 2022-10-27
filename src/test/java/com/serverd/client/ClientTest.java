@@ -48,13 +48,13 @@ class ClientTest
 	{
 		assertAll(
 			//client of of range
-			() -> assertEquals(client.join(10),1),
+			() -> assertThrows(Client.JoinException.class, () -> client.join(10)),
 			
 			//correct join
-			() -> assertEquals(client.join(1),0),
+			() -> assertDoesNotThrow(() -> client.join(1)),
 			
 			//client already joined
-			() -> assertEquals(client.join(1),2),
+			() -> assertThrows(Client.JoinException.class, () -> client.join(1)),
 			
 			() -> assertEquals(client.joinedid,client2.id),
 			() -> assertEquals(client2.joinedid,client.id),
@@ -70,7 +70,7 @@ class ClientTest
 	@Test
 	void unjoin_Test()
 	{
-		client.join(1);
+		assertDoesNotThrow(() -> client.join(1));
 		client.unjoin();
 		
 		assertAll(
