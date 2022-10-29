@@ -20,7 +20,8 @@ public class Client implements Runnable
 	
 	int id;
 	
-	private boolean connected;
+	/** Connected */
+	protected boolean connected;
 	private boolean crashed = false;
 	
 	int joinedid = -1;
@@ -402,15 +403,9 @@ public class Client implements Runnable
 		try 
 		{
 			log.info("Started working.");
-			while (connected)
-			{			
-				String command_str = receive();
-				
-				if (command_str.equals(""))
-					throw new Exception("Empty buffer");
 			
-				executeCommand(command_str);
-			}
+			while (connected)	
+				executeCommand(receive());
 		} 
 		catch (Exception e) 
 		{

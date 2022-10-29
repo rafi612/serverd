@@ -7,22 +7,21 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.serverd.client.Client.Protocol;
 import com.serverd.log.Log;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.listener.ConnectListener;
-import com.serverd.plugin.listener.UpdateIDListener;
 
 /**
  * Client Manager
  */
 public class ClientManager
 {
-	/** Client's arraylist*/
-	public static ArrayList<Client> clients = new ArrayList<>();
+	/** Client's hashmap*/
+	public static HashMap<Integer,Client> clients = new HashMap<>();
 	
 	/** Client's connected amount*/
 	public static int clientsConnected = 0,tcpConnected = 0,udpConnected = 0;
@@ -76,8 +75,8 @@ public class ClientManager
 				Socket sock = tcpSocket.accept();
 				tcplog.info("Connection accepted from client!");
 				
-				TCPClient client = new TCPClient(clients.size(),sock);
-				clients.add(client);
+				TCPClient client = new TCPClient(getFreeClientID(),sock);
+				addClient(client);
 				
 				clientsConnected++;
 				tcpConnected++;
@@ -152,8 +151,8 @@ public class ClientManager
 								
 				udplog.info("Connection founded in " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " Message: " + msg);	
 					
-				UDPClient client = new UDPClient(clients.size(), udpSocket, packet, packet.getAddress(), packet.getPort());
-				clients.add(client);
+				UDPClient client = new UDPClient(getFreeClientID(), udpSocket, packet, packet.getAddress(), packet.getPort());
+				addClient(client);
 					
 				clientsConnected++;
 				udpConnected++;
@@ -197,7 +196,7 @@ public class ClientManager
 	 */
 	public static synchronized void delete(int clientid)
 	{	
-		if (clients.size() == 0 || clientid > clients.size() - 1)
+		if (clients.size() == 0)
 			return;
 		
 		Client client = getClient(clientid);
@@ -228,20 +227,6 @@ public class ClientManager
 			udpConnected--;	
 
 		clients.remove(clientid);
-		
-		//updating id
-		for (int i = 0;i < clients.size();i++)
-		{
-			Client cl = getClient(i);
-				
-			for (Plugin p : PluginManager.plugins)
-				for (UpdateIDListener u : p.updateidlisteners)
-					if (cl.id != i)
-						u.updateID(p,cl.id, i);
-				
-			cl.id = i;
-			cl.joinedid = clients.lastIndexOf(cl.joiner);
-		}
 			
 		log.info("Client " + clientid + " has been closed");
 	}
@@ -258,7 +243,7 @@ public class ClientManager
 			stopUdpServer();
 			
 			log.info("Closing clients...");
-			for (Client client : clients)
+			for (Client client : clients.values())
 				client.closeClient();
 			
 			log.info("Stopping plugins...");
@@ -272,14 +257,42 @@ public class ClientManager
 	}
 	
 	/**
+	 * Searching first free client ID
+	 * @return first free ID
+	 */
+	public static int getFreeClientID()
+	{
+		int i = 0;
+		while (clients.containsKey(i))
+			i++;
+		return i;
+	}
+	
+	/**
+	 * Adding client
+	 * @param client Client object
+	 */
+	public static void addClient(Client client)
+	{
+		clients.put(client.id,client);
+	}
+	
+	/**
+	 * Returning all clients.
+	 * @return Array of clients
+	 */
+	public static Client[] getAllClients()
+	{
+		return clients.values().toArray(Client[]::new);
+	}
+	
+	/**
 	 * Returns client instance by ID
 	 * @param id Client ID
 	 * @return Client instance
 	 */
 	public static Client getClient(int id)
 	{
-		if (id < 0 || id > clients.size() - 1)
-			return null;
 		return clients.get(id);
 	}
 	
@@ -291,7 +304,7 @@ public class ClientManager
 	{
 		String message = clients.size() == 0 ? "No clients connected" : "";
 		
-		for (Client client : clients) 
+		for (Client client : clients.values()) 
 			message += client.status();
 		return message;
 	}

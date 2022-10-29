@@ -3,7 +3,6 @@ package com.serverd.plugin;
 import com.serverd.plugin.command.Command;
 import com.serverd.plugin.listener.ConnectListener;
 import com.serverd.plugin.listener.ExecutionController;
-import com.serverd.plugin.listener.UpdateIDListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ public class Plugin
 	private Info info = new Info();
 	
 	public ArrayList<ConnectListener> connectlisteners = new ArrayList<ConnectListener>();
-	public ArrayList<UpdateIDListener> updateidlisteners = new ArrayList<UpdateIDListener>();
 	public ArrayList<Command> commands = new ArrayList<Command>();
 	public ArrayList<ExecutionController> executioncontrollers = new ArrayList<ExecutionController>();
 	
@@ -80,7 +78,6 @@ public class Plugin
 		//clear interfaces
 		commands.clear();
 		connectlisteners.clear();
-		updateidlisteners.clear();
 		executioncontrollers.clear();
 	}
 	
@@ -195,23 +192,6 @@ public class Plugin
 	public void removeCommand(Command command)
 	{
 		commands.remove(command);
-	}
-	
-	/**
-	 * Adding UpdateIDListener
-	 * @param listener Listener instance
-	 */
-	public void addUpdateIDListener(UpdateIDListener listener)
-	{
-		updateidlisteners.add(listener);
-	}
-	/**
-	 * Removing UpdateIDListener
-	 * @param listener Listener instance
-	 */
-	public void removeUpdateIDListener(UpdateIDListener listener)
-	{
-		updateidlisteners.remove(listener);
 	}
 	
 	/**

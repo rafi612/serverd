@@ -80,6 +80,7 @@ class PluginTest
 		assertEquals(plugin.getInstance(), instance);
 	}
 	
+	//First repeat create workspace, second repeat load exists workspace
 	@RepeatedTest(value = 2)
 	void loadWorkspace_Test()
 	{
