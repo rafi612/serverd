@@ -105,7 +105,7 @@ public class PluginManager
 			Class<?> classToLoad = Class.forName(classname, true, classloader);
 
 			ServerdPlugin instance = (ServerdPlugin) classToLoad.getDeclaredConstructor().newInstance();
-			Plugin plugin = new Plugin(file,instance);
+			Plugin plugin = new Plugin(file.getName(),instance);
 			
 			if (enable) plugin.start();
 			
@@ -164,7 +164,7 @@ public class PluginManager
 		String[] pluginsNames = new String[plugins.size()];
 		
 		for (int i = 0;i < pluginsNames.length;i++)
-			pluginsNames[i] = plugins.get(i).file.getName();
+			pluginsNames[i] = plugins.get(i).filename;
 		
 		return pluginsNames;
 	}
@@ -177,7 +177,7 @@ public class PluginManager
 	public static Plugin getByFileName(String name)
 	{
 		for (Plugin p : plugins)
-			if (p.file.getName().equals(name)) return p;
+			if (p.filename.equals(name)) return p;
 		return null;
 	}
 	
@@ -209,7 +209,7 @@ public class PluginManager
 	 */
 	public static int enablePlugin(Plugin plugin)
 	{
-		pluginsDisabled.remove(plugin.file.getName());
+		pluginsDisabled.remove(plugin.filename);
 		rewritePluginDisableFile();
 		return plugin.start();
 	}
@@ -220,7 +220,7 @@ public class PluginManager
 	 */
 	public static void disablePlugin(Plugin plugin)
 	{
-		pluginsDisabled.add(plugin.file.getName());
+		pluginsDisabled.add(plugin.filename);
 		rewritePluginDisableFile();
 		plugin.stop();
 	}

@@ -274,7 +274,7 @@ public class ClientManager
 	 */
 	public static void addClient(Client client)
 	{
-		clients.put(client.id,client);
+		clients.put(client.getID(),client);
 	}
 	
 	/**

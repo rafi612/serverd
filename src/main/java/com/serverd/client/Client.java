@@ -18,14 +18,13 @@ public class Client implements Runnable
 {
 	Thread thread;
 	
-	int id;
+	private int id;
 	
 	/** Connected */
 	protected boolean connected;
 	private boolean crashed = false;
 	
-	int joinedid = -1;
-	Client joiner = null;
+	private int joinedid = -1;
 	
 	/** Max buffer size */
 	public static final int BUFFER = 65536;
@@ -324,11 +323,9 @@ public class Client implements Runnable
 		
 		joinedid = joinid;
 		type = Type.SENDER;
-		joiner = cl;
 		
 		cl.joinedid = id;
 		cl.type = Type.RECEIVER;
-		cl.joiner = this;
 	}
 	
 	/**
@@ -343,11 +340,9 @@ public class Client implements Runnable
 		
 		cl.joinedid = -1;
 		cl.type = Type.NONE;
-		cl.joiner = null;
 		
 		joinedid = -1;
 		type = Type.NONE;
-		joiner = null;
 	}
 	
 	/**
@@ -361,9 +356,7 @@ public class Client implements Runnable
 		if (joinid == id)
 			throw new JoinException("Can't join to self");
 		
-		Client joinClient = ClientManager.getClient(joinid);
 		onceJoin = true;
-		joinClient.onceJoin = true;
 		
 		join(joinid);
 	}

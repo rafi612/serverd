@@ -25,7 +25,7 @@ public class Debug
 	 */
 	public static int loadPluginFromClassName(String classname) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
 	{
-		File classfile = new File(classname.replace(".", File.separator) + ".class");
+		String classfile = classname.replace(".", File.separator) + ".class";
 		
 		Class<?> classToLoad = Debug.class.getClassLoader().loadClass(classname);
 		

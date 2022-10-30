@@ -49,11 +49,8 @@ class ClientTest
 		assertAll(
 			() -> assertDoesNotThrow(() -> client.join(client2.getID())),
 			
-			() -> assertEquals(client.joinedid,client2.id),
-			() -> assertEquals(client2.joinedid,client.id),
-		
-			() -> assertEquals(client.joiner,client2),
-			() -> assertEquals(client2.joiner,client),
+			() -> assertEquals(client.getJoinedID(),client2.getID()),
+			() -> assertEquals(client2.getJoinedID(),client.getID()),
 			
 			() -> assertEquals(client.type, Client.Type.SENDER),
 			() -> assertEquals(client2.type, Client.Type.RECEIVER)
@@ -80,12 +77,9 @@ class ClientTest
 		client.unjoin();
 		
 		assertAll(
-			() -> assertEquals(client.joinedid,-1),
-			() -> assertEquals(client2.joinedid,-1),
+			() -> assertEquals(client.getJoinedID(),-1),
+			() -> assertEquals(client2.getJoinedID(),-1),
 			
-			() -> assertNull(client.joiner),
-			() -> assertNull(client2.joiner),
-				
 			() -> assertEquals(client.type, Client.Type.NONE),
 			() -> assertEquals(client2.type, Client.Type.NONE)
 		);
@@ -115,11 +109,8 @@ class ClientTest
 			client.executeCommand("Test");
 			
 			assertAll(
-				() -> assertEquals(client.joinedid,-1),
-				() -> assertEquals(client2.joinedid,-1),
-				
-				() -> assertNull(client.joiner),
-				() -> assertNull(client2.joiner),
+				() -> assertEquals(client.getJoinedID(),-1),
+				() -> assertEquals(client2.getJoinedID(),-1),
 					
 				() -> assertEquals(client.type, Client.Type.NONE),
 				() -> assertEquals(client2.type, Client.Type.NONE)

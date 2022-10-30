@@ -3,7 +3,6 @@ package com.serverd.client;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -165,7 +164,7 @@ class ClientManagerTest
 	{
 		AtomicBoolean disconnectExecuted = new AtomicBoolean(false);
 		
-		Plugin plugin = new Plugin(new File("test"),new ServerdPlugin() {
+		Plugin plugin = new Plugin(new ServerdPlugin() {
 			@Override
 			public String init(Plugin plugin) 
 			{
@@ -249,7 +248,7 @@ class ClientManagerTest
 	{		
 		AtomicBoolean pluginStopped = new AtomicBoolean(false);
 		
-		Plugin plugin = new Plugin(new File("Test"),new ServerdPlugin() {
+		Plugin plugin = new Plugin(new ServerdPlugin() {
 			@Override
 			public String init(Plugin plugin) 
 			{
