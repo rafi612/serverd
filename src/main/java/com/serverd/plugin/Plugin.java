@@ -30,17 +30,8 @@ public class Plugin
 	public String filename;
 	
 	/**
-	 * Plugin class constructor without file name
-	 * @param instance Instance of loaded plugin
-	 */
-	public Plugin(ServerdPlugin instance)
-	{
-		this(null,instance);
-	}
-	
-	/**
 	 * Plugin class constructor
-	 * @param file File to plugin
+	 * @param filename Filename of plugin file
 	 * @param instance Instance of loaded plugin
 	 */
 	public Plugin(String filename,ServerdPlugin instance)

@@ -164,7 +164,7 @@ class ClientManagerTest
 	{
 		AtomicBoolean disconnectExecuted = new AtomicBoolean(false);
 		
-		Plugin plugin = new Plugin(new ServerdPlugin() {
+		Plugin plugin = new Plugin("test",new ServerdPlugin() {
 			@Override
 			public String init(Plugin plugin) 
 			{
@@ -248,7 +248,7 @@ class ClientManagerTest
 	{		
 		AtomicBoolean pluginStopped = new AtomicBoolean(false);
 		
-		Plugin plugin = new Plugin(new ServerdPlugin() {
+		Plugin plugin = new Plugin("test",new ServerdPlugin() {
 			@Override
 			public String init(Plugin plugin) 
 			{

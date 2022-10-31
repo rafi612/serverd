@@ -53,7 +53,7 @@ class PluginTest
 	@BeforeEach
 	void setUp() throws Exception 
 	{
-		plugin = new Plugin(instance = new TestPlugin());
+		plugin = new Plugin("test",instance = new TestPlugin());
 		plugin.getInfo().name = "Test";
 	}
 
