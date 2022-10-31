@@ -45,7 +45,7 @@ public class Example implements ServerdPlugin {
 	@Override
 	public String init(Plugin plugin) {
 		//init plugin
-		return null;
+		return INIT_SUCCESS;
 	}
 
 	@Override
