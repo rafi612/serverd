@@ -3,6 +3,8 @@ package com.serverd.plugin;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.serverd.main.Main;
 
@@ -50,8 +52,12 @@ public class Debug
 	{
 		ProcessBuilder builder = new ProcessBuilder();
 
+		ArrayList<String> command = new ArrayList<>(Arrays.asList("java","-cp",System.getProperty("java.class.path"),Main.class.getName(),plugins ? "" : "--noplugins","--plugin-debug",classname));
+		if (args != null)
+			command.addAll(Arrays.asList(args));
+		
 		//command
-		builder.command("java","-cp",System.getProperty("java.class.path"),Main.class.getName(),plugins ? "" : "--noplugins","--plugin-debug",classname,String.join(" ", args));
+		builder.command(command);
 		builder.directory(new File(System.getProperty("user.dir")));
 		
 		//redirect output to terminal

@@ -64,12 +64,15 @@ public class PluginManager
 		
 		for (File file : files)
 		{
-			String message = "";
-			if (pluginsDisabled.indexOf(file.getName()) == -1)
-				message = load(file,true);
-			
-			if (!message.equals(""))
-				log.error(message);
+			try 
+			{
+				if (pluginsDisabled.indexOf(file.getName()) == -1)
+					load(file,true);	
+			} 
+			catch (PluginLoadException e) 
+			{
+				log.error(e.getPluginName() + ": " + e.getMessage());
+			}
 		}
 	}
 	
@@ -80,7 +83,7 @@ public class PluginManager
 	 * @param enable Enable plugin on load
 	 * @return Error message ("" if success)
 	 */
-	public static String load(File file,boolean enable)
+	public static void load(File file,boolean enable) throws PluginLoadException
 	{
 		log.info("Loading plugin " + file.getName());
 		
@@ -97,7 +100,7 @@ public class PluginManager
 			if (attribs.getValue("Plugin-Main-Class") == null)
 			{
 				classloader.close();
-				return file.getName() + ": Broken plugin, Plugin-Main-Class manifest attribute not found";
+				throw new PluginLoadException(file.getName(),"Broken plugin, Plugin-Main-Class manifest attribute not found");
 			}
 			
 			String classname = attribs.getValue("Plugin-Main-Class");
@@ -113,18 +116,16 @@ public class PluginManager
 		} 
 		catch (ClassNotFoundException e)
 		{
-			return file.getName() + ": Plugin Main class not found";
+			throw new PluginLoadException(file.getName(),"Plugin Main class not found",e);
 		}
 		catch (NoClassDefFoundError e)
 		{
-			return file.getName() + ": Plugin load failed, can't load class: " + e.getMessage();
+			throw new PluginLoadException(file.getName(),"Plugin load failed, can't load class: " + e.getMessage(),e);
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			return file.getName() + ": Plugin load failed: " + e.getMessage();
+			throw new PluginLoadException(file.getName(),"Plugin load failed: "  + e.getMessage(),e);
 		}		
-		return "";
 	}
 	
 	/**
