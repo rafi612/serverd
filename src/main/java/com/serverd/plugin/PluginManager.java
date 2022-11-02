@@ -81,7 +81,7 @@ public class PluginManager
 	 * in <b>manifest</b> to detect main class
 	 * @param file Flie to plugin
 	 * @param enable Enable plugin on load
-	 * @return Error message ("" if success)
+	 * @throws PluginLoadException when plugin was not succesfully loaded
 	 */
 	public static void load(File file,boolean enable) throws PluginLoadException
 	{
