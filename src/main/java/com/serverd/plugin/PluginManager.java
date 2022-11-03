@@ -206,9 +206,9 @@ public class PluginManager
 	/**
 	 * Enabling plugin
 	 * @param plugin Plugin instance
-	 * @return plugin error code
+	 * @return true if plugin load succesfully
 	 */
-	public static int enablePlugin(Plugin plugin)
+	public static boolean enablePlugin(Plugin plugin)
 	{
 		pluginsDisabled.remove(plugin.filename);
 		rewritePluginDisableFile();

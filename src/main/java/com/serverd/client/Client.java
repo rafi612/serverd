@@ -570,10 +570,10 @@ public class Client implements Runnable
 						}
 						else
 						{
-							if (PluginManager.enablePlugin(p) != 0)
-								send("Plugin load failed");
-							else
+							if (PluginManager.enablePlugin(p))
 								send("Plugin load succesfully");
+							else
+								send("Plugin load failed");
 						}
 					}
 					else if (args[0].equals("disable"))

@@ -86,6 +86,8 @@ public class Main
 		
 		System.out.println("ServerD " + VERSION);
 		
+		Runtime.getRuntime().addShutdownHook(new Thread(ClientManager::shutdown));
+		
 		try 
 		{
 			PluginManager.init();
@@ -119,11 +121,14 @@ public class Main
 			}
 		}
 		
-		Runtime.getRuntime().addShutdownHook(new Thread(ClientManager::shutdown));
-		
 		log.info("Starting listening clients...");
 		ClientManager.start(ip,tcp_port,udp_port);
 	}
+	
+	/**
+	 * Returns default working directory
+	 * @return Working directory path.
+	 */
 	public static String getWorkDir()
 	{
 		String osname = System.getProperty("os.name");

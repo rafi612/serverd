@@ -42,9 +42,9 @@ public class Plugin
 	
 	/**
 	 * Start Plugin
-	 * @return Plugin error code
+	 * @return true if plugin load succesfully
 	 */
-	public int start()
+	public boolean start()
 	{
 		instance.metadata(info);
 		
@@ -54,8 +54,8 @@ public class Plugin
 		
 		if (errormessage != null && !errormessage.equals(""))
 		{
-			info("Plugin init failed: " + errormessage);
-			return 1;
+			error("Plugin init failed: " + errormessage);
+			return false;
 		}
 		
 		thread = new Thread(() -> instance.work(this));
@@ -63,7 +63,7 @@ public class Plugin
 		
 		isRunned = true;
 		
-		return 0;
+		return true;
 	}
 	
 	/**
