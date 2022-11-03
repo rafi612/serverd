@@ -219,6 +219,8 @@ class ClientManagerTest
 		
 		ClientManager.shutdown();
 		
+		Thread.sleep(1000);
+		
 		assertAll(
 			() -> assertTrue(availableTCP(9999)),
 			() -> assertTrue(availableUDP(9998))
