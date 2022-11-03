@@ -20,8 +20,13 @@ class PluginTest
 	Plugin plugin;
 	TestPlugin instance;
 	
-	private class TestPlugin implements ServerdPlugin
+	private static class TestPlugin implements ServerdPlugin
 	{
+		public Action action = Action.OK;
+		public enum Action
+		{
+			OK,ERROR,EMPTY_STRING,NULL
+		}
 		public boolean stopped = false;
 		
 		@Override
@@ -33,7 +38,17 @@ class PluginTest
 		@Override
 		public String init(Plugin plugin)
 		{
-			return "Error";
+			switch (action)
+			{
+				case ERROR:
+					return "Error";
+				case EMPTY_STRING:
+					return "";
+				case NULL:
+					return null;
+				default:
+					return INIT_SUCCESS;
+			}
 		}
 
 		@Override
@@ -56,13 +71,35 @@ class PluginTest
 		plugin = new Plugin("test",instance = new TestPlugin());
 		plugin.getInfo().name = "Test";
 	}
-
+	
 	@Test
 	void start_Test()
 	{
-		assertEquals(plugin.start(), 1);
+		assertTrue(plugin.start());
+	}
+
+	
+	@Test
+	void start_nullReturnOnInit_Test()
+	{
+		instance.action = TestPlugin.Action.NULL;
+		assertTrue(plugin.start());
 	}
 	
+	@Test
+	void start_emptyStringReturnOnInit_Test()
+	{
+		instance.action = TestPlugin.Action.EMPTY_STRING;
+		assertTrue(plugin.start());
+	}
+	
+	@Test
+	void start_errorOnInit_Test()
+	{
+		instance.action = TestPlugin.Action.ERROR;
+		assertFalse(plugin.start());
+	}
+
 	@Test
 	void stop_Test()
 	{
@@ -81,7 +118,7 @@ class PluginTest
 	}
 	
 	//First repeat create workspace, second repeat load exists workspace
-	@RepeatedTest(value = 2)
+	@RepeatedTest(2)
 	void loadWorkspace_Test()
 	{
 		PluginManager.pluginDataDir = tempDir.getAbsolutePath();

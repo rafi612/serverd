@@ -9,6 +9,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,6 @@ import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.ServerdPlugin;
 import com.serverd.plugin.listener.ConnectListener;
 import com.serverd.plugin.Plugin.Info;
-import com.serverd.util.Util;
 
 class ClientManagerTest 
 {
@@ -65,65 +65,63 @@ class ClientManagerTest
 	}
 	
 	@Test
-	void tcpServer_Test()
+	void tcpServer_Test() throws InterruptedException, UnknownHostException, IOException
 	{
 		assumeTrue(availableTCP(9999));
 		
 		new Thread(() -> ClientManager.startTcpServer("0.0.0.0", 9999)).start();
 		
-		Util.sleep(1000);
+		while (availableTCP(9999))
+			Thread.sleep(100);
 		
 		//checking client connection
-		assertDoesNotThrow(() -> {
-			try (Socket sock = new Socket("0.0.0.0",9999)) 
-			{
-				//send test command
-				sock.getOutputStream().write("/id".getBytes());
-				
-				sock.getInputStream().read();
-				
-				sock.getOutputStream().write("/disconnect".getBytes());
-			}
-		});
+		try (Socket sock = new Socket("0.0.0.0",9999)) 
+		{
+			//send test command
+			sock.getOutputStream().write("/id".getBytes());
+			
+			sock.getInputStream().read();
+			
+			sock.getOutputStream().write("/disconnect".getBytes());
+		}
+		
 		assertFalse(availableTCP(9999));
 		
-		assertDoesNotThrow(ClientManager::stopTcpServer);
+		ClientManager.stopTcpServer();
 	}
 	
 	@Test
-	void udpServer_Test()
+	void udpServer_Test() throws InterruptedException, IOException
 	{
 		assumeTrue(availableUDP(9998));
 		
 		new Thread(() -> ClientManager.startUdpServer("0.0.0.0", 9998)).start();
 		
-		Util.sleep(1000);
+		while (availableUDP(9998))
+			Thread.sleep(100);
 		
 		//checking client connection
-		assertDoesNotThrow(() -> {
+		try (DatagramSocket sock = new DatagramSocket()) 
+		{
+			//send test command
+			String msg = "/id";
+			DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(), InetAddress.getByName("0.0.0.0"), 9998);
 			
-			try (DatagramSocket sock = new DatagramSocket()) 
-			{
-				//send test command
-				String msg = "/id";
-				DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(), InetAddress.getByName("0.0.0.0"), 9998);
-				
-				sock.send(packet);
-				
-				byte[] buffer = new byte[65565];
-				DatagramPacket receive = new DatagramPacket(buffer, buffer.length);
-				
-				sock.receive(receive);
-				
-				String msg2 = "/disconnect";
-				DatagramPacket packet2 = new DatagramPacket(msg2.getBytes(), msg2.length(), InetAddress.getByName("0.0.0.0"), 9998);
-				
-				sock.send(packet2);
-			}
-		});
+			sock.send(packet);
+			
+			byte[] buffer = new byte[65565];
+			DatagramPacket receive = new DatagramPacket(buffer, buffer.length);
+			
+			sock.receive(receive);
+			
+			String msg2 = "/disconnect";
+			DatagramPacket packet2 = new DatagramPacket(msg2.getBytes(), msg2.length(), InetAddress.getByName("0.0.0.0"), 9998);
+			
+			sock.send(packet2);
+		}
 		assertFalse(availableUDP(9998));
 		
-		assertDoesNotThrow(ClientManager::stopUdpServer);
+		ClientManager.stopUdpServer();
 	}
 	
 	@Test
@@ -209,14 +207,15 @@ class ClientManagerTest
 	}
 	
 	@Test
-	void shutdown_StopServer_Test()
+	void shutdown_StopServer_Test() throws InterruptedException
 	{
 		assumeTrue(availableTCP(9999));
 		assumeTrue(availableUDP(9998));
 		
 		ClientManager.start("0.0.0.0", 9999, 9998);
 		
-		Util.sleep(1000);
+		while (availableTCP(9999) || availableUDP(9998))
+			Thread.sleep(100);
 		
 		ClientManager.shutdown();
 		
