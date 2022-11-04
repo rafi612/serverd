@@ -14,10 +14,8 @@ public abstract class Command
 	public String command = "";
 	/** Command help*/
 	public String help = "";
-	
 	/** Default constructor*/
 	public Command() {}
-	
 	
 	/**
 	 * Checking amount of arguments and sending message to client
