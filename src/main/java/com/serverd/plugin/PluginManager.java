@@ -124,7 +124,7 @@ public class PluginManager
 		}
 		catch (Exception e)
 		{
-			throw new PluginLoadException(file.getName(),"Plugin load failed: "  + e.getMessage(),e);
+			throw new PluginLoadException(file.getName(),"Plugin load failed: " + e.getMessage(),e);
 		}		
 	}
 	
