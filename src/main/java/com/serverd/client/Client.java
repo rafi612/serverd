@@ -452,7 +452,7 @@ public class Client implements Runnable
 				
 				break;
 			}
-			case "/id": { send("your id is: " + id); break; }
+			case "/id": { send(String.valueOf(id)); break; }
 			case "/status": { send(ClientManager.statusall()); break;}
 			case "/to":
 			{
