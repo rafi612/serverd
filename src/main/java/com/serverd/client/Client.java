@@ -633,9 +633,7 @@ public class Client implements Runnable
 				
 				for (Plugin p : PluginManager.plugins)
 					for (Command com : p.commands)
-				{
-					help += com.help + "\n";
-				}
+						help += com.help + "\n";
 				
 				send(help);
 				break;
