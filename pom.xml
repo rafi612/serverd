@@ -6,9 +6,11 @@
     <version>1.2.0</version>
     <name>ServerD</name>
     <description>Server for TCP and UDP clients</description>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <build>
         <defaultGoal>package</defaultGoal>
         <plugins>
