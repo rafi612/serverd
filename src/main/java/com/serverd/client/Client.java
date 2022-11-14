@@ -427,7 +427,6 @@ public class Client implements Runnable
 			
 			for (ExecutionController e : p.executioncontrollers)
 			{
-			
 				if (!e.controlCommand(command, args, this, p))
 				{
 					command_accepted = false;

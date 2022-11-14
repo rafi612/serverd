@@ -33,16 +33,16 @@ public class UDPClient extends Client
 	{
 		super(id);
 		
+		this.ip = ip;
+		this.port = port;
+		this.firstPacket = firstPacket;
+		
 		protocol = Protocol.UDP;
 		
 		udp_sock = new DatagramSocket(null);
 		udp_sock.setReuseAddress(true);
 		udp_sock.bind(sock.getLocalSocketAddress());
 		udp_sock.connect(ip,port);
-		
-		this.ip = ip;
-		this.port = port;
-		this.firstPacket = firstPacket;
 		
 		thread = new Thread(this, "UDP Client " + id);
 	}
