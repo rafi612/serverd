@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -34,8 +35,17 @@ class PluginManagerTest
 		@BeforeEach
 		void setUp()
 		{
+			PluginManager.unloadAllPlugins();
+			
 			PluginManager.pluginDir = testPluginDir.getPath();
+			PluginManager.pluginsDisabled = List.of();
 			jarFile = new File(testPluginDir,"TestPlugin.jar");
+		}
+		
+		@AfterEach
+		void tearDown() throws Exception
+		{
+			PluginManager.unloadAllPlugins();
 		}
 		
 		@Test
@@ -53,7 +63,17 @@ class PluginManagerTest
 		}
 		
 		@Test
-		void loadPlugins_withPluginFilecauseError_Test() throws FileNotFoundException, IOException 
+		void loadPlugins_withPluginFilePluginDisabled_Test() throws FileNotFoundException, IOException 
+		{
+			PluginManager.pluginsDisabled = List.of(jarFile.getName());
+			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), true, true);
+			
+			assertDoesNotThrow(PluginManager::loadPlugins);
+			assertFalse(PluginManager.getPluginByID(0).isRunned());
+		}
+		
+		@Test
+		void loadPlugins_withPluginFileCauseError_Test() throws FileNotFoundException, IOException 
 		{
 			createPluginFile(jarFile, false, "test.class", true, true);
 			
@@ -148,7 +168,7 @@ class PluginManagerTest
 	@AfterEach
 	void tearDown() throws Exception
 	{
-		PluginManager.unloadAllPlugins();
+		PluginManager.unloadPlugin(plugin);
 	}
 	
 	@Test
@@ -161,6 +181,19 @@ class PluginManagerTest
 	void getPluginByID_Test()
 	{
 		assertNotNull(PluginManager.getPluginByID(0));
+	}
+	
+	@Test
+	void getPluginByID_IdLowerThanZero_Test()
+	{
+		assertNull(PluginManager.getPluginByID(-1));
+	}
+	
+	
+	@Test
+	void getPluginByID_IdGreaterThanMaxPlugin_Test()
+	{
+		assertNull(PluginManager.getPluginByID(PluginManager.getPluginsAmountLoaded() + 1));
 	}
 	
 	@Test

@@ -1,5 +1,8 @@
 package com.serverd.plugin;
 
+/**
+ * Plugin load exception
+ */
 public class PluginLoadException extends Exception 
 {
 	private static final long serialVersionUID = 1L;

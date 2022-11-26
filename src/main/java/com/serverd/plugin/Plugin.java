@@ -5,6 +5,7 @@ import com.serverd.plugin.listener.ConnectListener;
 import com.serverd.plugin.listener.ExecutionController;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import com.serverd.log.Log;
@@ -125,6 +126,16 @@ public class Plugin
 	public ServerdPlugin getInstance()
 	{
 		return instance;
+	}
+	
+	/**
+	 * Loading resource from classloader
+	 * @param path Path to resource
+	 * @return {@link InputStream} to resource 
+	 */
+	public InputStream loadResource(String path)
+	{
+		return instance.getClass().getResourceAsStream(path);
 	}
 	
 	/**

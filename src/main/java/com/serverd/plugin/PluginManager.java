@@ -66,8 +66,7 @@ public class PluginManager
 		{
 			try 
 			{
-				if (pluginsDisabled.indexOf(file.getName()) == -1)
-					load(file,true);	
+				load(file,pluginsDisabled.indexOf(file.getName()) == -1);
 			} 
 			catch (PluginLoadException e) 
 			{
@@ -110,7 +109,8 @@ public class PluginManager
 			ServerdPlugin instance = (ServerdPlugin) classToLoad.getDeclaredConstructor().newInstance();
 			Plugin plugin = new Plugin(file.getName(),instance);
 			
-			if (enable) plugin.start();
+			if (enable) 
+				plugin.start();
 			
 			plugins.add(plugin);
 		} 
