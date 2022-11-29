@@ -234,9 +234,7 @@ public class PluginManager
 		try (FileWriter writer = new FileWriter(pluginDisabledFile)) 
 		{
 			for (String str : pluginsDisabled) 
-			{
 				writer.write(str + System.lineSeparator());
-			}
 		} 
 		catch (IOException e) 
 		{
