@@ -78,16 +78,11 @@ public class ClientManager
 				TCPClient client = new TCPClient(getFreeClientID(),sock);
 				addClient(client);
 				
-				clientsConnected++;
 				tcpConnected++;
-				
-				//plugin connect listener
-				for (Plugin p : PluginManager.plugins)
-					for (ConnectListener cl : p.connectlisteners)
-						cl.onConnect(p,client);
+				setupClient(client);
 				
 				tcplog.info("Creating client thread...");
-				client.thread.start();
+				client.getThread().start();
 			}
 			tcpSocket.close();
 		} 
@@ -154,13 +149,9 @@ public class ClientManager
 				UDPClient client = new UDPClient(getFreeClientID(), udpSocket, packet, packet.getAddress(), packet.getPort());
 				addClient(client);
 					
-				clientsConnected++;
 				udpConnected++;
-					
-				//plugin connect listener
-				for (Plugin p : PluginManager.plugins)
-					for (ConnectListener cl : p.connectlisteners)
-						cl.onConnect(p,client);
+				
+				setupClient(client);
 					
 				udplog.info("Creating client thread...");
 				client.thread.start();
@@ -266,6 +257,22 @@ public class ClientManager
 		while (clients.containsKey(i))
 			i++;
 		return i;
+	}
+	
+	/**
+	 * Configures client and executing connect listener.
+	 * Can be used in plugins on adding custom protocols.
+	 * @param client {@link Client} instance
+	 * @throws IOException when {@link ConnectListener} throws error
+	 */
+	public static void setupClient(Client client) throws IOException
+	{
+		clientsConnected++;
+		
+		//plugin connect listener
+		for (Plugin p : PluginManager.plugins)
+			for (ConnectListener cl : p.connectlisteners)
+				cl.onConnect(p,client);
 	}
 	
 	/**

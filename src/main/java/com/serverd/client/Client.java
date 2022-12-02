@@ -16,7 +16,8 @@ import com.serverd.plugin.listener.ExecutionController;
  */
 public class Client implements Runnable
 {
-	Thread thread;
+	/** Client's thread */
+ 	protected Thread thread;
 	
 	private int id;
 	
@@ -95,7 +96,7 @@ public class Client implements Runnable
 	
 	/**
 	 * Setting encoder on client
-	 * @param encoder Encoder instance
+	 * @param encoder {@link Encoder} instance
 	 */
 	public void setEncoder(Encoder encoder)
 	{
@@ -104,11 +105,20 @@ public class Client implements Runnable
 	
 	/**
 	 * Returns client encoder
-	 * @return Client's Encoder
+	 * @return Client's {@link Encoder}
 	 */
 	public Encoder getEncoder()
 	{
 		return encoder;
+	}
+	
+	/**
+	 * Returns client {@link Thread}
+	 * @return client {@link Thread}
+	 */
+	public Thread getThread()
+	{
+		return thread;
 	}
 	
 	/**
