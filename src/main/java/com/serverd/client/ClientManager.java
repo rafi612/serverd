@@ -71,7 +71,6 @@ public class ClientManager
 			tcpSocket = new ServerSocket(port,50,InetAddress.getByName(ip));			
 			while (tcpRunned)
 			{
-				
 				Socket sock = tcpSocket.accept();
 				tcplog.info("Connection accepted from client!");
 				

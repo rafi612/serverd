@@ -1,4 +1,4 @@
-package com.serverd.plugin.command;
+package com.serverd.command;
 
 import java.io.IOException;
 

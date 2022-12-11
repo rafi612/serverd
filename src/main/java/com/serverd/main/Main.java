@@ -3,6 +3,7 @@ package com.serverd.main;
 import java.io.IOException;
 import java.nio.file.Paths;
 import com.serverd.client.ClientManager;
+import com.serverd.command.Commands;
 import com.serverd.log.Log;
 import com.serverd.plugin.Debug;
 import com.serverd.plugin.PluginManager;
@@ -88,6 +89,7 @@ public class Main
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(ClientManager::shutdown));
 		
+		Commands.init();
 		try 
 		{
 			PluginManager.init();

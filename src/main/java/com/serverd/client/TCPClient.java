@@ -65,7 +65,7 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public byte[] rawdata_receive(int buflen) throws IOException
+	public byte[] rawdataReceive(int buflen) throws IOException
 	{
 		byte[] buffer = new byte[buflen];
 
@@ -82,7 +82,7 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public void rawdata_send(byte[] bytes) throws IOException
+	public void rawdataSend(byte[] bytes) throws IOException
 	{
 		out.write(bytes);
 		out.flush();

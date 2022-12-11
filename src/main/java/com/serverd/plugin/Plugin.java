@@ -1,6 +1,5 @@
 package com.serverd.plugin;
 
-import com.serverd.plugin.command.Command;
 import com.serverd.plugin.listener.ConnectListener;
 import com.serverd.plugin.listener.ExecutionController;
 
@@ -8,6 +7,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import com.serverd.command.Command;
 import com.serverd.log.Log;
 
 /**

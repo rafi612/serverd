@@ -8,7 +8,7 @@ module serverd
 	exports com.serverd.client;
 	exports com.serverd.plugin.listener;
 	exports com.serverd.main;
-	exports com.serverd.plugin.command;
+	exports com.serverd.command;
 	exports com.serverd.plugin;
 	
 	opens com.serverd.util;
@@ -16,6 +16,6 @@ module serverd
 	opens com.serverd.client;
 	opens com.serverd.plugin.listener;
 	opens com.serverd.main;
-	opens com.serverd.plugin.command;
+	opens com.serverd.command;
 	opens com.serverd.plugin;
 }

@@ -1,14 +1,14 @@
 package com.serverd.client;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+import com.serverd.command.Command;
+import com.serverd.command.Commands;
 import com.serverd.log.Log;
 import com.serverd.plugin.Encoder;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
-import com.serverd.plugin.command.Command;
 import com.serverd.plugin.listener.ExecutionController;
 
 /**
@@ -176,7 +176,7 @@ public class Client implements Runnable
 	 * @return byte array of data
 	 * @throws IOException when socket throw error
 	 */
-	public byte[] rawdata_receive(int buflen) throws IOException
+	public byte[] rawdataReceive(int buflen) throws IOException
 	{
 		return new byte[buflen];
 	}
@@ -186,7 +186,7 @@ public class Client implements Runnable
 	 * @param bytes Byte array
 	 * @throws IOException when socket throw error
 	 */
-	public void rawdata_send(byte[] bytes) throws IOException
+	public void rawdataSend(byte[] bytes) throws IOException
 	{
 
 	}
@@ -448,233 +448,37 @@ public class Client implements Runnable
 		if (!command_accepted)
 			return;
 		
-		switch (command)
+		Plugin plugin = null;
+		Command comm = Commands.getByName(command);
+		
+		if (comm == null)
 		{
-			case "/disconnect": 
+			//search in plugins
+			for (Plugin p : PluginManager.plugins)
+				for (Command com : p.commands)
 			{
-				//unjoining
-				if (isJoined())
+				if (command.equals(com.command))
+				{
+					plugin = p;
+					comm = com;
+				}
+			}
+		}
+		
+		//execute command
+		if (comm != null)
+			comm.execute(args, this, plugin);
+		else	
+		{
+			if (joinedid == -1)
+				send("Client " + id + " not joined. Unknown command.");
+			else 
+			{
+				ClientManager.clients.get(joinedid).send(command_str);
+				
+				if (onceJoin)
 					unjoin();
-				
-				closeClient();
-				ClientManager.delete(id);
-				
-				break;
-			}
-			case "/id": { send(String.valueOf(id)); break; }
-			case "/status": { send(ClientManager.statusall()); break;}
-			case "/to":
-			{
-				if (args.length < 1) 
-					send("Missing Argument");
-				else
-				{
-					String com = String.join(" ", Arrays.copyOfRange(args,1,args.length));
-					int id = Integer.parseInt(args[0]);
-
-					Client client = ClientManager.getClient(id);
-					try 
-					{
-						onceJoin(id);
-						client.send(com);
-					}
-					catch (JoinException e)
-					{
-						send(e.getMessage());
-					}
-				}
-				break;
-			}
-			case "/join": 
-			{
-				if (checkArgs(args, 1))
-				{
-					try
-					{
-						join(Integer.parseInt(args[0]));
-						send("Joined, now you are in joined mode.");
-					}
-					catch (JoinException e)
-					{
-						send(e.getMessage());
-					}
-						
-				}
-				break;
-			}
-			case "/close":
-			{
-				if (checkArgs(args, 1))
-				{
-					int closeid = Integer.parseInt(args[0]);
-					
-					ClientManager.delete(closeid);
-					
-					send("Client " + closeid + " closed.");
-				}
-				break;
-			}
-			case "/unjoin": 
-			{	
-				unjoin();
-				send("Returning back to command mode");
-				break;
-			}
-			case "/rawdata":
-			{
-				if (checkArgs(args, 1))
-				{
-					send("Done");
-					
-					int buffersize = Integer.parseInt(args[0]);
-
-                    Client joined = ClientManager.clients.get(joinedid);
-					
-					if (joinedid != -1)
-					{
-						log.info("Raw data mode started," + buffersize+ " bytes can be sended");
-						int i = 0;
-						while (i < buffersize)
-						{
-							byte[] buffer = rawdata_receive(BUFFER);
-							joined.rawdata_send(buffer);
-	
-							i+= buffer.length;
-							//Log.log("ClientThread " + id,"Transfered byte " + i + "/" + buffersize + " Value:" + buffer);
-						}
-						send("Raw data mode closed");
-					}
-					else send("Error: you must be joined!");
-				}
-				break;
-			}
-			case "/setname":
-			{
-				if (args.length < 1) 
-					send("Missing Argument");
-				else
-				{					
-					name = String.join(" ", args);
-					
-					send("Name has been set to \"" + name + "\"");
-				}
-				break;
-			}
-			case "/plugin":
-			{
-				if (checkArgs(args, 2))
-				{
-					Plugin p = PluginManager.getByFileName(args[1]);
-					
-					if (p == null)
-					{
-						send("Plugin " + args[1] + " not found");
-					}
-					else if (args[0].equals("enable"))
-					{
-						
-						if (p.isRunned())
-						{
-							send("Plugin " + args[1] + " is runned now");
-						}
-						else
-						{
-							if (PluginManager.enablePlugin(p))
-								send("Plugin load succesfully");
-							else
-								send("Plugin load failed");
-						}
-					}
-					else if (args[0].equals("disable"))
-					{
-						if (!p.isRunned())
-						{
-							send("Plugin " + args[1] + " is stopped now");
-						}
-						else 
-						{
-							PluginManager.disablePlugin(p);
-							send("Plugin was disabled");
-						}
-					}
-					else if (args[0].equals("info"))
-					{
-						String message = "=============\n" + args[1] + ":\n=============\n" + p.getInfo().toString();
-						send(message);
-					}
-				}
-				break;
-			}
-			case "/plugins-list":
-			{
-				String message = "";
-				String[] plu = PluginManager.listPluginsName();
-				
-				String absolutepath = new File(PluginManager.pluginDir).getCanonicalPath();
-				
-				message += "Plugins installed in: " + absolutepath + "\n";
-				
-				if (plu.length > 0) 
-				{
-					for (String s : plu) 
-					{
-						message += s + "\tEnable:" + PluginManager.getByFileName(s).isRunned() + "\n";
-					}
-					send(message);
-				}
-				else send("No plugins installed in " + absolutepath);
-				break;
-			}
-			case "/help":
-			{
-				String help = "/disconnect - disconnect client\n"
-						+ "/id - shows id\n"
-						+ "/status - shows status of all clients\n"
-						+ "/to <id> <command> - sending command without joining to client\n"
-						+ "/join <id> - join to client\n"
-						+ "/close <id> - close another client connection\n"
-						+ "/unjoin - unjoin current client\n"
-						+ "/rawdata <buffer> - run rawdata mode with buffer\n"
-						+ "/plugin <enable|disable|info> <filename> - manage installed plugins\n"
-						+ "/plugins-list - list of loaded plugins\n"
-						+ "/setname <name> - setting name\n"
-						+ "/help - showing help\n";
-				
-				for (Plugin p : PluginManager.plugins)
-					for (Command com : p.commands)
-						help += com.help + "\n";
-				
-				send(help);
-				break;
-			}
-			default:
-			{
-				boolean command_execute = false;
-				//execute commands from plugins
-				for (Plugin p : PluginManager.plugins)
-					for (Command com : p.commands)
-				{
-					if (command.equals(com.command))
-					{
-						com.execute(args, this, p);
-						command_execute = true;
-					}
-				}
-				
-				//if command isn't plugin command
-				if (!command_execute) 
-				{
-					if (joinedid == -1)
-						send("Client " + id + " not joined. Unknown command.");
-					else 
-					{
-						ClientManager.clients.get(joinedid).send(command_str);
-						
-						if (onceJoin)
-							unjoin();
-					} 
-				}
-			}
+			} 
 		}
 	}
 }
