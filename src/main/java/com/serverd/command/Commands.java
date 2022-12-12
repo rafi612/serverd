@@ -125,7 +125,6 @@ class To extends Command
 	}
 }
 
-
 class Join extends Command
 {
 	public Join()
