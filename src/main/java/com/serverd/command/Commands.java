@@ -40,7 +40,6 @@ public class Commands
 		for (Command command : commands)
 			if (command.command.equals(name))
 				return command;
-		
 		return null;
 	}
 }
