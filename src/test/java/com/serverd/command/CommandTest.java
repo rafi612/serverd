@@ -79,5 +79,4 @@ class CommandTest
 			() -> assertEquals(command.checkArgs(args3, 5), 1)
 		);
 	}
-
 }
