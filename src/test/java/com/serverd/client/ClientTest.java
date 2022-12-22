@@ -162,5 +162,4 @@ class ClientTest
 		assertFalse(client.isJoined());
 		
 	}
-
 }
