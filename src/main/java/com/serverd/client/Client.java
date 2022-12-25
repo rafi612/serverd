@@ -121,16 +121,7 @@ public class Client implements Runnable
 	{
 		return thread;
 	}
-	
-	/**
-	 * Spliting text into words array
-	 * @param text
-	 * @return Array of words
-	 */
-	public String[] getWords(String text)
-	{
-		return text.split(" ");
-	}
+
 
 	/**
 	 * Checking amount of arguments
@@ -425,7 +416,7 @@ public class Client implements Runnable
 	 */
 	public void executeCommand(String command_str) throws Exception
 	{
-		String[] command_raw = getWords(command_str);
+		String[] command_raw = command_str.split(" ");
 		String[] args = Arrays.copyOfRange(command_raw,1,command_raw.length);
 		String command = command_raw[0];
 		
