@@ -1,16 +1,17 @@
 package com.serverd.command;
 
 /**
- * Standardized codes for communication with client
- * OK - operation executed successfully
- * OK (message) - operation executed successfully with message
- * ERROR (message) - operation failed with message
+ * Standardized codes for communication with client.
+ *
+ * <p><b>OK</b> - operation executed successfully</p>
+ * <p><b>OK</b> (message) - operation executed successfully with message</p>
+ * <p><b>ERROR</b> (message) - operation failed with message</p>
  */
 public interface Codes 
 {
 	/**
-	 * Returning standardized successful code
-	 * use in {@link Command#execute} in inherited class to send success to connected client
+	 * Returning standardized successful code.
+	 * use in {@link Command#execute execute} method in inherited class to send success to connected client.
 	 * @return successful code
 	 */
 	public default String ok()
@@ -19,8 +20,8 @@ public interface Codes
 	}
 	
 	/**
-	 * Returning standardized successful code with message
-	 * use in {@link Command#execute} in inherited class to send success to connected client
+	 * Returning standardized successful code with message.
+	 * use in {@link Command#execute execute} method in inherited class to send success to connected client.
 	 * @return successful code
 	 */
 	public default String ok(String message)
@@ -29,8 +30,8 @@ public interface Codes
 	}
 	
 	/**
-	 * Returning standardized error code with message
-	 * use in {@link Command#execute} in inherited class to send success to connected client
+	 * Returning standardized error code with message.
+	 * use in {@link Command#execute extecute} method in inherited class to send success to connected client.
 	 * @return error code with message
 	 */
 	public default String error(String message)
@@ -39,8 +40,8 @@ public interface Codes
 	}
 	
 	/**
-	 * Returning unknown command code
-	 * Used in server internal code
+	 * Returning unknown command code.
+	 * Used in server internal code.
 	 * @return unknown command code
 	 */
 	public static String unknownCommand()

@@ -2,9 +2,15 @@ package com.serverd.command;
 
 import java.util.ArrayList;
 
+/**
+ * Class storing all commands
+ */
 public class Commands 
 {
-	public static ArrayList<Command> commands = new ArrayList<>();
+	private static ArrayList<Command> commands = new ArrayList<>();
+	/**
+	 * Initialize all build in commands
+	 */
 	public static void init()
 	{
 		commands.add(new Disconnect());
@@ -21,11 +27,20 @@ public class Commands
 		commands.add(new Help());
 	}
 	
+	/**
+	 * Get all build in commands
+	 * @return Command {@link ArrayList}
+	 */
 	public static ArrayList<Command> getCommandsList()
 	{
 		return commands;
 	}
 	
+	/**
+	 * Getting build in commands by name 
+	 * @param name Command name
+	 * @return Command object
+	 */
 	public static Command getByName(String name)
 	{
 		for (Command command : commands)
