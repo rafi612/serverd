@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import com.serverd.command.Command;
 import com.serverd.command.Commands;
+import com.serverd.command.Codes;
 import com.serverd.log.Log;
 import com.serverd.plugin.Encoder;
 import com.serverd.plugin.Plugin;
@@ -326,10 +327,10 @@ public class Client implements Runnable
 		Client cl = ClientManager.getClient(joinid);
 		
 		if (cl == null)
-			throw new JoinException("Can't join: wrong client ID");
+			throw new JoinException("wrong client ID");
 		
 		if (isJoined())
-			throw new JoinException("Can't join: client already joined");
+			throw new JoinException("client already joined");
 		
 		joinedid = joinid;
 		type = Type.SENDER;
@@ -364,7 +365,7 @@ public class Client implements Runnable
 	public void onceJoin(int joinid) throws JoinException
 	{
 		if (joinid == id)
-			throw new JoinException("Can't join to self");
+			throw new JoinException("can't join to self");
 		
 		onceJoin = true;
 		
@@ -471,7 +472,7 @@ public class Client implements Runnable
 		else	
 		{
 			if (joinedid == -1)
-				send("Client " + id + " not joined. Unknown command.");
+				send(Codes.unknownCommand());
 			else 
 			{
 				ClientManager.clients.get(joinedid).send(command_str);

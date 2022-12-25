@@ -8,7 +8,7 @@ import com.serverd.plugin.Plugin;
 /**
  * Abstract class to creating custom commands
  */
-public abstract class Command
+public abstract class Command implements Codes
 {
 	/** Command name*/
 	public String command = "";
@@ -74,5 +74,4 @@ public abstract class Command
 	 * @throws IOException when client throw {@link IOException}
 	 */
 	public abstract void execute(String[] args,Client client,Plugin plugin) throws IOException;
-	
 }
