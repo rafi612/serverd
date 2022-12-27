@@ -408,7 +408,6 @@ public class Client implements Runnable
 		}
 	}
 	
-	
 	/**
 	 * Executes command on client
 	 * @param command_str Command to execute
