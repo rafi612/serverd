@@ -122,7 +122,6 @@ public class Client implements Runnable
 		return thread;
 	}
 
-
 	/**
 	 * Checking amount of arguments
 	 * @param args Arguments
@@ -158,10 +157,7 @@ public class Client implements Runnable
 	 * @param mess Message to send
 	 * @throws IOException when socket throw error
 	 */
-	public void send(String mess) throws IOException
-	{
-
-	}
+	public void send(String mess) throws IOException {}
 	/**
 	 * Receiving raw data
 	 * @param buflen Buffer length
@@ -178,10 +174,7 @@ public class Client implements Runnable
 	 * @param bytes Byte array
 	 * @throws IOException when socket throw error
 	 */
-	public void rawdataSend(byte[] bytes) throws IOException
-	{
-
-	}
+	public void rawdataSend(byte[] bytes) throws IOException {}
 	
 	/**
 	 * Closing socket
