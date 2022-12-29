@@ -356,7 +356,6 @@ public class Client implements Runnable
 		join(joinid);
 	}
 	
-	
 	/**
 	 * Returning status 
 	 * @return Status message
