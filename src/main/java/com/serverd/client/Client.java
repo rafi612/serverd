@@ -34,7 +34,7 @@ public class Client implements Runnable
 	private String name;
 	
 	/** Logger */
-	public Log log,programlog;
+	public Log log;
 	
 	private boolean onceJoin = false;
 	
@@ -89,8 +89,7 @@ public class Client implements Runnable
 		connected = true;
 		name = "Client " + id;
 		
-		log = new Log("Client Thread " + id);
-		programlog = new Log("Client Program " + id);
+		log = new Log("Client " + id);
 		
 		encoder = new Encoder();
 	}
@@ -160,13 +159,12 @@ public class Client implements Runnable
 	public void send(String mess) throws IOException {}
 	/**
 	 * Receiving raw data
-	 * @param buflen Buffer length
 	 * @return byte array of data
 	 * @throws IOException when socket throw error
 	 */
-	public byte[] rawdataReceive(int buflen) throws IOException
+	public byte[] rawdataReceive() throws IOException
 	{
-		return new byte[buflen];
+		return new byte[BUFFER];
 	}
 	
 	/**
@@ -354,15 +352,6 @@ public class Client implements Runnable
 		onceJoin = true;
 		
 		join(joinid);
-	}
-	
-	/**
-	 * Returning status 
-	 * @return Status message
-	 */
-	public String status()
-	{
-		return name + ": ID:" + id + " Connected:" + connected + " Joined:" + joinedid + " Type:" + type.toString() + " Protocol:" + protocol.getName() +" IP:" + getIP() + ":" + getPort() +"\n";
 	}
 	
 	/**

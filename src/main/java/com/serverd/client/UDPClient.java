@@ -64,7 +64,7 @@ public class UDPClient extends Client
 		
 		msg = encoder.decode(msg, this);
 		
-		programlog.info("<Received> " + msg);
+		log.info("<Received> " + msg);
 		return msg;
 	}
 	
@@ -82,7 +82,7 @@ public class UDPClient extends Client
 	}
 
 	@Override
-	public byte[] rawdataReceive(int buflen) throws IOException
+	public byte[] rawdataReceive() throws IOException
 	{
 		byte[] buffer = new byte[Client.BUFFER];
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);

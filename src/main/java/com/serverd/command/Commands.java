@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Commands 
 {
-	private static ArrayList<Command> commands = new ArrayList<>();
+	protected static ArrayList<Command> commands = new ArrayList<>();
 	/**
 	 * Initialize all build in commands
 	 */

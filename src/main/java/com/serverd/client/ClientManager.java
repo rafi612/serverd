@@ -24,7 +24,7 @@ public class ClientManager
 	public static HashMap<Integer,Client> clients = new HashMap<>();
 	
 	/** Client's connected amount*/
-	public static int clientsConnected = 0,tcpConnected = 0,udpConnected = 0;
+	public static int tcpConnected = 0,udpConnected = 0;
 	
 	static boolean tcpRunned = false,udpRunned = false;
 	
@@ -210,7 +210,6 @@ public class ClientManager
 			
 		client.closeClient();
 		
-		clientsConnected--;
 		if (client.protocol == Protocol.TCP)
 			tcpConnected--;
 		else
@@ -265,9 +264,7 @@ public class ClientManager
 	 * @throws IOException when {@link ConnectListener} throws error
 	 */
 	public static void setupClient(Client client) throws IOException
-	{
-		clientsConnected++;
-		
+	{		
 		//plugin connect listener
 		for (Plugin p : PluginManager.plugins)
 			for (ConnectListener cl : p.connectlisteners)
@@ -292,6 +289,11 @@ public class ClientManager
 		return clients.values().toArray(Client[]::new);
 	}
 	
+	public static int getClientConnectedAmount()
+	{
+		return clients.size();
+	}
+	
 	/**
 	 * Returns client instance by ID
 	 * @param id Client ID
@@ -300,19 +302,6 @@ public class ClientManager
 	public static Client getClient(int id)
 	{
 		return clients.get(id);
-	}
-	
-	/**
-	 * Returns status message for all clients
-	 * @return Status message for all clients
-	 */
-	public static String statusall()
-	{
-		String message = clients.size() == 0 ? "No clients connected" : "";
-		
-		for (Client client : clients.values()) 
-			message += client.status();
-		return message;
 	}
 	
 	/**

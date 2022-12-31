@@ -20,8 +20,12 @@ public class Close extends Command
 		{
 			int closeid = Integer.parseInt(args[0]);
 			
-			ClientManager.delete(closeid);
-			client.send(ok());
+			if (ClientManager.getClient(closeid) != null)
+			{
+				ClientManager.delete(closeid);
+				client.send(ok());	
+			}
+			else client.send("ERROR client not found");
 		}
 	}
 }

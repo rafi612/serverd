@@ -50,7 +50,7 @@ public class TCPClient extends Client
 		
 		String message = encoder.decode(new String(buffer,0,len), this);
 		
-		programlog.info("<Reveived> " + message);
+		log.info("<Reveived> " + message);
 		
 		return message;
 	}
@@ -65,9 +65,9 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public byte[] rawdataReceive(int buflen) throws IOException
+	public byte[] rawdataReceive() throws IOException
 	{
-		byte[] buffer = new byte[buflen];
+		byte[] buffer = new byte[BUFFER];
 
 		int len = in.read(buffer);
 			

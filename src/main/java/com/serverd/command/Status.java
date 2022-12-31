@@ -16,6 +16,17 @@ public class Status extends Command
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException 
 	{
-		client.send(ClientManager.statusall());
+		String message = ClientManager.getClientConnectedAmount() == 0 ? "No clients connected" : "";
+		
+		for (Client c : ClientManager.getAllClients()) 
+			message += client.getName() 
+				+ ": ID:" + c.getID()
+				+ " Connected:" + c.isConnected()
+				+ " Joined:" + c.getJoinedID() 
+				+ " Type:" + c.getType().toString() 
+				+ " Protocol:" + c.getProtocol().getName() 
+				+ " IP:" + c.getIP() + ":" + c.getPort() +"\n";
+		
+		client.send(message);
 	}
 }

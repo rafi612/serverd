@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import com.serverd.command.Commands;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.ServerdPlugin;
@@ -53,7 +54,7 @@ class ClientManagerTest
 	void setUp() throws Exception
 	{
 		ClientManager.tcpRunned = true;
-		ClientManager.clientsConnected = 0;
+		Commands.init();
 	}
 
 	@AfterEach
@@ -203,7 +204,7 @@ class ClientManagerTest
 	{
 		ClientManager.delete(0);
 		
-		assertEquals(ClientManager.clientsConnected, 0);
+		assertEquals(ClientManager.getClientConnectedAmount(), 0);
 	}
 	
 	@Test

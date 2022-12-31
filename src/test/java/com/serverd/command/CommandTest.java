@@ -14,23 +14,7 @@ class CommandTest
 	@Test
 	void checkArgsWithClient_Test()
 	{	
-		class TestClient extends Client
-		{
-			public TestClient(int id) 
-			{
-				super(id);
-			}
-
-			public int sended;
-
-			@Override
-			public void send(String message) throws IOException
-			{
-				sended++;
-				super.send(message);
-			}
-		}
-		TestClient client = new TestClient(0);
+		TestClient client = new TestClient();
 		
 		Command command = new Command() {	
 			@Override
@@ -51,7 +35,7 @@ class CommandTest
 			() -> assertEquals(command.checkArgs(args1, client, 4), 0),
 			() -> assertEquals(command.checkArgs(args2, client, 3), -1),
 			() -> assertEquals(command.checkArgs(args3, client, 5), 1),
-			() -> assertEquals(client.sended,2)
+			() -> assertEquals(client.getSend().length,2)
 		);
 	}
 

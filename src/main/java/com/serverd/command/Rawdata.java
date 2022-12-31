@@ -18,20 +18,20 @@ public class Rawdata extends Command
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException 
 	{
 		if (checkArgs(args,client, 1) == 0)
-		{
-			client.send(ok());
-			
+		{	
 			int buffersize = Integer.parseInt(args[0]);
 
             Client joined = ClientManager.clients.get(client.getJoinedID());
 			
-			if (client.getJoinedID() != -1)
+			if (client.isJoined())
 			{
+				client.send(ok());
+				
 				client.log.info("Raw data mode started," + buffersize + " bytes can be sended");
 				int i = 0;
 				while (i < buffersize)
 				{
-					byte[] buffer = client.rawdataReceive(Client.BUFFER);
+					byte[] buffer = client.rawdataReceive();
 					joined.rawdataSend(buffer);
 
 					i+= buffer.length;

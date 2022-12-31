@@ -1,6 +1,5 @@
 package com.serverd.command;
 
-import java.io.File;
 import java.io.IOException;
 
 import com.serverd.client.Client;
@@ -20,9 +19,7 @@ public class PluginsList extends Command
 		String message = "";
 		String[] pluginNames = PluginManager.listPluginsName();
 		
-		String absolutepath = new File(PluginManager.pluginDir).getCanonicalPath();
-		
-		message += "Plugins installed in: " + absolutepath + "\n";
+		message += "Plugins installed:\n";
 		
 		if (pluginNames.length > 0) 
 		{
@@ -32,6 +29,6 @@ public class PluginsList extends Command
 			}
 			client.send(message);
 		}
-		else client.send("No plugins installed in " + absolutepath);
+		else client.send("No plugins installed");
 	}
 }
