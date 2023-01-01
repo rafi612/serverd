@@ -25,7 +25,7 @@ public class Status extends Command
 				+ " Joined:" + c.getJoinedID() 
 				+ " Type:" + c.getType().toString() 
 				+ " Protocol:" + c.getProtocol().getName() 
-				+ " IP:" + c.getIP() + ":" + c.getPort() +"\n";
+				+ " IP:" + c.getIP() + ":" + c.getPort() + "\n";
 		
 		client.send(message);
 	}
