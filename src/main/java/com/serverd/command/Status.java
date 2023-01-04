@@ -19,7 +19,7 @@ public class Status extends Command
 		String message = ClientManager.getClientConnectedAmount() == 0 ? "No clients connected" : "";
 		
 		for (Client c : ClientManager.getAllClients()) 
-			message += client.getName() 
+			message += c.getName() 
 				+ ": ID:" + c.getID()
 				+ " Connected:" + c.isConnected()
 				+ " Joined:" + c.getJoinedID() 
