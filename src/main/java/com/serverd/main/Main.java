@@ -142,7 +142,7 @@ public class Main
 			return Paths.get(userhome,".config","serverd").toString();
 		else if (osname.contains("mac") || osname.contains("darwin"))
 			return Paths.get(userhome,"Library","Application Support","serverd").toString();
-		return "";
+		return userhome;
 	}
 
 }
