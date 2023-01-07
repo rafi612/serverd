@@ -157,7 +157,6 @@ public class ClientManager
 				
 			}
 			udpSocket.close();
-			
 		} 
 		catch (IOException e)
 		{
