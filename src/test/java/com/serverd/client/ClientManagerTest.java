@@ -138,7 +138,7 @@ class ClientManagerTest
 	}
 	
 	@Test
-	void delete_WhenJoinedUnjoin_Test()
+	void delete_WhenJoinedUnjoin_Test() throws Exception
 	{
 		int count = 10;
 		for (int i = 0;i < count;i++)
@@ -147,9 +147,9 @@ class ClientManagerTest
 		Client client1 = ClientManager.getClient(4);
 		Client client2 = ClientManager.getClient(5);
 		
-		assertDoesNotThrow(() -> client1.join(client2.getID()));
+		client1.join(client2.getID());
 		
-		ClientManager.delete(5);
+		ClientManager.delete(client2.getID());
 		
 		assertAll(
 			() -> assertEquals(ClientManager.clients.size(), 9),
