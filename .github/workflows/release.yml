@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v**'
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+
+  upload:
+    name: Upload
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: ./
+
+      - name: Get tag name
+        id: tag_name
+        run: echo ::set-output name=current_version::${GITHUB_REF#refs/tags/v}
+
+      - name: Upload release files
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: false
+          tag_name: ${{ github.ref }}
+          draft: true
+          fail_on_unmatched_files: true
+          name: ${{ github.ref }} Release
+          body: |
+            <!-- Write summary here -->
+            ---
+            ## Features
+            ## Changes
+            ## Bug Fixes
+            ## Internal Changes
+          files: |
+            ./release/*
