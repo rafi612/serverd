@@ -22,7 +22,7 @@ jobs:
 
       - name: Get tag name
         id: tag_name
-        run: echo ::set-output name=current_version::${GITHUB_REF#refs/tags/v}
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
       - name: Upload release files
         uses: softprops/action-gh-release@v1
@@ -32,7 +32,7 @@ jobs:
           tag_name: ${{ github.ref }}
           draft: true
           fail_on_unmatched_files: true
-          name: ${{ github.ref }} Release
+          name: ${{ steps.tag_name.outputs.version }} Release
           body: |
             <!-- Write summary here -->
             ---
