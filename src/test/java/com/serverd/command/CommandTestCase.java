@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import com.serverd.client.Client;
 import com.serverd.client.ClientManager;
+import com.serverd.plugin.PluginManager;
 
 class CommandTestCase 
 {
@@ -15,6 +16,9 @@ class CommandTestCase
 	@BeforeEach
 	void setUp() throws Exception 
 	{
+		Commands.commands.clear();
+		PluginManager.plugins.clear();
+		
 		testClient = new TestClient();
 		testClient.init();
 	}
