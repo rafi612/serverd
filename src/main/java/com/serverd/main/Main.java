@@ -1,5 +1,6 @@
 package com.serverd.main;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import com.serverd.client.ClientManager;
@@ -88,6 +89,14 @@ public class Main
 		System.out.println("ServerD " + VERSION);
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(ClientManager::shutdown));
+		
+		File workdirFile = new File(workingdir);
+		if (!workdirFile.exists())
+			if (!workdirFile.mkdir())
+			{
+				log.error("Failed to create working directory in " + workingdir);
+				System.exit(-1);
+			}
 		
 		Commands.init();
 		try 
