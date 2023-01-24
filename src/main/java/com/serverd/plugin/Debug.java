@@ -66,11 +66,11 @@ public class Debug
 		builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
 
 		//run
-		Process p;
+		Process process;
 		try 
 		{
-			p = builder.start();
-			return p.waitFor();
+			process = builder.start();
+			return process.waitFor();
 		} 
 		catch (IOException | InterruptedException e) 
 		{
