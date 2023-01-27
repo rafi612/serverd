@@ -13,6 +13,7 @@ public class Close extends Command
 		command = "/close";
 		help = "/close <id> - close another client connection";
 	}
+	
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException 
 	{
