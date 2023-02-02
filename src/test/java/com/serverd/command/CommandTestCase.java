@@ -144,7 +144,4 @@ class TestClient extends Client
 	{
 		receiveQueue.add(message);
 	}
-	
-
 }
-
