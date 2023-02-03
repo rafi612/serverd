@@ -12,7 +12,7 @@ import java.net.Socket;
 public class TCPClient extends Client
 {	
 	/** Socket*/
-	protected Socket tcp_sock;
+	protected Socket tcpSocket;
 	
 	/** Input stream*/
 	protected InputStream in;
@@ -31,10 +31,10 @@ public class TCPClient extends Client
 		
 		protocol = Protocol.TCP;
 		
-		tcp_sock = socket;
+		tcpSocket = socket;
 		
-		in = tcp_sock.getInputStream();
-		out = tcp_sock.getOutputStream();
+		in = tcpSocket.getInputStream();
+		out = tcpSocket.getOutputStream();
 			
 		thread = new Thread(this,"Client " + id);
 	}
@@ -97,7 +97,7 @@ public class TCPClient extends Client
 		{
 			in.close();
 			out.close();
-			tcp_sock.close();
+			tcpSocket.close();
 		} 
 		catch (IOException e)
 		{
@@ -108,12 +108,12 @@ public class TCPClient extends Client
 	@Override
 	public String getIP()
 	{
-		return tcp_sock.getInetAddress().getHostAddress();
+		return tcpSocket.getInetAddress().getHostAddress();
 	}
 	
 	@Override
 	public int getPort()
 	{
-		return tcp_sock.getPort();
+		return tcpSocket.getPort();
 	}
 }
