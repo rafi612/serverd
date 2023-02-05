@@ -402,14 +402,14 @@ public class Client implements Runnable
 		
 		//execution controller
 		boolean command_accepted = true;
-		for (Plugin p : PluginManager.plugins)
+		for (Plugin plugin : PluginManager.plugins)
 		{
 			if (!command_accepted)
 				break;
 			
-			for (ExecutionController e : p.executioncontrollers)
+			for (ExecutionController e : plugin.executioncontrollers)
 			{
-				if (!e.controlCommand(command, args, this, p))
+				if (!e.controlCommand(command, args, this, plugin))
 				{
 					command_accepted = false;
 					break;
