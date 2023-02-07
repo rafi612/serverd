@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.serverd.command.Commands;
@@ -50,19 +51,24 @@ class ClientManagerTest
 		}
 	}
 	
+	@BeforeAll
+	static void setUpAll() 
+	{
+		Commands.init();
+	}
+	
 	@BeforeEach
 	void setUp() throws Exception
 	{
 		ClientManager.tcpRunned = true;
-		Commands.init();
+		ClientManager.clients.clear();
+		
 	}
 
 	@AfterEach
 	void tearDown() throws Exception
 	{
 		ClientManager.tcpRunned = false;
-		
-		ClientManager.clients.clear();
 	}
 	
 	@Test
