@@ -23,6 +23,7 @@ class StatusTest extends CommandTestCase
 	void executeTest_NoClients() throws Exception 
 	{
 		ClientManager.delete(testClient.getID());
+		
 		executeTest(statucCommand, testClient);
 		
 		assertEquals(testClient.getSend()[0], "No clients connected");
