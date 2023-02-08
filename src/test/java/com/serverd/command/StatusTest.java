@@ -8,12 +8,12 @@ import com.serverd.client.ClientManager;
 
 class StatusTest extends CommandTestCase 
 {
-	Status statucCommand = new Status();
+	Status statusCommand = new Status();
 	
 	@Test
 	void executeTest() throws Exception 
 	{
-		executeTest(statucCommand, testClient);
+		executeTest(statusCommand, testClient);
 		
 		//checking amount of lines in status message, one line is one client
 		assertEquals(testClient.getSend()[0].split("\n").length, ClientManager.getClientConnectedAmount());
@@ -24,7 +24,7 @@ class StatusTest extends CommandTestCase
 	{
 		ClientManager.delete(testClient.getID());
 		
-		executeTest(statucCommand, testClient);
+		executeTest(statusCommand, testClient);
 		
 		assertEquals(testClient.getSend()[0], "No clients connected");
 	}
