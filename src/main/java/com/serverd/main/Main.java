@@ -142,10 +142,10 @@ public class Main
 	 */
 	public static String getWorkDir()
 	{
-		String osname = System.getProperty("os.name");
+		String osname = System.getProperty("os.name").toLowerCase();
 		String userhome = System.getProperty("user.home");
 		
-		if (osname.startsWith("Windows"))
+		if (osname.startsWith("windows"))
 			return Paths.get(System.getenv("APPDATA"),"serverd").toString();
 		else if (osname.contains("nux") || osname.contains("freebsd"))
 			return Paths.get(userhome,".config","serverd").toString();
