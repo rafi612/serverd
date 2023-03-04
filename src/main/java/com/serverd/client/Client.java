@@ -48,6 +48,7 @@ public class Client implements Runnable
 	{
 		SENDER,RECEIVER,NONE;
 	}
+	
 	/**
 	 * Client protocol
 	 */
