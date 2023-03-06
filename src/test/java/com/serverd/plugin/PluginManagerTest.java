@@ -84,7 +84,6 @@ class PluginManagerTest
 		@Test
 		void load_Test() throws FileNotFoundException, IOException 
 		{
-			
 			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), true, true);
 			
 			assertDoesNotThrow(() -> PluginManager.load(jarFile, true));
