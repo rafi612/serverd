@@ -14,7 +14,6 @@ class SetnameTest extends CommandTestCase
 		String name = "ClientTestName";
 		
 		executeTest(setnameCommand, args(name), testClient);
-		
 		assertEquals(testClient.getName(), name);
 	}
 }
