@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 class IdTest extends CommandTestCase 
 {
 	Id idCommand = new Id();
+	
 	@Test
 	void executeTest() throws Exception 
 	{
