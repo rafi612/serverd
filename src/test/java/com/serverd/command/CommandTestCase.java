@@ -66,6 +66,7 @@ class DoubleClientCommandTestCase extends CommandTestCase
 	{
 		super.tearDown();
 		testClient2.destroy();
+		ClientManager.clients.clear();
 	}	
 }
 
