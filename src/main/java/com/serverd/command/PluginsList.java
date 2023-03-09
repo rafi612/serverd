@@ -13,6 +13,7 @@ public class PluginsList extends Command
 		command = "/plugins-list";
 		help = "/plugins-list - list of loaded plugins";
 	}
+	
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException 
 	{
