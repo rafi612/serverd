@@ -14,7 +14,7 @@ class CommandTestCase
 	TestClient testClient;
 	
 	@BeforeEach
-	void setUp() throws Exception 
+	protected void setUp() throws Exception 
 	{
 		Commands.commands.clear();
 		PluginManager.plugins.clear();
@@ -24,7 +24,7 @@ class CommandTestCase
 	}
 	
 	@AfterEach
-	void tearDown() throws Exception 
+	protected void tearDown() throws Exception 
 	{
 		testClient.destroy();
 	}
@@ -55,14 +55,14 @@ class DoubleClientCommandTestCase extends CommandTestCase
 	TestClient testClient2;
 	
 	@BeforeEach
-	void setUp() throws Exception 
+	protected void setUp() throws Exception 
 	{
 		super.setUp();
 		testClient2 = new TestClient();
 		testClient2.init();
 	}
 	@AfterEach
-	void tearDown() throws Exception 
+	protected void tearDown() throws Exception 
 	{
 		super.tearDown();
 		testClient2.destroy();
@@ -96,7 +96,7 @@ class TestClient extends Client
 	
 	public void destroy() 
 	{
-		ClientManager.clients.remove(getID());
+		ClientManager.delete(getID());
 	}
 	
 	@Override
