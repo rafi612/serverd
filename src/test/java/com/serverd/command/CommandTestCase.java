@@ -14,17 +14,18 @@ class CommandTestCase
 	TestClient testClient;
 	
 	@BeforeEach
-	protected void setUp() throws Exception 
+	void setUp() throws Exception 
 	{
 		Commands.commands.clear();
 		PluginManager.plugins.clear();
+		ClientManager.clients.clear();
 		
 		testClient = new TestClient();
 		testClient.init();
 	}
 	
 	@AfterEach
-	protected void tearDown() throws Exception 
+	void tearDown() throws Exception 
 	{
 		testClient.destroy();
 	}
@@ -55,14 +56,14 @@ class DoubleClientCommandTestCase extends CommandTestCase
 	TestClient testClient2;
 	
 	@BeforeEach
-	protected void setUp() throws Exception 
+	void setUp() throws Exception 
 	{
 		super.setUp();
 		testClient2 = new TestClient();
 		testClient2.init();
 	}
 	@AfterEach
-	protected void tearDown() throws Exception 
+	void tearDown() throws Exception 
 	{
 		super.tearDown();
 		testClient2.destroy();
