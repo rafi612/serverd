@@ -30,10 +30,7 @@ class PluginTest
 		public boolean stopped = false;
 		
 		@Override
-		public void metadata(Info info) 
-		{
-			
-		}
+		public void metadata(Info info) {}
 
 		@Override
 		public String init(Plugin plugin)
@@ -52,10 +49,7 @@ class PluginTest
 		}
 
 		@Override
-		public void work(Plugin plugin) 
-		{
-			
-		}
+		public void work(Plugin plugin) {}
 
 		@Override
 		public void stop(Plugin plugin) 
