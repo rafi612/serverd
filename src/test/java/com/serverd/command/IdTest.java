@@ -15,5 +15,4 @@ class IdTest extends CommandTestCase
 		
 		assertEquals(Integer.parseInt(testClient.getSend()[0]), testClient.getID());
 	}
-
 }
