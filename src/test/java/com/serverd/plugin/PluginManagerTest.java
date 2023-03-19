@@ -239,10 +239,7 @@ class PluginManagerTestPlugin implements ServerdPlugin
 	public void metadata(Info info) {}
 
 	@Override
-	public String init(Plugin plugin)
-	{
-		return INIT_SUCCESS;
-	}
+	public String init(Plugin plugin) { return INIT_SUCCESS; }
 
 	@Override
 	public void work(Plugin plugin) {}
