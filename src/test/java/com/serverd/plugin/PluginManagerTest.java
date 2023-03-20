@@ -80,7 +80,6 @@ class PluginManagerTest
 			assertDoesNotThrow(PluginManager::loadPlugins);
 		}
 		
-		
 		@Test
 		void load_Test() throws FileNotFoundException, IOException 
 		{
