@@ -239,9 +239,7 @@ class ClientManagerTest
 	{
 		
 		Client client = new Client(ClientManager.getFreeClientID()) {
-			public void run() {
-				connected = true;
-			}
+			public void run() { connected = true; }
 		};
 		client.run();
 		ClientManager.addClient(client);
