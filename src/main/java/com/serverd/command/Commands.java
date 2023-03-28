@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Commands 
 {
 	protected static ArrayList<Command> commands = new ArrayList<>();
+
 	/**
 	 * Initialize all build in commands
 	 */
