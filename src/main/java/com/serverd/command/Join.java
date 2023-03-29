@@ -13,6 +13,7 @@ public class Join extends Command
 		command = "/join";
 		help = "/join <id> - join to client";
 	}
+	
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException 
 	{
