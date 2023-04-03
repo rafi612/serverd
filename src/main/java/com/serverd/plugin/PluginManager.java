@@ -85,7 +85,6 @@ public class PluginManager
 	public static void load(File file,boolean enable) throws PluginLoadException
 	{
 		log.info("Loading plugin " + file.getName());
-		
 		try 
 		{
 			URLClassLoader classloader = new URLClassLoader(
