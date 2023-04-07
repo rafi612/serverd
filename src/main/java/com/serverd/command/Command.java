@@ -17,54 +17,95 @@ public abstract class Command implements Codes
 	/** Default constructor*/
 	public Command() {}
 	
-	/**
-	 * Checking amount of arguments and sending message to client
-	 * @param args Arguments
-     * @param client Client instance
-	 * @param length Arguments length
-	 * @return <b>0</b> when arguments are good,
-	 * <b>-1</b> when there are too few arguments,
-	 * <b>1</b> when there are too many arguments
-	 * @throws IOException when client throw {@link IOException}
-	 * @see Command#checkArgs checkArgs
-	 */
-	protected int checkArgs(String[] args,Client client,int length) throws IOException
-	{
-		int code = checkArgs(args, length);
-		if (code == -1)
-		{
-			client.send("Missing argument");
-			return -1;
-		}
-		else if (code == 1)
-		{
-			client.send("Too much arguments");
-			return 1;
-		}
-		else return code;
-	}
-	
+	/** Less arguments */
+	protected static final int ARGS_LESS = 0b00000001;
+	/** Good arguments */
+	protected static final int ARGS_GOOD = 0b00000010; 
+	/** More arguments */
+	protected static final int ARGS_MORE = 0b00000100; 
 	
 	/**
 	 * Checking amount of arguments
 	 * @param args Arguments
 	 * @param length Arguments length
-	 * @return <b>0</b> when arguments are good,
-	 * <b>-1</b> when there are too few arguments,
-	 * <b>1</b> when there are too many arguments
+	 * @param flag One of {@link ARGS_LESS},{@link ARGS_GOOD},{@link ARGS_MORE}
+	 * @return true when arguments are valid
 	 */
-	protected int checkArgs(String[] args,int length)
+	protected boolean checkArgs(String[] args,int length,int flag) 
 	{
-		if (args.length < length) 
-		{
-			return -1;
-		}
-		else if (args.length > length)
-		{
-			return 1;
-		}
-		else return 0;
+		int argsCount = args.length;
+
+		if (argsCount < length)
+			return (flag & ARGS_LESS) == ARGS_LESS;
+		else if (argsCount > length)
+			return (flag & ARGS_MORE) == ARGS_MORE;
+		else
+			return (flag & ARGS_GOOD) == ARGS_GOOD;
 	}
+	
+	/**
+	 * Checking amount of arguments, using {@link ARGS_GOOD} as default
+	 * @param args Arguments
+	 * @param length Arguments length
+	 * @return true when arguments are valid
+	 */
+	protected boolean checkArgs(String[] args,int length)
+	{
+		return checkArgs(args,length,ARGS_GOOD);
+	}
+	
+	/**
+	 * Checking amount of arguments and sending message to client
+	 * @param args Arguments
+	 * @param client Client instance 
+	 * @param length Arguments length
+	 * @param flag One of {@link ARGS_LESS},{@link ARGS_GOOD},{@link ARGS_MORE}
+	 * @return true when arguments are valid
+	 * @throws IOException when client throw {@link IOException}
+	 */
+	protected boolean checkArgs(String[] args,Client client,int length,int flag) throws IOException 
+	{
+		int argsCount = args.length;
+
+		if (argsCount < length) 
+		{
+			if ((flag & ARGS_LESS) == ARGS_LESS)
+				return true;
+			else 
+				client.send(error("Too few arguments"));
+			return false;
+		} 
+		else if (argsCount > length)
+		{
+			if ((flag & ARGS_MORE) == ARGS_MORE) 
+				return true;
+			else 
+				client.send(error("Too many arguments"));
+			return false;
+		} 
+		else
+		{
+			if ((flag & ARGS_GOOD) == ARGS_GOOD)
+				return true;
+			else 
+				client.send(error("Bad number of arguments"));
+			return false;
+		}
+	}
+	
+	/**
+	 * Checking amount of arguments and sending message to client, using {@link ARGS_GOOD} as default
+	 * @param args Arguments
+	 * @param client Client instance 
+	 * @param length Arguments length
+	 * @return true when arguments are valid
+	 * @throws IOException when client throw {@link IOException}
+	 */
+	protected boolean checkArgs(String[] args,Client client,int length) throws IOException 
+	{
+		return checkArgs(args,client,length,ARGS_GOOD);
+	}
+	
 	
 	/**
 	 * Executing when command is called

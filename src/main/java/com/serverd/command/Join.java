@@ -17,7 +17,7 @@ public class Join extends Command
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException 
 	{
-		if (checkArgs(args,client,1) == 0)
+		if (checkArgs(args,client,1))
 		{
 			try
 			{

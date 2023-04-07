@@ -2,8 +2,6 @@ package com.serverd.command;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.IOException;
-
 import org.junit.jupiter.api.Test;
 
 import com.serverd.client.Client;
@@ -16,13 +14,7 @@ class CommandTest
 	{	
 		TestClient client = new TestClient();
 		
-		Command command = new Command() {	
-			@Override
-			public int checkArgs(String[] args,Client client,int length) throws IOException
-			{
-				return super.checkArgs(args, client,length);
-			}
-			
+		Command command = new Command() {
 			@Override
 			public void execute(String[] args, Client client, Plugin plugin) {}
 		};
@@ -32,9 +24,9 @@ class CommandTest
 		String[] args3 = {"Test","test","test","test","Test","test","test","test"};
 		
 		assertAll(
-			() -> assertEquals(command.checkArgs(args1, client, 4), 0),
-			() -> assertEquals(command.checkArgs(args2, client, 3), -1),
-			() -> assertEquals(command.checkArgs(args3, client, 5), 1),
+			() -> assertTrue(command.checkArgs(args1, client, 4)),
+			() -> assertFalse(command.checkArgs(args2, client, 3)),
+			() -> assertFalse(command.checkArgs(args3, client, 5)),
 			() -> assertEquals(client.getSend().length,2)
 		);
 	}
@@ -42,13 +34,7 @@ class CommandTest
 	@Test
 	void checkArgs_Test()
 	{	
-		Command command = new Command() {	
-			@Override
-			public int checkArgs(String[] args,int length)
-			{
-				return super.checkArgs(args, length);
-			}
-			
+		Command command = new Command() {			
 			@Override
 			public void execute(String[] args, Client client, Plugin plugin) {}
 		};
@@ -58,9 +44,9 @@ class CommandTest
 		String[] args3 = {"Test","test","test","test","Test","test","test","test"};
 		
 		assertAll(
-			() -> assertEquals(command.checkArgs(args1, 4), 0),
-			() -> assertEquals(command.checkArgs(args2, 3), -1),
-			() -> assertEquals(command.checkArgs(args3, 5), 1)
+			() -> assertTrue(command.checkArgs(args1, 4)),
+			() -> assertTrue(command.checkArgs(args2, 3, Command.ARGS_LESS)),
+			() -> assertTrue(command.checkArgs(args3, 5,Command.ARGS_MORE))
 		);
 	}
 }

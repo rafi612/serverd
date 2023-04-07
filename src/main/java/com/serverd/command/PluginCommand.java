@@ -16,7 +16,7 @@ public class PluginCommand extends Command
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException 
 	{
-		if (checkArgs(args,client, 2) == 0)
+		if (checkArgs(args,client, 2))
 		{
 			Plugin p = PluginManager.getByFileName(args[1]);
 			
