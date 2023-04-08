@@ -8,10 +8,27 @@ import com.serverd.plugin.Plugin;
 
 public class Rawdata extends Command
 {
+	private int buffersize = 0,sended = 0;
+	
 	protected Rawdata()
 	{
 		command = "/rawdata";
 		help = "/rawdata <buffer> - run rawdata mode with buffer";
+	}
+	@Override
+	public void processReceive(byte[] buffer,Client client) throws IOException
+	{
+        Client joined = ClientManager.clients.get(client.getJoinedID());
+		
+		joined.rawdataSend(buffer);
+
+		sended += buffer.length;
+		
+		if (sended >= buffersize)
+		{
+			client.send(ok());
+			done();
+		}
 	}
 	
 	@Override
@@ -19,24 +36,14 @@ public class Rawdata extends Command
 	{
 		if (checkArgs(args,client, 1))
 		{	
-			int buffersize = Integer.parseInt(args[0]);
-
-            Client joined = ClientManager.clients.get(client.getJoinedID());
-			
 			if (client.isJoined())
 			{
 				client.send(ok());
 				
+				buffersize = Integer.parseInt(args[0]);
+				
 				client.log.info("Raw data mode started," + buffersize + " bytes can be sended");
-				int i = 0;
-				while (i < buffersize)
-				{
-					byte[] buffer = client.rawdataReceive();
-					joined.rawdataSend(buffer);
-
-					i+= buffer.length;
-				}
-				client.send(ok());
+				stayAlive();
 			}
 			else client.send(error("Not joined"));
 		}

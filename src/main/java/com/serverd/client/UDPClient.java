@@ -47,26 +47,6 @@ public class UDPClient extends Client
 		thread = new Thread(this, "UDP Client " + id);
 	}
 	
-	@Override
-	public String receive() throws IOException
-	{
-		byte[] buffer = new byte[Client.BUFFER];
-		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-		
-		if (firstPacket == null)
-			udp_sock.receive(packet);
-		else
-			packet = firstPacket;
-		
-		String msg = new String(packet.getData(),packet.getOffset(),packet.getLength());
-		
-		firstPacket = null;
-		
-		msg = encoder.decode(msg, this);
-		
-		log.info("<Received> " + msg);
-		return msg;
-	}
 	
 	@Override
 	public void send(String mess) throws IOException
@@ -82,7 +62,7 @@ public class UDPClient extends Client
 	}
 
 	@Override
-	public byte[] rawdataReceive() throws IOException
+	public byte[] receive() throws IOException
 	{
 		byte[] buffer = new byte[Client.BUFFER];
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);

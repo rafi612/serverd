@@ -11,7 +11,7 @@ class ToTest extends DoubleClientCommandTestCase
 	@Test
 	void executeTest() throws Exception
 	{
-		String receive = "Test",send = "TestResponse";
+		String receive = "TestResponse",send = "Test";
 		//execute /to command
 		executeTest(
 				toCommand, 
@@ -20,10 +20,10 @@ class ToTest extends DoubleClientCommandTestCase
 		
 		//simulate receive message by second client
 		testClient2.insertReceive(receive);
-		testClient2.executeCommand(receive);
+		testClient2.processCommand(receive.getBytes());
 		
 		assertEquals(testClient2.getSend()[0],send);
-		assertEquals(testClient2.receive(),receive);
+		assertEquals(testClient2.toMessage(testClient2.receive()),receive);
 	}
 
 }

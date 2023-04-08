@@ -41,6 +41,8 @@ public class Client implements Runnable
 	/** Client's encoder*/
 	protected Encoder encoder;
 	
+	private Command currentCommand;
+	
 	/**
 	 * Client type
 	 */
@@ -121,35 +123,15 @@ public class Client implements Runnable
 	{
 		return thread;
 	}
-
+	
 	/**
-	 * Checking amount of arguments
-	 * @param args Arguments
-	 * @param length Arguments length
-	 * @return Good of arguments
-	 */
-	protected boolean checkArgs(String[] args,int length) throws IOException
-	{
-		if (args.length < length) 
-		{
-			send("Missing Argument");
-			return false;
-		}
-		else if (args.length > length)
-		{
-			send("Too much Arguments");
-			return false;
-		}
-		else return true;
-	}
-	/**
-	 * Receiving message
-	 * @return Received message
+	 * Receiving raw data
+	 * @return byte array of data
 	 * @throws IOException when socket throw error
 	 */
-	public String receive() throws IOException
+	protected byte[] receive() throws IOException
 	{
-		return "";
+		return new byte[BUFFER];
 	}
 	
 	/**
@@ -158,15 +140,6 @@ public class Client implements Runnable
 	 * @throws IOException when socket throw error
 	 */
 	public void send(String mess) throws IOException {}
-	/**
-	 * Receiving raw data
-	 * @return byte array of data
-	 * @throws IOException when socket throw error
-	 */
-	public byte[] rawdataReceive() throws IOException
-	{
-		return new byte[BUFFER];
-	}
 	
 	/**
 	 * Sending raw data
@@ -174,6 +147,20 @@ public class Client implements Runnable
 	 * @throws IOException when socket throw error
 	 */
 	public void rawdataSend(byte[] bytes) throws IOException {}
+	
+	/**
+	 * Converts byte buffer to String message
+	 * @param buffer Byte buffer
+	 * @return String message
+	 */
+	public String toMessage(byte[] buffer)
+	{
+		String message = encoder.decode(new String(buffer,0,buffer.length), this);
+		
+		log.info("<Reveived> " + message);
+		
+		return message;
+	}
 	
 	/**
 	 * Closing socket
@@ -284,6 +271,14 @@ public class Client implements Runnable
 	}
 	
 	/**
+	 * Returns current command
+	 * @return Current command
+	 */
+	public Command getCurrentCommand() {
+		return currentCommand;
+	}
+	
+	/**
 	 * Join exception
 	 */
 	public class JoinException extends Exception 
@@ -374,84 +369,113 @@ public class Client implements Runnable
 		}
 	}
 	
+
 	@Override
-	public void run() 
+	public void run()
 	{
 		try 
 		{
-			log.info("Started working.");
-			
-			while (connected)	
-				executeCommand(receive());
+			while (connected) {
+				byte[] bytes = receive();
+				if (bytes != null)
+					processCommand(bytes);
+			}
 		} 
-		catch (Exception e) 
+		catch (IOException e) 
 		{
 			crash(e);
 		}
 	}
 	
+	
 	/**
-	 * Executes command on client
-	 * @param command_str Command to execute
-	 * @throws Exception
+	 * Processing command
+	 * @param buffer Byte buffer to process
 	 */
-	public void executeCommand(String command_str) throws Exception
-	{
-		String[] command_raw = command_str.split(" ");
-		String[] args = Arrays.copyOfRange(command_raw,1,command_raw.length);
-		String command = command_raw[0];
-		
-		//execution controller
-		boolean command_accepted = true;
-		for (Plugin plugin : PluginManager.plugins)
+	public void processCommand(byte[] buffer)
+	{	
+		try 
 		{
-			if (!command_accepted)
-				break;
-			
-			for (ExecutionController e : plugin.executioncontrollers)
+			if (currentCommand == null)
 			{
-				if (!e.controlCommand(command, args, this, plugin))
+				String command_str = toMessage(buffer);
+				
+				String[] command_raw = command_str.split(" ");
+				String[] args = Arrays.copyOfRange(command_raw,1,command_raw.length);
+				String command = command_raw[0];
+				
+				//execution controller
+				boolean command_accepted = true;
+				for (Plugin p : PluginManager.plugins)
 				{
-					command_accepted = false;
-					break;
+					if (!command_accepted)
+						break;
+					
+					for (ExecutionController e : p.executioncontrollers)
+					{
+						if (!e.controlCommand(command, args, this, p))
+						{
+							command_accepted = false;
+							break;
+						}
+					}
 				}
-			}
-		}
 
-		if (!command_accepted)
-			return;
-		
-		Plugin plugin = null;
-		Command comm = Commands.getByName(command);
-		
-		if (comm == null)
-		{
-			//search in plugins
-			for (Plugin p : PluginManager.plugins)
-				for (Command com : p.commands)
-			{
-				if (command.equals(com.command))
+				if (!command_accepted)
+					return;
+				
+				Plugin plugin = null;
+				
+				//search in base
+				Command comm = Commands.getByName(command);
+				//search in plugins
+				if (comm == null)
+					for (Plugin p : PluginManager.plugins)
+						for (Command c : p.commands)
+							if (command.equals(c.command)) 
+							{
+								plugin = p;
+								comm = c;
+							}
+				
+				//copy command object
+				if (comm != null)
+					comm = (Command) comm.clone();
+				
+				if (comm == null)
 				{
-					plugin = p;
-					comm = com;
+					if (joinedid == -1)
+						send(Codes.unknownCommand());
+					else 
+					{
+						ClientManager.clients.get(joinedid).send(command_str);
+						
+						if (onceJoin)
+							unjoin();
+					} 
+				}
+				else
+				{
+					currentCommand = comm;
+					comm.runned = true;
+					comm.execute(args, this, plugin);
+					
+					if (!currentCommand.isStayAlive())
+						currentCommand = null;
 				}
 			}
-		}
-		
-		//execute command
-		if (comm != null)
-			comm.execute(args, this, plugin);
-		else	
-		{
-			if (joinedid == -1)
-				send(Codes.unknownCommand());
 			else 
 			{
-				ClientManager.clients.get(joinedid).send(command_str);
+				if (currentCommand.isStayAlive() && currentCommand.isRunned())
+					currentCommand.processReceive(buffer,this);
 				
-				if (onceJoin)
-					unjoin();
-			} 
+				if (!currentCommand.isStayAlive())
+					currentCommand = null;
+			}
+		}
+		catch (Exception e) 
+		{
+			crash(e);
 		}
 	}
 }

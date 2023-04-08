@@ -18,12 +18,6 @@ class ClientTest
 		{
 			super(id);
 		}
-		
-		@Override
-		public boolean checkArgs(String[] args,int length) throws IOException
-		{
-			return super.checkArgs(args, length);
-		}
 	}
 	
 	@BeforeEach
@@ -85,19 +79,6 @@ class ClientTest
 		);
 	}
 	
-	@Test
-	void checkArgs_Test()
-	{
-		String[] args1 = {"Test","test","test","test"};
-		String[] args2 = {"Test","test"};
-		String[] args3 = {"Test","test","test","test","Test","test","test","test"};
-		
-		assertAll(
-			() -> assertTrue(client.checkArgs(args1, 4)),
-			() -> assertFalse(client.checkArgs(args2, 3)),
-			() -> assertFalse(client.checkArgs(args3, 5))
-		);
-	}
 	
 	@Test
 	void onceJoin_Test()
@@ -106,7 +87,7 @@ class ClientTest
 			client.onceJoin(client2.getID());
 			
 			//simulating receiving response
-			client.executeCommand("Test");
+			client.processCommand("Test".getBytes());
 			
 			assertAll(
 				() -> assertEquals(client.getJoinedID(),-1),
@@ -129,7 +110,7 @@ class ClientTest
 	{
 		Client client = new Client(0) {
 			@Override
-			public String receive() throws IOException
+			public byte[] receive() throws IOException
 			{
 				throw new IOException("Test");
 			}
@@ -148,7 +129,7 @@ class ClientTest
 	{
 		Client client = new Client(0) {
 			@Override
-			public String receive() throws IOException
+			public byte[] receive() throws IOException
 			{
 				throw new IOException("Test");
 			}
