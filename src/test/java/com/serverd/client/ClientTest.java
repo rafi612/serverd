@@ -78,7 +78,7 @@ class ClientTest
 			() -> assertEquals(client2.type, Client.Type.NONE)
 		);
 	}
-	
+
 	@Test
 	void onceJoin_Test()
 	{		
@@ -86,7 +86,7 @@ class ClientTest
 			client.onceJoin(client2.getID());
 			
 			//simulating receiving response
-			client.executeCommand("Test");
+			client.processCommand("Test".getBytes());
 			
 			assertAll(
 				() -> assertEquals(client.getJoinedID(),-1),
@@ -109,7 +109,7 @@ class ClientTest
 	{
 		Client client = new Client(0) {
 			@Override
-			public String receive() throws IOException
+			public byte[] receive() throws IOException
 			{
 				throw new IOException("Test");
 			}
@@ -128,7 +128,7 @@ class ClientTest
 	{
 		Client client = new Client(0) {
 			@Override
-			public String receive() throws IOException
+			public byte[] receive() throws IOException
 			{
 				throw new IOException("Test");
 			}

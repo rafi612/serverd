@@ -30,17 +30,21 @@ class CommandTestCase
 		testClient.destroy();
 	}
 	
-	public static void executeTest(Command command,String[] args,Client client) throws Exception
+	public static void executeTest(Command command,String[] args,TestClient client) throws Exception
 	{
 		String comm = command.command + " " + String.join(" ", args);
 		client.log.info("Executing command: " + comm);
 		
 		Commands.commands.add(command);
-		client.executeCommand(comm);
+		client.processCommand(comm.getBytes());
+		
+		while (client.getCurrentCommand() != null) 
+			client.processCommand(client.receive());
+		
 		Commands.commands.remove(command);
 	}
 	
-	public static void executeTest(Command command,Client client) throws Exception
+	public static void executeTest(Command command,TestClient client) throws Exception
 	{
 		executeTest(command,new String[] {},client);
 	}
@@ -74,14 +78,12 @@ class DoubleClientCommandTestCase extends CommandTestCase
 
 class TestClient extends Client
 {
-	private ArrayList<String> receiveQueue = new ArrayList<>();
+	private ArrayList<byte[]> receiveQueue = new ArrayList<>();
 	private ArrayList<String> sendQueue = new ArrayList<>();
 	
 	private ArrayList<byte[]> rawDataSendQueue = new ArrayList<>();
-	private ArrayList<byte[]> rawdataReceiveQueue = new ArrayList<>();
 	
 	private int receiveIndex;
-	private int rawdataReceiveIndex;
 	
 	public TestClient()
 	{
@@ -101,11 +103,9 @@ class TestClient extends Client
 	}
 	
 	@Override
-	public String receive() 
+	public byte[] receive() 
 	{
-		String message = receiveQueue.get(receiveIndex++);
-		log.info("<Reveived> " + message);
-		return message;
+		return receiveQueue.get(receiveIndex++);
 	}
 	
 	@Override
@@ -115,11 +115,6 @@ class TestClient extends Client
 		sendQueue.add(message);
 	}
 	
-	@Override
-	public byte[] rawdataReceive()
-	{
-		return rawdataReceiveQueue.get(rawdataReceiveIndex++);
-	}
 	
 	@Override
 	public void rawdataSend(byte[] buffer)
@@ -139,11 +134,11 @@ class TestClient extends Client
 	
 	public void insertRawdataReceive(byte[] bytes)
 	{
-		rawdataReceiveQueue.add(bytes);
+		receiveQueue.add(bytes);
 	}
 	
 	public void insertReceive(String message)
 	{
-		receiveQueue.add(message);
+		receiveQueue.add(message.getBytes());
 	}
 }

@@ -41,22 +41,7 @@ public class TCPClient extends Client
 			
 		thread = new Thread(this,"Client " + id);
 	}
-	
-	@Override
-	public String receive() throws IOException
-	{
-		byte[] buffer = new byte[BUFFER];
-		int len = in.read(buffer);
-			
-		if (len == -1)
-			throw new IOException("Connection closed");
-		
-		String message = encoder.decode(new String(buffer,0,len), this);
-		
-		log.info("<Reveived> " + message);
-		
-		return message;
-	}
+
 	
 	@Override
 	public void send(String mess) throws IOException
@@ -68,7 +53,7 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public byte[] rawdataReceive() throws IOException
+	public byte[] receive() throws IOException
 	{
 		byte[] buffer = new byte[BUFFER];
 
