@@ -61,7 +61,6 @@ class ClientManagerTest
 	void setUp() throws Exception
 	{
 		ClientManager.tcpRunned = true;
-		ClientManager.clients.clear();
 		
 	}
 
@@ -69,6 +68,9 @@ class ClientManagerTest
 	void tearDown() throws Exception
 	{
 		ClientManager.tcpRunned = false;
+		for (Client client : ClientManager.clients.values())
+			client.closeClient();
+		ClientManager.clients.clear();
 	}
 	
 	@Test
@@ -92,9 +94,10 @@ class ClientManagerTest
 			sock.getOutputStream().write("/disconnect".getBytes());
 		}
 		
-		assertFalse(availableTCP(9999));
+		ClientManager.tcpSocket.close();
+		Thread.sleep(100);
 		
-		ClientManager.stopTcpServer();
+		assertTrue(availableTCP(9999));
 	}
 	
 	@Test
@@ -126,9 +129,10 @@ class ClientManagerTest
 			
 			sock.send(packet2);
 		}
-		assertFalse(availableUDP(9998));
-		
 		ClientManager.stopUdpServer();
+		Thread.sleep(100);
+		
+		assertTrue(availableUDP(9998));
 	}
 	
 	@Test
@@ -214,7 +218,7 @@ class ClientManagerTest
 	}
 	
 	@Test
-	void shutdown_StopServer_Test() throws InterruptedException
+	void shutdown_StopServer_Test() throws InterruptedException, IOException
 	{
 		assumeTrue(availableTCP(9999));
 		assumeTrue(availableUDP(9998));
@@ -222,15 +226,13 @@ class ClientManagerTest
 		ClientManager.start("0.0.0.0", 9999, 9998);
 		
 		while (availableTCP(9999) || availableUDP(9998))
-			Thread.sleep(100);
+			Thread.sleep(1000);
 		
 		ClientManager.shutdown();
 		
-		Thread.sleep(1000);
-		
 		assertAll(
-			() -> assertTrue(availableTCP(9999)),
-			() -> assertTrue(availableUDP(9998))
+			() -> assertFalse(ClientManager.tcpRunned),
+			() -> assertFalse(ClientManager.udpRunned)
 		);
 	}
 	

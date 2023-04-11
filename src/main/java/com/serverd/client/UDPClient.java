@@ -43,8 +43,6 @@ public class UDPClient extends Client
 		udp_sock.setReuseAddress(true);
 		udp_sock.bind(sock.getLocalSocketAddress());
 		udp_sock.connect(ip,port);
-		
-		thread = new Thread(this, "UDP Client " + id);
 	}
 	
 	
@@ -62,7 +60,7 @@ public class UDPClient extends Client
 	}
 
 	@Override
-	public byte[] receive() throws IOException
+	public byte[] rawdataReceive() throws IOException
 	{
 		byte[] buffer = new byte[Client.BUFFER];
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
@@ -72,9 +70,9 @@ public class UDPClient extends Client
 		else
 			packet = firstPacket;
 		
-		byte[] ret = new byte[buffer.length];
+		byte[] ret = new byte[packet.getLength()];
 		
-		System.arraycopy(buffer, 0, ret, 0, buffer.length);
+		System.arraycopy(packet.getData(), 0, ret, 0, packet.getLength());
 		
 		firstPacket = null;
 		

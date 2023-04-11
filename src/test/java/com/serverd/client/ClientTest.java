@@ -108,17 +108,10 @@ class ClientTest
 	@Test
 	void crash_Test()
 	{
-		Client client = new Client(0) {
-			@Override
-			public byte[] receive() throws IOException
-			{
-				throw new IOException("Test");
-			}
-		};
+		Client client = new Client(0);
 		
 		ClientManager.addClient(client);
-		
-		client.run();
+		client.crash(new IOException("Test"));
 		
 		assertNull(ClientManager.getClient(0));
 		
@@ -127,18 +120,12 @@ class ClientTest
 	@Test
 	void crash_WhenJoinedUnjoin_Test()
 	{
-		Client client = new Client(0) {
-			@Override
-			public byte[] receive() throws IOException
-			{
-				throw new IOException("Test");
-			}
-		};
+		Client client = new Client(0);
 		
 		ClientManager.addClient(client);
 		
 		assertDoesNotThrow(() -> client.join(client2.getID()));
-		client.run();
+		client.crash(new IOException("Test"));
 		
 		assertFalse(client.isJoined());
 		

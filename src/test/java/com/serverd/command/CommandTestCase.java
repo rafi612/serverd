@@ -39,7 +39,7 @@ class CommandTestCase
 		client.processCommand(comm.getBytes());
 		
 		while (client.getCurrentCommand() != null) 
-			client.processCommand(client.receive());
+			client.processCommand(client.rawdataReceive());
 		
 		Commands.commands.remove(command);
 	}
@@ -103,7 +103,7 @@ class TestClient extends Client
 	}
 	
 	@Override
-	public byte[] receive() 
+	public byte[] rawdataReceive() 
 	{
 		return receiveQueue.get(receiveIndex++);
 	}

@@ -16,10 +16,7 @@ import com.serverd.plugin.listener.ExecutionController;
  * Client class
  */
 public class Client implements Runnable
-{
-	/** Client's thread */
- 	protected Thread thread;
-	
+{	
 	private int id;
 	
 	/** Connected */
@@ -116,20 +113,11 @@ public class Client implements Runnable
 	}
 	
 	/**
-	 * Returns client {@link Thread}
-	 * @return client {@link Thread}
-	 */
-	public Thread getThread()
-	{
-		return thread;
-	}
-	
-	/**
 	 * Receiving raw data
 	 * @return byte array of data
 	 * @throws IOException when socket throw error
 	 */
-	protected byte[] receive() throws IOException
+	protected byte[] rawdataReceive() throws IOException
 	{
 		return new byte[BUFFER];
 	}
@@ -157,8 +145,8 @@ public class Client implements Runnable
 	{
 		String message = encoder.decode(new String(buffer,0,buffer.length), this);
 		
-		log.info("<Reveived> " + message);
-		
+		log.info("<Received> " + message);
+	
 		return message;
 	}
 	
@@ -376,7 +364,7 @@ public class Client implements Runnable
 		try 
 		{
 			while (connected) {
-				byte[] bytes = receive();
+				byte[] bytes = rawdataReceive();
 				if (bytes != null)
 					processCommand(bytes);
 			}
