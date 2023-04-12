@@ -36,12 +36,15 @@ public abstract class NonBlockingClient extends Client
 	
 	public boolean processQueue() throws IOException {
     	while (!isQueueEmpty()) {
-    		int size = queue.element().capacity();
-    		long remaining = size - processSend(queue.element());
-    		if (remaining > 0)
-    			return false;
-    		else 
+    		ByteBuffer buffer = queue.element();
+    		
+    		if (buffer.position() >= buffer.limit())
+    		{
     			queue.poll();
+    			continue;
+    		}
+    		
+    		System.out.println(processSend(buffer));
     	}
     	return true;
 	}
