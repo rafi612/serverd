@@ -52,7 +52,7 @@ public class UDPClient extends NonBlockingClient
 		SelectionKey key = udpSocket.keyFor(selector);
 		key.interestOps(SelectionKey.OP_WRITE);
 		
-		queueBuffer(ByteBuffer.wrap(bytes));
+		queueBuffer(bytes);
 		selector.wakeup();
 	}
 	

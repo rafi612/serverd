@@ -3,14 +3,14 @@ package com.serverd.client;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Selector;
-import java.util.LinkedList;
 
 public abstract class NonBlockingClient extends Client 
 {
 	/** Selector */
 	protected Selector selector;
 	
-	private LinkedList<ByteBuffer> queue = new LinkedList<>();
+	protected ByteBuffer writeBuffer = ByteBuffer.allocate(BUFFER);
+	protected ByteBuffer receiveBuffer = ByteBuffer.allocate(BUFFER);
 	
 	/**
 	 * NonBlockingClient constructor
@@ -22,31 +22,21 @@ public abstract class NonBlockingClient extends Client
 		this.selector = selector;
 	}
 	
-	protected void queueBuffer(ByteBuffer buffer) {
-		queue.add(buffer);
-	}
-	
-	public ByteBuffer getFromQueue() {
-		return queue.poll();
-	}
-	
-	public boolean isQueueEmpty() {
-		return queue.isEmpty();
+	protected void queueBuffer(byte[] buf) {
+		writeBuffer.put(buf);
+		writeBuffer.flip();
 	}
 	
 	public boolean processQueue() throws IOException {
-    	while (!isQueueEmpty()) {
-    		ByteBuffer buffer = queue.element();
-    		
-    		if (buffer.position() >= buffer.limit())
-    		{
-    			queue.poll();
-    			continue;
-    		}
-    		
-    		processSend(buffer);
-    	}
-    	return true;
+		
+		processSend(writeBuffer);
+		
+		if (writeBuffer.remaining() == 0)
+		{
+			writeBuffer.clear();
+			return true;
+		}
+		else return false;
 	}
 	
 	public abstract long processSend(ByteBuffer buffer) throws IOException;

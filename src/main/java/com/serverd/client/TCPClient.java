@@ -40,17 +40,16 @@ public class TCPClient extends NonBlockingClient
 	
 	@Override
 	public byte[] rawdataReceive() throws IOException
-	{
-		ByteBuffer buffer = ByteBuffer.allocate(BUFFER);
-			
-		int len = tcpSocket.read(buffer);
-		buffer.flip();
+	{		
+		receiveBuffer.clear();
+		int len = tcpSocket.read(receiveBuffer);
+		receiveBuffer.flip();
 		
 		if (len == -1)
 			throw new IOException("Connection closed");
 			
 		byte[] ret = new byte[len];
-		buffer.get(ret, 0, len);
+		receiveBuffer.get(ret, 0, len);
 		
 		return ret;
 	}
@@ -61,7 +60,7 @@ public class TCPClient extends NonBlockingClient
 		SelectionKey key = tcpSocket.keyFor(selector);
 		key.interestOps(SelectionKey.OP_WRITE);
 		
-		queueBuffer(ByteBuffer.wrap(bytes));
+		queueBuffer(bytes);
 		selector.wakeup();
 	}
 	

@@ -175,6 +175,8 @@ public class ClientManager
 	        Selector selector = Selector.open();
 	        udpSocket.register(selector, SelectionKey.OP_READ);
 			
+	        ByteBuffer buffer = ByteBuffer.allocate(Client.BUFFER);
+	        
 			while (udpRunned)
 			{
 	            selector.select();
@@ -188,8 +190,9 @@ public class ClientManager
 	                	continue;
 	            	
 	            	if (key.isReadable()) {
+	            		
+	            		buffer.clear();
 	            		DatagramChannel dc = (DatagramChannel) key.channel();
-	            		ByteBuffer buffer = ByteBuffer.allocate(Client.BUFFER);
 	            		InetSocketAddress address = (InetSocketAddress) dc.receive(buffer);
 	            		buffer.flip();
 	            		
