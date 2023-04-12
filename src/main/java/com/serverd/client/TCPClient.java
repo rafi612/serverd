@@ -94,8 +94,8 @@ public class TCPClient extends NonBlockingClient
 
 
 	@Override
-	public void processSend(ByteBuffer buffer) throws IOException 
+	public long processSend(ByteBuffer buffer) throws IOException 
 	{
-		tcpSocket.write(buffer);
+		return tcpSocket.write(buffer);
 	}
 }

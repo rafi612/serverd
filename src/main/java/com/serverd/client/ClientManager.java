@@ -116,10 +116,8 @@ public class ClientManager
 	                if (key.isWritable()) {
 	                	TCPClient client = (TCPClient) key.attachment();
 	                	
-	                	while (!client.isQueueEmpty()) {
-	                		client.processSend(client.getFromQueue());
-	                	}
-	                	key.interestOps(SelectionKey.OP_READ);
+	                	if (client.processQueue())
+	                		key.interestOps(SelectionKey.OP_READ);
 	                }
 				}
 			}
@@ -232,9 +230,7 @@ public class ClientManager
 	            		for (Client client : clients.values())
 	    					if (client.getProtocol() == Protocol.UDP) {
 	    						UDPClient udpClient = (UDPClient) client;
-	    						while (!udpClient.isQueueEmpty()) {
-	    							udpClient.processSend(udpClient.getFromQueue());
-	    						}
+	    	                	udpClient.processQueue();
 	    					}
 	            		key.interestOps(SelectionKey.OP_READ);
 	            	}

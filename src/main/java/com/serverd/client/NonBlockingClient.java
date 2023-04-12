@@ -34,6 +34,18 @@ public abstract class NonBlockingClient extends Client
 		return queue.isEmpty();
 	}
 	
-	public abstract void processSend(ByteBuffer buffer) throws IOException;
+	public boolean processQueue() throws IOException {
+    	while (!isQueueEmpty()) {
+    		int size = queue.element().capacity();
+    		long remaining = size - processSend(queue.element());
+    		if (remaining > 0)
+    			return false;
+    		else 
+    			queue.poll();
+    	}
+    	return true;
+	}
+	
+	public abstract long processSend(ByteBuffer buffer) throws IOException;
 
 }

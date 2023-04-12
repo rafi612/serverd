@@ -75,8 +75,9 @@ public class UDPClient extends NonBlockingClient
 	}
 
 	@Override
-	public void processSend(ByteBuffer buffer) throws IOException 
+	public long processSend(ByteBuffer buffer) throws IOException 
 	{
 		udpSocket.send(buffer,address);
+		return (long) buffer.position();
 	}
 }
