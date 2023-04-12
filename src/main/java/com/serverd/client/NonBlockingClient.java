@@ -44,7 +44,7 @@ public abstract class NonBlockingClient extends Client
     			continue;
     		}
     		
-    		System.out.println(processSend(buffer));
+    		processSend(buffer);
     	}
     	return true;
 	}
