@@ -1,48 +1,40 @@
 package com.serverd.client;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.DatagramChannel;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 
 /**
  * UDP client class
  */
-public class UDPClient extends Client
+public class UDPClient extends NonBlockingClient
 {
 	/** UDP Socket*/
-	protected DatagramSocket udp_sock;
-	/** First package*/
-	protected DatagramPacket firstPacket;
+	protected DatagramChannel udpSocket;
 	
 	/** IP*/
-	protected InetAddress ip;
-	/** Port*/
-	protected int port;
+	protected InetSocketAddress address;
 
 	/**
 	 * UDPClient class constructor
 	 * @param id Client's ID
-	 * @param sock Datagram socket instance
-	 * @param firstPacket first packet received
-	 * @param ip Client's IP
-	 * @param port Client's port
-	 * @throws IOException if socket throw error
+	 * @param selector Selector instance
+	 * @param udpSocket Datagram socket instance
+	 * @param address Client's address
+	 * @throws IOException
 	 */
-	public UDPClient(int id,DatagramSocket sock,DatagramPacket firstPacket,InetAddress ip,int port) throws IOException
+	public UDPClient(int id,Selector selector,DatagramChannel udpSocket,SocketAddress address) throws IOException
 	{
-		super(id);
+		super(id,selector);
 		
-		this.ip = ip;
-		this.port = port;
-		this.firstPacket = firstPacket;
+		this.udpSocket = udpSocket;
+		this.address = (InetSocketAddress) address;
 		
 		protocol = Protocol.UDP;
-		
-		udp_sock = new DatagramSocket(null);
-		udp_sock.setReuseAddress(true);
-		udp_sock.bind(sock.getLocalSocketAddress());
-		udp_sock.connect(ip,port);
 	}
 	
 	
@@ -50,60 +42,41 @@ public class UDPClient extends Client
 	public void send(String mess) throws IOException
 	{
 		log.info("<Sended> " + mess);
-		
-		String message = encoder.encode(mess, this); 
-		
-		byte[] bytes = message.getBytes();
-		DatagramPacket out = new DatagramPacket(bytes,bytes.length,ip,port);
-		
-		udp_sock.send(out);
-	}
 
-	@Override
-	public byte[] rawdataReceive() throws IOException
-	{
-		byte[] buffer = new byte[Client.BUFFER];
-		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-		
-		if (firstPacket == null)
-			udp_sock.receive(packet);
-		else
-			packet = firstPacket;
-		
-		byte[] ret = new byte[packet.getLength()];
-		
-		System.arraycopy(packet.getData(), 0, ret, 0, packet.getLength());
-		
-		firstPacket = null;
-		
-		return ret;
+		rawdataSend(encoder.encode(mess, this).getBytes());
 	}
 	
 	@Override
 	public void rawdataSend(byte[] bytes) throws IOException
 	{
-		DatagramPacket p = new DatagramPacket(bytes, bytes.length, ip, port);
+		SelectionKey key = udpSocket.keyFor(selector);
+		key.interestOps(SelectionKey.OP_WRITE);
 		
-		udp_sock.send(p);
+		queueBuffer(ByteBuffer.wrap(bytes));
+		selector.wakeup();
 	}
 	
 	@Override
 	public String getIP()
 	{
-		return ip.getHostAddress();
+		return address.getAddress().getHostAddress();
 	}
 	
 	@Override
 	public int getPort()
 	{
-		return port;
+		return address.getPort();
 	}
 	
 	@Override
 	public void closeClient()
 	{
 		super.closeClient();
+	}
 
-		udp_sock.close();
+	@Override
+	public void processSend(ByteBuffer buffer) throws IOException 
+	{
+		udpSocket.send(buffer,address);
 	}
 }

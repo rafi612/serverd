@@ -1,9 +1,9 @@
 package com.serverd.client;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -11,6 +11,7 @@ import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import com.serverd.client.Client.Protocol;
 import com.serverd.log.Log;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
@@ -82,6 +83,9 @@ public class ClientManager
 					SelectionKey key = keys.next();
 	                keys.remove();
 	                
+	                if (!key.isValid())
+	                	continue;
+	                
 	                if (key.isAcceptable()) {
 	                    SocketChannel socket = tcpSocket.accept();
 	                    socket.configureBlocking(false);
@@ -102,8 +106,12 @@ public class ClientManager
 		                	client.processCommand(client.rawdataReceive());
 	                	} catch (IOException e) {
 	                		client.crash(e);
+	                		continue;
 	                	}
 	                }
+	               
+	                if (!key.isValid())
+	                	continue;
 	                
 	                if (key.isWritable()) {
 	                	TCPClient client = (TCPClient) key.attachment();
@@ -139,7 +147,7 @@ public class ClientManager
 		}
 	}
 	
-	public static DatagramSocket udpSocket;
+	public static DatagramChannel udpSocket;
 	
 	/**
 	 * Starting UDP Server
@@ -162,30 +170,78 @@ public class ClientManager
 				return;
 			}
 			
-			udpSocket = new DatagramSocket(null);
-			udpSocket.setReuseAddress(true);
+			udpSocket = DatagramChannel.open();
+			udpSocket.configureBlocking(false);
 			udpSocket.bind(new InetSocketAddress(ip,port));
+			
+	        Selector selector = Selector.open();
+	        udpSocket.register(selector, SelectionKey.OP_READ);
 			
 			while (udpRunned)
 			{
-				byte[] buffer = new byte[Client.BUFFER];
-				DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-				
-				udpSocket.receive(packet);
-				
-				String msg = new String(packet.getData(),packet.getOffset(),packet.getLength());
-								
-				udplog.info("Connection founded in " + packet.getAddress().getHostAddress() + ":" + packet.getPort() + " Message: " + msg);	
-					
-				UDPClient client = new UDPClient(getFreeClientID(), udpSocket, packet, packet.getAddress(), packet.getPort());
-				addClient(client);
-				
-				setupClient(client);
-					
-				udplog.info("Creating client thread...");
-				new Thread(client).start();
-				
+	            selector.select();
+	            
+	            Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
+	            while (keys.hasNext()) {
+	            	SelectionKey key = keys.next();
+	            	keys.remove();
+	            	
+	                if (!key.isValid())
+	                	continue;
+	            	
+	            	if (key.isReadable()) {
+	            		DatagramChannel dc = (DatagramChannel) key.channel();
+	            		ByteBuffer buffer = ByteBuffer.allocate(Client.BUFFER);
+	            		InetSocketAddress address = (InetSocketAddress) dc.receive(buffer);
+	            		buffer.flip();
+	            		
+	    				boolean new_ = true;
+	    				
+	    				for (Client client : clients.values())
+	    					if (client.getProtocol() == Protocol.UDP)
+	    						if (client.getIP().equals(address.getAddress().getHostAddress()) && client.getPort() == address.getPort()) {
+	    							
+	    		    				byte[] data = new byte[buffer.limit()];
+	    		    				buffer.get(data, 0, buffer.limit());
+	    		    				
+	    							client.processCommand(data);
+	    							
+	    							new_ = false;
+	    							break;
+	    						}
+	    				
+	    				if (new_) {	
+	    					UDPClient client = new UDPClient(getFreeClientID(), selector, udpSocket, address);
+	    					addClient(client);
+	    					
+	    					udplog.info("Connection founded in " + client.getIP() + ":" + client.getPort());	
+	    					
+	    					setupClient(client);
+	    					
+		    				byte[] data = new byte[buffer.limit()];
+		    				buffer.get(data, 0, buffer.limit());
+	    					
+	    					client.processCommand(data);
+	    				}
+	            	}
+	            	
+	                if (!key.isValid())
+	                	continue;
+	            	
+	            	if (key.isWritable()) {
+	            		for (Client client : clients.values())
+	    					if (client.getProtocol() == Protocol.UDP) {
+	    						UDPClient udpClient = (UDPClient) client;
+	    						while (!udpClient.isQueueEmpty()) {
+	    							udpClient.processSend(udpClient.getFromQueue());
+	    						}
+	    					}
+	            		key.interestOps(SelectionKey.OP_READ);
+	            	}
+	            }
 			}
+            udpSocket.close();
+
 		} 
 		catch (IOException e)
 		{
@@ -196,8 +252,9 @@ public class ClientManager
 	
 	/**
 	 * Closing UDP server
+	 * @throws IOException when channel throws {@link IOException}
 	 */
-	public static void stopUdpServer()
+	public static void stopUdpServer() throws IOException
 	{
 		udpRunned = false;
 		

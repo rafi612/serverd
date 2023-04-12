@@ -342,7 +342,7 @@ public class Client implements Runnable
 	 * Crash handler
 	 * @param exception Exception
 	 */
-	protected void crash(Exception exception)
+	public void crash(Exception exception)
 	{
 		if (!crashed && connected)
 		{

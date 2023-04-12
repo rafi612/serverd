@@ -5,12 +5,18 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Selector;
 import java.util.LinkedList;
 
-public abstract class NonBlockingClient extends Client {
-
+public abstract class NonBlockingClient extends Client 
+{
+	/** Selector */
 	protected Selector selector;
 	
 	private LinkedList<ByteBuffer> queue = new LinkedList<>();
 	
+	/**
+	 * NonBlockingClient constructor
+	 * @param id client ID
+	 * @param selector client Selector object
+	 */
 	public NonBlockingClient(int id,Selector selector) {
 		super(id);
 		this.selector = selector;
@@ -20,7 +26,7 @@ public abstract class NonBlockingClient extends Client {
 		queue.add(buffer);
 	}
 	
-	protected ByteBuffer getFromQueue() {
+	public ByteBuffer getFromQueue() {
 		return queue.poll();
 	}
 	

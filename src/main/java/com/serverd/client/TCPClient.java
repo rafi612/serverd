@@ -44,13 +44,13 @@ public class TCPClient extends NonBlockingClient
 		ByteBuffer buffer = ByteBuffer.allocate(BUFFER);
 			
 		int len = tcpSocket.read(buffer);
+		buffer.flip();
 		
 		if (len == -1)
 			throw new IOException("Connection closed");
 			
 		byte[] ret = new byte[len];
-			
-		System.arraycopy(buffer.array(), 0, ret, 0, len);
+		buffer.get(ret, 0, len);
 		
 		return ret;
 	}
@@ -62,12 +62,22 @@ public class TCPClient extends NonBlockingClient
 		key.interestOps(SelectionKey.OP_WRITE);
 		
 		queueBuffer(ByteBuffer.wrap(bytes));
+		selector.wakeup();
 	}
 	
 	@Override
 	public void closeClient()
 	{
 		super.closeClient();
+		
+		try
+		{
+			tcpSocket.close();
+		} 
+		catch (IOException e)
+		{
+			log.error("Client closing failed: " + e.getMessage());
+		}
 	}
 	
 	@Override
@@ -84,7 +94,8 @@ public class TCPClient extends NonBlockingClient
 
 
 	@Override
-	public void processSend(ByteBuffer buffer) throws IOException {
+	public void processSend(ByteBuffer buffer) throws IOException 
+	{
 		tcpSocket.write(buffer);
 	}
 }
