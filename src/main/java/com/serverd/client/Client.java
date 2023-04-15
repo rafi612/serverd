@@ -289,7 +289,6 @@ public class Client implements Runnable
 	public class JoinException extends Exception 
 	{
 		private static final long serialVersionUID = 1L;
-
 		/**
 		 * JoinException class constructor
 		 * @param message Message
