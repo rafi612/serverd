@@ -288,6 +288,10 @@ public class ClientManager
 		return clients.values().toArray(Client[]::new);
 	}
 	
+	/**
+	 * Returning clients amount
+	 * @return clients amount number
+	 */
 	public static int getClientConnectedAmount()
 	{
 		return clients.size();
