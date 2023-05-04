@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.serverd.command.Commands;
+import com.serverd.config.Config;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.ServerdPlugin;
@@ -76,7 +77,7 @@ class ClientManagerTest
 	{
 		assumeTrue(availableTCP(9999));
 		
-		new Thread(() -> ClientManager.startTcpServer("0.0.0.0", 9999)).start();
+		new Thread(() -> ClientManager.startTcpServer("0.0.0.0", 9999, new Config())).start();
 		
 		while (availableTCP(9999))
 			Thread.sleep(100);
@@ -102,7 +103,7 @@ class ClientManagerTest
 	{
 		assumeTrue(availableUDP(9998));
 		
-		new Thread(() -> ClientManager.startUdpServer("0.0.0.0", 9998)).start();
+		new Thread(() -> ClientManager.startUdpServer("0.0.0.0", 9998, new Config())).start();
 		
 		while (availableUDP(9998))
 			Thread.sleep(100);
@@ -219,7 +220,7 @@ class ClientManagerTest
 		assumeTrue(availableTCP(9999));
 		assumeTrue(availableUDP(9998));
 		
-		ClientManager.start("0.0.0.0", 9999, 9998);
+		ClientManager.start("0.0.0.0", 9999, 9998, new Config());
 		
 		while (availableTCP(9999) || availableUDP(9998))
 			Thread.sleep(100);

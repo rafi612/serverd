@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import com.serverd.config.Config;
+
 /**
  * TCP client class
  */
@@ -24,13 +26,15 @@ public class TCPClient extends Client
 	 * @param socket Socket instance
 	 * @throws IOException when InputStream or OutputStream throws {@link IOException}
 	 */
-	public TCPClient(int id, Socket socket) throws IOException
+	public TCPClient(int id, Socket socket,Config config) throws IOException
 	{
 		super(id);
 		
 		protocol = Protocol.TCP;
 		
 		tcpSocket = socket;
+		if (config.timeout != -1)
+			tcpSocket.setSoTimeout(config.timeout);
 		
 		in = tcpSocket.getInputStream();
 		out = tcpSocket.getOutputStream();

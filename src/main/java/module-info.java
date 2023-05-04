@@ -10,4 +10,5 @@ open module serverd
 	exports com.serverd.main;
 	exports com.serverd.command;
 	exports com.serverd.plugin;
+	exports com.serverd.config;
 }

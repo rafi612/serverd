@@ -5,13 +5,15 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import com.serverd.config.Config;
+
 /**
  * UDP client class
  */
 public class UDPClient extends Client
 {
 	/** UDP Socket*/
-	protected DatagramSocket udp_sock;
+	protected DatagramSocket udpSocket;
 	/** First package*/
 	protected DatagramPacket firstPacket;
 	
@@ -29,7 +31,7 @@ public class UDPClient extends Client
 	 * @param port Client's port
 	 * @throws IOException if socket throw error
 	 */
-	public UDPClient(int id,DatagramSocket sock,DatagramPacket firstPacket,InetAddress ip,int port) throws IOException
+	public UDPClient(int id,DatagramSocket sock,DatagramPacket firstPacket,InetAddress ip,int port,Config config) throws IOException
 	{
 		super(id);
 		
@@ -39,10 +41,13 @@ public class UDPClient extends Client
 		
 		protocol = Protocol.UDP;
 		
-		udp_sock = new DatagramSocket(null);
-		udp_sock.setReuseAddress(true);
-		udp_sock.bind(sock.getLocalSocketAddress());
-		udp_sock.connect(ip,port);
+		udpSocket = new DatagramSocket(null);
+		udpSocket.setReuseAddress(true);
+		udpSocket.bind(sock.getLocalSocketAddress());
+		udpSocket.connect(ip,port);
+		
+		if (config.timeout != -1)
+			udpSocket.setSoTimeout(config.timeout);
 		
 		thread = new Thread(this, "UDP Client " + id);
 	}
@@ -54,7 +59,7 @@ public class UDPClient extends Client
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 		
 		if (firstPacket == null)
-			udp_sock.receive(packet);
+			udpSocket.receive(packet);
 		else
 			packet = firstPacket;
 		
@@ -78,7 +83,7 @@ public class UDPClient extends Client
 		byte[] bytes = message.getBytes();
 		DatagramPacket out = new DatagramPacket(bytes,bytes.length,ip,port);
 		
-		udp_sock.send(out);
+		udpSocket.send(out);
 	}
 
 	@Override
@@ -88,7 +93,7 @@ public class UDPClient extends Client
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 		
 		if (firstPacket == null)
-			udp_sock.receive(packet);
+			udpSocket.receive(packet);
 		else
 			packet = firstPacket;
 		
@@ -106,7 +111,7 @@ public class UDPClient extends Client
 	{
 		DatagramPacket p = new DatagramPacket(bytes, bytes.length, ip, port);
 		
-		udp_sock.send(p);
+		udpSocket.send(p);
 	}
 	
 	@Override
@@ -126,6 +131,6 @@ public class UDPClient extends Client
 	{
 		super.closeClient();
 
-		udp_sock.close();
+		udpSocket.close();
 	}
 }
