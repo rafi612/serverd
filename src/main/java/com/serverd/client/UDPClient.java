@@ -46,8 +46,7 @@ public class UDPClient extends Client
 		udpSocket.bind(sock.getLocalSocketAddress());
 		udpSocket.connect(ip,port);
 		
-		if (config.timeout != -1)
-			udpSocket.setSoTimeout(config.timeout);
+		udpSocket.setSoTimeout(config.timeout);
 		
 		thread = new Thread(this, "UDP Client " + id);
 	}

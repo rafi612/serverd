@@ -23,9 +23,10 @@ public class Main
 		boolean pluginDebug = false;
 		String pluginDebugClass = ""; 
 		
-		//parse work dir arg
+		//parse work dir argument
 		for (int i = 0;i < args.length;i++)
-			if(args[i].equals("--working-loc")) {
+			if(args[i].equals("--working-loc"))
+			{
 				if (i + 1 > args.length)
 				{
 					System.err.println("--working-loc: missing argument");
@@ -33,26 +34,31 @@ public class Main
 				}
 				workingdir = args[i + 1];
 			}
+		
 		//create work dir
 		File workdirFile = new File(workingdir);
 		if (!workdirFile.exists())
 			if (!workdirFile.mkdir())
 			{
 				log.error("Failed to create working directory in " + workingdir);
-				System.exit(-1);
+				System.exit(1);
 			}
+		
 		//load config
 		Config config = null;
-		try {
+		try 
+		{
 			File configFile = new File(workdirFile,"config.properties");
 			Config.createIfNotExists(configFile, new Config(), "Default ServerD config file");
 			config = Config.load(configFile, Config.class);
-		} catch (Exception e) {
+		} 
+		catch (Exception e)
+		{
 			log.error("Error: " + e.getMessage());
-			System.exit(-1);
+			System.exit(1);
 		}
 		
-		//parse others
+		//parse other arguments
 		for (int i = 0;i < args.length;i++)
 			if(args[i].startsWith("--"))
 		{
@@ -135,7 +141,7 @@ public class Main
 			catch (ClassNotFoundException e)
 			{
 				System.err.println("Class " + pluginDebugClass + " not found");
-				System.exit(-1);
+				System.exit(1);
 			} 
 			catch (Exception e)
 			{

@@ -1,6 +1,7 @@
 package com.serverd.config;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,10 +9,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 import java.util.Properties;
 
 import com.serverd.main.Main;
 
+/**
+ * Default config instance and config loader and writer
+ */
 public class Config {
 
 	@ConfigProperty("ip")
@@ -24,15 +29,23 @@ public class Config {
 	public int udpPort = 9998;
 
 	@ConfigProperty("timeout")
-	public int timeout = 5 * 60 * 1000;
+	public int timeout = 0;
 	
 	@ConfigProperty("enable.tcp")
 	public boolean enableTcp = true;
 	@ConfigProperty("enable.udp")
 	public boolean enableUdp = true;
 	
-	public static <T> T load(File path,Class<T> clazz) throws IOException {
-		try (InputStream input = new FileInputStream(path)) {
+	/**
+	 * Loading config from file to given type, searching using {@link ConfigProperty} annotation
+	 * @param <T> Type of returned config
+	 * @param file Path to .properties file
+	 * @param clazz Config class object
+	 * @return Config object
+	 * @throws IOException when IO error
+	 */
+	public static <T> T load(File file,Class<T> clazz) throws IOException {
+		try (InputStream input = new FileInputStream(file)) {
 			T config = clazz.getDeclaredConstructor().newInstance();
 			Properties properties = new Properties();
 			properties.load(input);
@@ -45,42 +58,58 @@ public class Config {
 		        }
 			}
 			return config;
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
+		} catch (IllegalArgumentException | IllegalAccessException | InstantiationException  
+				| InvocationTargetException | NoSuchMethodException  | SecurityException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	public static void save(File path,Object config,String comment) throws IOException, IllegalArgumentException, IllegalAccessException {
-		try (OutputStream output = new FileOutputStream(path)) {
+	/**
+	 * Saves config to given file
+	 * @param file File to save
+	 * @param config Config instance
+	 * @param comment Comment
+	 * @throws IOException when IO error
+	 */
+	public static void save(File file,Object config,String comment) throws IOException {
+		try (OutputStream output = new FileOutputStream(file)) {
 			Properties properties = new Properties();
 			
 			for (Field field : config.getClass().getDeclaredFields()) {
 				if (field.isAnnotationPresent(ConfigProperty.class)) {
 					ConfigProperty annotation = field.getAnnotation(ConfigProperty.class);
-					
-					properties.setProperty(annotation.value(), field.get(config).toString());
+					field.setAccessible(true);
+					var objectValue = field.get(config);
+					properties.setProperty(annotation.value(), Objects.toString(objectValue, "null"));
 				}
 			}
 			properties.store(output, comment);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
 	}
 	
-	public static void createIfNotExists(File path,Object config,String comment) throws IllegalArgumentException, IllegalAccessException, IOException {
-		if (!path.exists())
-			save(path,config,comment);
+	/**
+	 * Creating config when it does not exists
+	 * @param file File to save
+	 * @param config Config instance
+	 * @param comment Comment
+	 * @return if config exists before
+	 * @throws IOException when IO error
+	 */
+	public static boolean createIfNotExists(File file,Object config,String comment) throws IOException {
+		boolean before;
+		if (before = !file.exists())
+			save(file,config,comment);
+		return !before;
 	}
 	
+	/**
+	 * Loading default server config
+	 * @return Config instance
+	 * @throws IOException when IO error
+	 */
 	public static Config loadDefault() throws IOException {
 		return Config.load(new File(Main.workingdir,"config.properties"), Config.class);
 	}

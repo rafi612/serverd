@@ -33,8 +33,8 @@ public class TCPClient extends Client
 		protocol = Protocol.TCP;
 		
 		tcpSocket = socket;
-		if (config.timeout != -1)
-			tcpSocket.setSoTimeout(config.timeout);
+		
+		tcpSocket.setSoTimeout(config.timeout);
 		
 		in = tcpSocket.getInputStream();
 		out = tcpSocket.getOutputStream();
