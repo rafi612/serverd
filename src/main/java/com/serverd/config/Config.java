@@ -53,9 +53,9 @@ public class Config {
 			for (Field field : clazz.getDeclaredFields()) {
 				if (field.isAnnotationPresent(ConfigProperty.class)) {
 					ConfigProperty annotation = field.getAnnotation(ConfigProperty.class);
-		            field.setAccessible(true);
-		            field.set(config, parseType(properties.getProperty(annotation.value()),field.getType()));
-		        }
+					field.setAccessible(true);
+					field.set(config, parseType(properties.getProperty(annotation.value()),field.getType()));
+				}
 			}
 			return config;
 		} catch (IllegalArgumentException | IllegalAccessException | InstantiationException  
@@ -114,22 +114,22 @@ public class Config {
 		return Config.load(new File(Main.workingdir,"config.properties"), Config.class);
 	}
 	
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	private static <T> T parseType(String input, Class<T> parseType) {
-        if (parseType == String.class) {
-            return (T) input;
-        } else if (parseType == Integer.class || parseType == int.class) {
-            return (T) Integer.valueOf(input);
-        } else if (parseType == Long.class || parseType == long.class) {
-            return (T) Long.valueOf(input);
-        } else if (parseType == Float.class || parseType == float.class) {
-            return (T) Float.valueOf(input);
-        } else if (parseType == Double.class || parseType == double.class) {
-            return (T) Double.valueOf(input);
-        } else if (parseType == Boolean.class || parseType == boolean.class) {
-            return (T) Boolean.valueOf(input);
-        } else {
-            throw new IllegalArgumentException("Unsupported type: " + parseType.getName());
-        }
-    }
+		if (parseType == String.class) {
+			return (T) input;
+		} else if (parseType == Integer.class || parseType == int.class) {
+			return (T) Integer.valueOf(input);
+		} else if (parseType == Long.class || parseType == long.class) {
+			return (T) Long.valueOf(input);
+		} else if (parseType == Float.class || parseType == float.class) {
+			return (T) Float.valueOf(input);
+		} else if (parseType == Double.class || parseType == double.class) {
+			return (T) Double.valueOf(input);
+		} else if (parseType == Boolean.class || parseType == boolean.class) {
+			return (T) Boolean.valueOf(input);
+		} else {
+			throw new IllegalArgumentException("Unsupported type: " + parseType.getName());
+		}
+	}
 }
