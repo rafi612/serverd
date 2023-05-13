@@ -18,12 +18,6 @@ class ClientTest
 		{
 			super(id);
 		}
-		
-		@Override
-		public boolean checkArgs(String[] args,int length) throws IOException
-		{
-			return super.checkArgs(args, length);
-		}
 	}
 	
 	@BeforeEach
@@ -82,20 +76,6 @@ class ClientTest
 			
 			() -> assertEquals(client.type, Client.Type.NONE),
 			() -> assertEquals(client2.type, Client.Type.NONE)
-		);
-	}
-	
-	@Test
-	void checkArgs_Test()
-	{
-		String[] args1 = {"Test","test","test","test"};
-		String[] args2 = {"Test","test"};
-		String[] args3 = {"Test","test","test","test","Test","test","test","test"};
-		
-		assertAll(
-			() -> assertTrue(client.checkArgs(args1, 4)),
-			() -> assertFalse(client.checkArgs(args2, 3)),
-			() -> assertFalse(client.checkArgs(args3, 5))
 		);
 	}
 	

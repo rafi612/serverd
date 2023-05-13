@@ -121,27 +121,7 @@ public class Client implements Runnable
 	{
 		return thread;
 	}
-
-	/**
-	 * Checking amount of arguments
-	 * @param args Arguments
-	 * @param length Arguments length
-	 * @return Good of arguments
-	 */
-	protected boolean checkArgs(String[] args,int length) throws IOException
-	{
-		if (args.length < length) 
-		{
-			send("Missing Argument");
-			return false;
-		}
-		else if (args.length > length)
-		{
-			send("Too much Arguments");
-			return false;
-		}
-		else return true;
-	}
+	
 	/**
 	 * Receiving message
 	 * @return Received message
