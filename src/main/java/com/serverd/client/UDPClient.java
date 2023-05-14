@@ -11,7 +11,7 @@ import java.nio.channels.Selector;
 /**
  * UDP client class
  */
-public class UDPClient extends NonBlockingClient
+public class UDPClient extends SelectableClient
 {
 	/** UDP Socket*/
 	protected DatagramChannel udpSocket;
@@ -54,6 +54,11 @@ public class UDPClient extends NonBlockingClient
 		
 		queueBuffer(bytes);
 		selector.wakeup();
+	}
+	
+	@Override
+	public SelectionKey getKey() {
+		return udpSocket.keyFor(selector);
 	}
 	
 	@Override

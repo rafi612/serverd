@@ -116,8 +116,11 @@ public class ClientManager
 	                if (key.isWritable()) {
 	                	TCPClient client = (TCPClient) key.attachment();
 	                	
-	                	if (client.processQueue())
+	                	if (client.processQueue()) {
 	                		key.interestOps(SelectionKey.OP_READ);
+	                		if (client.isJoined() && client.getJoiner().isSelectable())
+	                			((SelectableClient)client.getJoiner()).unlockRead();
+	                	}
 	                }
 				}
 			}
@@ -233,7 +236,14 @@ public class ClientManager
 	            		for (Client client : clients.values())
 	    					if (client.getProtocol() == Protocol.UDP) {
 	    						UDPClient udpClient = (UDPClient) client;
-	    	                	udpClient.processQueue();
+	    	                	if (udpClient.isReadyToWrite()) {
+	    	                		if (udpClient.processQueue()) {
+			                    		if (client.isJoined() && client.getJoiner().isSelectable()) {
+			                    			((SelectableClient)client.getJoiner()).unlockRead();
+			                    		}
+			                    			
+	    	                		}
+	    	                	}
 	    					}
 	            		key.interestOps(SelectionKey.OP_READ);
 	            	}
@@ -246,6 +256,7 @@ public class ClientManager
 		{
 			if (udpRunned)
 				udplog.error("Server error: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	

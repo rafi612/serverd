@@ -10,7 +10,7 @@ import java.nio.channels.SocketChannel;
 /**
  * TCP client class
  */
-public class TCPClient extends NonBlockingClient
+public class TCPClient extends SelectableClient
 {	
 	/** Socket*/
 	protected SocketChannel tcpSocket;
@@ -77,6 +77,11 @@ public class TCPClient extends NonBlockingClient
 		{
 			log.error("Client closing failed: " + e.getMessage());
 		}
+	}
+	
+	@Override
+	public SelectionKey getKey() {
+		return tcpSocket.keyFor(selector);
 	}
 	
 	@Override

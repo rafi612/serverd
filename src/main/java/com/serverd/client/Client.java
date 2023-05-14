@@ -194,6 +194,14 @@ public class Client implements Runnable
 		return joinedid != -1;
 	}
 	
+	public boolean isSelectable() {
+		return this instanceof SelectableClient;
+	}
+	
+	public Client getJoiner() {
+		return ClientManager.getClient(getJoinedID());
+	}
+	
 	/**
 	 * State of once join
 	 * @return true if client is once joined
