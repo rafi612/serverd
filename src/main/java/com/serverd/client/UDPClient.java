@@ -47,10 +47,22 @@ public class UDPClient extends SelectableClient
 	}
 	
 	@Override
+	public byte[] rawdataReceive() throws IOException
+	{		
+		receiveBuffer.clear();
+		udpSocket.receive(receiveBuffer);
+		receiveBuffer.flip();
+			
+		byte[] ret = new byte[receiveBuffer.limit()];
+		receiveBuffer.get(ret, 0, receiveBuffer.limit());
+		
+		return ret;
+	}
+	
+	@Override
 	public void rawdataSend(byte[] bytes) throws IOException
 	{
-		SelectionKey key = udpSocket.keyFor(selector);
-		key.interestOps(SelectionKey.OP_WRITE);
+		getKey().interestOps(SelectionKey.OP_WRITE);
 		
 		queueBuffer(bytes);
 		selector.wakeup();

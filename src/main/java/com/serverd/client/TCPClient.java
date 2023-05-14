@@ -6,8 +6,6 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
-import com.serverd.config.Config;
-
 /**
  * TCP client class
  */
@@ -22,14 +20,12 @@ public class TCPClient extends SelectableClient
 	 * @param socket Socket instance
 	 * @throws IOException when InputStream or OutputStream throws {@link IOException}
 	 */
-	public TCPClient(int id,Selector selector, SocketChannel socket,Config config) throws IOException
+	public TCPClient(int id,Selector selector, SocketChannel socket) throws IOException
 	{
 		super(id,selector);
 		
 		protocol = Protocol.TCP;
 		tcpSocket = socket;
-		
-		tcpSocket.socket().setSoTimeout(config.timeout);
 	}
 
 	
@@ -54,14 +50,15 @@ public class TCPClient extends SelectableClient
 		byte[] ret = new byte[len];
 		receiveBuffer.get(ret, 0, len);
 		
+		updateTimeout();
+		
 		return ret;
 	}
 	
 	@Override
 	public void rawdataSend(byte[] bytes) throws IOException
 	{
-		SelectionKey key = tcpSocket.keyFor(selector);
-		key.interestOps(SelectionKey.OP_WRITE);
+		getKey().interestOps(SelectionKey.OP_WRITE);
 		
 		queueBuffer(bytes);
 		selector.wakeup();

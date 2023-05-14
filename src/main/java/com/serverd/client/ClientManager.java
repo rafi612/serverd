@@ -11,7 +11,6 @@ import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import com.serverd.client.Client.Protocol;
 import com.serverd.config.Config;
 import com.serverd.log.Log;
 import com.serverd.plugin.Plugin;
@@ -77,7 +76,18 @@ public class ClientManager
 			tcpSocket.register(selector, SelectionKey.OP_ACCEPT);
 			
 			while (tcpRunned) {
-				selector.select();
+				//timeout checking and selecting
+				if (selector.select(config.timeout) == 0) {
+					for (SelectionKey key : selector.keys()) {
+						//check if can be readable
+		                if ((key.interestOps() & SelectionKey.OP_READ) == 0)
+		                	continue;
+		                //check timeout
+						TCPClient client = (TCPClient) key.attachment();
+						if (System.currentTimeMillis() - client.lastReadTime() >= config.timeout)
+							client.crash(new IOException("Read timed out"));
+					}
+				}
 				
 				Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
 				while (keys.hasNext()) {
@@ -93,7 +103,7 @@ public class ClientManager
 	                    
 	                    tcplog.info("Connection accepted from client!");
 	                    
-	    				TCPClient client = new TCPClient(getFreeClientID(),selector,socket,config);
+	    				TCPClient client = new TCPClient(getFreeClientID(),selector,socket);
 	    				addClient(client);
 	    				
 	                    socket.register(selector, SelectionKey.OP_READ,client);
@@ -179,8 +189,9 @@ public class ClientManager
 			}
 			
 			udpSocket = DatagramChannel.open();
-			udpSocket.bind(new InetSocketAddress(ip,port));
 			udpSocket.configureBlocking(false);
+			udpSocket.socket().setReuseAddress(true);
+			udpSocket.bind(new InetSocketAddress(ip,port));
 			
 	        Selector selector = Selector.open();
 	        udpSocket.register(selector, SelectionKey.OP_READ);
@@ -189,7 +200,18 @@ public class ClientManager
 	        
 			while (udpRunned)
 			{
-	            selector.select();
+				//timeout checking and selecting
+				if (selector.select(config.timeout) == 0) {
+					for (SelectionKey key : selector.keys()) {
+						//check if can be readable
+		                if (key.channel().equals(udpSocket))
+		                	continue;
+		                //check timeout
+						UDPClient client = (UDPClient) key.attachment();
+						if (System.currentTimeMillis() - client.lastReadTime() >= config.timeout)
+							client.crash(new IOException("Read timed out"));
+					}
+				}
 	            
 	            Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
 	            while (keys.hasNext()) {
@@ -201,29 +223,24 @@ public class ClientManager
 	            	
 	            	if (key.isReadable()) {
 	            		
-	            		buffer.clear();
-	            		DatagramChannel dc = (DatagramChannel) key.channel();
-	            		InetSocketAddress address = (InetSocketAddress) dc.receive(buffer);
-	            		buffer.flip();
-	            		
-	    				boolean new_ = true;
-	    				
-	    				for (Client client : clients.values())
-	    					if (client.getProtocol() == Protocol.UDP)
-	    						if (client.getIP().equals(address.getAddress().getHostAddress()) && client.getPort() == address.getPort()) {
-	    							
-	    		    				byte[] data = new byte[buffer.limit()];
-	    		    				buffer.get(data, 0, buffer.limit());
-	    		    				
-	    							client.processCommand(data);
-	    							
-	    							new_ = false;
-	    							break;
-	    						}
-	    				
-	    				if (new_) {	
-	    					UDPClient client = new UDPClient(getFreeClientID(), selector, udpSocket, address);
+	            		//new client
+	            		if (key.attachment() == null) {
+	            			
+		            		buffer.clear();
+		            		DatagramChannel channel = (DatagramChannel) key.channel();
+		            		InetSocketAddress address = (InetSocketAddress) channel.receive(buffer);
+		            		buffer.flip();
+		            		
+	            			DatagramChannel dc = DatagramChannel.open();
+	            			dc.configureBlocking(false);
+	            			dc.socket().setReuseAddress(true);
+	            			dc.bind(channel.socket().getLocalSocketAddress());
+	            			dc.connect(address);
+	            			
+	    					UDPClient client = new UDPClient(getFreeClientID(), selector, dc, address);
 	    					addClient(client);
+	    					
+	    					dc.register(selector, SelectionKey.OP_READ,client);
 	    					
 	    					udplog.info("Connection founded in " + client.getIP() + ":" + client.getPort());	
 	    					
@@ -233,25 +250,28 @@ public class ClientManager
 		    				buffer.get(data, 0, buffer.limit());
 	    					
 	    					client.processCommand(data);
-	    				}
+	            		} else {
+		                	UDPClient client = (UDPClient) key.attachment();
+		                	try {
+			                	client.processCommand(client.rawdataReceive());
+		                	} catch (IOException e) {
+		                		client.crash(e);
+		                		continue;
+		                	}
+	            		}
 	            	}
 	            	
 	                if (!key.isValid())
 	                	continue;
 	            	
 	            	if (key.isWritable()) {
-	            		for (Client client : clients.values())
-	    					if (client.getProtocol() == Protocol.UDP) {
-	    						UDPClient udpClient = (UDPClient) client;
-	    	                	if (udpClient.isReadyToWrite()) {
-	    	                		if (udpClient.processQueue()) {
-			                    		if (client.isJoined() && client.getJoiner().isSelectable()) {
-			                    			((SelectableClient)client.getJoiner()).unlockRead();
-			                    		}
-			                    			
-	    	                		}
-	    	                	}
-	    					}
+	                	UDPClient client = (UDPClient) key.attachment();
+	                	
+	                	if (client.processQueue()) {
+	                		key.interestOps(SelectionKey.OP_READ);
+	                		if (client.isJoined() && client.getJoiner().isSelectable())
+	                			((SelectableClient)client.getJoiner()).unlockRead();
+	                	}
 	            		key.interestOps(SelectionKey.OP_READ);
 	            	}
 	            }
@@ -263,7 +283,6 @@ public class ClientManager
 		{
 			if (udpRunned)
 				udplog.error("Server error: " + e.getMessage());
-			e.printStackTrace();
 		}
 	}
 	

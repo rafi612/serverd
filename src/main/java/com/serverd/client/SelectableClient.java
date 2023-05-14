@@ -14,6 +14,7 @@ public abstract class SelectableClient extends Client
 	protected ByteBuffer receiveBuffer = ByteBuffer.allocate(BUFFER);
 	
 	private boolean readyToWrite;
+	protected long lastReadTime;
 	
 	/**
 	 * NonBlockingClient constructor
@@ -23,6 +24,16 @@ public abstract class SelectableClient extends Client
 	public SelectableClient(int id,Selector selector) {
 		super(id);
 		this.selector = selector;
+		
+		updateTimeout();
+	}
+	
+	protected void updateTimeout() {
+		lastReadTime = System.currentTimeMillis();
+	}
+	
+	public long lastReadTime() {
+		return lastReadTime;
 	}
 	
 	protected void queueBuffer(byte[] buf) {
