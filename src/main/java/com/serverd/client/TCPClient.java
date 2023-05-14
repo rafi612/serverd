@@ -6,6 +6,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
+import com.serverd.config.Config;
 
 /**
  * TCP client class
@@ -21,12 +22,14 @@ public class TCPClient extends SelectableClient
 	 * @param socket Socket instance
 	 * @throws IOException when InputStream or OutputStream throws {@link IOException}
 	 */
-	public TCPClient(int id,Selector selector, SocketChannel socket) throws IOException
+	public TCPClient(int id,Selector selector, SocketChannel socket,Config config) throws IOException
 	{
 		super(id,selector);
 		
 		protocol = Protocol.TCP;
 		tcpSocket = socket;
+		
+		tcpSocket.socket().setSoTimeout(config.timeout);
 	}
 
 	

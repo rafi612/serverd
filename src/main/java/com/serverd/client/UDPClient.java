@@ -35,8 +35,8 @@ public class UDPClient extends SelectableClient
 		this.address = (InetSocketAddress) address;
 		
 		protocol = Protocol.UDP;
+		
 	}
-	
 	
 	@Override
 	public void send(String mess) throws IOException

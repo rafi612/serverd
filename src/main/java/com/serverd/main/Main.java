@@ -1,10 +1,10 @@
 package com.serverd.main;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Paths;
 import com.serverd.client.ClientManager;
 import com.serverd.command.Commands;
+import com.serverd.config.Config;
 import com.serverd.log.Log;
 import com.serverd.plugin.Debug;
 import com.serverd.plugin.PluginManager;
@@ -23,9 +23,42 @@ public class Main
 		boolean pluginDebug = false;
 		String pluginDebugClass = ""; 
 		
-		String ip = "0.0.0.0";
-		int tcp_port = 9999,udp_port = 9998;
+		//parse work dir argument
+		for (int i = 0;i < args.length;i++)
+			if(args[i].equals("--working-loc"))
+			{
+				if (i + 1 > args.length)
+				{
+					System.err.println("--working-loc: missing argument");
+					break;
+				}
+				workingdir = args[i + 1];
+			}
 		
+		//create work dir
+		File workdirFile = new File(workingdir);
+		if (!workdirFile.exists())
+			if (!workdirFile.mkdir())
+			{
+				log.error("Failed to create working directory in " + workingdir);
+				System.exit(1);
+			}
+		
+		//load config
+		Config config = null;
+		try 
+		{
+			File configFile = new File(workdirFile,"config.properties");
+			Config.createIfNotExists(configFile, new Config(), "Default ServerD config file");
+			config = Config.load(configFile, Config.class);
+		} 
+		catch (Exception e)
+		{
+			log.error("Error: " + e.getMessage());
+			System.exit(1);
+		}
+		
+		//parse other arguments
 		for (int i = 0;i < args.length;i++)
 			if(args[i].startsWith("--"))
 		{
@@ -43,21 +76,13 @@ public class Main
 					pluginDebug = true;
 					pluginDebugClass = args[i + 1];
 					break;
-				case "--working-loc":
-					if (i + 1 > args.length)
-					{
-						System.err.println("--working-loc: missing argument");
-						break;
-					}
-					workingdir = args[i + 1];
-					break;
 				case "--ip":
 					if (i + 1 > args.length)
 					{
 						System.err.println("--ip: missing argument");
 						break;
 					}
-					ip = args[i + 1];
+					config.ip = args[i + 1];
 					break;
 				case "--tcp-port":
 					if (i + 1 > args.length)
@@ -65,7 +90,7 @@ public class Main
 						System.err.println("--tcp-port: missing argument");
 						break;
 					}
-					tcp_port = Integer.parseInt(args[i + 1]);
+					config.tcpPort = Integer.parseInt(args[i + 1]);
 					break;
 				case "--udp-port":
 					if (i + 1 > args.length)
@@ -73,7 +98,7 @@ public class Main
 						System.err.println("--udp-port: missing argument");
 						break;
 					}
-					udp_port = Integer.parseInt(args[i + 1]);
+					config.udpPort = Integer.parseInt(args[i + 1]);
 					break;
 				case "--property":
 					if (i + 2 > args.length)
@@ -89,15 +114,7 @@ public class Main
 		System.out.println("ServerD " + VERSION);
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(ClientManager::shutdown));
-		
-		File workdirFile = new File(workingdir);
-		if (!workdirFile.exists())
-			if (!workdirFile.mkdir())
-			{
-				log.error("Failed to create working directory in " + workingdir);
-				System.exit(-1);
-			}
-		
+			
 		Commands.init();
 		try 
 		{
@@ -108,7 +125,7 @@ public class Main
 				PluginManager.loadPlugins();
 			}
 		} 
-		catch (IOException e)
+		catch (Exception e)
 		{
 			log.error("Error: " + e.getMessage());
 			System.exit(-1);
@@ -124,7 +141,7 @@ public class Main
 			catch (ClassNotFoundException e)
 			{
 				System.err.println("Class " + pluginDebugClass + " not found");
-				System.exit(-1);
+				System.exit(1);
 			} 
 			catch (Exception e)
 			{
@@ -133,7 +150,7 @@ public class Main
 		}
 		
 		log.info("Starting listening clients...");
-		ClientManager.start(ip,tcp_port,udp_port);
+		ClientManager.start(config.ip,config.tcpPort,config.udpPort,config);
 	}
 	
 	/**

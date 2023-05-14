@@ -119,13 +119,14 @@ public class Plugin
 	}
 	
 	/**
-	 * Returning instance of plugin object, can be use to access 
-	 * variables in plugin main object, before use must be casted to plugin main class
-	 * @return instance of plugin object
+	 * Returning instance of plugin interface, can be used to access variables in plugin main object
+	 * @param <T> Target type
+	 * @return instance of plugin interface
 	 */
-	public ServerdPlugin getInstance()
+	@SuppressWarnings("unchecked")
+	public <T> T getInstance()
 	{
-		return instance;
+		return (T) instance;
 	}
 	
 	/**
@@ -213,6 +214,7 @@ public class Plugin
 	{
 		executioncontrollers.add(listener);
 	}
+	
 	/**
 	 * Removing ExecutionController
 	 * @param listener Listener instance

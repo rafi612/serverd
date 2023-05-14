@@ -79,7 +79,6 @@ class ClientTest
 		);
 	}
 	
-	
 	@Test
 	void onceJoin_Test()
 	{		

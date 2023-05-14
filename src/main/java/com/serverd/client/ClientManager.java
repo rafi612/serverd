@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import com.serverd.client.Client.Protocol;
+import com.serverd.config.Config;
 import com.serverd.log.Log;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
@@ -37,10 +38,10 @@ public class ClientManager
 	 * @param tcpport TCP port
 	 * @param udpport UDP port
 	 */
-	public static void start(String ip,int tcpport,int udpport)
+	public static void start(String ip,int tcpport,int udpport,Config config)
 	{		
-		Thread tcp = new Thread(() -> startTcpServer(ip, tcpport),"TCP Server");
-		Thread udp = new Thread(() -> startUdpServer(ip, udpport),"UDP Server");
+		Thread tcp = new Thread(() -> startTcpServer(ip, tcpport,config),"TCP Server");
+		Thread udp = new Thread(() -> startUdpServer(ip, udpport,config),"UDP Server");
 		tcp.start();
 		udp.start();
 	}
@@ -52,21 +53,21 @@ public class ClientManager
 	 * @param ip IP of server
 	 * @param port Port of server
 	 */
-	public static void startTcpServer(String ip,int port)
+	public static void startTcpServer(String ip,int port,Config config)
 	{
 		Log tcplog = new Log("ServerD TCP");
+		
+		if (!tcpEnabled || !config.enableTcp)
+		{
+			tcplog.info("TCP server was disabled");
+			return;
+		}
 		
 		tcplog.info("Starting TCP Server...");
 		tcpRunned = true;
 
 		try 
 		{
-			if (!tcpEnabled)
-			{
-				tcplog.info("TCP server was disabled");
-				return;
-			}
-			
 			tcpSocket = ServerSocketChannel.open();
 			tcpSocket.bind(new InetSocketAddress(ip,port));
 			
@@ -92,7 +93,7 @@ public class ClientManager
 	                    
 	                    tcplog.info("Connection accepted from client!");
 	                    
-	    				TCPClient client = new TCPClient(getFreeClientID(),selector,socket);
+	    				TCPClient client = new TCPClient(getFreeClientID(),selector,socket,config);
 	    				addClient(client);
 	    				
 	                    socket.register(selector, SelectionKey.OP_READ,client);
@@ -155,9 +156,15 @@ public class ClientManager
 	 * @param ip IP of server
 	 * @param port Port of server
 	 */
-	public static void startUdpServer(String ip,int port)
+	public static void startUdpServer(String ip,int port,Config config)
 	{
 		Log udplog = new Log("ServerD UDP");
+		
+		if (!udpEnabled || !config.enableUdp)
+		{
+			udplog.info("UDP server was disabled");
+			return;
+		}
 		
 		udplog.info("Starting UDP Server...");
 		
@@ -172,8 +179,8 @@ public class ClientManager
 			}
 			
 			udpSocket = DatagramChannel.open();
-			udpSocket.configureBlocking(false);
 			udpSocket.bind(new InetSocketAddress(ip,port));
+			udpSocket.configureBlocking(false);
 			
 	        Selector selector = Selector.open();
 	        udpSocket.register(selector, SelectionKey.OP_READ);
@@ -379,6 +386,10 @@ public class ClientManager
 		return clients.values().toArray(Client[]::new);
 	}
 	
+	/**
+	 * Returning clients amount
+	 * @return clients amount number
+	 */
 	public static int getClientConnectedAmount()
 	{
 		return clients.size();

@@ -113,8 +113,8 @@ public class Client implements Runnable
 	}
 	
 	/**
-	 * Receiving raw data
-	 * @return byte array of data
+	 * Receiving message
+	 * @return Received message
 	 * @throws IOException when socket throw error
 	 */
 	protected byte[] rawdataReceive() throws IOException
@@ -280,7 +280,6 @@ public class Client implements Runnable
 	public class JoinException extends Exception 
 	{
 		private static final long serialVersionUID = 1L;
-
 		/**
 		 * JoinException class constructor
 		 * @param message Message
