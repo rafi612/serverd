@@ -75,64 +75,68 @@ public class ClientManager
 			Selector selector = Selector.open();
 			tcpSocket.register(selector, SelectionKey.OP_ACCEPT);
 			
+			long lastTimeout = System.currentTimeMillis();
+			
 			while (tcpRunned) {
 				//timeout checking and selecting
-				if (selector.select(config.timeout) == 0) {
+				selector.select(config.timeout);
+				if (System.currentTimeMillis() - lastTimeout >= config.timeout)
 					for (SelectionKey key : selector.keys()) {
 						//check if can be readable
-		                if ((key.interestOps() & SelectionKey.OP_READ) == 0)
-		                	continue;
-		                //check timeout
+						if ((key.interestOps() & SelectionKey.OP_READ) == 0)
+							continue;
+						//check timeout
 						TCPClient client = (TCPClient) key.attachment();
 						if (System.currentTimeMillis() - client.lastReadTime() >= config.timeout)
 							client.crash(new IOException("Read timed out"));
-					}
+						lastTimeout = System.currentTimeMillis();
 				}
 				
 				Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
 				while (keys.hasNext()) {
 					SelectionKey key = keys.next();
-	                keys.remove();
-	                
-	                if (!key.isValid())
-	                	continue;
-	                
-	                if (key.isAcceptable()) {
-	                    SocketChannel socket = tcpSocket.accept();
-	                    socket.configureBlocking(false);
-	                    
-	                    tcplog.info("Connection accepted from client!");
-	                    
-	    				TCPClient client = new TCPClient(getFreeClientID(),selector,socket);
-	    				addClient(client);
-	    				
-	                    socket.register(selector, SelectionKey.OP_READ,client);
-	    				
-	    				setupClient(client);
-	                }
-	                
-	                if (key.isReadable()) {
-	                	TCPClient client = (TCPClient) key.attachment();
-	                	try {
-		                	client.processCommand(client.rawdataReceive());
-	                	} catch (IOException e) {
-	                		client.crash(e);
-	                		continue;
-	                	}
-	                }
-	               
-	                if (!key.isValid())
-	                	continue;
-	                
-	                if (key.isWritable()) {
-	                	TCPClient client = (TCPClient) key.attachment();
-	                	
-	                	if (client.processQueue()) {
-	                		key.interestOps(SelectionKey.OP_READ);
-	                		if (client.isJoined() && client.getJoiner().isSelectable())
-	                			((SelectableClient)client.getJoiner()).unlockRead();
-	                	}
-	                }
+					keys.remove();
+					
+					if (!key.isValid())
+						continue;
+					
+					if (key.isAcceptable()) {
+						SocketChannel socket = tcpSocket.accept();
+						socket.configureBlocking(false);
+						socket.socket().setSoTimeout(config.timeout);
+						
+						tcplog.info("Connection accepted from client!");
+						
+						TCPClient client = new TCPClient(getFreeClientID(),selector,socket);
+						addClient(client);
+						
+						socket.register(selector, SelectionKey.OP_READ,client);
+						
+						setupClient(client);
+					}
+					
+					if (key.isReadable()) {
+						TCPClient client = (TCPClient) key.attachment();
+						try {
+							client.processCommand(client.rawdataReceive());
+						} catch (IOException e) {
+							client.crash(e);
+							continue;
+						}
+					}
+				   
+					if (!key.isValid())
+						continue;
+					
+					if (key.isWritable()) {
+						TCPClient client = (TCPClient) key.attachment();
+						
+						if (client.processQueue()) {
+							key.interestOps(SelectionKey.OP_READ);
+							if (client.isJoined() && client.getJoiner().isSelectable())
+								((SelectableClient)client.getJoiner()).unlockRead();
+						}
+					}
 				}
 			}
 			
@@ -193,90 +197,90 @@ public class ClientManager
 			udpSocket.socket().setReuseAddress(true);
 			udpSocket.bind(new InetSocketAddress(ip,port));
 			
-	        Selector selector = Selector.open();
-	        udpSocket.register(selector, SelectionKey.OP_READ);
+			Selector selector = Selector.open();
+			udpSocket.register(selector, SelectionKey.OP_READ);
 			
-	        ByteBuffer buffer = ByteBuffer.allocate(Client.BUFFER);
-	        
+			ByteBuffer buffer = ByteBuffer.allocate(Client.BUFFER);
+			long lastTimeout = System.currentTimeMillis();
 			while (udpRunned)
 			{
 				//timeout checking and selecting
-				if (selector.select(config.timeout) == 0) {
+				selector.select(config.timeout);
+				if (System.currentTimeMillis() - lastTimeout >= config.timeout)
 					for (SelectionKey key : selector.keys()) {
 						//check if can be readable
-		                if (key.channel().equals(udpSocket))
-		                	continue;
-		                //check timeout
+						if (key.channel().equals(udpSocket))
+							continue;
+						//check timeout
 						UDPClient client = (UDPClient) key.attachment();
 						if (System.currentTimeMillis() - client.lastReadTime() >= config.timeout)
 							client.crash(new IOException("Read timed out"));
+				}
+				
+				Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
+				while (keys.hasNext()) {
+					SelectionKey key = keys.next();
+					keys.remove();
+					
+					if (!key.isValid())
+						continue;
+					
+					if (key.isReadable()) {
+						
+						//new client
+						if (key.attachment() == null) {
+							
+							buffer.clear();
+							DatagramChannel channel = (DatagramChannel) key.channel();
+							InetSocketAddress address = (InetSocketAddress) channel.receive(buffer);
+							buffer.flip();
+							
+							DatagramChannel dc = DatagramChannel.open();
+							dc.configureBlocking(false);
+							dc.socket().setReuseAddress(true);
+							dc.bind(channel.socket().getLocalSocketAddress());
+							dc.connect(address);
+							
+							UDPClient client = new UDPClient(getFreeClientID(), selector, dc, address);
+							addClient(client);
+							
+							dc.register(selector, SelectionKey.OP_READ,client);
+							
+							udplog.info("Connection founded in " + client.getIP() + ":" + client.getPort());	
+							
+							setupClient(client);
+							
+							byte[] data = new byte[buffer.limit()];
+							buffer.get(data, 0, buffer.limit());
+							
+							client.processCommand(data);
+						} else {
+							UDPClient client = (UDPClient) key.attachment();
+							try {
+								client.processCommand(client.rawdataReceive());
+							} catch (IOException e) {
+								client.crash(e);
+								continue;
+							}
+						}
+					}
+					
+					if (!key.isValid())
+						continue;
+					
+					if (key.isWritable()) {
+						UDPClient client = (UDPClient) key.attachment();
+						
+						if (client.processQueue()) {
+							key.interestOps(SelectionKey.OP_READ);
+							if (client.isJoined() && client.getJoiner().isSelectable())
+								((SelectableClient)client.getJoiner()).unlockRead();
+						}
+						key.interestOps(SelectionKey.OP_READ);
 					}
 				}
-	            
-	            Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
-	            while (keys.hasNext()) {
-	            	SelectionKey key = keys.next();
-	            	keys.remove();
-	            	
-	                if (!key.isValid())
-	                	continue;
-	            	
-	            	if (key.isReadable()) {
-	            		
-	            		//new client
-	            		if (key.attachment() == null) {
-	            			
-		            		buffer.clear();
-		            		DatagramChannel channel = (DatagramChannel) key.channel();
-		            		InetSocketAddress address = (InetSocketAddress) channel.receive(buffer);
-		            		buffer.flip();
-		            		
-	            			DatagramChannel dc = DatagramChannel.open();
-	            			dc.configureBlocking(false);
-	            			dc.socket().setReuseAddress(true);
-	            			dc.bind(channel.socket().getLocalSocketAddress());
-	            			dc.connect(address);
-	            			
-	    					UDPClient client = new UDPClient(getFreeClientID(), selector, dc, address);
-	    					addClient(client);
-	    					
-	    					dc.register(selector, SelectionKey.OP_READ,client);
-	    					
-	    					udplog.info("Connection founded in " + client.getIP() + ":" + client.getPort());	
-	    					
-	    					setupClient(client);
-	    					
-		    				byte[] data = new byte[buffer.limit()];
-		    				buffer.get(data, 0, buffer.limit());
-	    					
-	    					client.processCommand(data);
-	            		} else {
-		                	UDPClient client = (UDPClient) key.attachment();
-		                	try {
-			                	client.processCommand(client.rawdataReceive());
-		                	} catch (IOException e) {
-		                		client.crash(e);
-		                		continue;
-		                	}
-	            		}
-	            	}
-	            	
-	                if (!key.isValid())
-	                	continue;
-	            	
-	            	if (key.isWritable()) {
-	                	UDPClient client = (UDPClient) key.attachment();
-	                	
-	                	if (client.processQueue()) {
-	                		key.interestOps(SelectionKey.OP_READ);
-	                		if (client.isJoined() && client.getJoiner().isSelectable())
-	                			((SelectableClient)client.getJoiner()).unlockRead();
-	                	}
-	            		key.interestOps(SelectionKey.OP_READ);
-	            	}
-	            }
 			}
-            udpSocket.close();
+			udpSocket.close();
 
 		} 
 		catch (IOException e)
