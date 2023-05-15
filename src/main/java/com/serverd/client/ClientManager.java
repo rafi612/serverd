@@ -80,7 +80,7 @@ public class ClientManager
 			while (tcpRunned) {
 				//timeout checking and selecting
 				selector.select(config.timeout);
-				if (System.currentTimeMillis() - lastTimeout >= config.timeout)
+				if (config.timeout > 0 && System.currentTimeMillis() - lastTimeout >= config.timeout)
 					for (SelectionKey key : selector.keys()) {
 						//check if can be readable
 						if ((key.interestOps() & SelectionKey.OP_READ) == 0)
@@ -206,7 +206,7 @@ public class ClientManager
 			{
 				//timeout checking and selecting
 				selector.select(config.timeout);
-				if (System.currentTimeMillis() - lastTimeout >= config.timeout)
+				if (config.timeout > 0 && System.currentTimeMillis() - lastTimeout >= config.timeout)
 					for (SelectionKey key : selector.keys()) {
 						//check if can be readable
 						if (key.channel().equals(udpSocket))
