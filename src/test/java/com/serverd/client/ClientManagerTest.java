@@ -238,7 +238,6 @@ class ClientManagerTest
 	@Test
 	void shutdown_StopClients_Test()
 	{
-		
 		Client client = new Client(ClientManager.getFreeClientID()) {
 			public void run() { connected = true; }
 		};
