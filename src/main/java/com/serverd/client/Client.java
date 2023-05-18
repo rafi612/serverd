@@ -138,6 +138,7 @@ public class Client implements Runnable
 	 * @throws IOException when socket throw error
 	 */
 	public void send(String mess) throws IOException {}
+	
 	/**
 	 * Receiving raw data
 	 * @return byte array of data
