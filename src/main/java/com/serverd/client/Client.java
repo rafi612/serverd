@@ -427,7 +427,7 @@ public class Client implements Runnable
 				send(Codes.unknownCommand());
 			else 
 			{
-				ClientManager.clients.get(joinedid).send(command_str);
+				ClientManager.getClient(joinedid).send(command_str);
 				
 				if (onceJoin)
 					unjoin();
