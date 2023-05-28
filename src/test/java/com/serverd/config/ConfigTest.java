@@ -202,8 +202,6 @@ class ConfigTest {
         assertEquals(expectedConfig.enableTcp, actualConfig.enableTcp);
         assertEquals(expectedConfig.enableUdp, actualConfig.enableUdp);
     }
-
-
     
     public static class TestConfig {
         

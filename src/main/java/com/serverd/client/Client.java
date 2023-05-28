@@ -15,8 +15,7 @@ import com.serverd.plugin.listener.ExecutionController;
 /**
  * Client class
  */
-public class Client implements Runnable
-{
+public class Client implements Runnable {
 	/** Client's thread */
  	protected Thread thread;
 	
@@ -46,32 +45,27 @@ public class Client implements Runnable
 	/**
 	 * Client type
 	 */
-	public enum Type
-	{
+	public enum Type {
 		SENDER,RECEIVER,NONE;
 	}
 	
 	/**
 	 * Client protocol
 	 */
-	public enum Protocol
-	{
+	public enum Protocol {
 		TCP("TCP"),UDP("UDP"),CUSTOM("");
 		
 		public String name;
 		
-		Protocol(String name)
-		{
+		Protocol(String name) {
 			this.name = name;
 		}
 		
-		public String getName()
-		{
+		public String getName() {
 			return name;
 		}
 		
-		public void setName(String name)
-		{
+		public void setName(String name) {
 			this.name = name;
 		}
 	}
@@ -85,8 +79,7 @@ public class Client implements Runnable
 	 * Client class constructor
 	 * @param id Client ID
 	 */
-	public Client(int id)
-	{
+	public Client(int id) {
 		this.id = id;
 		
 		connected = true;
@@ -101,8 +94,7 @@ public class Client implements Runnable
 	 * Setting encoder on client
 	 * @param encoder {@link Encoder} instance
 	 */
-	public void setEncoder(Encoder encoder)
-	{
+	public void setEncoder(Encoder encoder) {
 		this.encoder = encoder;
 	}
 	
@@ -110,8 +102,7 @@ public class Client implements Runnable
 	 * Returns client encoder
 	 * @return Client's {@link Encoder}
 	 */
-	public Encoder getEncoder()
-	{
+	public Encoder getEncoder() {
 		return encoder;
 	}
 	
@@ -119,8 +110,7 @@ public class Client implements Runnable
 	 * Returns client {@link Thread}
 	 * @return client {@link Thread}
 	 */
-	public Thread getThread()
-	{
+	public Thread getThread() {
 		return thread;
 	}
 	
@@ -129,8 +119,7 @@ public class Client implements Runnable
 	 * @return byte array of data
 	 * @throws IOException when socket throw error
 	 */
-	protected byte[] receive() throws IOException
-	{
+	protected byte[] receive() throws IOException {
 		return new byte[BUFFER];
 	}
 	
@@ -153,8 +142,7 @@ public class Client implements Runnable
 	 * @param buffer Byte buffer
 	 * @return String message
 	 */
-	public String toMessage(byte[] buffer)
-	{
+	public String toMessage(byte[] buffer) {
 		String message = encoder.decode(new String(buffer,0,buffer.length), this);
 		
 		log.info("<Reveived> " + message);
@@ -165,8 +153,7 @@ public class Client implements Runnable
 	/**
 	 * Closing socket
 	 */
-	public void closeClient()
-	{
+	public void closeClient() {
 		connected = false;
 	}
 	
@@ -174,8 +161,7 @@ public class Client implements Runnable
 	 * Returns client ID
 	 * @return Client's IP
 	 */
-	public String getIP()
-	{
+	public String getIP() {
 		return "";
 	}
 	
@@ -183,8 +169,7 @@ public class Client implements Runnable
 	 * Returns client connected port
 	 * @return Client's port
 	 */
-	public int getPort()
-	{
+	public int getPort() {
 		return 0;
 	}
 	
@@ -192,8 +177,7 @@ public class Client implements Runnable
 	 * Returns client connection state
 	 * @return true if client is connected
 	 */
-	public boolean isConnected()
-	{
+	public boolean isConnected() {
 		return connected;
 	}
 	
@@ -201,8 +185,7 @@ public class Client implements Runnable
 	 * Returns client joined state
 	 * @return true if client is joined
 	 */
-	public boolean isJoined()
-	{
+	public boolean isJoined() {
 		return joinedid != -1;
 	}
 	
@@ -211,8 +194,7 @@ public class Client implements Runnable
 	 * @return true if client is once joined
 	 * @see Client#onceJoin
 	 */
-	public boolean isOnceJoined()
-	{
+	public boolean isOnceJoined() {
 		return onceJoin;
 	}
 	
@@ -220,8 +202,7 @@ public class Client implements Runnable
 	 * Returns the ID of the client that is joined
 	 * @return Client's joined ID
 	 */
-	public int getJoinedID()
-	{
+	public int getJoinedID() {
 		return joinedid;
 	}
 	
@@ -229,8 +210,7 @@ public class Client implements Runnable
 	 * Returns client ID
 	 * @return Client's ID 
 	 */
-	public int getID()
-	{
+	public int getID() {
 		return id;
 	}
 	
@@ -238,8 +218,7 @@ public class Client implements Runnable
 	 * Returns client name
 	 * @return Client's name
 	 */
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 	
@@ -247,8 +226,7 @@ public class Client implements Runnable
 	 * Setting client name
 	 * @param name Client new name
 	 */
-	public void setName(String name)
-	{
+	public void setName(String name) {
 		this.name = name;
 	}
 	
@@ -256,8 +234,7 @@ public class Client implements Runnable
 	 * Returns client protocol enum
 	 * @return Client protocol enum
 	 */
-	public Protocol getProtocol()
-	{
+	public Protocol getProtocol() {
 		return protocol;
 	}
 	
@@ -265,8 +242,7 @@ public class Client implements Runnable
 	 * Returns client type enum
 	 * @return Client type enum
 	 */
-	public Type getType()
-	{
+	public Type getType() {
 		return type;
 	}
 	
@@ -281,8 +257,7 @@ public class Client implements Runnable
 	/**
 	 * Join exception
 	 */
-	public class JoinException extends Exception 
-	{
+	public class JoinException extends Exception {
 		private static final long serialVersionUID = 1L;
 		/**
 		 * JoinException class constructor
@@ -299,8 +274,7 @@ public class Client implements Runnable
 	 * @param joinid Client ID to join
 	 * @throws JoinException when join error occur 
 	 */
-	public void join(int joinid) throws JoinException
-	{		
+	public void join(int joinid) throws JoinException {		
 		Client cl = ClientManager.getClient(joinid);
 		
 		if (cl == null)
@@ -319,8 +293,7 @@ public class Client implements Runnable
 	/**
 	 * Unjoining client
 	 */
-	public void unjoin()
-	{
+	public void unjoin() {
 		Client cl = ClientManager.getClient(joinedid);
 		
 		if (cl == null)
@@ -339,8 +312,7 @@ public class Client implements Runnable
 	 * @param joinid Client ID to join once
 	 * @throws JoinException when join error occur 
 	 */
-	public void onceJoin(int joinid) throws JoinException
-	{
+	public void onceJoin(int joinid) throws JoinException {
 		if (joinid == id)
 			throw new JoinException("can't join to self");
 		
@@ -353,10 +325,8 @@ public class Client implements Runnable
 	 * Crash handler
 	 * @param exception Exception
 	 */
-	protected void crash(Exception exception)
-	{
-		if (!crashed && connected)
-		{
+	protected void crash(Exception exception) {
+		if (!crashed && connected) {
 			if (isJoined())
 				unjoin();
 			
@@ -370,18 +340,14 @@ public class Client implements Runnable
 	
 
 	@Override
-	public void run()
-	{
-		try 
-		{
+	public void run() {
+		try {
 			while (connected) {
 				byte[] bytes = receive();
 				if (bytes != null)
 					processCommand(bytes);
 			}
-		} 
-		catch (IOException e) 
-		{
+		} catch (IOException e) {
 			crash(e);
 		}
 	}
@@ -391,12 +357,9 @@ public class Client implements Runnable
 	 * Processing command
 	 * @param buffer Byte buffer to process
 	 */
-	public void processCommand(byte[] buffer)
-	{	
-		try 
-		{
-			if (currentCommand == null)
-			{
+	public void processCommand(byte[] buffer) {	
+		try {
+			if (currentCommand == null) {
 				String command_str = toMessage(buffer);
 				
 				String[] command_raw = command_str.split(" ");
@@ -405,15 +368,12 @@ public class Client implements Runnable
 				
 				//execution controller
 				boolean command_accepted = true;
-				for (Plugin p : PluginManager.plugins)
-				{
+				for (Plugin p : PluginManager.plugins) {
 					if (!command_accepted)
 						break;
 					
-					for (ExecutionController e : p.executioncontrollers)
-					{
-						if (!e.controlCommand(command, args, this, p))
-						{
+					for (ExecutionController e : p.executioncontrollers) {
+						if (!e.controlCommand(command, args, this, p)) {
 							command_accepted = false;
 							break;
 						}
@@ -431,8 +391,7 @@ public class Client implements Runnable
 				if (comm == null)
 					for (Plugin p : PluginManager.plugins)
 						for (Command c : p.commands)
-							if (command.equals(c.command)) 
-							{
+							if (command.equals(c.command)) {
 								plugin = p;
 								comm = c;
 							}
@@ -441,20 +400,16 @@ public class Client implements Runnable
 				if (comm != null)
 					comm = (Command) comm.clone();
 				
-				if (comm == null)
-				{
+				if (comm == null) {
 					if (joinedid == -1)
 						send(Codes.unknownCommand());
-					else 
-					{
+					else {
 						ClientManager.clients.get(joinedid).send(command_str);
 						
 						if (onceJoin)
 							unjoin();
 					} 
-				}
-				else
-				{
+				} else {
 					currentCommand = comm;
 					comm.runned = true;
 					comm.execute(args, this, plugin);
@@ -462,18 +417,14 @@ public class Client implements Runnable
 					if (!currentCommand.isStayAlive())
 						currentCommand = null;
 				}
-			}
-			else 
-			{
+			} else {
 				if (currentCommand.isStayAlive() && currentCommand.isRunned())
 					currentCommand.processReceive(buffer,this);
 				
 				if (!currentCommand.isStayAlive())
 					currentCommand = null;
 			}
-		}
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
 			crash(e);
 		}
 	}

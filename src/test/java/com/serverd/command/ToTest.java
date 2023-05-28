@@ -4,13 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class ToTest extends DoubleClientCommandTestCase 
-{
+class ToTest extends DoubleClientCommandTestCase {
 	To toCommand = new To();
 
 	@Test
-	void executeTest() throws Exception
-	{
+	void executeTest() throws Exception {
 		String receive = "TestResponse",send = "Test";
 		//execute /to command
 		executeTest(
@@ -25,5 +23,4 @@ class ToTest extends DoubleClientCommandTestCase
 		assertEquals(testClient2.getSend()[0],send);
 		assertEquals(testClient2.toMessage(testClient2.receive()),receive);
 	}
-
 }

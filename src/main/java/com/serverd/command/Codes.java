@@ -7,15 +7,13 @@ package com.serverd.command;
  * <p><b>OK</b> (message) - operation executed successfully with message</p>
  * <p><b>ERROR</b> (message) - operation failed with message</p>
  */
-public interface Codes 
-{
+public interface Codes {
 	/**
 	 * Returning standardized successful code.
 	 * use in {@link Command#execute execute} method in inherited class to send success to connected client.
 	 * @return successful code
 	 */
-	public default String ok()
-	{
+	public default String ok() {
 		return "OK";
 	}
 	
@@ -24,8 +22,7 @@ public interface Codes
 	 * use in {@link Command#execute execute} method in inherited class to send success to connected client.
 	 * @return successful code
 	 */
-	public default String ok(String message)
-	{
+	public default String ok(String message) {
 		return "OK " + message;
 	}
 	
@@ -34,8 +31,7 @@ public interface Codes
 	 * use in {@link Command#execute extecute} method in inherited class to send success to connected client.
 	 * @return error code with message
 	 */
-	public default String error(String message)
-	{
+	public default String error(String message) {
 		return "ERROR " + message;
 	}
 	
@@ -44,8 +40,7 @@ public interface Codes
 	 * Used in server internal code.
 	 * @return unknown command code
 	 */
-	public static String unknownCommand()
-	{
+	public static String unknownCommand() {
 		return "UNKNOWN_COMMAND";
 	}
 }

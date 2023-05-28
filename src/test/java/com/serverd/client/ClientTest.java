@@ -8,21 +8,17 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ClientTest 
-{
+class ClientTest {
 	Client client,client2;
 		
-	private static class TestClient extends Client
-	{
-		public TestClient(int id)
-		{
+	private static class TestClient extends Client {
+		public TestClient(int id) {
 			super(id);
 		}
 	}
 	
 	@BeforeEach
-	void setUp() throws Exception 
-	{
+	void setUp() throws Exception {
 		client = new TestClient(0);
 		client2 = new TestClient(1);
 		
@@ -31,15 +27,12 @@ class ClientTest
 	}
 
 	@AfterEach
-	void tearDown() throws Exception 
-	{
+	void tearDown() throws Exception {
 		ClientManager.clients.clear();
 	}
 
-
 	@Test
-	void join_Test() 
-	{
+	void join_Test() {
 		assertAll(
 			() -> assertDoesNotThrow(() -> client.join(client2.getID())),
 			
@@ -52,21 +45,18 @@ class ClientTest
 	}
 	
 	@Test
-	void join_ClientOutOfRange_Test() 
-	{
+	void join_ClientOutOfRange_Test() {
 		assertThrows(Client.JoinException.class, () -> client.join(10));
 	}
 	
 	@Test
-	void join_ClientAlreadyJoined_Test()
-	{
+	void join_ClientAlreadyJoined_Test() {
 		assertDoesNotThrow(() -> client.join(client2.getID()));
 		assertThrows(Client.JoinException.class, () -> client.join(client2.getID()));
 	}
 	
 	@Test
-	void unjoin_Test()
-	{
+	void unjoin_Test() {
 		assertDoesNotThrow(() -> client.join(client2.getID()));
 		client.unjoin();
 		
@@ -80,8 +70,7 @@ class ClientTest
 	}
 
 	@Test
-	void onceJoin_Test()
-	{		
+	void onceJoin_Test() {	
 		assertDoesNotThrow(() -> {
 			client.onceJoin(client2.getID());
 			
@@ -99,14 +88,12 @@ class ClientTest
 	}
 	
 	@Test
-	void onceJoin_SelfJoin_Test()
-	{		
+	void onceJoin_SelfJoin_Test() {
 		assertThrows(Client.JoinException.class,() -> client.onceJoin(client.getID()));
 	}
 	
 	@Test
-	void crash_Test()
-	{
+	void crash_Test() {
 		Client client = new Client(0) {
 			@Override
 			public byte[] receive() throws IOException
@@ -120,12 +107,10 @@ class ClientTest
 		client.run();
 		
 		assertNull(ClientManager.getClient(0));
-		
 	}
 	
 	@Test
-	void crash_WhenJoinedUnjoin_Test()
-	{
+	void crash_WhenJoinedUnjoin_Test() {
 		Client client = new Client(0) {
 			@Override
 			public byte[] receive() throws IOException
@@ -140,6 +125,5 @@ class ClientTest
 		client.run();
 		
 		assertFalse(client.isJoined());
-		
 	}
 }

@@ -8,8 +8,7 @@ import com.serverd.plugin.Plugin;
 /**
  * Client connection listener
  */
-public interface ConnectListener
-{
+public interface ConnectListener {
 	/**
 	 * Executing when new client connected to server
 	 * @param plugin Plugin instancd

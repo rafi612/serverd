@@ -11,21 +11,18 @@ import org.junit.jupiter.api.io.TempDir;
 import com.serverd.main.Main;
 import com.serverd.plugin.Plugin.Info;
 
-class DebugTest 
-{	
+class DebugTest {	
 	@TempDir
 	File testWorkdir;
 	
 	@Test
-	void loadPluginFromClassName_Test()
-	{
+	void loadPluginFromClassName_Test() {
 		System.setProperty("inside.test", "true");
 		assertDoesNotThrow(() -> Debug.loadPluginFromClassName(DebugTestPlugin.class.getName()));
 	}
 	
 	@Test
-	void testPlugin_withoutPluginsEnabled_Test() 
-	{
+	void testPlugin_withoutPluginsEnabled_Test() {
 		assertDoesNotThrow(() -> {
 			String serverdPath = new File(Debug.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
 			String testPath = new File(DebugTest.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
@@ -38,8 +35,7 @@ class DebugTest
 	}
 	
 	@Test
-	void testPlugin_withPluginsEnabled_Test() 
-	{
+	void testPlugin_withPluginsEnabled_Test() {
 		assertDoesNotThrow(() -> {
 			String serverdPath = new File(Debug.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
 			String testPath = new File(DebugTest.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
@@ -52,8 +48,7 @@ class DebugTest
 	}
 	
 	@Test
-	void testPlugin_withArgsNull_Test() 
-	{
+	void testPlugin_withArgsNull_Test() {
 		File defaultWorkdir = new File(Main.getWorkDir());
 		assumeTrue(defaultWorkdir.exists() || defaultWorkdir.mkdir());
 		
@@ -68,21 +63,18 @@ class DebugTest
 	}
 }
 
-class DebugTestPlugin implements ServerdPlugin
-{
+class DebugTestPlugin implements ServerdPlugin {
 	public DebugTestPlugin() {}
 	@Override
 	public void metadata(Info info) {}
 
 	@Override
-	public String init(Plugin plugin)
-	{
+	public String init(Plugin plugin) {
 		return INIT_SUCCESS;
 	}
 
 	@Override
-	public void work(Plugin plugin) 
-	{
+	public void work(Plugin plugin) {
 		if (System.getProperty("inside.test") == null)
 			System.exit(0);
 	}

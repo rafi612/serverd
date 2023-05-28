@@ -9,13 +9,11 @@ import com.serverd.client.Client;
 import com.serverd.client.ClientManager;
 import com.serverd.plugin.PluginManager;
 
-class CommandTestCase 
-{
+class CommandTestCase {
 	TestClient testClient;
 	
 	@BeforeEach
-	void setUp() throws Exception 
-	{
+	void setUp() throws Exception {
 		Commands.commands.clear();
 		PluginManager.plugins.clear();
 		ClientManager.clients.clear();
@@ -25,13 +23,11 @@ class CommandTestCase
 	}
 	
 	@AfterEach
-	void tearDown() throws Exception 
-	{
+	void tearDown() throws Exception {
 		testClient.destroy();
 	}
 	
-	public static void executeTest(Command command,String[] args,TestClient client) throws Exception
-	{
+	public static void executeTest(Command command,String[] args,TestClient client) throws Exception {
 		String comm = command.command + " " + String.join(" ", args);
 		client.log.info("Executing command: " + comm);
 		
@@ -44,31 +40,26 @@ class CommandTestCase
 		Commands.commands.remove(command);
 	}
 	
-	public static void executeTest(Command command,TestClient client) throws Exception
-	{
+	public static void executeTest(Command command,TestClient client) throws Exception {
 		executeTest(command,new String[] {},client);
 	}
 	
-	public static String[] args(String... args)
-	{
+	public static String[] args(String... args) {
 		return args;
 	}
 }
 
-class DoubleClientCommandTestCase extends CommandTestCase
-{
+class DoubleClientCommandTestCase extends CommandTestCase {
 	TestClient testClient2;
 	
 	@BeforeEach
-	void setUp() throws Exception 
-	{
+	void setUp() throws Exception {
 		super.setUp();
 		testClient2 = new TestClient();
 		testClient2.init();
 	}
 	@AfterEach
-	void tearDown() throws Exception 
-	{
+	void tearDown() throws Exception {
 		super.tearDown();
 		testClient2.destroy();
 		ClientManager.clients.clear();
@@ -76,8 +67,7 @@ class DoubleClientCommandTestCase extends CommandTestCase
 }
 
 
-class TestClient extends Client
-{
+class TestClient extends Client {
 	private ArrayList<byte[]> receiveQueue = new ArrayList<>();
 	private ArrayList<String> sendQueue = new ArrayList<>();
 	
@@ -85,60 +75,49 @@ class TestClient extends Client
 	
 	private int receiveIndex;
 	
-	public TestClient()
-	{
+	public TestClient() {
 		super(ClientManager.getFreeClientID());
 		protocol = Protocol.CUSTOM;
 		connected = true;
 	}
 	
-	public void init() 
-	{
+	public void init() {
 		ClientManager.addClient(this);
 	}
 	
-	public void destroy() 
-	{
+	public void destroy() {
 		ClientManager.delete(getID());
 	}
 	
 	@Override
-	public byte[] receive() 
-	{
+	public byte[] receive() {
 		return receiveQueue.get(receiveIndex++);
 	}
 	
 	@Override
-	public void send(String message)
-	{
+	public void send(String message) {
 		log.info("<Sended> " + message);
 		sendQueue.add(message);
 	}
 	
-	
 	@Override
-	public void rawdataSend(byte[] buffer)
-	{
+	public void rawdataSend(byte[] buffer) {
 		rawDataSendQueue.add(buffer);
 	}
 	
-	public String[] getSend() 
-	{
+	public String[] getSend() {
 		return sendQueue.toArray(String[]::new);
 	}
 	
-	public ArrayList<byte[]> getRawdataSend() 
-	{
+	public ArrayList<byte[]> getRawdataSend() {
 		return rawDataSendQueue;
 	}
 	
-	public void insertRawdataReceive(byte[] bytes)
-	{
+	public void insertRawdataReceive(byte[] bytes) {
 		receiveQueue.add(bytes);
 	}
 	
-	public void insertReceive(String message)
-	{
+	public void insertReceive(String message) {
 		receiveQueue.add(message.getBytes());
 	}
 }

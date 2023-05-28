@@ -6,13 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import com.serverd.client.ClientManager;
 
-class StatusTest extends CommandTestCase 
-{
+class StatusTest extends CommandTestCase {
 	Status statusCommand = new Status();
 	
 	@Test
-	void executeTest() throws Exception 
-	{
+	void executeTest() throws Exception {
 		executeTest(statusCommand, testClient);
 		
 		//checking amount of lines in status message, one line is one client
@@ -20,8 +18,7 @@ class StatusTest extends CommandTestCase
 	}
 	
 	@Test
-	void executeTest_NoClients() throws Exception 
-	{
+	void executeTest_NoClients() throws Exception {
 		ClientManager.delete(testClient.getID());
 		
 		executeTest(statusCommand, testClient);

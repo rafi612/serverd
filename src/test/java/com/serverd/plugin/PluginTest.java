@@ -20,11 +20,9 @@ class PluginTest
 	Plugin plugin;
 	TestPlugin instance;
 	
-	private static class TestPlugin implements ServerdPlugin
-	{
+	private static class TestPlugin implements ServerdPlugin {
 		public Action action = Action.OK;
-		public enum Action
-		{
+		public enum Action {
 			OK,ERROR,EMPTY_STRING,NULL
 		}
 		public boolean stopped = false;
@@ -33,10 +31,8 @@ class PluginTest
 		public void metadata(Info info) {}
 
 		@Override
-		public String init(Plugin plugin)
-		{
-			switch (action)
-			{
+		public String init(Plugin plugin) {
+			switch (action) {
 				case ERROR:
 					return "Error";
 				case EMPTY_STRING:
@@ -52,51 +48,43 @@ class PluginTest
 		public void work(Plugin plugin) {}
 
 		@Override
-		public void stop(Plugin plugin) 
-		{
+		public void stop(Plugin plugin) {
 			stopped = true;
 		}
-		
 	}
 
 	@BeforeEach
-	void setUp() throws Exception 
-	{
+	void setUp() throws Exception {
 		plugin = new Plugin("test",instance = new TestPlugin());
 		plugin.getInfo().name = "Test";
 	}
 	
 	@Test
-	void start_Test()
-	{
+	void start_Test() {
 		assertTrue(plugin.start());
 	}
 
 	
 	@Test
-	void start_nullReturnOnInit_Test()
-	{
+	void start_nullReturnOnInit_Test() {
 		instance.action = TestPlugin.Action.NULL;
 		assertTrue(plugin.start());
 	}
 	
 	@Test
-	void start_emptyStringReturnOnInit_Test()
-	{
+	void start_emptyStringReturnOnInit_Test() {
 		instance.action = TestPlugin.Action.EMPTY_STRING;
 		assertTrue(plugin.start());
 	}
 	
 	@Test
-	void start_errorOnInit_Test()
-	{
+	void start_errorOnInit_Test() {
 		instance.action = TestPlugin.Action.ERROR;
 		assertFalse(plugin.start());
 	}
 
 	@Test
-	void stop_Test()
-	{
+	void stop_Test() {
 		plugin.stop();
 		
 		assertAll(
@@ -106,14 +94,12 @@ class PluginTest
 	}
 	
 	@Test
-	void getInstance_Test()
-	{
+	void getInstance_Test() {
 		assertEquals(plugin.getInstance(), instance);
 	}
 	
 	@Test
-	void loadResource_Test()
-	{
+	void loadResource_Test() {
 		//loads self class for test
 		String resourcePath = "/" + PluginTest.class.getName().replace(".", "/") + ".class";
 		assertNotNull(plugin.loadResource(resourcePath));
@@ -121,13 +107,11 @@ class PluginTest
 	
 	//First repeat create workspace, second repeat load exists workspace
 	@RepeatedTest(2)
-	void loadWorkspace_Test()
-	{
+	void loadWorkspace_Test() {
 		PluginManager.pluginDataDir = tempDir.getAbsolutePath();
 		
 		File workspace = plugin.loadWorkspace();
 		
 		assertEquals(workspace.getAbsolutePath(), Path.of(PluginManager.pluginDataDir, plugin.getInfo().name).toString());
 	}
-
 }

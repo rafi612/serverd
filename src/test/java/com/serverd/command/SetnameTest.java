@@ -4,13 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class SetnameTest extends CommandTestCase 
-{
+class SetnameTest extends CommandTestCase {
 	Setname setnameCommand = new Setname();
 	
 	@Test
-	void executeTest() throws Exception
-	{
+	void executeTest() throws Exception {
 		String name = "ClientTestName";
 		
 		executeTest(setnameCommand, args(name), testClient);

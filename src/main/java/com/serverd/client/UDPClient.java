@@ -10,8 +10,7 @@ import com.serverd.config.Config;
 /**
  * UDP client class
  */
-public class UDPClient extends Client
-{
+public class UDPClient extends Client {
 	/** UDP Socket*/
 	protected DatagramSocket udpSocket;
 	/** First package*/
@@ -31,8 +30,7 @@ public class UDPClient extends Client
 	 * @param port Client's port
 	 * @throws IOException if socket throw error
 	 */
-	public UDPClient(int id,DatagramSocket sock,DatagramPacket firstPacket,InetAddress ip,int port,Config config) throws IOException
-	{
+	public UDPClient(int id,DatagramSocket sock,DatagramPacket firstPacket,InetAddress ip,int port,Config config) throws IOException {
 		super(id);
 		
 		this.ip = ip;
@@ -53,8 +51,7 @@ public class UDPClient extends Client
 	
 	
 	@Override
-	public void send(String mess) throws IOException
-	{
+	public void send(String mess) throws IOException {
 		log.info("<Sended> " + mess);
 		
 		String message = encoder.encode(mess, this); 
@@ -66,8 +63,7 @@ public class UDPClient extends Client
 	}
 
 	@Override
-	public byte[] receive() throws IOException
-	{
+	public byte[] receive() throws IOException {
 		byte[] buffer = new byte[Client.BUFFER];
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
 		
@@ -86,28 +82,24 @@ public class UDPClient extends Client
 	}
 	
 	@Override
-	public void rawdataSend(byte[] bytes) throws IOException
-	{
+	public void rawdataSend(byte[] bytes) throws IOException {
 		DatagramPacket p = new DatagramPacket(bytes, bytes.length, ip, port);
 		
 		udpSocket.send(p);
 	}
 	
 	@Override
-	public String getIP()
-	{
+	public String getIP() {
 		return ip.getHostAddress();
 	}
 	
 	@Override
-	public int getPort()
-	{
+	public int getPort() {
 		return port;
 	}
 	
 	@Override
-	public void closeClient()
-	{
+	public void closeClient() {
 		super.closeClient();
 
 		udpSocket.close();

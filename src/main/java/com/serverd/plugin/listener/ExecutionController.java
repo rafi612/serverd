@@ -8,8 +8,7 @@ import com.serverd.plugin.Plugin;
 /**
  * Interface to control execution of commands in clients
  */
-public interface ExecutionController
-{
+public interface ExecutionController {
 	/**
 	 * Controls whether the command can be executed
 	 * @param command Executed command

@@ -7,11 +7,9 @@ import org.junit.jupiter.api.Test;
 import com.serverd.client.Client;
 import com.serverd.plugin.Plugin;
 
-class CommandTest 
-{
+class CommandTest {
 	@Test
-	void checkArgsWithClient_Test()
-	{	
+	void checkArgsWithClient_Test() {	
 		TestClient client = new TestClient();
 		
 		Command command = new Command() {
@@ -32,8 +30,7 @@ class CommandTest
 	}
 
 	@Test
-	void checkArgs_Test()
-	{	
+	void checkArgs_Test() {	
 		Command command = new Command() {			
 			@Override
 			public void execute(String[] args, Client client, Plugin plugin) {}

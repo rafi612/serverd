@@ -4,13 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class RawdataTest extends DoubleClientCommandTestCase 
-{
+class RawdataTest extends DoubleClientCommandTestCase {
 	Rawdata rawdataCommand = new Rawdata();
 	
 	@Test
-	void executeTest_NotJoined() throws Exception 
-	{
+	void executeTest_NotJoined() throws Exception {
 		executeTest(
 				rawdataCommand,
 				args("100"),
@@ -21,8 +19,7 @@ class RawdataTest extends DoubleClientCommandTestCase
 	}
 
 	@Test
-	void executeTest() throws Exception 
-	{
+	void executeTest() throws Exception {
 		byte[] testBytes = {100,99,123,10};
 		testClient.join(testClient2.getID());
 		
@@ -37,5 +34,4 @@ class RawdataTest extends DoubleClientCommandTestCase
 		
 		assertEquals(testClient2.getRawdataSend().get(0), testBytes);
 	}
-
 }

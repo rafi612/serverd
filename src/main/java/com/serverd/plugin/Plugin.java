@@ -13,8 +13,7 @@ import com.serverd.log.Log;
 /**
  * Plugin instance class
  */
-public class Plugin
-{
+public class Plugin {
 	private Info info = new Info();
 	
 	public ArrayList<ConnectListener> connectlisteners = new ArrayList<ConnectListener>();
@@ -35,8 +34,7 @@ public class Plugin
 	 * @param filename Filename of plugin file
 	 * @param instance Instance of loaded plugin
 	 */
-	public Plugin(String filename,ServerdPlugin instance)
-	{
+	public Plugin(String filename,ServerdPlugin instance) {
 		this.filename = filename;
 		this.instance = instance;
 	}
@@ -45,16 +43,14 @@ public class Plugin
 	 * Start Plugin
 	 * @return true if plugin load succesfully
 	 */
-	public boolean start()
-	{
+	public boolean start() {
 		instance.metadata(info);
 		
 		log = new Log(info.name);
 		
 		String errormessage = instance.init(this);
 		
-		if (errormessage != null && !errormessage.equals(""))
-		{
+		if (errormessage != null && !errormessage.equals("")) {
 			error("Plugin init failed: " + errormessage);
 			return false;
 		}
@@ -70,8 +66,7 @@ public class Plugin
 	/**
 	 * Stop plugin
 	 */
-	public void stop()
-	{
+	public void stop() {
 		isRunned = false;
 		
 		instance.stop(this);
@@ -86,8 +81,7 @@ public class Plugin
 	 * Print plugin info message
 	 * @param message Message
 	 */
-	public void info(String message)
-	{
+	public void info(String message) {
 		log.info(message);
 	}
 	
@@ -95,8 +89,7 @@ public class Plugin
 	 * Print plugin warning
 	 * @param message Message
 	 */
-	public void warn(String message)
-	{
+	public void warn(String message) {
 		log.warn(message);
 	}
 	
@@ -104,8 +97,7 @@ public class Plugin
 	 * Print plugin error
 	 * @param message Message
 	 */
-	public void error(String message)
-	{
+	public void error(String message) {
 		log.error(message);
 	}
 	
@@ -113,8 +105,7 @@ public class Plugin
 	 * Print plugin debug message
 	 * @param message Message
 	 */
-	public void debug(String message)
-	{
+	public void debug(String message) {
 		log.debug(message);
 	}
 	
@@ -124,8 +115,7 @@ public class Plugin
 	 * @return instance of plugin interface
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T getInstance()
-	{
+	public <T> T getInstance() {
 		return (T) instance;
 	}
 	
@@ -134,8 +124,7 @@ public class Plugin
 	 * @param path Path to resource
 	 * @return {@link InputStream} to resource 
 	 */
-	public InputStream loadResource(String path)
-	{
+	public InputStream loadResource(String path) {
 		return instance.getClass().getResourceAsStream(path);
 	}
 	
@@ -143,8 +132,7 @@ public class Plugin
 	 * Returns info about plugin
 	 * @return Info object
 	 */
-	public Info getInfo()
-	{
+	public Info getInfo() {
 		return info;
 	}
 	
@@ -152,8 +140,7 @@ public class Plugin
 	 * Returns plugin run state
 	 * @return true if plugin is runned
 	 */
-	public boolean isRunned() 
-	{
+	public boolean isRunned() {
 		return isRunned;
 	}
 
@@ -161,8 +148,7 @@ public class Plugin
 	 * Loading plugin workspace folder, if not exists, creating it
 	 * @return File object
 	 */
-	public File loadWorkspace()
-	{
+	public File loadWorkspace() {
 		File file = new File(PluginManager.pluginDataDir,info.name);
 		if (!file.exists())
 			file.mkdir();
@@ -174,8 +160,7 @@ public class Plugin
 	 * Adding ConnectListener
 	 * @param listener Listener instance
 	 */
-	public void addConnectListener(ConnectListener listener)
-	{
+	public void addConnectListener(ConnectListener listener) {
 		connectlisteners.add(listener);
 	}
 	
@@ -183,8 +168,7 @@ public class Plugin
 	 * Removing ConnectListener
 	 * @param listener Listener instance
 	 */
-	public void removeConnectListener(ConnectListener listener)
-	{
+	public void removeConnectListener(ConnectListener listener){
 		connectlisteners.remove(listener);
 	}
 	
@@ -192,8 +176,7 @@ public class Plugin
 	 * Adding command
 	 * @param command Command instance
 	 */
-	public void addCommand(Command command)
-	{
+	public void addCommand(Command command) {
 		commands.add(command);
 	}
 	
@@ -201,8 +184,7 @@ public class Plugin
 	 * Removing command
 	 * @param command Command instance
 	 */
-	public void removeCommand(Command command)
-	{
+	public void removeCommand(Command command) {
 		commands.remove(command);
 	}
 	
@@ -210,8 +192,7 @@ public class Plugin
 	 * Adding ExecutionController
 	 * @param listener Listener instance
 	 */
-	public void addExecutionController(ExecutionController listener)
-	{
+	public void addExecutionController(ExecutionController listener) {
 		executioncontrollers.add(listener);
 	}
 	
@@ -219,21 +200,18 @@ public class Plugin
 	 * Removing ExecutionController
 	 * @param listener Listener instance
 	 */
-	public void removeExecutionController(ExecutionController listener)
-	{
+	public void removeExecutionController(ExecutionController listener) {
 		executioncontrollers.remove(listener);
 	}
 
 	/**
 	 * Plugin information class
 	 */
-	public class Info
-	{
+	public class Info {
 		/** Info fields*/
 		public String name,author,decription,version;
 
-		public String toString()
-		{
+		public String toString() {
 			return "Name: " + name + "\nAuthor: " + author + "\nDescription: " + decription + "\nVersion: " + version;
 		}
 	}

@@ -10,8 +10,7 @@ import com.serverd.config.Config;
 /**
  * TCP client class
  */
-public class TCPClient extends Client
-{	
+public class TCPClient extends Client {	
 	/** Socket*/
 	protected Socket tcpSocket;
 	
@@ -26,8 +25,7 @@ public class TCPClient extends Client
 	 * @param socket Socket instance
 	 * @throws IOException when InputStream or OutputStream throws {@link IOException}
 	 */
-	public TCPClient(int id, Socket socket,Config config) throws IOException
-	{
+	public TCPClient(int id, Socket socket,Config config) throws IOException {
 		super(id);
 		
 		protocol = Protocol.TCP;
@@ -44,8 +42,7 @@ public class TCPClient extends Client
 
 	
 	@Override
-	public void send(String mess) throws IOException
-	{
+	public void send(String mess) throws IOException {
 		log.info("<Sended> " + mess);
 
 		out.write(encoder.encode(mess, this).getBytes());
@@ -53,8 +50,7 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public byte[] receive() throws IOException
-	{
+	public byte[] receive() throws IOException {
 		byte[] buffer = new byte[BUFFER];
 
 		int len = in.read(buffer);
@@ -70,38 +66,31 @@ public class TCPClient extends Client
 	}
 	
 	@Override
-	public void rawdataSend(byte[] bytes) throws IOException
-	{
+	public void rawdataSend(byte[] bytes) throws IOException {
 		out.write(bytes);
 		out.flush();
 	}
 	
 	@Override
-	public void closeClient()
-	{
+	public void closeClient() {
 		super.closeClient();
 		
-		try
-		{
+		try {
 			in.close();
 			out.close();
 			tcpSocket.close();
-		} 
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			log.error("Client closing failed: " + e.getMessage());
 		}
 	}
 	
 	@Override
-	public String getIP()
-	{
+	public String getIP() {
 		return tcpSocket.getInetAddress().getHostAddress();
 	}
 	
 	@Override
-	public int getPort()
-	{
+	public int getPort() {
 		return tcpSocket.getPort();
 	}
 }

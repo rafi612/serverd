@@ -9,14 +9,12 @@ import com.serverd.log.Log;
 import com.serverd.plugin.Debug;
 import com.serverd.plugin.PluginManager;
 
-public class Main
-{
+public class Main {
 	public static final String VERSION = "v1.2.0";
 	
 	public static String workingdir = getWorkDir();
 	
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		Log log = new Log("ServerD");
 		
 		boolean plugins = true;
@@ -25,10 +23,8 @@ public class Main
 		
 		//parse work dir argument
 		for (int i = 0;i < args.length;i++)
-			if(args[i].equals("--working-loc"))
-			{
-				if (i + 1 > args.length)
-				{
+			if(args[i].equals("--working-loc")) {
+				if (i + 1 > args.length) {
 					System.err.println("--working-loc: missing argument");
 					break;
 				}
@@ -38,38 +34,31 @@ public class Main
 		//create work dir
 		File workdirFile = new File(workingdir);
 		if (!workdirFile.exists())
-			if (!workdirFile.mkdir())
-			{
+			if (!workdirFile.mkdir()) {
 				log.error("Failed to create working directory in " + workingdir);
 				System.exit(1);
 			}
 		
 		//load config
 		Config config = null;
-		try 
-		{
+		try {
 			File configFile = new File(workdirFile,"config.properties");
 			Config.createIfNotExists(configFile, new Config(), "Default ServerD config file");
 			config = Config.load(configFile, Config.class);
-		} 
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			log.error("Error: " + e.getMessage());
 			System.exit(1);
 		}
 		
 		//parse other arguments
 		for (int i = 0;i < args.length;i++)
-			if(args[i].startsWith("--"))
-		{
-				switch(args[i])
-				{
+			if(args[i].startsWith("--")) {
+				switch(args[i]) {
 				case "--noplugins":
 					plugins = false;
 					break;
 				case "--plugin-debug":
-					if (i + 1 > args.length)
-					{
+					if (i + 1 > args.length) {
 						System.err.println("--plugin-debug: missing argument");
 						break;
 					}
@@ -77,32 +66,28 @@ public class Main
 					pluginDebugClass = args[i + 1];
 					break;
 				case "--ip":
-					if (i + 1 > args.length)
-					{
+					if (i + 1 > args.length) {
 						System.err.println("--ip: missing argument");
 						break;
 					}
 					config.ip = args[i + 1];
 					break;
 				case "--tcp-port":
-					if (i + 1 > args.length)
-					{
+					if (i + 1 > args.length) {
 						System.err.println("--tcp-port: missing argument");
 						break;
 					}
 					config.tcpPort = Integer.parseInt(args[i + 1]);
 					break;
 				case "--udp-port":
-					if (i + 1 > args.length)
-					{
+					if (i + 1 > args.length) {
 						System.err.println("--udp-port: missing argument");
 						break;
 					}
 					config.udpPort = Integer.parseInt(args[i + 1]);
 					break;
 				case "--property":
-					if (i + 2 > args.length)
-					{
+					if (i + 2 > args.length) {
 						System.err.println("--property: missing argument");
 						break;
 					}
@@ -116,35 +101,25 @@ public class Main
 		Runtime.getRuntime().addShutdownHook(new Thread(ClientManager::shutdown));
 			
 		Commands.init();
-		try 
-		{
+		try {
 			PluginManager.init();
-			if (plugins) 
-			{
+			if (plugins) {
 				log.info("Loading plugins...");
 				PluginManager.loadPlugins();
 			}
-		} 
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			log.error("Error: " + e.getMessage());
 			System.exit(-1);
 		}
 		
-		if (pluginDebug)
-		{
+		if (pluginDebug) {
 			log.info("Loading debug plugin " + pluginDebugClass + "...");
-			try 
-			{
+			try {
 				Debug.loadPluginFromClassName(pluginDebugClass);
-			} 
-			catch (ClassNotFoundException e)
-			{
+			} catch (ClassNotFoundException e) {
 				System.err.println("Class " + pluginDebugClass + " not found");
 				System.exit(1);
-			} 
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				System.err.println("Debug plugin load error:" + e.getMessage());
 			}
 		}
@@ -157,8 +132,7 @@ public class Main
 	 * Returns default working directory
 	 * @return Working directory path.
 	 */
-	public static String getWorkDir()
-	{
+	public static String getWorkDir() {
 		String osname = System.getProperty("os.name").toLowerCase();
 		String userhome = System.getProperty("user.home");
 		

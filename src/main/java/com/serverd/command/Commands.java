@@ -5,15 +5,13 @@ import java.util.ArrayList;
 /**
  * Class storing all commands
  */
-public class Commands 
-{
+public class Commands {
 	protected static ArrayList<Command> commands = new ArrayList<>();
 
 	/**
 	 * Initialize all build in commands
 	 */
-	public static void init()
-	{
+	public static void init() {
 		commands.add(new Disconnect());
 		commands.add(new Id());
 		commands.add(new Status());
@@ -32,8 +30,7 @@ public class Commands
 	 * Get all build in commands
 	 * @return Command {@link ArrayList}
 	 */
-	public static ArrayList<Command> getCommandsList()
-	{
+	public static ArrayList<Command> getCommandsList() {
 		return commands;
 	}
 	
@@ -42,8 +39,7 @@ public class Commands
 	 * @param name Command name
 	 * @return Command object
 	 */
-	public static Command getByName(String name)
-	{
+	public static Command getByName(String name) {
 		for (Command command : commands)
 			if (command.command.equals(name))
 				return command;

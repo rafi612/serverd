@@ -11,8 +11,7 @@ import com.serverd.main.Main;
 /**
  * Allows to running ServerD inside plugin for debugging
  */
-public class Debug 
-{
+public class Debug {
 	/**
 	 * Loading plugin from classpath by plugin name
 	 * @param classname Main plugin class name
@@ -25,8 +24,7 @@ public class Debug
 	 * @throws SecurityException
 	 * @return ID of loaded plugin
 	 */
-	public static int loadPluginFromClassName(String classname) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
-	{
+	public static int loadPluginFromClassName(String classname) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		String classfile = classname.replace(".", File.separator) + ".class";
 		
 		Class<?> classToLoad = Debug.class.getClassLoader().loadClass(classname);
@@ -48,8 +46,7 @@ public class Debug
 	 * @param args ServerD arguments
 	 * @return ServerD/Java exitcode
 	 */
-	public static int testPlugin(String classname,boolean plugins,String[] args)
-	{
+	public static int testPlugin(String classname,boolean plugins,String[] args) {
 		ProcessBuilder builder = new ProcessBuilder();
 
 		ArrayList<String> command = new ArrayList<>(Arrays.asList("java","-cp",System.getProperty("java.class.path"),Main.class.getName(),plugins ? "" : "--noplugins","--plugin-debug",classname));
@@ -66,16 +63,12 @@ public class Debug
 		builder.redirectInput(ProcessBuilder.Redirect.INHERIT);
 
 		//run
-		try 
-		{
+		try {
 			Process process = builder.start();
 			return process.waitFor();
-		} 
-		catch (IOException | InterruptedException e) 
-		{
+		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
 		return -1;
 	}
-
 }
