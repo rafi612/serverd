@@ -80,7 +80,7 @@ public class PluginManager {
 
 		try {
 			URLClassLoader classloader = new URLClassLoader(
-			        new URL[] {file.toURI().toURL()}
+			        new URL[] { file.toURI().toURL() }
 			);
 			
 			//getting class name
