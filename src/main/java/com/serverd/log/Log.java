@@ -79,5 +79,4 @@ public class Log {
 		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_BLUE + 
 				"DEBUG " + ANSI_RESET + message);
 	}
-
 }
