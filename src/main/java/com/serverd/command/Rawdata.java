@@ -13,6 +13,7 @@ public class Rawdata extends Command {
 		command = "/rawdata";
 		help = "/rawdata <buffer> - run rawdata mode with buffer";
 	}
+
 	@Override
 	public void processReceive(byte[] buffer,Client client) throws IOException {
         Client joined = ClientManager.clients.get(client.getJoinedID());
