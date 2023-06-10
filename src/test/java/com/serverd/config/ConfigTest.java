@@ -204,7 +204,6 @@ class ConfigTest {
     }
     
     public static class TestConfig {
-        
         @ConfigProperty("test.string.property")
         public String stringProperty;
         
