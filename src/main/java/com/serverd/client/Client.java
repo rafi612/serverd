@@ -372,7 +372,7 @@ public class Client implements Runnable {
 					if (!command_accepted)
 						break;
 					
-					for (ExecutionController e : p.executioncontrollers) {
+					for (ExecutionController e : p.executionControllers) {
 						if (!e.controlCommand(command, args, this, p)) {
 							command_accepted = false;
 							break;

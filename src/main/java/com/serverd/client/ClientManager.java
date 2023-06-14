@@ -177,7 +177,7 @@ public class ClientManager {
 		
 		//plugin connect listener
 		for (Plugin p : PluginManager.plugins)
-			for (ConnectListener cl : p.connectlisteners) {
+			for (ConnectListener cl : p.connectListeners) {
 				try {
 					cl.onDisconnect(p,client);
 				} catch (IOException e) {
@@ -239,7 +239,7 @@ public class ClientManager {
 	public static void setupClient(Client client) throws IOException {		
 		//plugin connect listener
 		for (Plugin p : PluginManager.plugins)
-			for (ConnectListener cl : p.connectlisteners)
+			for (ConnectListener cl : p.connectListeners)
 				cl.onConnect(p,client);
 	}
 	

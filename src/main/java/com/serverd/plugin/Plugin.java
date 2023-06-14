@@ -16,9 +16,9 @@ import com.serverd.log.Log;
 public class Plugin {
 	private Info info = new Info();
 	
-	public ArrayList<ConnectListener> connectlisteners = new ArrayList<ConnectListener>();
+	public ArrayList<ConnectListener> connectListeners = new ArrayList<ConnectListener>();
 	public ArrayList<Command> commands = new ArrayList<Command>();
-	public ArrayList<ExecutionController> executioncontrollers = new ArrayList<ExecutionController>();
+	public ArrayList<ExecutionController> executionControllers = new ArrayList<ExecutionController>();
 	
 	private ServerdPlugin instance;
 	private Thread thread;
@@ -73,8 +73,8 @@ public class Plugin {
 		
 		//clear interfaces
 		commands.clear();
-		connectlisteners.clear();
-		executioncontrollers.clear();
+		connectListeners.clear();
+		executionControllers.clear();
 	}
 	
 	/**
@@ -161,7 +161,7 @@ public class Plugin {
 	 * @param listener Listener instance
 	 */
 	public void addConnectListener(ConnectListener listener) {
-		connectlisteners.add(listener);
+		connectListeners.add(listener);
 	}
 	
 	/**
@@ -169,7 +169,7 @@ public class Plugin {
 	 * @param listener Listener instance
 	 */
 	public void removeConnectListener(ConnectListener listener){
-		connectlisteners.remove(listener);
+		connectListeners.remove(listener);
 	}
 	
 	/**
@@ -193,7 +193,7 @@ public class Plugin {
 	 * @param listener Listener instance
 	 */
 	public void addExecutionController(ExecutionController listener) {
-		executioncontrollers.add(listener);
+		executionControllers.add(listener);
 	}
 	
 	/**
@@ -201,7 +201,7 @@ public class Plugin {
 	 * @param listener Listener instance
 	 */
 	public void removeExecutionController(ExecutionController listener) {
-		executioncontrollers.remove(listener);
+		executionControllers.remove(listener);
 	}
 
 	/**
