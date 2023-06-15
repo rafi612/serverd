@@ -30,7 +30,7 @@ public class Rawdata extends Command {
 	
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException {
-		if (checkArgs(args,client, 1)){	
+		if (checkArgs(args,client, 1)) {	
 			if (client.isJoined()) {
 				client.send(ok());
 				
