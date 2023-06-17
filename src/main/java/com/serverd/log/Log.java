@@ -6,8 +6,7 @@ import java.util.Date;
 /**
  * Logger class
  */
-public class Log 
-{
+public class Log {
 	/** Colors*/
 	public static final String ANSI_RESET = "\u001B[0m",
 	ANSI_BLACK = "\u001B[30m",ANSI_RED = "\u001B[31m",
@@ -21,8 +20,7 @@ public class Log
 	 * Default constructor
 	 * @param name Logger name
 	 */
-	public Log(String name)
-	{
+	public Log(String name) {
 		this.name = name;
 	}
 
@@ -30,8 +28,7 @@ public class Log
 	 * Returning name of logger
 	 * @return Logger name
 	 */
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 
@@ -39,8 +36,7 @@ public class Log
 	 * Setting logger name
 	 * @param name Name of logger
 	 */
-	public void setName(String name)
-	{
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -48,8 +44,7 @@ public class Log
 	 * Logging as Info level
 	 * @param message Message to log
 	 */
-	public synchronized void info(String message)
-	{
+	public synchronized void info(String message) {
 		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
 		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_GREEN + 
 				"INFO " + ANSI_RESET + message);
@@ -59,8 +54,7 @@ public class Log
 	 * Logging as Warn level
 	 * @param message Message to log
 	 */
-	public synchronized void warn(String message)
-	{
+	public synchronized void warn(String message) {
 		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
 		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_YELLOW + 
 				"WARN " + ANSI_RESET + message);
@@ -70,8 +64,7 @@ public class Log
 	 * Logging as Error level
 	 * @param message Message to log
 	 */
-	public synchronized void error(String message)
-	{
+	public synchronized void error(String message) {
 		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
 		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_RED + 
 				"ERROR " + ANSI_RESET + message);
@@ -81,11 +74,9 @@ public class Log
 	 * Logging as Debug level
 	 * @param message Message to log
 	 */
-	public synchronized void debug(String message)
-	{
+	public synchronized void debug(String message) {
 		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
 		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_BLUE + 
 				"DEBUG " + ANSI_RESET + message);
 	}
-
 }

@@ -11,8 +11,7 @@ import java.nio.channels.Selector;
 /**
  * UDP client class
  */
-public class UDPClient extends SelectableClient
-{
+public class UDPClient extends SelectableClient {
 	/** UDP Socket*/
 	protected DatagramChannel udpSocket;
 	
@@ -27,8 +26,7 @@ public class UDPClient extends SelectableClient
 	 * @param address Client's address
 	 * @throws IOException
 	 */
-	public UDPClient(int id,Selector selector,DatagramChannel udpSocket,SocketAddress address) throws IOException
-	{
+	public UDPClient(int id,Selector selector,DatagramChannel udpSocket,SocketAddress address) throws IOException {
 		super(id,selector);
 		
 		this.udpSocket = udpSocket;
@@ -36,19 +34,18 @@ public class UDPClient extends SelectableClient
 		
 		protocol = Protocol.UDP;
 		
+		thread = new Thread(this, "UDP Client " + id);
 	}
 	
 	@Override
-	public void send(String mess) throws IOException
-	{
+	public void send(String mess) throws IOException {
 		log.info("<Sended> " + mess);
 
 		rawdataSend(encoder.encode(mess, this).getBytes());
 	}
 	
 	@Override
-	public byte[] rawdataReceive() throws IOException
-	{		
+	public byte[] rawdataReceive() throws IOException {		
 		receiveBuffer.clear();
 		udpSocket.receive(receiveBuffer);
 		receiveBuffer.flip();
@@ -60,8 +57,7 @@ public class UDPClient extends SelectableClient
 	}
 	
 	@Override
-	public void rawdataSend(byte[] bytes) throws IOException
-	{
+	public void rawdataSend(byte[] bytes) throws IOException {
 		getKey().interestOps(SelectionKey.OP_WRITE);
 		
 		queueBuffer(bytes);
@@ -74,20 +70,17 @@ public class UDPClient extends SelectableClient
 	}
 	
 	@Override
-	public String getIP()
-	{
+	public String getIP() {
 		return address.getAddress().getHostAddress();
 	}
 	
 	@Override
-	public int getPort()
-	{
+	public int getPort() {
 		return address.getPort();
 	}
 	
 	@Override
-	public void closeClient()
-	{
+	public void closeClient() {
 		super.closeClient();
 	}
 

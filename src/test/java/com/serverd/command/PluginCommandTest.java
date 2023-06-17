@@ -4,13 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class PluginCommandTest extends CommandTestCase
-{
+class PluginCommandTest extends CommandTestCase {
 	PluginCommand pluginCommand = new PluginCommand();
 
 	@Test
-	void executeTest_PluginNotExists() throws Exception
-	{
+	void executeTest_PluginNotExists() throws Exception {
 		executeTest(pluginCommand,
 				args("enable","Test"),
 				testClient);

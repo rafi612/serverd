@@ -20,8 +20,7 @@ import com.serverd.plugin.listener.ConnectListener;
 /**
  * Client Manager
  */
-public class ClientManager
-{
+public class ClientManager {
 	/** Client's hashmap*/
 	public static HashMap<Integer,Client> clients = new HashMap<>();
 	
@@ -37,8 +36,7 @@ public class ClientManager
 	 * @param tcpport TCP port
 	 * @param udpport UDP port
 	 */
-	public static void start(String ip,int tcpport,int udpport,Config config)
-	{		
+	public static void start(String ip,int tcpport,int udpport,Config config) {		
 		Thread tcp = new Thread(() -> startTcpServer(ip, tcpport,config),"TCP Server");
 		Thread udp = new Thread(() -> startUdpServer(ip, udpport,config),"UDP Server");
 		tcp.start();
@@ -52,12 +50,10 @@ public class ClientManager
 	 * @param ip IP of server
 	 * @param port Port of server
 	 */
-	public static void startTcpServer(String ip,int port,Config config)
-	{
+	public static void startTcpServer(String ip,int port,Config config) {
 		Log tcplog = new Log("ServerD TCP");
 		
-		if (!tcpEnabled || !config.enableTcp)
-		{
+		if (!tcpEnabled || !config.enableTcp) {
 			tcplog.info("TCP server was disabled");
 			return;
 		}
@@ -65,8 +61,7 @@ public class ClientManager
 		tcplog.info("Starting TCP Server...");
 		tcpRunned = true;
 
-		try 
-		{
+		try {
 			tcpSocket = ServerSocketChannel.open();
 			tcpSocket.bind(new InetSocketAddress(ip,port));
 			
@@ -140,10 +135,8 @@ public class ClientManager
 					}
 				}
 			}
-			
-		} 
-		catch (IOException e)
-		{
+			tcpSocket.close();
+		} catch (IOException e) {
 			if (tcpRunned)
 				tcplog.error("Server error: " + e.getMessage());
 		}
@@ -153,12 +146,10 @@ public class ClientManager
 	 * Stopping TCP server
 	 * @throws IOException 
 	 */
-	public static void stopTcpServer() throws IOException
-	{
+	public static void stopTcpServer() throws IOException {
 		tcpRunned = false;
 		
-		if (tcpSocket != null) 
-		{
+		if (tcpSocket != null) {
 			log.info("Stopping TCP server..");
 			tcpSocket.close();
 		}
@@ -171,12 +162,10 @@ public class ClientManager
 	 * @param ip IP of server
 	 * @param port Port of server
 	 */
-	public static void startUdpServer(String ip,int port,Config config)
-	{
+	public static void startUdpServer(String ip,int port,Config config) {
 		Log udplog = new Log("ServerD UDP");
 		
-		if (!udpEnabled || !config.enableUdp)
-		{
+		if (!udpEnabled || !config.enableUdp) {
 			udplog.info("UDP server was disabled");
 			return;
 		}
@@ -185,10 +174,8 @@ public class ClientManager
 		
 		udpRunned = true;
 		
-		try 
-		{
-			if (!udpEnabled)
-			{
+		try {
+			if (!udpEnabled) {
 				udplog.info("UDP server was disabled");
 				return;
 			}
@@ -282,10 +269,7 @@ public class ClientManager
 				}
 			}
 			udpSocket.close();
-
-		} 
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			if (udpRunned)
 				udplog.error("Server error: " + e.getMessage());
 		}
@@ -295,12 +279,10 @@ public class ClientManager
 	 * Closing UDP server
 	 * @throws IOException when channel throws {@link IOException}
 	 */
-	public static void stopUdpServer() throws IOException
-	{
+	public static void stopUdpServer() throws IOException {
 		udpRunned = false;
 		
-		if (udpSocket != null) 
-		{
+		if (udpSocket != null) {
 			log.info("Stopping UDP server..");
 			udpSocket.close();
 		}
@@ -310,8 +292,7 @@ public class ClientManager
 	 * Deleting client
 	 * @param clientid Client ID to remove
 	 */
-	public static synchronized void delete(int clientid)
-	{	
+	public static synchronized void delete(int clientid) {	
 		if (clients.size() == 0)
 			return;
 		
@@ -322,14 +303,10 @@ public class ClientManager
 		
 		//plugin connect listener
 		for (Plugin p : PluginManager.plugins)
-			for (ConnectListener cl : p.connectlisteners)
-			{
-				try 
-				{
+			for (ConnectListener cl : p.connectListeners) {
+				try {
 					cl.onDisconnect(p,client);
-				} 
-				catch (IOException e) 
-				{
+				} catch (IOException e) {
 					log.error("Error in Disconnect Listener: " + e.getMessage());
 				}
 			}
@@ -344,10 +321,8 @@ public class ClientManager
 	/**
 	 * Shutting down server
 	 */
-	public static void shutdown()
-	{
-		try
-		{	
+	public static void shutdown() {
+		try {	
 			log.info("Server shutting down...");
 			stopTcpServer();
 			stopUdpServer();
@@ -359,9 +334,8 @@ public class ClientManager
 			log.info("Stopping plugins...");
 			for (Plugin plugin : PluginManager.plugins)
 				plugin.stop();
-		} 
-		catch (IOException e) 
-		{
+			
+		} catch (IOException e) {
 			log.error("Error stopping server:" + e.getMessage());
 		}
 	}
@@ -370,8 +344,7 @@ public class ClientManager
 	 * Searching first free client ID
 	 * @return first free ID
 	 */
-	public static int getFreeClientID()
-	{
+	public static int getFreeClientID() {
 		int i = 0;
 		while (clients.containsKey(i))
 			i++;
@@ -384,11 +357,10 @@ public class ClientManager
 	 * @param client {@link Client} instance
 	 * @throws IOException when {@link ConnectListener} throws error
 	 */
-	public static void setupClient(Client client) throws IOException
-	{		
+	public static void setupClient(Client client) throws IOException {		
 		//plugin connect listener
 		for (Plugin p : PluginManager.plugins)
-			for (ConnectListener cl : p.connectlisteners)
+			for (ConnectListener cl : p.connectListeners)
 				cl.onConnect(p,client);
 	}
 	
@@ -396,8 +368,7 @@ public class ClientManager
 	 * Adding client
 	 * @param client Client object
 	 */
-	public static void addClient(Client client)
-	{
+	public static void addClient(Client client) {
 		clients.put(client.getID(),client);
 	}
 	
@@ -405,8 +376,7 @@ public class ClientManager
 	 * Returning all clients.
 	 * @return Array of clients
 	 */
-	public static Client[] getAllClients()
-	{
+	public static Client[] getAllClients() {
 		return clients.values().toArray(Client[]::new);
 	}
 	
@@ -414,8 +384,7 @@ public class ClientManager
 	 * Returning clients amount
 	 * @return clients amount number
 	 */
-	public static int getClientConnectedAmount()
-	{
+	public static int getClientConnectedAmount() {
 		return clients.size();
 	}
 	
@@ -424,8 +393,7 @@ public class ClientManager
 	 * @param id Client ID
 	 * @return Client instance
 	 */
-	public static Client getClient(int id)
-	{
+	public static Client getClient(int id) {
 		return clients.get(id);
 	}
 	
@@ -434,8 +402,7 @@ public class ClientManager
 	 * @param enable true if TCP server may be enabled
 	 * @see ClientManager#isTCPEnabled()
 	 */
-	public static void setTCPEnabled(boolean enable)
-	{
+	public static void setTCPEnabled(boolean enable) {
 		tcpEnabled = enable;
 	}
 	
@@ -444,8 +411,7 @@ public class ClientManager
 	 * @param enable true if UDP server may be enabled
 	 * @see ClientManager#isUDPEnabled()
 	 */
-	public static void setUDPEnabled(boolean enable)
-	{
+	public static void setUDPEnabled(boolean enable) {
 		udpEnabled = enable;
 	}
 	
@@ -454,8 +420,7 @@ public class ClientManager
 	 * @return true id TCP Server is enabled
 	 * @see ClientManager#setTCPEnabled
 	 */
-	public static boolean isTCPEnabled()
-	{
+	public static boolean isTCPEnabled() {
 		return tcpEnabled;
 	}
 	
@@ -464,8 +429,7 @@ public class ClientManager
 	 * @return true id UDP Server is enabled
 	 * @see ClientManager#setUDPEnabled
 	 */
-	public static boolean isUDPEnabled()
-	{
+	public static boolean isUDPEnabled() {
 		return tcpEnabled;
 	}
 }

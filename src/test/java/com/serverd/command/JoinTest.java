@@ -4,13 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class JoinTest extends DoubleClientCommandTestCase
-{
+class JoinTest extends DoubleClientCommandTestCase {
 	Join joinCommand = new Join();
 
 	@Test
-	void executeTest() throws Exception 
-	{
+	void executeTest() throws Exception {
 		executeTest(
 				joinCommand,
 				args(String.valueOf(testClient2.getID())), 
@@ -25,8 +23,7 @@ class JoinTest extends DoubleClientCommandTestCase
 	}
 	
 	@Test
-	void executeTest_ClientNotExists() throws Exception 
-	{
+	void executeTest_ClientNotExists() throws Exception {
 		executeTest(
 				joinCommand,
 				args("10"), 
@@ -34,5 +31,4 @@ class JoinTest extends DoubleClientCommandTestCase
 		
 		assertTrue(testClient.getSend()[0].contains("ERROR"));
 	}
-
 }

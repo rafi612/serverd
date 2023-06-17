@@ -3,8 +3,7 @@ package com.serverd.plugin;
 /**
  * Main plugin interface
  */
-public interface ServerdPlugin
-{
+public interface ServerdPlugin {
 	/** Plugin init succesfully code */
 	String INIT_SUCCESS = "";
 	

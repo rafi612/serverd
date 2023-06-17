@@ -4,8 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class HelpTest extends CommandTestCase
-{
+class HelpTest extends CommandTestCase {
 	Help helpCommand = new Help();
 	
 	@Test
@@ -16,5 +15,4 @@ class HelpTest extends CommandTestCase
 		//checking if only this command exists in buildin commands list
 		assertEquals(testClient.getSend()[0].split("\n").length, 1);
 	}
-
 }

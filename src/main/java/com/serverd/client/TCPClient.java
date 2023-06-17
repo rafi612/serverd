@@ -9,8 +9,7 @@ import java.nio.channels.SocketChannel;
 /**
  * TCP client class
  */
-public class TCPClient extends SelectableClient
-{	
+public class TCPClient extends SelectableClient {	
 	/** Socket*/
 	protected SocketChannel tcpSocket;
 	
@@ -20,8 +19,7 @@ public class TCPClient extends SelectableClient
 	 * @param socket Socket instance
 	 * @throws IOException when InputStream or OutputStream throws {@link IOException}
 	 */
-	public TCPClient(int id,Selector selector, SocketChannel socket) throws IOException
-	{
+	public TCPClient(int id,Selector selector, SocketChannel socket) throws IOException {
 		super(id,selector);
 		
 		protocol = Protocol.TCP;
@@ -30,20 +28,17 @@ public class TCPClient extends SelectableClient
 
 	
 	@Override
-	public void send(String mess) throws IOException
-	{
+	public void send(String mess) throws IOException {
 		log.info("<Sended> " + mess);
 
 		rawdataSend(encoder.encode(mess, this).getBytes());
 	}
 	
 	@Override
-	public byte[] rawdataReceive() throws IOException
-	{		
+	public byte[] rawdataReceive() throws IOException {		
 		receiveBuffer.clear();
 		int len = tcpSocket.read(receiveBuffer);
 		receiveBuffer.flip();
-		
 		if (len == -1)
 			throw new IOException("Connection closed");
 			
@@ -56,8 +51,7 @@ public class TCPClient extends SelectableClient
 	}
 	
 	@Override
-	public void rawdataSend(byte[] bytes) throws IOException
-	{
+	public void rawdataSend(byte[] bytes) throws IOException {
 		getKey().interestOps(SelectionKey.OP_WRITE);
 		
 		queueBuffer(bytes);
@@ -65,16 +59,12 @@ public class TCPClient extends SelectableClient
 	}
 	
 	@Override
-	public void closeClient()
-	{
+	public void closeClient() {
 		super.closeClient();
 		
-		try
-		{
+		try {
 			tcpSocket.close();
-		} 
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			log.error("Client closing failed: " + e.getMessage());
 		}
 	}
@@ -85,21 +75,17 @@ public class TCPClient extends SelectableClient
 	}
 	
 	@Override
-	public String getIP()
-	{
+	public String getIP() {
 		return tcpSocket.socket().getInetAddress().getHostAddress();
 	}
 	
 	@Override
-	public int getPort()
-	{
+	public int getPort() {
 		return tcpSocket.socket().getPort();
 	}
 
-
 	@Override
-	public long processSend(ByteBuffer buffer) throws IOException 
-	{
+	public long processSend(ByteBuffer buffer) throws IOException {
 		return tcpSocket.write(buffer);
 	}
 }

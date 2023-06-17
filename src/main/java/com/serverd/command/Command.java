@@ -8,8 +8,7 @@ import com.serverd.plugin.Plugin;
 /**
  * Abstract class to creating custom commands
  */
-public abstract class Command implements Codes,Cloneable
-{
+public abstract class Command implements Codes,Cloneable {
 	/** Command name*/
 	public String command = "";
 	/** Command help*/
@@ -33,8 +32,7 @@ public abstract class Command implements Codes,Cloneable
 	 * @param flag One of {@link ARGS_LESS},{@link ARGS_GOOD},{@link ARGS_MORE}
 	 * @return true when arguments are valid
 	 */
-	protected boolean checkArgs(String[] args,int length,int flag) 
-	{
+	protected boolean checkArgs(String[] args,int length,int flag) {
 		int argsCount = args.length;
 
 		if (argsCount < length)
@@ -51,8 +49,7 @@ public abstract class Command implements Codes,Cloneable
 	 * @param length Arguments length
 	 * @return true when arguments are valid
 	 */
-	protected boolean checkArgs(String[] args,int length)
-	{
+	protected boolean checkArgs(String[] args,int length) {
 		return checkArgs(args,length,ARGS_GOOD);
 	}
 	
@@ -65,28 +62,22 @@ public abstract class Command implements Codes,Cloneable
 	 * @return true when arguments are valid
 	 * @throws IOException when client throw {@link IOException}
 	 */
-	protected boolean checkArgs(String[] args,Client client,int length,int flag) throws IOException 
-	{
+	protected boolean checkArgs(String[] args,Client client,int length,int flag) throws IOException {
 		int argsCount = args.length;
 
-		if (argsCount < length) 
-		{
+		if (argsCount < length) {
 			if ((flag & ARGS_LESS) == ARGS_LESS)
 				return true;
 			else 
 				client.send(error("Too few arguments"));
 			return false;
-		} 
-		else if (argsCount > length)
-		{
+		} else if (argsCount > length) {
 			if ((flag & ARGS_MORE) == ARGS_MORE) 
 				return true;
 			else 
 				client.send(error("Too many arguments"));
 			return false;
-		} 
-		else
-		{
+		} else {
 			if ((flag & ARGS_GOOD) == ARGS_GOOD)
 				return true;
 			else 
@@ -103,39 +94,32 @@ public abstract class Command implements Codes,Cloneable
 	 * @return true when arguments are valid
 	 * @throws IOException when client throw {@link IOException}
 	 */
-	protected boolean checkArgs(String[] args,Client client,int length) throws IOException 
-	{
+	protected boolean checkArgs(String[] args,Client client,int length) throws IOException {
 		return checkArgs(args,client,length,ARGS_GOOD);
 	}
 	
 	public void processReceive(byte[] bytes,Client client) throws IOException {}
 	
-	public String getName()
-	{
+	public String getName() {
 		return command;
 	}
 	
-	public void stayAlive()
-	{
+	public void stayAlive() {
 		stayAlive = true;
 	}
 	
-	public boolean isStayAlive()
-	{
+	public boolean isStayAlive() {
 		return stayAlive;
 	}
 	
-	public void done()
-	{
+	public void done() {
 		runned = false;
 		stayAlive = false;
 	}
 	
-	public boolean isRunned()
-	{
+	public boolean isRunned() {
 		return runned;
 	}
-	
 	
 	/**
 	 * Executing when command is called
@@ -147,8 +131,7 @@ public abstract class Command implements Codes,Cloneable
 	public abstract void execute(String[] args,Client client,Plugin plugin) throws IOException;
 	
     @Override
-    public Object clone() throws CloneNotSupportedException 
-    {
+    public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 }

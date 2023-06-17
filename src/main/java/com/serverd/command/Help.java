@@ -6,16 +6,13 @@ import com.serverd.client.Client;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
 
-public class Help extends Command
-{
-	protected Help()
-	{
+public class Help extends Command {
+	protected Help() {
 		command = "/help";
 		help = "/help - showing help";
 	}
 	@Override
-	public void execute(String[] args, Client client, Plugin plugin) throws IOException 
-	{
+	public void execute(String[] args, Client client, Plugin plugin) throws IOException {
 		String help = "";
 		
 		for (Command com : Commands.getCommandsList())

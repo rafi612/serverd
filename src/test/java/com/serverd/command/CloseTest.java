@@ -4,13 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class CloseTest extends CommandTestCase
-{
+class CloseTest extends CommandTestCase {
 	Close closeCommand = new Close();
 	
 	@Test
-	void executeTest() throws Exception 
-	{
+	void executeTest() throws Exception {
 		executeTest(
 				closeCommand, 
 				args(Integer.toString(testClient.getID())),
@@ -20,8 +18,7 @@ class CloseTest extends CommandTestCase
 	}
 	
 	@Test
-	void executeTest_ClientNotExists() throws Exception 
-	{	
+	void executeTest_ClientNotExists() throws Exception {
 		executeTest(
 				closeCommand, 
 				args("10"),
@@ -29,5 +26,4 @@ class CloseTest extends CommandTestCase
 		
 		assertEquals(testClient.getSend()[0], "ERROR client not found");
 	}
-
 }
