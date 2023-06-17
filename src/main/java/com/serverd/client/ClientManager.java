@@ -133,8 +133,9 @@ public class ClientManager
 						
 						if (client.processQueue()) {
 							key.interestOps(SelectionKey.OP_READ);
-							if (client.isJoined() && client.getJoiner().isSelectable())
-								((SelectableClient)client.getJoiner()).unlockRead();
+							
+							if (client.isJoined())
+								client.getJoiner().unlockRead();
 						}
 					}
 				}
@@ -273,8 +274,8 @@ public class ClientManager
 						
 						if (client.processQueue()) {
 							key.interestOps(SelectionKey.OP_READ);
-							if (client.isJoined() && client.getJoiner().isSelectable())
-								((SelectableClient)client.getJoiner()).unlockRead();
+							if (client.isJoined())
+								client.getJoiner().unlockRead();
 						}
 						key.interestOps(SelectionKey.OP_READ);
 					}

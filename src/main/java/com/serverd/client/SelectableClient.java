@@ -13,7 +13,7 @@ public abstract class SelectableClient extends Client
 	protected ByteBuffer writeBuffer = ByteBuffer.allocate(BUFFER);
 	protected ByteBuffer receiveBuffer = ByteBuffer.allocate(BUFFER);
 	
-	private boolean readyToWrite;
+	protected boolean readyToWrite;
 	protected long lastReadTime;
 	
 	/**
@@ -42,16 +42,18 @@ public abstract class SelectableClient extends Client
 		
 		readyToWrite = true;
 		
-		if (isJoined() && getJoiner().isSelectable())
-			((SelectableClient)getJoiner()).lockRead();
+		if (isJoined())
+			getJoiner().lockRead();
 	}
 	
+	@Override
 	public void lockRead() {
 		SelectionKey key = getKey();
 		key.interestOps(key.interestOps() & ~SelectionKey.OP_READ);
 		selector.wakeup();
 	}
 	
+	@Override
 	public void unlockRead() {
 		SelectionKey key = getKey();
 		key.interestOps(key.interestOps() | SelectionKey.OP_READ);

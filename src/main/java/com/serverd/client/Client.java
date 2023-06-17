@@ -194,13 +194,33 @@ public class Client implements Runnable
 		return joinedid != -1;
 	}
 	
+	/**
+	 * Check if client is selectable (Using Java NIO)
+	 * @return true if client is selectable
+	 */
 	public boolean isSelectable() {
 		return this instanceof SelectableClient;
 	}
 	
+	/**
+	 * Returns client joiner object
+	 * @return client joiner object.
+	 */
 	public Client getJoiner() {
 		return ClientManager.getClient(getJoinedID());
 	}
+	
+	/**
+	 * Locks client reading (Usually to prevent buffer overflow in Java NIO selectors)
+	 * @see #unlockRead
+	 */
+	public void lockRead() {}
+	
+	/**
+	 * Unlocks client reading
+	 * @see #lockRead
+	 */
+	public void unlockRead() {}
 	
 	/**
 	 * State of once join
