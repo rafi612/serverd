@@ -30,4 +30,9 @@ class LogTest {
 	void debug_Test() {
 		logger.debug("Test debug message");
 	}
+	
+	@Test
+	void trace_Test() {
+		logger.trace("Test trace message");
+	}
 }
