@@ -38,18 +38,15 @@ public class PluginManager {
 	public static void init() throws IOException {
 		//create plugin dir
 		File pdir = new File(pluginDir);
-		if (!pdir.exists())
-			if (pdir.mkdirs())
-				throw new IOException("Failed to create plugin dir");
+		if (!pdir.exists() && !pdir.mkdir())
+			throw new IOException("Failed to create plugin dir");
 		
 		File pdatadir = new File(pluginDataDir);
-		if (!pdatadir.exists())
-			if (pdatadir.mkdirs())
-				throw new IOException("Failed to create plugin data dir");
+		if (!pdatadir.exists() && !pdatadir.mkdir())
+			throw new IOException("Failed to create plugin data dir");
 		
-		if (!pluginDisabledFile.exists())
-			if (pluginDisabledFile.createNewFile())
-				throw new IOException("Failed to create plugin disabled file");
+		if (!pluginDisabledFile.exists() && !pluginDisabledFile.createNewFile())
+			throw new IOException("Failed to create plugin disabled file");
 
 		pluginsDisabled = Files.readAllLines(pluginDisabledFile.toPath(), Charset.defaultCharset());
 	}
