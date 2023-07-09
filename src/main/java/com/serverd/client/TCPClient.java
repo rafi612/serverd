@@ -1,17 +1,21 @@
 package com.serverd.client;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.SocketChannel;
+import java.net.InetSocketAddress;
+import java.nio.channels.AsynchronousSocketChannel;
+import java.nio.channels.CompletionHandler;
+import java.util.concurrent.TimeUnit;
+
+import com.serverd.config.Config;
 
 /**
  * TCP client class
  */
-public class TCPClient extends SelectableClient {	
+public class TCPClient extends AsyncClient {	
+	
 	/** Socket*/
-	protected SocketChannel tcpSocket;
+	protected AsynchronousSocketChannel tcpSocket;
+	protected Config config;
 	
 	/**
 	 * TCPClient class constructor
@@ -19,8 +23,9 @@ public class TCPClient extends SelectableClient {
 	 * @param socket Socket instance
 	 * @throws IOException when InputStream or OutputStream throws {@link IOException}
 	 */
-	public TCPClient(int id,Selector selector, SocketChannel socket) throws IOException {
-		super(id,selector);
+	public TCPClient(int id,AsynchronousSocketChannel socket,Config config) throws IOException {
+		super(id);
+		this.config = config;
 		
 		protocol = Protocol.TCP;
 		tcpSocket = socket;
@@ -34,28 +39,68 @@ public class TCPClient extends SelectableClient {
 		rawdataSend(encoder.encode(mess, this).getBytes());
 	}
 	
-	@Override
-	public byte[] rawdataReceive() throws IOException {		
+	public void receive(ReceiveComplete handler) {
+		if (locked)
+			return;
+		
 		receiveBuffer.clear();
-		int len = tcpSocket.read(receiveBuffer);
-		receiveBuffer.flip();
-		if (len == -1)
-			throw new IOException("Connection closed");
-			
-		byte[] ret = new byte[len];
-		receiveBuffer.get(ret, 0, len);
 		
-		updateTimeout();
-		
-		return ret;
+		readPending = true;
+		tcpSocket.read(receiveBuffer,config.timeout,TimeUnit.MILLISECONDS, null, new CompletionHandler<Integer, Void>() {
+
+			@Override
+			public void completed(Integer len, Void attachment) {
+				readPending = false;
+				
+				receiveBuffer.flip();
+				if (len == -1) {
+					crash(new IOException("Connection closed"));
+					return;
+				}
+				
+				byte[] ret = new byte[len];
+				receiveBuffer.get(ret, 0, len);
+				
+				handler.receiveDone(ret);	
+			}
+
+			@Override
+			public void failed(Throwable exc, Void attachment) {
+				readPending = false;
+				crash((Exception)exc);
+			}
+		});
 	}
 	
 	@Override
 	public void rawdataSend(byte[] bytes) throws IOException {
-		getKey().interestOps(SelectionKey.OP_WRITE);
+		writeBuffer.clear();
+		writeBuffer.put(bytes);
+		writeBuffer.flip();
 		
-		queueBuffer(bytes);
-		selector.wakeup();
+		if (isJoined())
+			getJoiner().lockRead();
+		
+		tcpSocket.write(writeBuffer, null, new CompletionHandler<Integer, Void>() {
+			@Override
+			public void completed(Integer bytesWritten, Void attachment) {
+				
+				if (writeBuffer.hasRemaining()) {
+					tcpSocket.write(writeBuffer, null, this);
+                } else {
+					if (isJoined())
+						getJoiner().unlockRead();
+					
+					unlockRead();
+				}
+			}
+
+			@Override
+			public void failed(Throwable exc, Void attachment) {
+				crash((Exception)exc);
+			}
+			
+		});
 	}
 	
 	@Override
@@ -69,23 +114,24 @@ public class TCPClient extends SelectableClient {
 		}
 	}
 	
-	@Override
-	public SelectionKey getKey() {
-		return tcpSocket.keyFor(selector);
-	}
 	
 	@Override
 	public String getIP() {
-		return tcpSocket.socket().getInetAddress().getHostAddress();
+		try {
+			return ((InetSocketAddress) tcpSocket.getRemoteAddress()).getAddress().toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@Override
 	public int getPort() {
-		return tcpSocket.socket().getPort();
-	}
-
-	@Override
-	public long processSend(ByteBuffer buffer) throws IOException {
-		return tcpSocket.write(buffer);
+		try {
+			return ((InetSocketAddress) tcpSocket.getRemoteAddress()).getPort();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

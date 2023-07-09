@@ -3,11 +3,13 @@ package com.serverd.client;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousServerSocketChannel;
+import java.nio.channels.AsynchronousSocketChannel;
+import java.nio.channels.CompletionHandler;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -62,80 +64,41 @@ public class ClientManager {
 		tcpRunned = true;
 
 		try {
-			tcpSocket = ServerSocketChannel.open();
-			tcpSocket.bind(new InetSocketAddress(ip,port));
+			AsynchronousServerSocketChannel serverSocketChannel = AsynchronousServerSocketChannel.open();
+			serverSocketChannel.bind(new InetSocketAddress(ip,port));
 			
-			tcpSocket.configureBlocking(false);
+	        serverSocketChannel.accept(null, new CompletionHandler<AsynchronousSocketChannel, Void>() {
+	            @Override
+	            public void completed(AsynchronousSocketChannel clientSocketChannel, Void attachment) {
+	            	try {
+	            		tcplog.info("Connection accepted from client!");
+	            		
+	            		serverSocketChannel.accept(null, this);
+		            	
+		            	TCPClient client = new TCPClient(getFreeClientID(),clientSocketChannel,config);
+		            	setupClient(client);
+		            	addClient(client);
+		            	
+		            	client.setAfterReceive(() -> {
+
+		            		client.receive((bytes) -> {
+		            			client.processCommand(bytes);
+		            		});
+		            	});
+		            	client.invokeReceive();
+	            		
+	            	} catch (IOException e) {
+	            		if (tcpRunned)
+	        				tcplog.error("Server error: " + e.getMessage());
+	            	}
+	            }
+
+	            @Override
+	            public void failed(Throwable e, Void attachment) {
+	            	tcplog.error("Accept failed: " + e.getMessage());
+	            }
+	        });
 			
-			Selector selector = Selector.open();
-			tcpSocket.register(selector, SelectionKey.OP_ACCEPT);
-			
-			long lastTimeout = System.currentTimeMillis();
-			
-			while (tcpRunned) {
-				//timeout checking and selecting
-				selector.select(config.timeout);
-				if (config.timeout > 0 && System.currentTimeMillis() - lastTimeout >= config.timeout)
-					for (SelectionKey key : selector.keys()) {
-						//check if can be readable
-						if ((key.interestOps() & SelectionKey.OP_READ) == 0)
-							continue;
-						//check timeout
-						TCPClient client = (TCPClient) key.attachment();
-						if (System.currentTimeMillis() - client.lastReadTime() >= config.timeout)
-							client.crash(new IOException("Read timed out"));
-						lastTimeout = System.currentTimeMillis();
-				}
-				
-				Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
-				while (keys.hasNext()) {
-					SelectionKey key = keys.next();
-					keys.remove();
-					
-					if (!key.isValid())
-						continue;
-					
-					if (key.isAcceptable()) {
-						SocketChannel socket = tcpSocket.accept();
-						socket.configureBlocking(false);
-						socket.socket().setSoTimeout(config.timeout);
-						
-						tcplog.info("Connection accepted from client!");
-						
-						TCPClient client = new TCPClient(getFreeClientID(),selector,socket);
-						addClient(client);
-						
-						socket.register(selector, SelectionKey.OP_READ,client);
-						
-						setupClient(client);
-					}
-					
-					if (key.isReadable()) {
-						TCPClient client = (TCPClient) key.attachment();
-						try {
-							client.processCommand(client.rawdataReceive());
-						} catch (IOException e) {
-							client.crash(e);
-							continue;
-						}
-					}
-				   
-					if (!key.isValid())
-						continue;
-					
-					if (key.isWritable()) {
-						TCPClient client = (TCPClient) key.attachment();
-						
-						if (client.processQueue()) {
-							key.interestOps(SelectionKey.OP_READ);
-							
-							if (client.isJoined())
-								client.getJoiner().unlockRead();
-						}
-					}
-				}
-			}
-			tcpSocket.close();
 		} catch (IOException e) {
 			if (tcpRunned)
 				tcplog.error("Server error: " + e.getMessage());

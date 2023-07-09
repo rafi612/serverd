@@ -350,6 +350,8 @@ public class Client implements Runnable {
 			if (isJoined())
 				unjoin();
 			
+			exception.printStackTrace();
+			
 			crashed = true;
 			log.error("Client " + id + " crashed: " + exception.getMessage());
 			
@@ -378,6 +380,9 @@ public class Client implements Runnable {
 	 * @param buffer Byte buffer to process
 	 */
 	public void processCommand(byte[] buffer) {	
+		if (currentCommand != null && !currentCommand.isStayAlive())
+			currentCommand = null;
+		
 		try {
 			if (currentCommand == null) {
 				String command_str = toMessage(buffer);
@@ -431,13 +436,12 @@ public class Client implements Runnable {
 					} 
 				} else {
 					currentCommand = comm;
+					
 					comm.runned = true;
 					comm.execute(args, this, plugin);
-					
-					if (!currentCommand.isStayAlive())
-						currentCommand = null;
 				}
 			} else {
+				
 				if (currentCommand.isStayAlive() && currentCommand.isRunned())
 					currentCommand.processReceive(buffer,this);
 				
