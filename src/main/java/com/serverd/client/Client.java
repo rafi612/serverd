@@ -380,9 +380,6 @@ public class Client implements Runnable {
 	 * @param buffer Byte buffer to process
 	 */
 	public void processCommand(byte[] buffer) {	
-		if (currentCommand != null && !currentCommand.isStayAlive())
-			currentCommand = null;
-		
 		try {
 			if (currentCommand == null) {
 				String command_str = toMessage(buffer);
@@ -439,6 +436,9 @@ public class Client implements Runnable {
 					
 					comm.runned = true;
 					comm.execute(args, this, plugin);
+					
+					if (currentCommand != null && !currentCommand.isStayAlive())
+						currentCommand = null;
 				}
 			} else {
 				

@@ -38,6 +38,8 @@ public class AsyncClient extends Client {
 	}
 	
 	public void unlockRead() {
+		
+		log.debug("Unlocked");
 		locked = false;
 		
 		if (!readPending)
@@ -45,6 +47,7 @@ public class AsyncClient extends Client {
 	}
 	
 	public void lockRead() {
+		log.debug("Locked");
 		locked = true;
 	}
 	
@@ -53,6 +56,12 @@ public class AsyncClient extends Client {
 	}
 	
 	protected void queueBuffer(byte[] buf) {
+		writeBuffer.clear();
+		writeBuffer.put(buf);
+		writeBuffer.flip();
+		
+		if (isJoined())
+			getJoiner().lockRead();
 		
 	}
 	

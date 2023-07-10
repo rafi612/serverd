@@ -83,6 +83,11 @@ public class ClientManager {
 
 		            		client.receive((bytes) -> {
 		            			client.processCommand(bytes);
+		            			
+		            			if (client.getJoiner() != null)
+		            				((TCPClient) client.getJoiner()).processQueue();
+		            			
+		            			client.processQueue();
 		            		});
 		            	});
 		            	client.invokeReceive();

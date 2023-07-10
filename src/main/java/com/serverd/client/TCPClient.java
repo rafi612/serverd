@@ -2,6 +2,7 @@ package com.serverd.client;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.concurrent.TimeUnit;
@@ -74,24 +75,28 @@ public class TCPClient extends AsyncClient {
 	
 	@Override
 	public void rawdataSend(byte[] bytes) throws IOException {
-		writeBuffer.clear();
-		writeBuffer.put(bytes);
-		writeBuffer.flip();
+		queueBuffer(bytes);
 		
-		if (isJoined())
-			getJoiner().lockRead();
 		
-		tcpSocket.write(writeBuffer, null, new CompletionHandler<Integer, Void>() {
+	}
+	
+	public void processSend(ByteBuffer buffer) {
+		
+		log.debug("Process send");
+		
+		tcpSocket.write(buffer, null, new CompletionHandler<Integer, Void>() {
 			@Override
 			public void completed(Integer bytesWritten, Void attachment) {
 				
-				if (writeBuffer.hasRemaining()) {
+				if (buffer.hasRemaining()) {
 					tcpSocket.write(writeBuffer, null, this);
+					
+					buffer.clear();
                 } else {
 					if (isJoined())
 						getJoiner().unlockRead();
 					
-					unlockRead();
+					invokeReceive();
 				}
 			}
 
