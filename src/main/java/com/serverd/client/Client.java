@@ -350,8 +350,6 @@ public class Client implements Runnable {
 			if (isJoined())
 				unjoin();
 			
-			exception.printStackTrace();
-			
 			crashed = true;
 			log.error("Client " + id + " crashed: " + exception.getMessage());
 			

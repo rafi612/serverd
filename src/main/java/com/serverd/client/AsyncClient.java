@@ -56,12 +56,7 @@ public class AsyncClient extends Client {
 	}
 	
 	protected void queueBuffer(byte[] buf) {
-		writeBuffer.clear();
-		writeBuffer.put(buf);
-		writeBuffer.flip();
-		
-		if (isJoined())
-			getJoiner().lockRead();
+
 		
 	}
 	

@@ -75,29 +75,28 @@ public class TCPClient extends AsyncClient {
 	
 	@Override
 	public void rawdataSend(byte[] bytes) throws IOException {
-		queueBuffer(bytes);
+		writeBuffer.clear();
+		writeBuffer.put(bytes);
+		writeBuffer.flip();
 		
+		if (isJoined())
+			getJoiner().lockRead();
 		
-	}
-	
-	public void processSend(ByteBuffer buffer) {
-		
-		log.debug("Process send");
-		
-		tcpSocket.write(buffer, null, new CompletionHandler<Integer, Void>() {
+		tcpSocket.write(writeBuffer, null, new CompletionHandler<Integer, Void>() {
 			@Override
 			public void completed(Integer bytesWritten, Void attachment) {
 				
-				if (buffer.hasRemaining()) {
+				if (writeBuffer.hasRemaining()) {
 					tcpSocket.write(writeBuffer, null, this);
 					
-					buffer.clear();
-                } else {
-					if (isJoined())
-						getJoiner().unlockRead();
-					
-					invokeReceive();
+					writeBuffer.clear();
 				}
+//                } else {
+//					if (isJoined())
+//						getJoiner().unlockRead();
+//					
+//					invokeReceive();
+//				}
 			}
 
 			@Override
@@ -106,6 +105,13 @@ public class TCPClient extends AsyncClient {
 			}
 			
 		});
+		
+		
+	}
+	
+	public void processSend(ByteBuffer buffer) {
+		
+
 	}
 	
 	@Override
