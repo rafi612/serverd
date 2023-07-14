@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  serverd:
+    image: rafi612/serverd
+    container_name: serverd
+    ports:
+      - 9999:9999/tcp
+      - 9998:9998/udp
+    volumes:
+      - ./data:/app/data

@@ -80,5 +80,31 @@ To generate Javadoc run command: `./mwnw javadoc:javadoc`
 
 Javadoc can be found in `./target/apidocs/index.html` or `./target/ServerD-<version>-javadoc.jar` as jar file.
 
+# Docker
+
+ServerD can be runned using Docker. 
+
+To build Docker image run command:
+`docker build -t rafi612/serverd .`
+
+Then run using command:
+`docker run -p 9999:9999 -p 9998:9998/udp -v ./data:/app/data rafi612/serverd`
+
+Or create **docker-compose.yml** file and paste following:
+
+```yaml
+version: '3'
+services:
+  serverd:
+    image: rafi612/serverd
+    container_name: serverd
+    ports:
+      - 9999:9999/tcp
+      - 9998:9998/udp
+    volumes:
+      - ./data:/app/data
+```
+
+And run using command: `docker compose up`
 
 
