@@ -45,7 +45,7 @@ public class ClientManager {
 		udp.start();
 	}
 	
-	public static ServerSocketChannel tcpSocket;
+	public static AsynchronousServerSocketChannel tcpSocket;
 	
 	/**
 	 * Starting TCP Server
@@ -64,16 +64,16 @@ public class ClientManager {
 		tcpRunned = true;
 
 		try {
-			AsynchronousServerSocketChannel serverSocketChannel = AsynchronousServerSocketChannel.open();
-			serverSocketChannel.bind(new InetSocketAddress(ip,port));
+			tcpSocket = AsynchronousServerSocketChannel.open();
+			tcpSocket.bind(new InetSocketAddress(ip,port));
 			
-	        serverSocketChannel.accept(null, new CompletionHandler<AsynchronousSocketChannel, Void>() {
+	        tcpSocket.accept(null, new CompletionHandler<AsynchronousSocketChannel, Void>() {
 	            @Override
 	            public void completed(AsynchronousSocketChannel clientSocketChannel, Void attachment) {
 	            	try {
 	            		tcplog.info("Connection accepted from client!");
 	            		
-	            		serverSocketChannel.accept(null, this);
+	            		tcpSocket.accept(null, this);
 		            	
 		            	TCPClient client = new TCPClient(getFreeClientID(),clientSocketChannel,config);
 		            	setupClient(client);
