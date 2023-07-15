@@ -28,9 +28,9 @@ public class PluginManager {
 	
 	public static List<String> pluginsDisabled;
 	
-	public static ArrayList<Plugin> plugins = new ArrayList<Plugin>();
+	public static ArrayList<Plugin> plugins = new ArrayList<>();
 
-	private static Log log = new Log("Plugin Manager");
+	private static final Log log = new Log("Plugin Manager");
 	
 	/**
 	 * Init method
@@ -38,32 +38,33 @@ public class PluginManager {
 	public static void init() throws IOException {
 		//create plugin dir
 		File pdir = new File(pluginDir);
-		if (!pdir.exists())
-			pdir.mkdirs();
+		if (!pdir.exists() && !pdir.mkdir())
+			throw new IOException("Failed to create plugin dir");
 		
 		File pdatadir = new File(pluginDataDir);
-		if (!pdatadir.exists())
-			pdatadir.mkdirs();
+		if (!pdatadir.exists() && !pdatadir.mkdir())
+			throw new IOException("Failed to create plugin data dir");
 		
-		if (!pluginDisabledFile.exists())
-			pluginDisabledFile.createNewFile();
-		
+		if (!pluginDisabledFile.exists() && !pluginDisabledFile.createNewFile())
+			throw new IOException("Failed to create plugin disabled file");
+
 		pluginsDisabled = Files.readAllLines(pluginDisabledFile.toPath(), Charset.defaultCharset());
 	}
 
 	/**
 	 * Loading all plugins
-	 * @throws IOException 
 	 */
-	public static void loadPlugins() throws IOException {		
+	public static void loadPlugins() {
 		File pdir = new File(pluginDir);
 		File[] files = pdir.listFiles();
 		
-		for (File file : files) {
-			try {
-				load(file,pluginsDisabled.indexOf(file.getName()) == -1);
-			} catch (PluginLoadException e) {
-				log.error(e.getPluginName() + ": " + e.getMessage());
+		if (files != null) {
+			for (File file : files) {
+				try {
+					load(file, !pluginsDisabled.contains(file.getName()));
+				} catch (PluginLoadException e) {
+					log.error(e.getPluginName() + ": " + e.getMessage());
+				}
 			}
 		}
 	}

@@ -99,8 +99,8 @@ public class Config {
 	 * @throws IOException when IO error
 	 */
 	public static boolean createIfNotExists(File file,Object config,String comment) throws IOException {
-		boolean before;
-		if (before = !file.exists())
+		boolean before = !file.exists();
+		if (before)
 			save(file,config,comment);
 		return !before;
 	}

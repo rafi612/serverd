@@ -15,13 +15,6 @@ public class Debug {
 	/**
 	 * Loading plugin from classpath by plugin name
 	 * @param classname Main plugin class name
-	 * @throws ClassNotFoundException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
 	 * @return ID of loaded plugin
 	 */
 	public static int loadPluginFromClassName(String classname) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
