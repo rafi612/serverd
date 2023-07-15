@@ -14,15 +14,14 @@ import com.serverd.log.Log;
  * Plugin instance class
  */
 public class Plugin {
-	private Info info = new Info();
+	private final Info info = new Info();
 	
 	public ArrayList<ConnectListener> connectListeners = new ArrayList<ConnectListener>();
 	public ArrayList<Command> commands = new ArrayList<Command>();
 	public ArrayList<ExecutionController> executionControllers = new ArrayList<ExecutionController>();
 	
-	private ServerdPlugin instance;
-	private Thread thread;
-	
+	private final ServerdPlugin instance;
+
 	private boolean isRunned = false;
 	
 	private Log log;
@@ -54,8 +53,8 @@ public class Plugin {
 			error("Plugin init failed: " + errormessage);
 			return false;
 		}
-		
-		thread = new Thread(() -> instance.work(this));
+
+		Thread thread = new Thread(() -> instance.work(this));
 		thread.start();
 		
 		isRunned = true;
@@ -207,7 +206,7 @@ public class Plugin {
 	/**
 	 * Plugin information class
 	 */
-	public class Info {
+	public static class Info {
 		/** Info fields*/
 		public String name,author,decription,version;
 
