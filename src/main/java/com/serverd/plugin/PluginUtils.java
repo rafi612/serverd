@@ -9,29 +9,9 @@ import java.util.Arrays;
 import com.serverd.main.Main;
 
 /**
- * Allows to running ServerD inside plugin for debugging
+ * Plugin utilities
  */
-public class Debug {
-	/**
-	 * Loading plugin from classpath by plugin name
-	 * @param classname Main plugin class name
-	 * @return ID of loaded plugin
-	 */
-	public static int loadPluginFromClassName(String classname) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		String classfile = classname.replace(".", File.separator) + ".class";
-		
-		Class<?> classToLoad = Debug.class.getClassLoader().loadClass(classname);
-		
-		ServerdPlugin instance = (ServerdPlugin) classToLoad.getDeclaredConstructor().newInstance();
-		Plugin plugin = new Plugin(classfile,instance);
-		
-		plugin.start();
-		
-		PluginManager.addPlugin(plugin);
-		
-		return PluginManager.getPluginsAmountLoaded() - 1;
-	}
-	
+public class PluginUtils {
 	/**
 	 * 
 	 * @param classname Plugin main classname
@@ -64,4 +44,25 @@ public class Debug {
 		}
 		return -1;
 	}
+	
+	/**
+	 * Loading plugin from classpath by plugin name
+	 * @param classname Main plugin class name
+	 * @return ID of loaded plugin
+	 */
+	public static int loadPluginFromClassName(String classname) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		String classfile = classname.replace(".", File.separator) + ".class";
+		
+		Class<?> classToLoad = PluginUtils.class.getClassLoader().loadClass(classname);
+		
+		ServerdPlugin instance = (ServerdPlugin) classToLoad.getDeclaredConstructor().newInstance();
+		Plugin plugin = new Plugin(classfile,instance);
+		
+		plugin.start();
+		
+		PluginManager.addPlugin(plugin);
+		
+		return PluginManager.getPluginsAmountLoaded() - 1;
+	}
+	
 }

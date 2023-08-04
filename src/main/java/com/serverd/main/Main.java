@@ -6,8 +6,8 @@ import com.serverd.client.ClientManager;
 import com.serverd.command.Commands;
 import com.serverd.config.Config;
 import com.serverd.log.Log;
-import com.serverd.plugin.Debug;
 import com.serverd.plugin.PluginManager;
+import com.serverd.plugin.PluginUtils;
 
 public class Main {
 	public static final String VERSION = "v1.2.0";
@@ -18,8 +18,8 @@ public class Main {
 		Log log = new Log("ServerD");
 		
 		boolean plugins = true;
-		boolean pluginDebug = false;
-		String pluginDebugClass = ""; 
+		boolean isLoadingApp = false;
+		String appClass = ""; 
 		
 		//parse work dir argument
 		for (int i = 0;i < args.length;i++)
@@ -57,13 +57,13 @@ public class Main {
 				case "--noplugins":
 					plugins = false;
 					break;
-				case "--plugin-debug":
+				case "--app-class":
 					if (i + 1 > args.length) {
-						System.err.println("--plugin-debug: missing argument");
+						System.err.println("--app-class: missing argument");
 						break;
 					}
-					pluginDebug = true;
-					pluginDebugClass = args[i + 1];
+					isLoadingApp = true;
+					appClass = args[i + 1];
 					break;
 				case "--ip":
 					if (i + 1 > args.length) {
@@ -112,15 +112,15 @@ public class Main {
 			System.exit(-1);
 		}
 		
-		if (pluginDebug) {
-			log.info("Loading debug plugin " + pluginDebugClass + "...");
+		if (isLoadingApp) {
+			log.info("Loading app " + appClass + "...");
 			try {
-				Debug.loadPluginFromClassName(pluginDebugClass);
+				PluginUtils.loadPluginFromClassName(appClass);
 			} catch (ClassNotFoundException e) {
-				System.err.println("Class " + pluginDebugClass + " not found");
+				System.err.println("Class " + appClass + " not found");
 				System.exit(1);
 			} catch (Exception e) {
-				System.err.println("Debug plugin load error:" + e.getMessage());
+				System.err.println("App load error:" + e.getMessage());
 			}
 		}
 		

@@ -141,7 +141,7 @@ class PluginManagerTest {
 	void setUp() throws Exception {
 		PluginManager.init();
 		
-		pluginid = Debug.loadPluginFromClassName(PluginManagerTestPlugin.class.getName());
+		pluginid = PluginUtils.loadPluginFromClassName(PluginManagerTestPlugin.class.getName());
 		plugin = PluginManager.getPluginByID(pluginid);
 	}
 	
