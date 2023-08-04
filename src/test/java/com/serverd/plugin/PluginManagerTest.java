@@ -23,6 +23,9 @@ class PluginManagerTest {
 	Plugin plugin;
 	int pluginid;
 	
+	@TempDir
+	File tempWorkDir;
+	
 	@Nested
 	class LoadPluginsFromFile {
 		@TempDir
@@ -139,7 +142,8 @@ class PluginManagerTest {
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		PluginManager.init();
+		
+		PluginManager.init(tempWorkDir);
 		
 		pluginid = PluginUtils.loadPluginFromClassName(PluginManagerTestPlugin.class.getName());
 		plugin = PluginManager.getPluginByID(pluginid);

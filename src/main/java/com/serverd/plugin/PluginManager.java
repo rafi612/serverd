@@ -7,7 +7,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
@@ -15,16 +14,15 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import com.serverd.log.Log;
-import com.serverd.main.Main;
 
 /**
  * Plugin manager
  */
 public class PluginManager {
-	public static String pluginDir = Paths.get(Main.workingdir,"plugins").toString();
-	public static String pluginDataDir = Paths.get(Main.workingdir,"pluginsdata").toString();
+	public static String pluginDir;
+	public static String pluginDataDir;
 	
-	public static File pluginDisabledFile = Paths.get(Main.workingdir,"plugins_disabled.conf").toFile();
+	public static File pluginDisabledFile;
 	
 	public static List<String> pluginsDisabled;
 	
@@ -35,7 +33,13 @@ public class PluginManager {
 	/**
 	 * Init method
 	 */
-	public static void init() throws IOException {
+	public static void init(File workdir) throws IOException {
+		
+		pluginDir = new File(workdir,"plugins").getAbsolutePath();
+		pluginDataDir = new File(workdir,"pluginsdata").getAbsolutePath();
+		
+		pluginDisabledFile = new File(workdir,"plugins_disabled.conf");
+		
 		//create plugin dir
 		File pdir = new File(pluginDir);
 		if (!pdir.exists() && !pdir.mkdir())

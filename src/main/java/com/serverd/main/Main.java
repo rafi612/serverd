@@ -102,7 +102,7 @@ public class Main {
 			
 		Commands.init();
 		try {
-			PluginManager.init();
+			PluginManager.init(workdirFile);
 			if (plugins) {
 				log.info("Loading plugins...");
 				PluginManager.loadPlugins();
