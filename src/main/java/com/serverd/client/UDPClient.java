@@ -52,11 +52,9 @@ public class UDPClient extends Client {
 	
 	@Override
 	public void send(String mess) throws IOException {
-		log.info("<Sended> " + mess);
+		processor.printSendMessage(mess);
 		
-		String message = encoder.encode(mess, this); 
-		
-		byte[] bytes = message.getBytes();
+		byte[] bytes = mess.getBytes();
 		DatagramPacket out = new DatagramPacket(bytes,bytes.length,ip,port);
 		
 		udpSocket.send(out);

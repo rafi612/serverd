@@ -43,9 +43,9 @@ public class TCPClient extends Client {
 	
 	@Override
 	public void send(String mess) throws IOException {
-		log.info("<Sended> " + mess);
+		processor.printSendMessage(mess);
 
-		out.write(encoder.encode(mess, this).getBytes());
+		out.write(mess.getBytes());
 		out.flush();
 	}
 	
