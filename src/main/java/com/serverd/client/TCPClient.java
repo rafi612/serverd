@@ -29,9 +29,9 @@ public class TCPClient extends SelectableClient {
 	
 	@Override
 	public void send(String mess) throws IOException {
-		log.info("<Sended> " + mess);
+		processor.printSendMessage(mess);
 
-		rawdataSend(encoder.encode(mess, this).getBytes());
+		rawdataSend(mess.getBytes());
 	}
 	
 	@Override

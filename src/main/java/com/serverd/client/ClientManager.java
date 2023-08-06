@@ -113,7 +113,7 @@ public class ClientManager {
 					if (key.isReadable()) {
 						TCPClient client = (TCPClient) key.attachment();
 						try {
-							client.processCommand(client.rawdataReceive());
+							client.getProcessor().processCommand(client.rawdataReceive());
 						} catch (IOException e) {
 							client.crash(e);
 							continue;
@@ -241,11 +241,11 @@ public class ClientManager {
 							byte[] data = new byte[buffer.limit()];
 							buffer.get(data, 0, buffer.limit());
 							
-							client.processCommand(data);
+							client.getProcessor().processCommand(data);
 						} else {
 							UDPClient client = (UDPClient) key.attachment();
 							try {
-								client.processCommand(client.rawdataReceive());
+								client.getProcessor().processCommand(client.rawdataReceive());
 							} catch (IOException e) {
 								client.crash(e);
 								continue;
