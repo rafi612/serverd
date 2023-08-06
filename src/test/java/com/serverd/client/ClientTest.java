@@ -104,7 +104,11 @@ class ClientTest {
 		
 		ClientManager.addClient(client);
 		
-		client.run();
+		try {
+			client.receive();
+		} catch (IOException e) {
+			client.crash(e);
+		}
 		
 		assertNull(ClientManager.getClient(0));
 	}
@@ -122,7 +126,12 @@ class ClientTest {
 		ClientManager.addClient(client);
 		
 		assertDoesNotThrow(() -> client.join(client2.getID()));
-		client.run();
+		
+		try {
+			client.receive();
+		} catch (IOException e) {
+			client.crash(e);
+		}
 		
 		assertFalse(client.isJoined());
 	}

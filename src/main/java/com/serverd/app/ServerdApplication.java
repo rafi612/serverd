@@ -1,5 +1,6 @@
 package com.serverd.app;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -34,7 +35,7 @@ public class ServerdApplication {
 	 * @param otherPlugins Want to load another plugins?
 	 */
 	public static void run(Class<?> appClass,String[] args,boolean otherPlugins) {
-		run(appClass,args,otherPlugins,Main.getWorkDir());
+		run(appClass,args,otherPlugins,getWorkDir("serverd"));
 	}
 
 	/**
@@ -64,5 +65,23 @@ public class ServerdApplication {
 		
 		//running main method with args
 		Main.main(mainArgs.toArray(String[]::new));
+	}
+	
+	
+	/**
+	 * Returns default working directory
+	 * @return Working directory path.
+	 */
+	public static String getWorkDir(String name) {
+		String osname = System.getProperty("os.name").toLowerCase();
+		String userhome = System.getProperty("user.home");
+		
+		if (osname.startsWith("windows"))
+			return Paths.get(System.getenv("APPDATA"),name).toString();
+		else if (osname.contains("nux") || osname.contains("freebsd"))
+			return Paths.get(userhome,".config",name).toString();
+		else if (osname.contains("mac") || osname.contains("darwin"))
+			return Paths.get(userhome,"Library","Application Support",name).toString();
+		return userhome;
 	}
 }

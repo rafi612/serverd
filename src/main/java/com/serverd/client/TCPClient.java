@@ -36,8 +36,6 @@ public class TCPClient extends Client {
 		
 		in = tcpSocket.getInputStream();
 		out = tcpSocket.getOutputStream();
-			
-		thread = new Thread(this,"Client " + id);
 	}
 
 	

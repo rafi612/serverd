@@ -8,9 +8,7 @@ import com.serverd.log.Log;
 /**
  * Client class
  */
-public class Client implements Runnable {
-	/** Client's thread */
- 	protected Thread thread;
+public class Client {
 	
 	private int id;
 	
@@ -30,17 +28,8 @@ public class Client implements Runnable {
 	
 	private boolean onceJoin = false;
 	
-	/**Processor*/
+	/** Processor */
 	protected Processor processor = new CommandProcessor(this);
-	
-	public Processor getProcessor() {
-		return processor;
-	}
-
-	public void setProcessor(Processor processor) {
-		this.processor = processor;
-	}
-
 
 	/**
 	 * Client type
@@ -86,14 +75,6 @@ public class Client implements Runnable {
 		name = "Client " + id;
 		
 		log = new Log("Client " + id);
-	}
-	
-	/**
-	 * Returns client {@link Thread}
-	 * @return client {@link Thread}
-	 */
-	public Thread getThread() {
-		return thread;
 	}
 	
 	/**
@@ -215,16 +196,30 @@ public class Client implements Runnable {
 		return type;
 	}
 	
+	
+	/**
+	 * Returns client processor
+	 * @return Client processor
+	 */
+	public Processor getProcessor() {
+		return processor;
+	}
+
+	/**
+	 * Setting client processor
+	 * @param processor Client new processor
+	 */
+	public void setProcessor(Processor processor) {
+		this.processor = processor;
+	}
+	
 	/**
 	 * Converts byte buffer to String message
 	 * @param buffer Byte buffer
 	 * @return String message
 	 */
 	public String toMessage(byte[] buffer) {
-		String message = new String(buffer,0,buffer.length);
-
-		
-		return message;
+		return new String(buffer,0,buffer.length);
 	}
 	
 	/**
@@ -309,20 +304,5 @@ public class Client implements Runnable {
 			closeClient();
 			ClientManager.delete(id);
 		}
-	}
-	
-
-	@Override
-	public void run() {
-		try {
-			while (connected) {
-				byte[] bytes = receive();
-				if (bytes != null)
-					processor.processCommand(bytes);
-			}
-		} catch (IOException e) {
-			crash(e);
-		}
-	}
-	
+	}	
 }

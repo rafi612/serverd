@@ -16,7 +16,7 @@ public class CommandProcessor extends Processor {
 	private Command currentCommand;
 	
 	public CommandProcessor(Client client) {
-		super(client);
+		super(client,true);
 	}
 
 	public void printReceiveMessage(String message) {

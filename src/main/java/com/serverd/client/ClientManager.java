@@ -76,7 +76,17 @@ public class ClientManager {
 				setupClient(client);
 				
 				tcplog.info("Creating client thread...");
-				client.getThread().start();
+				new Thread(() -> {
+					try {
+						while (client.isConnected()) {
+							byte[] bytes = client.receive();
+							if (bytes != null)
+								client.getProcessor().processCommand(bytes);
+						}
+					} catch (IOException e) {
+						client.crash(e);
+					}
+				}).start();
 			}
 			tcpSocket.close();
 		} catch (IOException e) {
@@ -140,7 +150,17 @@ public class ClientManager {
 				setupClient(client);
 					
 				udplog.info("Creating client thread...");
-				client.thread.start();
+				new Thread(() -> {
+					try {
+						while (client.isConnected()) {
+							byte[] bytes = client.receive();
+							if (bytes != null)
+								client.getProcessor().processCommand(bytes);
+						}
+					} catch (IOException e) {
+						client.crash(e);
+					}
+				}).start();
 				
 			}
 			udpSocket.close();

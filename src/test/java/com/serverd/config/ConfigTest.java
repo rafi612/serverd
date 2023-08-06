@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import com.serverd.app.ServerdApplication;
 import com.serverd.main.Main;
 
 class ConfigTest {
@@ -52,7 +53,7 @@ class ConfigTest {
         Path path = Paths.get(testFilePath);
         Files.deleteIfExists(path);
         
-        Main.workingdir = Main.getWorkDir();
+        Main.workingdir = ServerdApplication.getWorkDir("serverd");
     }
     
     @Test
