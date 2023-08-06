@@ -231,9 +231,12 @@ class ClientManagerTest
 	@Test
 	void shutdown_StopClients_Test()
 	{
-		Client client = new Client(ClientManager.getFreeClientID()) {
+		class TestClient extends Client {
+			public TestClient(int id) { super(id); }
+
 			public void run() { connected = true; }
-		};
+		}
+		TestClient client = new TestClient(ClientManager.getFreeClientID());
 		client.run();
 		ClientManager.addClient(client);
 		

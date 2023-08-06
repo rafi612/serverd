@@ -18,7 +18,7 @@ class ToTest extends DoubleClientCommandTestCase {
 		
 		//simulate receive message by second client
 		testClient2.insertReceive(receive);
-		testClient2.processCommand(receive.getBytes());
+		testClient2.getProcessor().processCommand(receive.getBytes());
 		
 		assertEquals(testClient2.getSend()[0],send);
 		assertEquals(testClient2.toMessage(testClient2.rawdataReceive()),receive);

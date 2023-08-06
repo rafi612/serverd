@@ -9,7 +9,6 @@ import java.nio.channels.CompletionHandler;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -82,7 +81,7 @@ public class ClientManager {
 		            	client.setAfterReceive(() -> {
 
 		            		client.receive((bytes) -> {
-		            			client.processCommand(bytes);
+		            			client.getProcessor().processCommand(bytes);
 		            			
 		            			if (client.getJoiner() != null)
 		            				((TCPClient) client.getJoiner()).unlockRead();
@@ -103,7 +102,6 @@ public class ClientManager {
 	            	tcplog.error("Accept failed: " + e.getMessage());
 	            }
 	        });
-			
 		} catch (IOException e) {
 			if (tcpRunned)
 				tcplog.error("Server error: " + e.getMessage());
@@ -209,11 +207,11 @@ public class ClientManager {
 							byte[] data = new byte[buffer.limit()];
 							buffer.get(data, 0, buffer.limit());
 							
-							client.processCommand(data);
+							client.getProcessor().processCommand(data);
 						} else {
 							UDPClient client = (UDPClient) key.attachment();
 							try {
-								client.processCommand(client.rawdataReceive());
+								client.getProcessor().processCommand(client.rawdataReceive());
 							} catch (IOException e) {
 								client.crash(e);
 								continue;

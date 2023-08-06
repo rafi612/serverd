@@ -33,15 +33,13 @@ public class UDPClient extends SelectableClient {
 		this.address = (InetSocketAddress) address;
 		
 		protocol = Protocol.UDP;
-		
-		thread = new Thread(this, "UDP Client " + id);
 	}
 	
 	@Override
 	public void send(String mess) throws IOException {
-		log.info("<Sended> " + mess);
+		processor.printSendMessage(mess);
 
-		rawdataSend(encoder.encode(mess, this).getBytes());
+		rawdataSend(mess.getBytes());
 	}
 	
 	@Override

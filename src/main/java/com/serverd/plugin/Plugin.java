@@ -85,7 +85,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Print plugin warning
+	 * Print plugin warning message
 	 * @param message Message
 	 */
 	public void warn(String message) {
@@ -93,7 +93,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Print plugin error
+	 * Print plugin error message
 	 * @param message Message
 	 */
 	public void error(String message) {
@@ -106,6 +106,14 @@ public class Plugin {
 	 */
 	public void debug(String message) {
 		log.debug(message);
+	}
+	
+	/**
+	 * Print plugin trace message
+	 * @param message Message
+	 */
+	public void trace(String message) {
+		log.trace(message);
 	}
 	
 	/**

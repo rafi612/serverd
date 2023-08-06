@@ -35,9 +35,9 @@ public class TCPClient extends AsyncClient {
 	
 	@Override
 	public void send(String mess) throws IOException {
-		log.info("<Sended> " + mess);
-
-		rawdataSend(encoder.encode(mess, this).getBytes());
+		processor.printSendMessage(mess);
+		
+		rawdataSend(mess.getBytes());
 	}
 	
 	public void receive(ReceiveComplete handler) {

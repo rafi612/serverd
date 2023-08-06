@@ -1,25 +1,26 @@
 package com.serverd.main;
 
 import java.io.File;
-import java.nio.file.Paths;
+
+import com.serverd.app.ServerdApplication;
 import com.serverd.client.ClientManager;
 import com.serverd.command.Commands;
 import com.serverd.config.Config;
 import com.serverd.log.Log;
-import com.serverd.plugin.Debug;
 import com.serverd.plugin.PluginManager;
+import com.serverd.plugin.PluginUtils;
 
 public class Main {
 	public static final String VERSION = "v1.2.0";
 	
-	public static String workingdir = getWorkDir();
+	public static String workingdir = ServerdApplication.getWorkDir("serverd");
 	
 	public static void main(String[] args) {
 		Log log = new Log("ServerD");
 		
 		boolean plugins = true;
-		boolean pluginDebug = false;
-		String pluginDebugClass = ""; 
+		boolean isLoadingApp = false;
+		String appClass = ""; 
 		
 		//parse work dir argument
 		for (int i = 0;i < args.length;i++)
@@ -57,13 +58,13 @@ public class Main {
 				case "--noplugins":
 					plugins = false;
 					break;
-				case "--plugin-debug":
+				case "--app-class":
 					if (i + 1 > args.length) {
-						System.err.println("--plugin-debug: missing argument");
+						System.err.println("--app-class: missing argument");
 						break;
 					}
-					pluginDebug = true;
-					pluginDebugClass = args[i + 1];
+					isLoadingApp = true;
+					appClass = args[i + 1];
 					break;
 				case "--ip":
 					if (i + 1 > args.length) {
@@ -102,7 +103,7 @@ public class Main {
 			
 		Commands.init();
 		try {
-			PluginManager.init();
+			PluginManager.init(workdirFile);
 			if (plugins) {
 				log.info("Loading plugins...");
 				PluginManager.loadPlugins();
@@ -112,36 +113,19 @@ public class Main {
 			System.exit(-1);
 		}
 		
-		if (pluginDebug) {
-			log.info("Loading debug plugin " + pluginDebugClass + "...");
+		if (isLoadingApp) {
+			log.info("Loading app " + appClass + "...");
 			try {
-				Debug.loadPluginFromClassName(pluginDebugClass);
+				PluginUtils.loadPluginFromClassName(appClass);
 			} catch (ClassNotFoundException e) {
-				System.err.println("Class " + pluginDebugClass + " not found");
+				System.err.println("Class " + appClass + " not found");
 				System.exit(1);
 			} catch (Exception e) {
-				System.err.println("Debug plugin load error:" + e.getMessage());
+				System.err.println("App load error:" + e.getMessage());
 			}
 		}
 		
 		log.info("Starting listening clients...");
 		ClientManager.start(config.ip,config.tcpPort,config.udpPort,config);
-	}
-	
-	/**
-	 * Returns default working directory
-	 * @return Working directory path.
-	 */
-	public static String getWorkDir() {
-		String osname = System.getProperty("os.name").toLowerCase();
-		String userhome = System.getProperty("user.home");
-		
-		if (osname.startsWith("windows"))
-			return Paths.get(System.getenv("APPDATA"),"serverd").toString();
-		else if (osname.contains("nux") || osname.contains("freebsd"))
-			return Paths.get(userhome,".config","serverd").toString();
-		else if (osname.contains("mac") || osname.contains("darwin"))
-			return Paths.get(userhome,"Library","Application Support","serverd").toString();
-		return userhome;
 	}
 }

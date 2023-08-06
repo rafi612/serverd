@@ -55,13 +55,6 @@ public class AsyncClient extends Client {
 		processSend(writeBuffer);
 	}
 	
-	protected void queueBuffer(byte[] buf) {
-
-		
-	}
-	
-	public void processSend(ByteBuffer buffer) {
-		
-	}
-
+	protected void queueBuffer(byte[] buf) {}
+	public void processSend(ByteBuffer buffer) {}
 }
