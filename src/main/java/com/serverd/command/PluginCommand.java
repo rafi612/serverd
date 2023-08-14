@@ -17,26 +17,26 @@ public class PluginCommand extends Command {
 			Plugin p = PluginManager.getByFileName(args[1]);
 			
 			if (p == null) {
-				client.send(error("Not found"));
+				send(client,error("Not found"));
 			} else if (args[0].equals("enable")) {
 				if (p.isRunned()) {
-					client.send(error("Plugin is already runned"));
+					send(client,error("Plugin is already runned"));
 				} else {
 					if (PluginManager.enablePlugin(p))
-						client.send(ok());
+						send(client,ok());
 					else
-						client.send(error("Plugin load failed"));
+						send(client,error("Plugin load failed"));
 				}
 			} else if (args[0].equals("disable")) {
 				if (!p.isRunned()) {
-					client.send(error("Plugin is already stopped"));
+					send(client,error("Plugin is already stopped"));
 				} else {
 					PluginManager.disablePlugin(p);
-					client.send(ok());
+					send(client,ok());
 				}
 			} else if (args[0].equals("info")) {
 				String message = "=============\n" + args[1] + ":\n=============\n" + p.getInfo().toString();
-				client.send(message);
+				send(client,message);
 			}
 		}
 	}

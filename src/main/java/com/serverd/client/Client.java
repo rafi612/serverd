@@ -86,19 +86,27 @@ public class Client {
 		return new byte[BUFFER];
 	}
 	
+	public void send(String mess) throws IOException {
+		send(mess,() -> {});
+	}
+	
 	/**
 	 * Sending message
 	 * @param mess Message to send
 	 * @throws IOException when socket throw error
 	 */
-	public void send(String mess) throws IOException {}
+	public void send(String mess,Runnable continuation) throws IOException {}
+	
+	public void rawdataSend(byte[] bytes) throws IOException {
+		rawdataSend(bytes,() -> {});
+	}
 	
 	/**
 	 * Sending raw data
 	 * @param bytes Byte array
 	 * @throws IOException when socket throw error
 	 */
-	public void rawdataSend(byte[] bytes) throws IOException {}
+	public void rawdataSend(byte[] bytes,Runnable continuation) throws IOException {}
 	
 	/**
 	 * Closing socket
@@ -325,6 +333,8 @@ public class Client {
 		if (!crashed && connected) {
 			if (isJoined())
 				unjoin();
+			
+			exception.printStackTrace();
 			
 			crashed = true;
 			log.error("Client " + id + " crashed: " + exception.getMessage());

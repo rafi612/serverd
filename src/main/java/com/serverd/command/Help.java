@@ -21,6 +21,6 @@ public class Help extends Command {
 		for (Plugin p : PluginManager.plugins)
 			for (Command com : p.commands)
 				help += com.help + "\n";
-		client.send(help);
+		send(client,help);
 	}
 }

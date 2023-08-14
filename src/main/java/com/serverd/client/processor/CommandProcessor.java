@@ -28,7 +28,11 @@ public class CommandProcessor extends Processor {
 	}
 
 	public void processCommand(byte[] buffer) {	
-		try {
+		
+		try {		
+			if (currentCommand != null && !currentCommand.isRunned())
+				currentCommand = null;
+			
 			if (currentCommand == null) {
 				String command_str = new String(buffer,0,buffer.length);
 				printReceiveMessage(command_str);
@@ -67,37 +71,41 @@ public class CommandProcessor extends Processor {
 								comm = c;
 							}
 				
-				//copy command object
+				Command cmd = null;
+				//clone command object
 				if (comm != null)
-					comm = (Command) comm.clone();
+					cmd = (Command) comm.clone();
 				
-				if (comm == null) {
+				if (cmd == null) {
 					if (client.getJoinedID() == -1)
-						client.send(Codes.unknownCommand());
+						client.send(Codes.unknownCommand(),() -> unlockClientAndJoiner(client));
 					else {
-						ClientManager.clients.get(client.getJoinedID()).send(command_str);
-						
 						if (client.isOnceJoined())
 							client.unjoin();
+						
+						ClientManager.clients.get(client.getJoinedID()).send(command_str,() -> unlockClientAndJoiner(client));
 					} 
 				} else {
-					currentCommand = comm;
-					comm.runned = true;
-					comm.execute(args, client, plugin);
-					
-					if (!currentCommand.isStayAlive())
-						currentCommand = null;
+					currentCommand = cmd;
+					cmd.runned = true;
+					cmd.execute(args, client, plugin);
 				}
 			} else {
-				if (currentCommand.isStayAlive() && currentCommand.isRunned())
-					currentCommand.processReceive(buffer,client);
-				
-				if (!currentCommand.isStayAlive())
+				if (currentCommand != null && currentCommand.isRunned())
+					currentCommand.processReceive(buffer);
+				else
 					currentCommand = null;
 			}
 		} catch (Exception e) {
 			client.crash(e);
 		}
+	}
+	
+	private void unlockClientAndJoiner(Client client) {
+		if (client.getJoiner() != null)
+			client.getJoiner().unlockRead();
+	
+		client.unlockRead();
 	}
 	
 	/**

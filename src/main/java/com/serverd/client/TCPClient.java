@@ -2,7 +2,6 @@ package com.serverd.client;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.concurrent.TimeUnit;
@@ -34,16 +33,13 @@ public class TCPClient extends AsyncClient {
 
 	
 	@Override
-	public void send(String mess) throws IOException {
+	public void send(String mess,Runnable continuation) throws IOException {
 		processor.printSendMessage(mess);
 		
-		rawdataSend(mess.getBytes());
+		rawdataSend(mess.getBytes(),continuation);
 	}
 	
 	public void receive(ReceiveComplete handler) {
-		if (locked)
-			return;
-		
 		receiveBuffer.clear();
 		
 		readPending = true;
@@ -51,8 +47,6 @@ public class TCPClient extends AsyncClient {
 
 			@Override
 			public void completed(Integer len, Void attachment) {
-				readPending = false;
-				
 				receiveBuffer.flip();
 				if (len == -1) {
 					crash(new IOException("Connection closed"));
@@ -62,6 +56,7 @@ public class TCPClient extends AsyncClient {
 				byte[] ret = new byte[len];
 				receiveBuffer.get(ret, 0, len);
 				
+				readPending = false;
 				handler.receiveDone(ret);	
 			}
 
@@ -74,7 +69,7 @@ public class TCPClient extends AsyncClient {
 	}
 	
 	@Override
-	public void rawdataSend(byte[] bytes) throws IOException {
+	public void rawdataSend(byte[] bytes,Runnable continuation) throws IOException {
 		writeBuffer.clear();
 		writeBuffer.put(bytes);
 		writeBuffer.flip();
@@ -90,13 +85,7 @@ public class TCPClient extends AsyncClient {
 					tcpSocket.write(writeBuffer, null, this);
 					
 					writeBuffer.clear();
-				}
-//                } else {
-//					if (isJoined())
-//						getJoiner().unlockRead();
-//					
-//					invokeReceive();
-//				}
+				} else continuation.run();
 			}
 
 			@Override
@@ -105,13 +94,6 @@ public class TCPClient extends AsyncClient {
 			}
 			
 		});
-		
-		
-	}
-	
-	public void processSend(ByteBuffer buffer) {
-		
-
 	}
 	
 	@Override

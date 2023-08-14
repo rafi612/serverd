@@ -8,7 +8,7 @@ public class AsyncClient extends Client {
 	protected ByteBuffer receiveBuffer = ByteBuffer.allocate(BUFFER);
 	
 	public Runnable afterReceive;
-	boolean readPending = false,locked = false;
+	boolean readPending = false;
 
 	@FunctionalInterface
 	public interface ReceiveComplete {
@@ -38,9 +38,7 @@ public class AsyncClient extends Client {
 	}
 	
 	public void unlockRead() {
-		
 		log.debug("Unlocked");
-		locked = false;
 		
 		if (!readPending)
 			invokeReceive();
@@ -48,13 +46,5 @@ public class AsyncClient extends Client {
 	
 	public void lockRead() {
 		log.debug("Locked");
-		locked = true;
 	}
-	
-	public void processQueue() {		
-		processSend(writeBuffer);
-	}
-	
-	protected void queueBuffer(byte[] buf) {}
-	public void processSend(ByteBuffer buffer) {}
 }

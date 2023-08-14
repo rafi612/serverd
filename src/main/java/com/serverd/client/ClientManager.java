@@ -83,10 +83,10 @@ public class ClientManager {
 		            		client.receive((bytes) -> {
 		            			client.getProcessor().processCommand(bytes);
 		            			
-		            			if (client.getJoiner() != null)
-		            				((TCPClient) client.getJoiner()).unlockRead();
-		            			
-		            			client.unlockRead();
+//		            			if (client.getJoiner() != null)
+//		            				client.getJoiner().unlockRead();
+//		            			
+//		            			client.unlockRead();
 		            		});
 		            	});
 		            	client.invokeReceive();

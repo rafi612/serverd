@@ -36,10 +36,10 @@ public class UDPClient extends SelectableClient {
 	}
 	
 	@Override
-	public void send(String mess) throws IOException {
+	public void send(String mess,Runnable continuation) throws IOException {
 		processor.printSendMessage(mess);
 
-		rawdataSend(mess.getBytes());
+		rawdataSend(mess.getBytes(),continuation);
 	}
 	
 	@Override
@@ -55,7 +55,7 @@ public class UDPClient extends SelectableClient {
 	}
 	
 	@Override
-	public void rawdataSend(byte[] bytes) throws IOException {
+	public void rawdataSend(byte[] bytes,Runnable continuation) throws IOException {
 		getKey().interestOps(SelectionKey.OP_WRITE);
 		
 		queueBuffer(bytes);
