@@ -17,6 +17,7 @@ import com.serverd.log.Log;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.listener.ConnectListener;
+import com.serverd.util.Util;
 
 /**
  * Client Manager
@@ -79,14 +80,8 @@ public class ClientManager {
 		            	addClient(client);
 		            	
 		            	client.setAfterReceive(() -> {
-
 		            		client.receive((bytes) -> {
 		            			client.getProcessor().processCommand(bytes);
-		            			
-//		            			if (client.getJoiner() != null)
-//		            				client.getJoiner().unlockRead();
-//		            			
-//		            			client.unlockRead();
 		            		});
 		            	});
 		            	client.invokeReceive();
@@ -102,6 +97,11 @@ public class ClientManager {
 	            	tcplog.error("Accept failed: " + e.getMessage());
 	            }
 	        });
+	        
+        	//keep thread alive
+        	while (tcpRunned) 
+        		Util.sleep(1000);
+	        
 		} catch (IOException e) {
 			if (tcpRunned)
 				tcplog.error("Server error: " + e.getMessage());

@@ -3,7 +3,6 @@ package com.serverd.command;
 import java.io.IOException;
 
 import com.serverd.client.Client;
-import com.serverd.client.ClientManager;
 import com.serverd.plugin.Plugin;
 
 public class Rawdata extends Command {
@@ -23,7 +22,7 @@ public class Rawdata extends Command {
 					
 					client.log.info("Raw data mode started," + buffersize + " bytes can be sended");
 					
-					Client joined = ClientManager.clients.get(client.getJoinedID());
+					Client joined = client.getJoiner();
 					
 					ReceiveContinuation receive = new ReceiveContinuation() {
 						@Override

@@ -59,6 +59,8 @@ public class UDPClient extends SelectableClient {
 		getKey().interestOps(SelectionKey.OP_WRITE);
 		
 		queueBuffer(bytes);
+		
+		sendContinuation = continuation;
 		selector.wakeup();
 	}
 	
@@ -86,6 +88,8 @@ public class UDPClient extends SelectableClient {
 	public long processSend(ByteBuffer buffer) throws IOException 
 	{
 		udpSocket.send(buffer,address);
+		sendContinuation.run();
+		sendContinuation = null;
 		return (long) buffer.position();
 	}
 }

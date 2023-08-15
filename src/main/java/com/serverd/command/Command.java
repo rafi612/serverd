@@ -114,6 +114,7 @@ public abstract class Command implements Codes,Cloneable {
 	}
 	
 	public void done() {
+		System.out.println("DONE");
 		runned = false;
 	}
 	

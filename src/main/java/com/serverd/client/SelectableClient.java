@@ -16,6 +16,8 @@ public abstract class SelectableClient extends Client
 	protected boolean readyToWrite;
 	protected long lastReadTime;
 	
+	protected Runnable sendContinuation;
+	
 	/**
 	 * NonBlockingClient constructor
 	 * @param id client ID

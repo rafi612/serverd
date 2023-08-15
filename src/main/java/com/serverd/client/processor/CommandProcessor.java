@@ -29,10 +29,7 @@ public class CommandProcessor extends Processor {
 	public void processCommand(byte[] buffer) {	
 		
 		try {		
-			if (currentCommand != null && !currentCommand.isRunned())
-				currentCommand = null;
-			
-			if (currentCommand == null) {
+			if (currentCommand == null || !currentCommand.isRunned()) {
 				String command_str = new String(buffer,0,buffer.length);
 				printReceiveMessage(command_str);
 				
@@ -90,10 +87,7 @@ public class CommandProcessor extends Processor {
 					cmd.execute(args, client, plugin);
 				}
 			} else {
-				if (currentCommand.isRunned())
-					currentCommand.processReceive(buffer);
-				else
-					currentCommand = null;
+				currentCommand.processReceive(buffer);
 			}
 		} catch (Exception e) {
 			client.crash(e);
