@@ -85,7 +85,14 @@ public class TCPClient extends AsyncClient {
 					tcpSocket.write(writeBuffer, null, this);
 					
 					writeBuffer.clear();
-				} else continuation.run();
+				} else {
+					continuation.run();
+					
+					unlockRead();
+					
+					if (getJoiner() != null)
+						getJoiner().unlockRead();
+				}
 			}
 
 			@Override

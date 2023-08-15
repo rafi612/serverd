@@ -156,6 +156,14 @@ public class Client {
 	}
 	
 	/**
+	 * Check if client is async (Using Java NIO2)
+	 * @return true if client is selectable
+	 */
+	public boolean isAsync() {
+		return this instanceof AsyncClient;
+	}
+	
+	/**
 	 * Returns client joiner object
 	 * @return client joiner object.
 	 */
@@ -333,8 +341,6 @@ public class Client {
 		if (!crashed && connected) {
 			if (isJoined())
 				unjoin();
-			
-			exception.printStackTrace();
 			
 			crashed = true;
 			log.error("Client " + id + " crashed: " + exception.getMessage());

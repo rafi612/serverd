@@ -30,21 +30,19 @@ public class AsyncClient extends Client {
 	}
 	
 	public void invokeReceive() {
-		if (readPending) {
-			log.warn("read pending... return");
+		if (readPending) 
 			return;
-		}
 		afterReceive.run();
 	}
 	
 	public void unlockRead() {
-		log.debug("Unlocked");
+//		log.debug("Unlocked");
 		
 		if (!readPending)
 			invokeReceive();
 	}
 	
 	public void lockRead() {
-		log.debug("Locked");
+//		log.debug("Locked");
 	}
 }

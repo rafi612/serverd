@@ -3,7 +3,6 @@ package com.serverd.client.processor;
 import java.util.Arrays;
 
 import com.serverd.client.Client;
-import com.serverd.client.ClientManager;
 import com.serverd.command.Codes;
 import com.serverd.command.Command;
 import com.serverd.command.Commands;
@@ -78,12 +77,12 @@ public class CommandProcessor extends Processor {
 				
 				if (cmd == null) {
 					if (client.getJoinedID() == -1)
-						client.send(Codes.unknownCommand(),() -> unlockClientAndJoiner(client));
+						client.send(Codes.unknownCommand());
 					else {
 						if (client.isOnceJoined())
 							client.unjoin();
 						
-						ClientManager.clients.get(client.getJoinedID()).send(command_str,() -> unlockClientAndJoiner(client));
+						client.getJoiner().send(command_str);
 					} 
 				} else {
 					currentCommand = cmd;
@@ -91,7 +90,7 @@ public class CommandProcessor extends Processor {
 					cmd.execute(args, client, plugin);
 				}
 			} else {
-				if (currentCommand != null && currentCommand.isRunned())
+				if (currentCommand.isRunned())
 					currentCommand.processReceive(buffer);
 				else
 					currentCommand = null;
@@ -99,13 +98,6 @@ public class CommandProcessor extends Processor {
 		} catch (Exception e) {
 			client.crash(e);
 		}
-	}
-	
-	private void unlockClientAndJoiner(Client client) {
-		if (client.getJoiner() != null)
-			client.getJoiner().unlockRead();
-	
-		client.unlockRead();
 	}
 	
 	/**

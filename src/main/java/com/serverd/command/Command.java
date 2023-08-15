@@ -137,11 +137,6 @@ public abstract class Command implements Codes,Cloneable {
 	public void send(Client client,String message,Runnable continuation) throws IOException {
 		client.send(message, () -> {
 			continuation.run();
-			
-			if (client.isJoined())
-				client.getJoiner().unlockRead();
-			
-			client.unlockRead();
 		});
 	}
 	
@@ -152,11 +147,6 @@ public abstract class Command implements Codes,Cloneable {
 	public void send(Client client,byte[] bytes,Runnable continuation) throws IOException {
 		client.rawdataSend(bytes, () -> {
 			continuation.run();
-			
-			if (client.isJoined())
-				client.getJoiner().unlockRead();
-			
-			client.unlockRead();
 		});
 	}
 	
