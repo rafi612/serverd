@@ -15,6 +15,7 @@ public class TCPClient extends AsyncClient {
 	
 	/** Socket*/
 	protected AsynchronousSocketChannel tcpSocket;
+	/** Config*/
 	protected Config config;
 	
 	/**
@@ -33,12 +34,13 @@ public class TCPClient extends AsyncClient {
 
 	
 	@Override
-	public void send(String mess,Runnable continuation) throws IOException {
+	public void send(String mess,SendContinuation continuation) throws IOException {
 		processor.printSendMessage(mess);
 		
 		rawdataSend(mess.getBytes(),continuation);
 	}
 	
+	@Override
 	public void receive(ReceiveComplete handler) {
 		receiveBuffer.clear();
 		
@@ -69,7 +71,7 @@ public class TCPClient extends AsyncClient {
 	}
 	
 	@Override
-	public void rawdataSend(byte[] bytes,Runnable continuation) throws IOException {
+	public void rawdataSend(byte[] bytes,SendContinuation continuation) throws IOException {
 		writeBuffer.clear();
 		writeBuffer.put(bytes);
 		writeBuffer.flip();
@@ -83,10 +85,14 @@ public class TCPClient extends AsyncClient {
 				
 				if (writeBuffer.hasRemaining()) {
 					tcpSocket.write(writeBuffer, null, this);
-					
-					writeBuffer.clear();
 				} else {
-					continuation.run();
+					writeBuffer.clear();
+					try {
+						continuation.invoke();
+					} catch (IOException e) {
+						crash(e);
+						return;
+					}
 					
 					unlockRead();
 					

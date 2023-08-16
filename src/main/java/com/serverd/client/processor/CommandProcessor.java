@@ -83,7 +83,7 @@ public class CommandProcessor extends Processor {
 					} 
 				} else {
 					currentCommand = cmd;
-					cmd.runned = true;
+					cmd.setRunned(true);
 					cmd.execute(args, client, plugin);
 				}
 			} else {
@@ -101,5 +101,4 @@ public class CommandProcessor extends Processor {
 	public Command getCurrentCommand() {
 		return currentCommand;
 	}
-
 }

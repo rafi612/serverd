@@ -167,7 +167,7 @@ public class ClientManager {
 							continue;
 						//check timeout
 						UDPClient client = (UDPClient) key.attachment();
-						if (System.currentTimeMillis() - client.lastReadTime() >= config.timeout)
+						if (System.currentTimeMillis() - client.getLastReadTime() >= config.timeout)
 							client.crash(new IOException("Read timed out"));
 				}
 				

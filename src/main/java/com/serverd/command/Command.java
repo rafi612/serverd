@@ -3,6 +3,7 @@ package com.serverd.command;
 import java.io.IOException;
 
 import com.serverd.client.Client;
+import com.serverd.client.Client.SendContinuation;
 import com.serverd.plugin.Plugin;
 
 /**
@@ -23,14 +24,17 @@ public abstract class Command implements Codes,Cloneable {
 	/** More arguments */
 	protected static final int ARGS_MORE = 0b00000100; 
 	
-	public boolean runned = false;
+	private boolean runned = false;
 	
+	/**
+	 * Receive continuation interface.
+	 */
 	@FunctionalInterface
 	public interface ReceiveContinuation {
 		void receiveDone(byte[] bytes) throws IOException;
 	}
 	
-	public ReceiveContinuation receiveHandler;
+	private ReceiveContinuation receiveHandler;
 	
 	/**
 	 * Checking amount of arguments
@@ -105,21 +109,44 @@ public abstract class Command implements Codes,Cloneable {
 		return checkArgs(args,client,length,ARGS_GOOD);
 	}
 	
+	/**
+	 * Processing receive. Executing by server to process messages.
+	 * @param bytes Bytes to process.
+	 * @throws IOException when I/O error occurs.
+	 */
 	public void processReceive(byte[] bytes) throws IOException {
 		receiveHandler.receiveDone(bytes);
 	}
 	
+	/**
+	 * Returning command name.
+	 * @return command name.
+	 */
 	public String getName() {
 		return command;
 	}
 	
+	/**
+	 * Setting command state as done.
+	 */
 	public void done() {
-		System.out.println("DONE");
 		runned = false;
 	}
 	
+	/**
+	 * Returns if command is runned.
+	 * @return true if command is runned.
+	 */
 	public boolean isRunned() {
 		return runned;
+	}
+	
+	/**
+	 * Setting if command is runned.
+	 * @param runned Runned
+	 */
+	public void setRunned(boolean runned) {
+		this.runned = true;
 	}
 	
 	/**
@@ -131,26 +158,55 @@ public abstract class Command implements Codes,Cloneable {
 	 */
 	public abstract void execute(String[] args,Client client,Plugin plugin) throws IOException;
 	
+	/**
+	 * Wrapping {@link Client#send(String) method} in commands,
+	 * automatically done command after sending.
+	 * @param client Client instance
+	 * @param message Message to send
+	 * @throws IOException when I/O error occurs
+	 */
 	public void send(Client client,String message) throws IOException {
 		send(client,message,() -> done());
 	}
 	
-	public void send(Client client,String message,Runnable continuation) throws IOException {
-		client.send(message, () -> {
-			continuation.run();
-		});
+	/**
+	 * Wrapping {@link Client#send(String, SendContinuation)} method in commands
+	 * @param client Client instance
+	 * @param message Message to send
+	 * @param continuation Send continuation executed after send complete
+	 * @throws IOException when I/O error occurs
+	 */
+	public void send(Client client,String message,SendContinuation continuation) throws IOException {
+		client.send(message, () -> continuation.invoke());
 	}
 	
+	/**
+	 * Wrapping {@link Client#rawdataSend(byte[], SendContinuation)} method in commands,
+	 * automatically done command after sending.
+	 * @param client Client instance
+	 * @param bytes Bytes to send
+	 * @throws IOException when I/O error occurs
+	 */
 	public void send(Client client,byte[] bytes) throws IOException {
 		send(client,bytes,() -> done());
 	}
 	
-	public void send(Client client,byte[] bytes,Runnable continuation) throws IOException {
-		client.rawdataSend(bytes, () -> {
-			continuation.run();
-		});
+	/**
+	 * Wrapping {@link Client#rawdataSend(byte[], SendContinuation)} method in commands
+	 * @param client Client instance
+	 * @param bytes Bytes to send
+	 * @param continuation Send continuation executed after send complete
+	 * @throws IOException when I/O error occurs
+	 */
+	public void send(Client client,byte[] bytes,SendContinuation continuation) throws IOException {
+		client.rawdataSend(bytes, () -> continuation.invoke());
 	}
 	
+	/**
+	 * Receiving message when client ready.
+	 * @param client Client instance.
+	 * @param continuation Executing when receive message is ready.
+	 */
 	public void receive(Client client,ReceiveContinuation continuation) {
 		receiveHandler = continuation;
 	}

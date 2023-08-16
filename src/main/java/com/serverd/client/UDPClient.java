@@ -36,7 +36,7 @@ public class UDPClient extends SelectableClient {
 	}
 	
 	@Override
-	public void send(String mess,Runnable continuation) throws IOException {
+	public void send(String mess,SendContinuation continuation) throws IOException {
 		processor.printSendMessage(mess);
 
 		rawdataSend(mess.getBytes(),continuation);
@@ -55,7 +55,7 @@ public class UDPClient extends SelectableClient {
 	}
 	
 	@Override
-	public void rawdataSend(byte[] bytes,Runnable continuation) throws IOException {
+	public void rawdataSend(byte[] bytes,SendContinuation continuation) throws IOException {
 		getKey().interestOps(SelectionKey.OP_WRITE);
 		
 		queueBuffer(bytes);
@@ -85,11 +85,10 @@ public class UDPClient extends SelectableClient {
 	}
 
 	@Override
-	public long processSend(ByteBuffer buffer) throws IOException 
+	public void processSend(ByteBuffer buffer) throws IOException 
 	{
 		udpSocket.send(buffer,address);
-		sendContinuation.run();
+		sendContinuation.invoke();
 		sendContinuation = null;
-		return (long) buffer.position();
 	}
 }

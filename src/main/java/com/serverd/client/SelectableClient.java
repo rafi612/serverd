@@ -5,18 +5,24 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 
+/**
+ * Selectable Client class. Used by NIO Clients
+ */
 public abstract class SelectableClient extends Client 
 {
 	/** Selector */
 	protected Selector selector;
 	
+	/**Write Buffer*/
 	protected ByteBuffer writeBuffer = ByteBuffer.allocate(BUFFER);
+	/**Receive Buffer*/
 	protected ByteBuffer receiveBuffer = ByteBuffer.allocate(BUFFER);
 	
-	protected boolean readyToWrite;
+	/**Last read time*/
 	protected long lastReadTime;
 	
-	protected Runnable sendContinuation;
+	/**Send continuation*/
+	protected SendContinuation sendContinuation;
 	
 	/**
 	 * NonBlockingClient constructor
@@ -30,19 +36,28 @@ public abstract class SelectableClient extends Client
 		updateTimeout();
 	}
 	
+	/**
+	 * Updating last read time. Invoke after read.
+	 */
 	protected void updateTimeout() {
 		lastReadTime = System.currentTimeMillis();
 	}
 	
-	public long lastReadTime() {
+	/**
+	 * Returning last read time
+	 * @return Read time
+	 */
+	public long getLastReadTime() {
 		return lastReadTime;
 	}
 	
-	protected void queueBuffer(byte[] buf) {
-		writeBuffer.put(buf);
+	/**
+	 * Queuing buffer to process it later when write key will ready.
+	 * @param buffer Byte buffer
+	 */
+	protected void queueBuffer(byte[] buffer) {
+		writeBuffer.put(buffer);
 		writeBuffer.flip();
-		
-		readyToWrite = true;
 		
 		if (isJoined())
 			getJoiner().lockRead();
@@ -61,24 +76,32 @@ public abstract class SelectableClient extends Client
 		key.interestOps(key.interestOps() | SelectionKey.OP_READ);
 		selector.wakeup();
 	}
-	
-	public boolean isReadyToWrite() {
-		return readyToWrite;
-	}
 
+	/**
+	 * Invoked by NIO server and processing buffer when write key is ready. 
+	 * @return true if buffer is empty.
+	 * @throws IOException when I/O error occurs.
+	 */
 	public boolean processQueue() throws IOException {
 		processSend(writeBuffer);
 		
-		if (writeBuffer.remaining() == 0)
-		{
+		if (writeBuffer.remaining() == 0) {
 			writeBuffer.clear();
-			readyToWrite = false;
 			return true;
 		}
 		else return false;
 	}
 	
+	/**
+	 * Getting selection key
+	 * @return SelectionKey
+	 */
 	public abstract SelectionKey getKey();
-	public abstract long processSend(ByteBuffer buffer) throws IOException;
+	/**
+	 * Sending buffer when write key is ready, invoked by {@link processQueue}
+	 * @param buffer Buffer to process
+	 * @throws IOException
+	 */
+	public abstract void processSend(ByteBuffer buffer) throws IOException;
 
 }

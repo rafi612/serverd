@@ -1,5 +1,6 @@
 package com.serverd.command;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterEach;
@@ -99,16 +100,16 @@ class TestClient extends Client {
 	}
 	
 	@Override
-	public void send(String message,Runnable runnable) {
+	public void send(String message,SendContinuation runnable) throws IOException {
 		log.info("<Sended> " + message);
 		sendQueue.add(message);
-		runnable.run();
+		runnable.invoke();
 	}
 	
 	@Override
-	public void rawdataSend(byte[] buffer,Runnable runnable) {
+	public void rawdataSend(byte[] buffer,SendContinuation runnable) throws IOException {
 		rawDataSendQueue.add(buffer);
-		runnable.run();
+		runnable.invoke();
 	}
 	
 	public String[] getSend() {

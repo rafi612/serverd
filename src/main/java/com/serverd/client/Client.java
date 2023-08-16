@@ -30,6 +30,14 @@ public class Client {
 	
 	/** Processor */
 	protected Processor processor = new CommandProcessor(this);
+	
+	/**
+	 * Send continuation interface
+	 */
+	@FunctionalInterface
+	public interface SendContinuation {
+		void invoke() throws IOException;
+	}
 
 	/**
 	 * Client type
@@ -86,27 +94,39 @@ public class Client {
 		return new byte[BUFFER];
 	}
 	
-	public void send(String mess) throws IOException {
-		send(mess,() -> {});
+	/**
+	 * Sending message without executing {@link SendContinuation} 
+	 * @param message Message to send
+	 * @throws IOException when socket throw error
+	 */
+	public void send(String message) throws IOException {
+		send(message,() -> {});
 	}
 	
 	/**
-	 * Sending message
-	 * @param mess Message to send
+	 * Sending message, when complete executing {@link SendContinuation}
+	 * @param message Message to send
+	 * @param continuation Send continuation handler
 	 * @throws IOException when socket throw error
 	 */
-	public void send(String mess,Runnable continuation) throws IOException {}
+	public void send(String message,SendContinuation continuation) throws IOException {}
 	
+	/**
+	 * Sending raw data without executing {@link SendContinuation} 
+	 * @param bytes Byte array
+	 * @throws IOException when socket throw error
+	 */
 	public void rawdataSend(byte[] bytes) throws IOException {
 		rawdataSend(bytes,() -> {});
 	}
 	
 	/**
-	 * Sending raw data
+	 * Sending raw data, when complete executing {@link SendContinuation}
 	 * @param bytes Byte array
+	 * @param continuation Send continuation handler
 	 * @throws IOException when socket throw error
 	 */
-	public void rawdataSend(byte[] bytes,Runnable continuation) throws IOException {}
+	public void rawdataSend(byte[] bytes,SendContinuation continuation) throws IOException {}
 	
 	/**
 	 * Closing socket
@@ -275,8 +295,7 @@ public class Client {
 		 * JoinException class constructor
 		 * @param message Message
 		 */
-		public JoinException(String message)
-		{
+		public JoinException(String message) {
 			super(message);
 		}
 	}
@@ -341,8 +360,6 @@ public class Client {
 		if (!crashed && connected) {
 			if (isJoined())
 				unjoin();
-			
-			exception.printStackTrace();
 			
 			crashed = true;
 			log.error("Client " + id + " crashed: " + exception.getMessage());

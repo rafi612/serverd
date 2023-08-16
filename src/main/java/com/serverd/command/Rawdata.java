@@ -30,14 +30,10 @@ public class Rawdata extends Command {
 							send(joined,bytes,() -> {
 								sended += bytes.length;
 								
-								if (sended >= buffersize) {
-									try {
-										send(client,ok());
-									} catch (IOException e) {
-										e.printStackTrace();
-									}
-								}
-								else receive(client,this);
+								if (sended >= buffersize)
+									send(client,ok());
+								else 
+									receive(client,this);
 							});
 							
 						}
