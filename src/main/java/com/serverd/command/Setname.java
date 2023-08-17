@@ -13,11 +13,11 @@ public class Setname extends Command {
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException {
 		if (args.length < 1) 
-			client.send("Missing Argument");
+			send(client,"Missing Argument");
 		else {					
 			client.setName(String.join(" ", args));
 			
-			client.send(ok());
+			send(client,ok());
 		}
 	}
 }

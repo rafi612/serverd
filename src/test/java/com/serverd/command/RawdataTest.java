@@ -21,10 +21,11 @@ class RawdataTest extends DoubleClientCommandTestCase {
 	@Test
 	void executeTest() throws Exception {
 		byte[] testBytes = {100,99,123,10};
-		testClient.join(testClient2.getID());
 		
 		//inserting bytes to receive queue
 		testClient.insertRawdataReceive(testBytes);
+		
+		testClient.join(testClient2.getID());
 		
 		//executing command
 		executeTest(

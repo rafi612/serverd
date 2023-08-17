@@ -20,8 +20,8 @@ public class PluginsList extends Command {
 			String message = "Plugins installed:\n";
 			for (String s : pluginNames) 
 				message += s + "\tEnable:" + PluginManager.getByFileName(s).isRunned() + "\n";
-			client.send(message);
+			send(client,message);
 		}
-		else client.send("No plugins installed");
+		else send(client,"No plugins installed");
 	}
 }

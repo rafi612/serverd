@@ -17,10 +17,10 @@ public class Join extends Command {
 		if (checkArgs(args,client,1)) {
 			try {
 				client.join(Integer.parseInt(args[0]));
-				client.send(ok());
+				send(client,ok());
 			}
 			catch (JoinException e) {
-				client.send(error(e.getMessage()));
+				send(client,error(e.getMessage()));
 			}	
 		}
 	}

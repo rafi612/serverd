@@ -13,6 +13,7 @@ public abstract class Processor {
 	/**
 	 * Processor class constructor
 	 * @param client Client instance
+	 * @param isSupportingJoining is processor support joining clients?
 	 */
 	public Processor(Client client,boolean isSupportingJoining) {
 		this.client = client;
@@ -37,6 +38,10 @@ public abstract class Processor {
 	 */
 	public void printSendMessage(String message) {}
 
+	/**
+	 * Returning true if processor supporting joining.
+	 * @return true if processor supporting joining.
+	 */
 	public boolean isSupportedJoining() {
 		return isSupportingJoining;
 	}

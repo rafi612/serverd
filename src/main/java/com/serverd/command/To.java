@@ -17,7 +17,7 @@ public class To extends Command {
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException  {
 		if (args.length < 1) 
-			client.send(error("Missing Argument"));
+			send(client,error("Missing Argument"));
 		else {
 			String com = String.join(" ", Arrays.copyOfRange(args,1,args.length));
 			int id = Integer.parseInt(args[0]);
@@ -25,9 +25,9 @@ public class To extends Command {
 			Client targetClient = ClientManager.getClient(id);
 			try {
 				client.onceJoin(id);
-				targetClient.send(com);
+				send(targetClient,com);
 			} catch (JoinException e) {
-				client.send(error(e.getMessage()));
+				send(client,error(e.getMessage()));
 			}
 		}
 	}

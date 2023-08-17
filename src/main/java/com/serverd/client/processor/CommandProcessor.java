@@ -3,7 +3,6 @@ package com.serverd.client.processor;
 import java.util.Arrays;
 
 import com.serverd.client.Client;
-import com.serverd.client.ClientManager;
 import com.serverd.command.Codes;
 import com.serverd.command.Command;
 import com.serverd.command.Commands;
@@ -28,8 +27,9 @@ public class CommandProcessor extends Processor {
 	}
 
 	public void processCommand(byte[] buffer) {	
-		try {
-			if (currentCommand == null) {
+		
+		try {		
+			if (currentCommand == null || !currentCommand.isRunned()) {
 				String command_str = new String(buffer,0,buffer.length);
 				printReceiveMessage(command_str);
 				
@@ -67,33 +67,27 @@ public class CommandProcessor extends Processor {
 								comm = c;
 							}
 				
-				//copy command object
+				Command cmd = null;
+				//clone command object
 				if (comm != null)
-					comm = (Command) comm.clone();
+					cmd = (Command) comm.clone();
 				
-				if (comm == null) {
+				if (cmd == null) {
 					if (client.getJoinedID() == -1)
 						client.send(Codes.unknownCommand());
 					else {
-						ClientManager.clients.get(client.getJoinedID()).send(command_str);
-						
 						if (client.isOnceJoined())
 							client.unjoin();
+						
+						client.getJoiner().send(command_str);
 					} 
 				} else {
-					currentCommand = comm;
-					comm.runned = true;
-					comm.execute(args, client, plugin);
-					
-					if (!currentCommand.isStayAlive())
-						currentCommand = null;
+					currentCommand = cmd;
+					cmd.setRunned(true);
+					cmd.execute(args, client, plugin);
 				}
 			} else {
-				if (currentCommand.isStayAlive() && currentCommand.isRunned())
-					currentCommand.processReceive(buffer,client);
-				
-				if (!currentCommand.isStayAlive())
-					currentCommand = null;
+				currentCommand.processReceive(buffer);
 			}
 		} catch (Exception e) {
 			client.crash(e);
@@ -107,5 +101,4 @@ public class CommandProcessor extends Processor {
 	public Command getCurrentCommand() {
 		return currentCommand;
 	}
-
 }

@@ -19,5 +19,7 @@ public class Disconnect extends Command {
 		
 		client.closeClient();
 		ClientManager.delete(client.getID());
+		
+		done();
 	}
 }

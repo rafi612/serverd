@@ -19,9 +19,9 @@ public class Close extends Command {
 			
 			if (ClientManager.getClient(closeid) != null) {
 				ClientManager.delete(closeid);
-				client.send(ok());	
+				send(client,ok());	
 			} 
-			else client.send("ERROR client not found");
+			else send(client,"ERROR client not found");
 		}
 	}
 }

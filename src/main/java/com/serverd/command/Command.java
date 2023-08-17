@@ -3,6 +3,7 @@ package com.serverd.command;
 import java.io.IOException;
 
 import com.serverd.client.Client;
+import com.serverd.client.Client.SendContinuation;
 import com.serverd.plugin.Plugin;
 
 /**
@@ -23,7 +24,17 @@ public abstract class Command implements Codes,Cloneable {
 	/** More arguments */
 	protected static final int ARGS_MORE = 0b00000100; 
 	
-	public boolean stayAlive = false,runned = false;
+	private boolean runned = false;
+	
+	/**
+	 * Receive continuation interface.
+	 */
+	@FunctionalInterface
+	public interface ReceiveContinuation {
+		void receiveDone(byte[] bytes) throws IOException;
+	}
+	
+	private ReceiveContinuation receiveHandler;
 	
 	/**
 	 * Checking amount of arguments
@@ -69,19 +80,19 @@ public abstract class Command implements Codes,Cloneable {
 			if ((flag & ARGS_LESS) == ARGS_LESS)
 				return true;
 			else 
-				client.send(error("Too few arguments"));
+				send(client,error("Too few arguments"));
 			return false;
 		} else if (argsCount > length) {
 			if ((flag & ARGS_MORE) == ARGS_MORE) 
 				return true;
 			else 
-				client.send(error("Too many arguments"));
+				send(client,error("Too many arguments"));
 			return false;
 		} else {
 			if ((flag & ARGS_GOOD) == ARGS_GOOD)
 				return true;
 			else 
-				client.send(error("Bad number of arguments"));
+				send(client,error("Bad number of arguments"));
 			return false;
 		}
 	}
@@ -98,27 +109,44 @@ public abstract class Command implements Codes,Cloneable {
 		return checkArgs(args,client,length,ARGS_GOOD);
 	}
 	
-	public void processReceive(byte[] bytes,Client client) throws IOException {}
+	/**
+	 * Processing receive. Executing by server to process messages.
+	 * @param bytes Bytes to process.
+	 * @throws IOException when I/O error occurs.
+	 */
+	public void processReceive(byte[] bytes) throws IOException {
+		receiveHandler.receiveDone(bytes);
+	}
 	
+	/**
+	 * Returning command name.
+	 * @return command name.
+	 */
 	public String getName() {
 		return command;
 	}
 	
-	public void stayAlive() {
-		stayAlive = true;
-	}
-	
-	public boolean isStayAlive() {
-		return stayAlive;
-	}
-	
+	/**
+	 * Setting command state as done.
+	 */
 	public void done() {
 		runned = false;
-		stayAlive = false;
 	}
 	
+	/**
+	 * Returns if command is runned.
+	 * @return true if command is runned.
+	 */
 	public boolean isRunned() {
 		return runned;
+	}
+	
+	/**
+	 * Setting if command is runned.
+	 * @param runned Runned
+	 */
+	public void setRunned(boolean runned) {
+		this.runned = true;
 	}
 	
 	/**
@@ -129,6 +157,59 @@ public abstract class Command implements Codes,Cloneable {
 	 * @throws IOException when client throw {@link IOException}
 	 */
 	public abstract void execute(String[] args,Client client,Plugin plugin) throws IOException;
+	
+	/**
+	 * Wrapping {@link Client#send(String) method} in commands,
+	 * automatically done command after sending.
+	 * @param client Client instance
+	 * @param message Message to send
+	 * @throws IOException when I/O error occurs
+	 */
+	public void send(Client client,String message) throws IOException {
+		send(client,message,() -> done());
+	}
+	
+	/**
+	 * Wrapping {@link Client#send(String, SendContinuation)} method in commands
+	 * @param client Client instance
+	 * @param message Message to send
+	 * @param continuation Send continuation executed after send complete
+	 * @throws IOException when I/O error occurs
+	 */
+	public void send(Client client,String message,SendContinuation continuation) throws IOException {
+		client.send(message, () -> continuation.invoke());
+	}
+	
+	/**
+	 * Wrapping {@link Client#rawdataSend(byte[], SendContinuation)} method in commands,
+	 * automatically done command after sending.
+	 * @param client Client instance
+	 * @param bytes Bytes to send
+	 * @throws IOException when I/O error occurs
+	 */
+	public void send(Client client,byte[] bytes) throws IOException {
+		send(client,bytes,() -> done());
+	}
+	
+	/**
+	 * Wrapping {@link Client#rawdataSend(byte[], SendContinuation)} method in commands
+	 * @param client Client instance
+	 * @param bytes Bytes to send
+	 * @param continuation Send continuation executed after send complete
+	 * @throws IOException when I/O error occurs
+	 */
+	public void send(Client client,byte[] bytes,SendContinuation continuation) throws IOException {
+		client.rawdataSend(bytes, () -> continuation.invoke());
+	}
+	
+	/**
+	 * Receiving message when client ready.
+	 * @param client Client instance.
+	 * @param continuation Executing when receive message is ready.
+	 */
+	public void receive(Client client,ReceiveContinuation continuation) {
+		receiveHandler = continuation;
+	}
 	
     @Override
     public Object clone() throws CloneNotSupportedException {

@@ -30,6 +30,14 @@ public class Client {
 	
 	/** Processor */
 	protected Processor processor = new CommandProcessor(this);
+	
+	/**
+	 * Send continuation interface
+	 */
+	@FunctionalInterface
+	public interface SendContinuation {
+		void invoke() throws IOException;
+	}
 
 	/**
 	 * Client type
@@ -82,23 +90,43 @@ public class Client {
 	 * @return byte array of data
 	 * @throws IOException when socket throw error
 	 */
-	protected byte[] receive() throws IOException {
+	protected byte[] rawdataReceive() throws IOException {
 		return new byte[BUFFER];
 	}
 	
 	/**
-	 * Sending message
-	 * @param mess Message to send
+	 * Sending message without executing {@link SendContinuation} 
+	 * @param message Message to send
 	 * @throws IOException when socket throw error
 	 */
-	public void send(String mess) throws IOException {}
+	public void send(String message) throws IOException {
+		send(message,() -> {});
+	}
 	
 	/**
-	 * Sending raw data
+	 * Sending message, when complete executing {@link SendContinuation}
+	 * @param message Message to send
+	 * @param continuation Send continuation handler
+	 * @throws IOException when socket throw error
+	 */
+	public void send(String message,SendContinuation continuation) throws IOException {}
+	
+	/**
+	 * Sending raw data without executing {@link SendContinuation} 
 	 * @param bytes Byte array
 	 * @throws IOException when socket throw error
 	 */
-	public void rawdataSend(byte[] bytes) throws IOException {}
+	public void rawdataSend(byte[] bytes) throws IOException {
+		rawdataSend(bytes,() -> {});
+	}
+	
+	/**
+	 * Sending raw data, when complete executing {@link SendContinuation}
+	 * @param bytes Byte array
+	 * @param continuation Send continuation handler
+	 * @throws IOException when socket throw error
+	 */
+	public void rawdataSend(byte[] bytes,SendContinuation continuation) throws IOException {}
 	
 	/**
 	 * Closing socket
@@ -138,6 +166,42 @@ public class Client {
 	public boolean isJoined() {
 		return joinedid != -1;
 	}
+	
+	/**
+	 * Check if client is selectable (Using Java NIO)
+	 * @return true if client is selectable
+	 */
+	public boolean isSelectable() {
+		return this instanceof SelectableClient;
+	}
+	
+	/**
+	 * Check if client is async (Using Java NIO2)
+	 * @return true if client is selectable
+	 */
+	public boolean isAsync() {
+		return this instanceof AsyncClient;
+	}
+	
+	/**
+	 * Returns client joiner object
+	 * @return client joiner object.
+	 */
+	public Client getJoiner() {
+		return ClientManager.getClient(getJoinedID());
+	}
+	
+	/**
+	 * Locks client reading (Usually to prevent buffer overflow in Java NIO selectors)
+	 * @see #unlockRead
+	 */
+	public void lockRead() {}
+	
+	/**
+	 * Unlocks client reading
+	 * @see #lockRead
+	 */
+	public void unlockRead() {}
 	
 	/**
 	 * State of once join
@@ -231,8 +295,7 @@ public class Client {
 		 * JoinException class constructor
 		 * @param message Message
 		 */
-		public JoinException(String message)
-		{
+		public JoinException(String message) {
 			super(message);
 		}
 	}

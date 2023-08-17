@@ -24,6 +24,6 @@ public class Status extends Command {
 				+ " Protocol:" + c.getProtocol().getName() 
 				+ " IP:" + c.getIP() + ":" + c.getPort() + "\n";
 		
-		client.send(message);
+		send(client,message);
 	}
 }

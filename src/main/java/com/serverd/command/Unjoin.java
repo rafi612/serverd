@@ -14,6 +14,6 @@ public class Unjoin extends Command {
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException  {
 		client.unjoin();
-		client.send(ok());
+		send(client,ok());
 	}
 }

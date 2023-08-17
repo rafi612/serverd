@@ -1,5 +1,6 @@
 package com.serverd.command;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterEach;
@@ -36,7 +37,10 @@ class CommandTestCase {
 		client.getProcessor().processCommand(comm.getBytes());
 		
 		while (((CommandProcessor)client.getProcessor()).getCurrentCommand() != null) 
-			client.getProcessor().processCommand(client.receive());
+			if (client.receiveIndex < client.receiveQueue.size())
+				client.getProcessor().processCommand(client.rawdataReceive());
+			else
+				break;
 		
 		Commands.commands.remove(command);
 	}
@@ -67,14 +71,13 @@ class DoubleClientCommandTestCase extends CommandTestCase {
 	}	
 }
 
-
 class TestClient extends Client {
-	private ArrayList<byte[]> receiveQueue = new ArrayList<>();
+	protected ArrayList<byte[]> receiveQueue = new ArrayList<>();
 	private ArrayList<String> sendQueue = new ArrayList<>();
 	
 	private ArrayList<byte[]> rawDataSendQueue = new ArrayList<>();
 	
-	private int receiveIndex;
+	protected int receiveIndex;
 	
 	public TestClient() {
 		super(ClientManager.getFreeClientID());
@@ -91,19 +94,22 @@ class TestClient extends Client {
 	}
 	
 	@Override
-	public byte[] receive() {
+	public byte[] rawdataReceive() {
+		System.out.println(receiveIndex);
 		return receiveQueue.get(receiveIndex++);
 	}
 	
 	@Override
-	public void send(String message) {
+	public void send(String message,SendContinuation runnable) throws IOException {
 		log.info("<Sended> " + message);
 		sendQueue.add(message);
+		runnable.invoke();
 	}
 	
 	@Override
-	public void rawdataSend(byte[] buffer) {
+	public void rawdataSend(byte[] buffer,SendContinuation runnable) throws IOException {
 		rawDataSendQueue.add(buffer);
+		runnable.invoke();
 	}
 	
 	public String[] getSend() {

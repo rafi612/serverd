@@ -21,6 +21,6 @@ class ToTest extends DoubleClientCommandTestCase {
 		testClient2.getProcessor().processCommand(receive.getBytes());
 		
 		assertEquals(testClient2.getSend()[0],send);
-		assertEquals(testClient2.toMessage(testClient2.receive()),receive);
+		assertEquals(testClient2.toMessage(testClient2.rawdataReceive()),receive);
 	}
 }
