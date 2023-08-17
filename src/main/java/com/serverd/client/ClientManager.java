@@ -3,6 +3,7 @@ package com.serverd.client;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousCloseException;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
@@ -94,7 +95,10 @@ public class ClientManager {
 
 	            @Override
 	            public void failed(Throwable e, Void attachment) {
-	            	tcplog.error("Accept failed: " + e.getMessage());
+	            	if (e instanceof AsynchronousCloseException)
+	            		return;
+	            	
+	            	tcplog.error("Server error: " + e.getMessage());
 	            }
 	        });
 	        
