@@ -17,4 +17,4 @@ COPY --from=build /workspace/app/target/serverd-*.jar /app
 EXPOSE 9999/tcp
 EXPOSE 9998/udp
 
-ENTRYPOINT ["java","-p",".","-m","serverd/com.serverd.main.Main","--working-loc","/app/data"]
+ENTRYPOINT ["java","-cp","*","com.serverd.main.Main","--working-loc","/app/data"]
