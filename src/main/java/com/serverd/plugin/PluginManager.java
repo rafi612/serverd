@@ -19,9 +19,9 @@ import com.serverd.log.Log;
  * Plugin manager
  */
 public class PluginManager {
-	public static String pluginDir;
-	public static String pluginDataDir;
-	
+	public static File pluginDir;
+	public static File pluginDataDir;
+	public static File pluginAppDataDir;
 	public static File pluginDisabledFile;
 	
 	public static List<String> pluginsDisabled;
@@ -32,21 +32,21 @@ public class PluginManager {
 	
 	/**
 	 * Init method
+	 * @param workdir Working dir file
 	 */
 	public static void init(File workdir) throws IOException {
-		
-		pluginDir = new File(workdir,"plugins").getAbsolutePath();
-		pluginDataDir = new File(workdir,"pluginsdata").getAbsolutePath();
-		
+		pluginDir = new File(workdir,"plugins");
+		pluginDataDir = new File(workdir,"pluginsdata");
+			
 		pluginDisabledFile = new File(workdir,"plugins_disabled.conf");
 		
+		pluginAppDataDir = new File(workdir,"appdata");
+		
 		//create plugin dir
-		File pdir = new File(pluginDir);
-		if (!pdir.exists() && !pdir.mkdir())
+		if (!pluginDir.exists() && !pluginDir.mkdir())
 			throw new IOException("Failed to create plugin dir");
 		
-		File pdatadir = new File(pluginDataDir);
-		if (!pdatadir.exists() && !pdatadir.mkdir())
+		if (!pluginDataDir.exists() && !pluginDataDir.mkdir())
 			throw new IOException("Failed to create plugin data dir");
 		
 		if (!pluginDisabledFile.exists() && !pluginDisabledFile.createNewFile())
@@ -59,8 +59,7 @@ public class PluginManager {
 	 * Loading all plugins
 	 */
 	public static void loadPlugins() {
-		File pdir = new File(pluginDir);
-		File[] files = pdir.listFiles();
+		File[] files = pluginDir.listFiles();
 		
 		if (files != null) {
 			for (File file : files) {
@@ -176,6 +175,16 @@ public class PluginManager {
 		if (id < 0 || id > plugins.size())
 			return null;
 		return plugins.get(id);
+	}
+	
+	
+	/**
+	 * Getting plugin ID by plugin instance
+	 * @param plugin Plugin instance
+	 * @return plugin ID
+	 */
+	public static int getIDByPlugin(Plugin plugin) {
+		return plugins.indexOf(plugin);
 	}
 	
 	/**

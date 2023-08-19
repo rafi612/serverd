@@ -21,7 +21,6 @@ import com.serverd.plugin.Plugin.Info;
 
 class PluginManagerTest {
 	Plugin plugin;
-	int pluginid;
 	
 	@TempDir
 	File tempWorkDir;
@@ -37,7 +36,7 @@ class PluginManagerTest {
 		void setUp() {
 			PluginManager.unloadAllPlugins();
 			
-			PluginManager.pluginDir = testPluginDir.getPath();
+			PluginManager.pluginDir = testPluginDir;
 			PluginManager.pluginsDisabled = List.of();
 			jarFile = new File(testPluginDir,"TestPlugin.jar");
 		}
@@ -145,8 +144,7 @@ class PluginManagerTest {
 		
 		PluginManager.init(tempWorkDir);
 		
-		pluginid = PluginUtils.loadPluginFromClassName(PluginManagerTestPlugin.class.getName());
-		plugin = PluginManager.getPluginByID(pluginid);
+		plugin = PluginUtils.loadPluginFromClassName(PluginManagerTestPlugin.class.getName());
 	}
 	
 	@AfterEach
@@ -188,7 +186,7 @@ class PluginManagerTest {
 	void listPluginsName_Test() {
 		assertAll(
 			() -> assertEquals(PluginManager.listPluginsName().length,PluginManager.getPluginsAmountLoaded()),
-			() -> assertEquals(PluginManager.listPluginsName()[pluginid],plugin.filename)
+			() -> assertEquals(PluginManager.listPluginsName()[PluginManager.getIDByPlugin(plugin)],plugin.filename)
 		);
 	}
 	

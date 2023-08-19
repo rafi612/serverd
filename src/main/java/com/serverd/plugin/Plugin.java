@@ -24,6 +24,8 @@ public class Plugin {
 
 	private boolean isRunned = false;
 	
+	private boolean isApp = false;
+	
 	private Log log;
 	
 	public String filename;
@@ -156,11 +158,18 @@ public class Plugin {
 	 * @return File object
 	 */
 	public File loadWorkspace() {
-		File file = new File(PluginManager.pluginDataDir,info.name);
+		File file = isApp ? PluginManager.pluginAppDataDir : new File(PluginManager.pluginDataDir,info.name);
 		if (!file.exists())
 			file.mkdir();
 		
 		return file;
+	}
+	
+	/**
+	 * Marking plugin as application plugin
+	 */
+	public void markAsApp() {
+		isApp = true;
 	}
 	
 	/**

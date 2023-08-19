@@ -3,7 +3,6 @@ package com.serverd.plugin;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import java.nio.file.Path;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -108,10 +107,10 @@ class PluginTest
 	//First repeat create workspace, second repeat load exists workspace
 	@RepeatedTest(2)
 	void loadWorkspace_Test() {
-		PluginManager.pluginDataDir = tempDir.getAbsolutePath();
+		PluginManager.pluginDataDir = tempDir;
 		
 		File workspace = plugin.loadWorkspace();
 		
-		assertEquals(workspace.getAbsolutePath(), Path.of(PluginManager.pluginDataDir, plugin.getInfo().name).toString());
+		assertEquals(workspace.getAbsolutePath(), new File(PluginManager.pluginDataDir, plugin.getInfo().name).getAbsolutePath());
 	}
 }

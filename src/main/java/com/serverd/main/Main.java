@@ -9,6 +9,7 @@ import com.serverd.config.Config;
 import com.serverd.log.Log;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.PluginUtils;
+import com.serverd.server.ServerManager;
 
 public class Main {
 	public static final String VERSION = "v1.2.0";
@@ -99,7 +100,12 @@ public class Main {
 		
 		System.out.println("ServerD " + VERSION);
 		
-		Runtime.getRuntime().addShutdownHook(new Thread(ClientManager::shutdown));
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			ServerManager.shutdown();
+			ClientManager.shutdown();
+		}));
+		
+		ServerManager.addDefaultServers(config);
 			
 		Commands.init();
 		try {
@@ -116,7 +122,7 @@ public class Main {
 		if (isLoadingApp) {
 			log.info("Loading app " + appClass + "...");
 			try {
-				PluginUtils.loadPluginFromClassName(appClass);
+				PluginUtils.loadPluginAsApp(appClass);
 			} catch (ClassNotFoundException e) {
 				System.err.println("Class " + appClass + " not found");
 				System.exit(1);
@@ -125,7 +131,7 @@ public class Main {
 			}
 		}
 		
-		log.info("Starting listening clients...");
-		ClientManager.start(config.ip,config.tcpPort,config.udpPort,config);
+		log.info("Starting servers...");
+		ServerManager.init();
 	}
 }

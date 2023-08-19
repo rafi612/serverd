@@ -81,6 +81,11 @@ public class UDPClient extends SelectableClient {
 	@Override
 	public void closeClient() {
 		super.closeClient();
+		try {
+			udpSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
