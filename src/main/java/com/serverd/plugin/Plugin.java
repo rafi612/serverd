@@ -235,9 +235,7 @@ public class Plugin {
 	 * @param server Server instance
 	 */
 	public void addServer(Server server) {
-		// when Server Manager was initialized load server, otherwise will be initialized later
-		if (ServerManager.isInitialized())
-			ServerManager.loadServer(server);
+		ServerManager.loadServer(server);
 		servers.add(server);
 	}
 	
