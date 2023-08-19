@@ -1,9 +1,9 @@
 # serverd
 
 [![Build](https://img.shields.io/github/actions/workflow/status/rafi612/serverd/build.yml?branch=main)](https://github.com/rafi612/serverd/actions/workflows/maven.yml)
+[![Release](https://img.shields.io/github/v/release/rafi612/serverd)](https://github.com/rafi612/serverd/releases)
 [![License](https://img.shields.io/github/license/rafi612/serverd)](https://github.com/rafi612/serverd/blob/main/LICENSE)
 [![Repo size](https://img.shields.io/github/repo-size/rafi612/serverd)](https://github.com/rafi612/serverd)
-[![Total lines](https://img.shields.io/tokei/lines/github/rafi612/serverd)](https://github.com/rafi612/serverd)
 
 ServerD is TCP and UDP server which allows to communicate between clients and manage them.
 
