@@ -33,7 +33,7 @@ public class ClientManager {
 			client.unjoin();
 		
 		//plugin connect listener
-		for (Plugin p : PluginManager.plugins)
+		for (Plugin p : PluginManager.getPlugins())
 			for (ConnectListener cl : p.connectListeners) {
 				try {
 					cl.onDisconnect(p,client);
@@ -58,7 +58,7 @@ public class ClientManager {
 			client.closeClient();
 		
 		log.info("Stopping plugins...");
-		for (Plugin plugin : PluginManager.plugins)
+		for (Plugin plugin : PluginManager.getPlugins())
 			plugin.stop();
 	}
 	
@@ -81,7 +81,7 @@ public class ClientManager {
 	 */
 	public static void setupClient(Client client) throws IOException {		
 		//plugin connect listener
-		for (Plugin p : PluginManager.plugins)
+		for (Plugin p : PluginManager.getPlugins())
 			for (ConnectListener cl : p.connectListeners)
 				cl.onConnect(p,client);
 	}

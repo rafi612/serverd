@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import com.serverd.config.Config;
 import com.serverd.log.Log;
+import com.serverd.plugin.Plugin;
+import com.serverd.plugin.PluginManager;
 
 /**
  * Server manager class
@@ -14,6 +16,8 @@ public class ServerManager {
 	private static ArrayList<Server> servers = new ArrayList<>();
 	
 	private static Log log = new Log("ServerD");
+	
+	private static boolean inited = false;
 
 	private static TCPServer tcpServer;
 	private static UDPServer udpServer;
@@ -46,11 +50,17 @@ public class ServerManager {
 	 * Initalizing Server Manager
 	 */
 	public static void init() {
+		inited = true;
 		for (Server server : servers)
 			loadServer(server);
+		
+		//init servers from plugins
+		for (Plugin plugin : PluginManager.getPlugins())
+			for (Server server : plugin.servers)
+				ServerManager.loadServer(server);
 	}
 	
-	private static void loadServer(Server server) {
+	public static void loadServer(Server server) {
 		if (!server.isEnabled()) {
 			log.info(server.getName() + " was disabled");
 			return;
@@ -74,12 +84,16 @@ public class ServerManager {
 		log.info("Server shutting down...");
 		
 		for (Server server : servers)
-			try {
-				server.isRunned = false;
-				server.stop();
-			} catch (IOException e) {
-				log.error("Shutdown error: " + e.getMessage());
-			}
+			stopServer(server);
+	}
+	
+	public static void stopServer(Server server) {
+		try {
+			server.isRunned = false;
+			server.stop();
+		} catch (IOException e) {
+			log.error("Shutdown error: " + e.getMessage());
+		}
 	}
 	
 	/**
@@ -113,5 +127,13 @@ public class ServerManager {
 	 */
 	public static void removeServer(Server server) {
 		servers.remove(server);
+	}
+	
+	/**
+	 * Returns if ServerManager is initialized
+	 * @return if ServerManager is initialized
+	 */
+	public static boolean isInitialized() {
+		return inited;
 	}
 }

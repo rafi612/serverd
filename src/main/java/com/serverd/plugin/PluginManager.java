@@ -217,6 +217,14 @@ public class PluginManager {
 	}
 	
 	/**
+	 * Returns all plugins
+	 * @return all plugins table
+	 */
+	public static Plugin[] getPlugins() {
+		return plugins.toArray(Plugin[]::new);
+	}
+	
+	/**
 	 * Rewriting plugins_disabled.conf
 	 */
 	private static void rewritePluginDisableFile() {

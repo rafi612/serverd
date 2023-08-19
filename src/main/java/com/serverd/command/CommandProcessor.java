@@ -60,7 +60,7 @@ public class CommandProcessor extends Processor {
 				
 				//execution controller
 				boolean command_accepted = true;
-				for (Plugin p : PluginManager.plugins) {
+				for (Plugin p : PluginManager.getPlugins()) {
 					if (!command_accepted)
 						break;
 					
@@ -81,7 +81,7 @@ public class CommandProcessor extends Processor {
 				Command comm = getCommandByName(command);
 				//search in plugins
 				if (comm == null)
-					for (Plugin p : PluginManager.plugins)
+					for (Plugin p : PluginManager.getPlugins())
 						for (Command c : p.commands)
 							if (command.equals(c.command)) {
 								plugin = p;

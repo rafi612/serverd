@@ -2,6 +2,8 @@ package com.serverd.plugin;
 
 import com.serverd.plugin.listener.ConnectListener;
 import com.serverd.plugin.listener.ExecutionController;
+import com.serverd.server.Server;
+import com.serverd.server.ServerManager;
 
 import java.io.File;
 import java.io.InputStream;
@@ -17,8 +19,10 @@ public class Plugin {
 	private final Info info = new Info();
 	
 	public ArrayList<ConnectListener> connectListeners = new ArrayList<ConnectListener>();
-	public ArrayList<Command> commands = new ArrayList<Command>();
 	public ArrayList<ExecutionController> executionControllers = new ArrayList<ExecutionController>();
+	
+	public ArrayList<Command> commands = new ArrayList<Command>();
+	public ArrayList<Server> servers = new ArrayList<Server>();
 	
 	private final ServerdPlugin instance;
 
@@ -76,6 +80,10 @@ public class Plugin {
 		commands.clear();
 		connectListeners.clear();
 		executionControllers.clear();
+		
+		for (Server server : servers)
+			ServerManager.stopServer(server);
+		servers.clear();
 	}
 	
 	/**
@@ -189,22 +197,6 @@ public class Plugin {
 	}
 	
 	/**
-	 * Adding command
-	 * @param command Command instance
-	 */
-	public void addCommand(Command command) {
-		commands.add(command);
-	}
-	
-	/**
-	 * Removing command
-	 * @param command Command instance
-	 */
-	public void removeCommand(Command command) {
-		commands.remove(command);
-	}
-	
-	/**
 	 * Adding ExecutionController
 	 * @param listener Listener instance
 	 */
@@ -218,6 +210,43 @@ public class Plugin {
 	 */
 	public void removeExecutionController(ExecutionController listener) {
 		executionControllers.remove(listener);
+	}
+	
+	
+	/**
+	 * Adding command to plugin commands list
+	 * @param command Command instance
+	 */
+	public void addCommand(Command command) {
+		commands.add(command);
+	}
+	
+	/**
+	 * Removing command from plugin commands list
+	 * @param command Command instance
+	 */
+	public void removeCommand(Command command) {
+		commands.remove(command);
+	}
+	
+	
+	/**
+	 * Adding server to plugin servers list
+	 * @param server Server instance
+	 */
+	public void addServer(Server server) {
+		// when Server Manager was initialized load server, otherwise will be initialized later
+		if (ServerManager.isInitialized())
+			ServerManager.loadServer(server);
+		servers.add(server);
+	}
+	
+	/**
+	 * Removing Server from plugin servers list
+	 * @param server Server instance
+	 */
+	public void removeServer(Server server) {
+		servers.remove(server);
 	}
 
 	/**
