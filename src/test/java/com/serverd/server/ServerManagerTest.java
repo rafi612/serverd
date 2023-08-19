@@ -3,7 +3,7 @@ package com.serverd.server;
 import com.serverd.config.Config;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -21,9 +21,9 @@ class ServerManagerTest {
 		@Override
 		public void stop() throws IOException { isStopped = true; }
 	}
-
-	@AfterEach
-	void tearDown() throws Exception {
+	
+	@BeforeEach
+	void setUp() throws Exception {
 		ServerManager.removeAllServers();
 	}
 
