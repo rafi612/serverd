@@ -43,7 +43,7 @@ public class PluginUtils {
 	 * @param appClass Main app class name
 	 */
 	public static void loadPluginAsApp(String appClass) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		Plugin plugin = PluginUtils.loadPluginFromClassName(appClass);
+		Plugin plugin = PluginUtils.loadPluginInstanceFromClassName(appClass);
 		plugin.markAsApp();
 		PluginManager.addPlugin(plugin);
 		plugin.start();

@@ -40,7 +40,10 @@ public class PluginManager {
 			
 		pluginDisabledFile = new File(workdir,"plugins_disabled.conf");
 		
-		pluginAppDataDir = new File(workdir,"appdata");
+		if (!workdir.getName().equals("serverd"))
+			pluginAppDataDir = new File(workdir,"appdata");
+		else
+			pluginAppDataDir = null;
 		
 		//create plugin dir
 		if (!pluginDir.exists() && !pluginDir.mkdir())

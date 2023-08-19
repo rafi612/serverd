@@ -166,7 +166,7 @@ public class Plugin {
 	 * @return File object
 	 */
 	public File loadWorkspace() {
-		File file = isApp ? PluginManager.pluginAppDataDir : new File(PluginManager.pluginDataDir,info.name);
+		File file = isApp && PluginManager.pluginAppDataDir != null ? PluginManager.pluginAppDataDir : new File(PluginManager.pluginDataDir,info.name);
 		if (!file.exists())
 			file.mkdir();
 		
