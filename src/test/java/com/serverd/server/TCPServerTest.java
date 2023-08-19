@@ -8,10 +8,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.serverd.command.Commands;
 import com.serverd.config.Config;
 
 class TCPServerTest {
@@ -21,11 +19,6 @@ class TCPServerTest {
 		} catch (IOException ignored) {
 			return false;
 		}
-	}
-	
-	@BeforeAll
-	static void setUpAll() {
-		Commands.init();
 	}
 	
 	

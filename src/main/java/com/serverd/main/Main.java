@@ -4,7 +4,6 @@ import java.io.File;
 
 import com.serverd.app.ServerdApplication;
 import com.serverd.client.ClientManager;
-import com.serverd.command.Commands;
 import com.serverd.config.Config;
 import com.serverd.log.Log;
 import com.serverd.plugin.PluginManager;
@@ -107,7 +106,6 @@ public class Main {
 		
 		ServerManager.addDefaultServers(config);
 			
-		Commands.init();
 		try {
 			PluginManager.init(workdirFile);
 			if (plugins) {

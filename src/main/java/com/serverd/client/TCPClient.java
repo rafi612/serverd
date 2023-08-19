@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
+import java.nio.channels.InterruptedByTimeoutException;
 import java.util.concurrent.TimeUnit;
 
 import com.serverd.config.Config;
@@ -64,7 +65,11 @@ public class TCPClient extends AsyncClient {
 			@Override
 			public void failed(Throwable exc, Void attachment) {
 				readPending = false;
-				crash((Exception)exc);
+				//check if exception is timeout
+				if (exc instanceof InterruptedByTimeoutException)
+					crash(new IOException("Read timed out"));
+				else
+					crash((Exception)exc);
 			}
 		});
 	}

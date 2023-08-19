@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 
 import com.serverd.client.Client;
 import com.serverd.client.ClientManager;
-import com.serverd.client.processor.CommandProcessor;
 import com.serverd.plugin.PluginManager;
 
 class CommandTestCase {
@@ -16,7 +15,7 @@ class CommandTestCase {
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		Commands.commands.clear();
+		CommandProcessor.commands.clear();
 		PluginManager.plugins.clear();
 		ClientManager.clients.clear();
 		
@@ -33,7 +32,7 @@ class CommandTestCase {
 		String comm = command.command + " " + String.join(" ", args);
 		client.log.info("Executing command: " + comm);
 		
-		Commands.commands.add(command);
+		CommandProcessor.commands.add(command);
 		client.getProcessor().processCommand(comm.getBytes());
 		
 		while (((CommandProcessor)client.getProcessor()).getCurrentCommand() != null) 
@@ -42,7 +41,7 @@ class CommandTestCase {
 			else
 				break;
 		
-		Commands.commands.remove(command);
+		CommandProcessor.commands.remove(command);
 	}
 	
 	public static void executeTest(Command command,TestClient client) throws Exception {

@@ -8,10 +8,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.serverd.command.Commands;
 import com.serverd.config.Config;
 
 class UDPServerTest {
@@ -22,10 +20,6 @@ class UDPServerTest {
 		} catch (IOException ignored) {
 			return false;
 		}
-	}
-	@BeforeAll
-	static void setUpAll() {
-		Commands.init();
 	}
 	
 	@Test

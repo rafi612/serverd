@@ -1,8 +1,9 @@
 package com.serverd.client;
 
 import java.io.IOException;
-import com.serverd.client.processor.CommandProcessor;
+
 import com.serverd.client.processor.Processor;
+import com.serverd.command.CommandProcessor;
 import com.serverd.log.Log;
 
 /**

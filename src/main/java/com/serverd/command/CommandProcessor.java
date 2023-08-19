@@ -1,16 +1,37 @@
-package com.serverd.client.processor;
+package com.serverd.command;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.serverd.client.Client;
-import com.serverd.command.Codes;
-import com.serverd.command.Command;
-import com.serverd.command.Commands;
+import com.serverd.client.processor.Processor;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.listener.ExecutionController;
 
+/**
+ * Command Processor class
+ * Command Processor is simple default processor to process commands with some default commands
+ */
 public class CommandProcessor extends Processor {
+	
+	/** Commands */
+	protected static ArrayList<Command> commands = new ArrayList<>();
+	
+	static {
+		commands.add(new Disconnect());
+		commands.add(new Id());
+		commands.add(new Status());
+		commands.add(new To());
+		commands.add(new Join());
+		commands.add(new Close());
+		commands.add(new Unjoin());
+		commands.add(new Rawdata());
+		commands.add(new Setname());
+		commands.add(new PluginCommand());
+		commands.add(new PluginsList());
+		commands.add(new Help());
+	}
 
 	private Command currentCommand;
 	
@@ -57,7 +78,7 @@ public class CommandProcessor extends Processor {
 				Plugin plugin = null;
 				
 				//search in base
-				Command comm = Commands.getByName(command);
+				Command comm = getCommandByName(command);
 				//search in plugins
 				if (comm == null)
 					for (Plugin p : PluginManager.plugins)
@@ -100,5 +121,26 @@ public class CommandProcessor extends Processor {
 	 */
 	public Command getCurrentCommand() {
 		return currentCommand;
+	}
+	
+	
+	/**
+	 * Getting build in commands by name 
+	 * @param name Command name
+	 * @return Command object
+	 */
+	public static Command getCommandByName(String name) {
+		for (Command command : commands)
+			if (command.command.equals(name))
+				return command;
+		return null;
+	}
+	
+	/**
+	 * Get all build in commands
+	 * @return Command {@link ArrayList}
+	 */
+	public static ArrayList<Command> getCommandsList() {
+		return commands;
 	}
 }

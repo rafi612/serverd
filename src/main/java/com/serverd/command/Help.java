@@ -15,7 +15,7 @@ public class Help extends Command {
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException {
 		String help = "";
 		
-		for (Command com : Commands.getCommandsList())
+		for (Command com : CommandProcessor.getCommandsList())
 			help += com.help + "\n";
 		
 		for (Plugin p : PluginManager.plugins)
