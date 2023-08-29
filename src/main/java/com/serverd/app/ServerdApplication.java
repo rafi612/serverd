@@ -67,7 +67,6 @@ public class ServerdApplication {
 		Main.main(mainArgs.toArray(String[]::new));
 	}
 	
-	
 	/**
 	 * Returns default working directory
 	 * @return Working directory path.
