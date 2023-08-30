@@ -33,12 +33,12 @@ public class Rawdata extends Command {
 								if (sended >= buffersize)
 									send(client,ok());
 								else 
-									receive(client,this);
+									receive(this);
 							});
 							
 						}
 					};
-					receive(client,receive);
+					receive(receive);
 				});
 			}
 			else send(client,error("Not joined"));

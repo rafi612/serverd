@@ -207,7 +207,7 @@ public abstract class Command implements Codes,Cloneable {
 	 * @param client Client instance.
 	 * @param continuation Executing when receive message is ready.
 	 */
-	public void receive(Client client,ReceiveContinuation continuation) {
+	public void receive(ReceiveContinuation continuation) {
 		receiveHandler = continuation;
 	}
 	
