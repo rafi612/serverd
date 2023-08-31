@@ -29,7 +29,7 @@ public abstract class Server {
 	protected Config config;
 
 	/**
-	 * Server class constructor
+	 * Server class constructor.
 	 * @param name Server name
 	 * @param ip Server IP
 	 * @param port Server port
@@ -45,51 +45,48 @@ public abstract class Server {
 	}
 	
 	/**
-	 * Return true if server is enabled
-	 * @return true if server is enabled
+	 * @return true if server is enabled.
 	 */
 	public boolean isEnabled() {
 		return isEnabled;
 	}
 
 	/**
-	 * Enabling server
+	 * Enabling server.
 	 */
 	public void enable() {
 		this.isEnabled = true;
 	}
 	
 	/**
-	 * Disabling server
+	 * Disabling server.
 	 */
 	public void disable() {
 		this.isEnabled = false;
 	}
 	
 	/**
-	 * Returns server name
-	 * @return server name
+	 * @return server name.
 	 */
 	public String getName() {
 		return name;
 	}
 	
 	/**
-	 * Returns true if server is runned
-	 * @return true if server is runned
+	 * @return true if server is runned.
 	 */
 	public boolean isRunned() {
 		return isRunned;
 	}
 	
 	/**
-	 * Starting server
-	 * @throws IOException if server throws I/O error
+	 * Starting server.
+	 * @throws IOException if server throws I/O error.
 	 */
 	public abstract void start() throws IOException;
 	/**
-	 * Stopping server
-	 * @throws IOException if server throws I/O error
+	 * Stopping server.
+	 * @throws IOException if server throws I/O error.
 	 */
 	public abstract void stop() throws IOException;
 }

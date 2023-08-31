@@ -2,6 +2,9 @@ package com.serverd.client;
 
 import java.nio.ByteBuffer;
 
+/**
+ * Async Client class. Used by NIO2 clients.
+ */
 public class AsyncClient extends Client {
 	
 	/**Write Buffer*/
@@ -15,7 +18,7 @@ public class AsyncClient extends Client {
 	private Runnable afterReceive;
 
 	/**
-	 * Receive complete interface
+	 * Receive complete interface. Invoked when client receive complete.
 	 */
 	@FunctionalInterface
 	public interface ReceiveComplete {
@@ -23,7 +26,7 @@ public class AsyncClient extends Client {
 	}
 
 	/**
-	 * Async Client Constructor
+	 * Async Client Constructor.
 	 * @param id Client id
 	 */
 	public AsyncClient(int id) {

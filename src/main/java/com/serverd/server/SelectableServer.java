@@ -9,14 +9,14 @@ import com.serverd.client.SelectableClient;
 import com.serverd.config.Config;
 
 /**
- * Server class for selectable servers (Using java NIO API)
+ * Server class for selectable servers (Using java NIO API).
  */
 public abstract class SelectableServer extends Server {
 	
 	private long lastTimeout = System.currentTimeMillis();
 
 	/**
-	 * SelectableServer class constructor
+	 * SelectableServer class constructor.
 	 * @param name Server name
 	 * @param ip Server IP
 	 * @param port Server port
@@ -27,11 +27,11 @@ public abstract class SelectableServer extends Server {
 	}
 	
 	/**
-	 * selecting Selector and removing clients that have exceeded the timeout
+	 * selecting Selector and removing clients that have exceeded the timeout.
 	 * @param selector Selector object
 	 * @param channel Server channel object
 	 * @param timeout Timeout value
-	 * @throws IOException if selector throw I/O error
+	 * @throws IOException if selector throw I/O error.
 	 */
 	protected void selectWithTimeout(Selector selector,SelectableChannel channel,int timeout) throws IOException {
 		//timeout checking and selecting

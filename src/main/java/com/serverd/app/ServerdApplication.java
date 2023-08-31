@@ -7,12 +7,12 @@ import java.util.Arrays;
 import com.serverd.main.Main;
 
 /**
- * Allows to running ServerD inside plugin to create self contained app
+ * Allows to running ServerD inside plugin to create self contained app.
  */
 public class ServerdApplication {
 	
 	/**
-	 * Running ServerD and loading class as plugin to create self contained app
+	 * Running ServerD and loading class as plugin to create self contained app.
 	 * @param appClass App class object
 	 */
 	public static void run(Class<?> appClass) {
@@ -20,7 +20,7 @@ public class ServerdApplication {
 	}
 	
 	/**
-	 * Running ServerD and loading class as plugin to create self contained app
+	 * Running ServerD and loading class as plugin to create self contained app.
 	 * @param appClass App class object
 	 * @param args Command line arguments
 	 */
@@ -29,7 +29,7 @@ public class ServerdApplication {
 	}
 	
 	/**
-	 * Running ServerD and loading class as plugin to create self contained app
+	 * Running ServerD and loading class as plugin to create self contained app.
 	 * @param appClass App class object
 	 * @param args Command line arguments
 	 * @param otherPlugins Want to load another plugins?
@@ -39,7 +39,7 @@ public class ServerdApplication {
 	}
 
 	/**
-	 * Running ServerD and loading class as plugin to create self contained app
+	 * Running ServerD and loading class as plugin to create self contained app.
 	 * @param appClass App class object
 	 * @param args Command line arguments
 	 * @param otherPlugins Want to load another plugins?
@@ -68,7 +68,7 @@ public class ServerdApplication {
 	}
 	
 	/**
-	 * Returns default working directory
+	 * Returns default working directory.
 	 * @return Working directory path.
 	 */
 	public static String getWorkDir(String name) {

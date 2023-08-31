@@ -9,7 +9,7 @@ import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.listener.ConnectListener;
 
 /**
- * Client Manager
+ * Client Manager.
  */
 public class ClientManager {
 	/** Client's hashmap*/
@@ -20,7 +20,7 @@ public class ClientManager {
 	private static Log log = new Log("ServerD");
 	
 	/**
-	 * Deleting client
+	 * Deleting client.
 	 * @param clientid Client ID to remove
 	 */
 	public static synchronized void delete(int clientid) {	
@@ -50,7 +50,7 @@ public class ClientManager {
 	}
 	
 	/**
-	 * Shutting down server
+	 * Shutting down server.
 	 */
 	public static void shutdown() {
 		log.info("Closing clients...");
@@ -63,8 +63,8 @@ public class ClientManager {
 	}
 	
 	/**
-	 * Searching first free client ID
-	 * @return first free ID
+	 * Searching first free client ID.
+	 * @return first free ID.
 	 */
 	public static int getFreeClientID() {
 		int i = 0;
@@ -77,7 +77,7 @@ public class ClientManager {
 	 * Configures client and executing connect listener.
 	 * Can be used in plugins on adding custom protocols.
 	 * @param client {@link Client} instance
-	 * @throws IOException when {@link ConnectListener} throws error
+	 * @throws IOException when {@link ConnectListener} throws error.
 	 */
 	public static void setupClient(Client client) throws IOException {		
 		//plugin connect listener
@@ -87,7 +87,7 @@ public class ClientManager {
 	}
 	
 	/**
-	 * Adding client
+	 * Adding client.
 	 * @param client Client object
 	 */
 	public static void addClient(Client client) {
@@ -96,24 +96,23 @@ public class ClientManager {
 	
 	/**
 	 * Returning all clients.
-	 * @return Array of clients
+	 * @return Array of clients.
 	 */
 	public static Client[] getAllClients() {
 		return clients.values().toArray(Client[]::new);
 	}
 	
 	/**
-	 * Returning clients amount
-	 * @return clients amount number
+	 * @return clients amount number.
 	 */
 	public static int getClientConnectedAmount() {
 		return clients.size();
 	}
 	
 	/**
-	 * Returns client instance by ID
+	 * Returns client instance by ID.
 	 * @param id Client ID
-	 * @return Client instance
+	 * @return Client instance.
 	 */
 	public static Client getClient(int id) {
 		return clients.get(id);

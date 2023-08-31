@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import com.serverd.config.Config;
 
 /**
- * TCP client class
+ * TCP client class.
  */
 public class TCPClient extends AsyncClient {	
 	
@@ -20,7 +20,7 @@ public class TCPClient extends AsyncClient {
 	protected Config config;
 	
 	/**
-	 * TCPClient class constructor
+	 * TCPClient class constructor.
 	 * @param id Client's ID
 	 * @param socket Socket instance
 	 */

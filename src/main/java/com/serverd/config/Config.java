@@ -15,7 +15,7 @@ import java.util.Properties;
 import com.serverd.main.Main;
 
 /**
- * Default config instance and config loader and writer
+ * Default config instance and config loader and writer.
  */
 public class Config {
 
@@ -37,12 +37,12 @@ public class Config {
 	public boolean enableUdp = true;
 	
 	/**
-	 * Loading config from file to given type, searching using {@link ConfigProperty} annotation
+	 * Loading config from file to given type, searching using {@link ConfigProperty} annotation.
 	 * @param <T> Type of returned config
 	 * @param file Path to .properties file
 	 * @param clazz Config class object
 	 * @return Config object
-	 * @throws IOException when IO error
+	 * @throws IOException when IO error.
 	 */
 	public static <T> T load(File file,Class<T> clazz) throws IOException {
 		try (InputStream input = new FileInputStream(file)) {
@@ -66,11 +66,11 @@ public class Config {
 	}
 	
 	/**
-	 * Saves config to given file
+	 * Saves config to given file.
 	 * @param file File to save
 	 * @param config Config instance
 	 * @param comment Comment
-	 * @throws IOException when IO error
+	 * @throws IOException when IO error.
 	 */
 	public static void save(File file,Object config,String comment) throws IOException {
 		try (OutputStream output = new FileOutputStream(file)) {
@@ -91,12 +91,12 @@ public class Config {
 	}
 	
 	/**
-	 * Creating config when it does not exists
+	 * Creating config when it does not exists.
 	 * @param file File to save
 	 * @param config Config instance
 	 * @param comment Comment
 	 * @return if config exists before
-	 * @throws IOException when IO error
+	 * @throws IOException when IO error.
 	 */
 	public static boolean createIfNotExists(File file,Object config,String comment) throws IOException {
 		boolean before = !file.exists();
@@ -106,9 +106,9 @@ public class Config {
 	}
 	
 	/**
-	 * Loading default server config
+	 * Loading default server config.
 	 * @return Config instance
-	 * @throws IOException when IO error
+	 * @throws IOException when IO error.
 	 */
 	public static Config loadDefault() throws IOException {
 		return Config.load(new File(Main.workingdir,"config.properties"), Config.class);

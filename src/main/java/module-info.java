@@ -1,5 +1,5 @@
 /**
- * ServerD server and plugins framework module
+ * ServerD server and plugins framework module.
  */
 open module serverd {
 	exports com.serverd.util;

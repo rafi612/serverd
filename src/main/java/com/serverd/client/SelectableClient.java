@@ -6,7 +6,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 
 /**
- * Selectable Client class. Used by NIO Clients
+ * Selectable Client class. Used by NIO selectable clients.
  */
 public abstract class SelectableClient extends Client 
 {
@@ -23,7 +23,7 @@ public abstract class SelectableClient extends Client
 	private SendContinuation sendContinuation;
 	
 	/**
-	 * NonBlockingClient constructor
+	 * NonBlockingClient constructor.
 	 * @param id client ID
 	 * @param selector client Selector object
 	 */
@@ -42,7 +42,6 @@ public abstract class SelectableClient extends Client
 	}
 	
 	/**
-	 * Returning last read time
 	 * @return Read time
 	 */
 	public long getLastReadTime() {
@@ -96,14 +95,14 @@ public abstract class SelectableClient extends Client
 	}
 	
 	/**
-	 * Getting selection key
+	 * Getting selection key.
 	 * @return SelectionKey
 	 */
 	public abstract SelectionKey getKey();
 	/**
-	 * Sending buffer when write key is ready, invoked by {@link processQueue}
+	 * Sending buffer when write key is ready, invoked by {@link processQueue}.
 	 * @param buffer Buffer to process
-	 * @throws IOException
+	 * @throws IOException when I/O error occurs.
 	 */
 	public abstract void processSend(ByteBuffer buffer) throws IOException;
 

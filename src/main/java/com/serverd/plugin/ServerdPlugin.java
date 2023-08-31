@@ -1,7 +1,7 @@
 package com.serverd.plugin;
 
 /**
- * Main plugin interface
+ * Main plugin interface.
  */
 public interface ServerdPlugin {
 	/** Plugin init succesfully code */
@@ -13,18 +13,18 @@ public interface ServerdPlugin {
 	 */
 	void metadata(Plugin.Info info);
 	/**
-	 * Initializing plugin
+	 * Initializing plugin.
 	 * @param plugin Plugin instance
-	 * @return When return {@link ServerdPlugin#INIT_SUCCESS} then plugin is succesfully loaded, when return String, plugin throw error
+	 * @return When return {@link ServerdPlugin#INIT_SUCCESS} then plugin is succesfully loaded, when return String, plugin throw error with message.
 	 */
 	String init(Plugin plugin);
 	/**
-	 * Main function of plugin
+	 * Main function of plugin.
 	 * @param plugin Plugin instance
 	 */
 	void work(Plugin plugin);
 	/**
-	 * Executing on plugin end of work
+	 * Executing on plugin end of work.
 	 * @param plugin Plugin instance
 	 */
 	void stop(Plugin plugin);

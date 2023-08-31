@@ -19,16 +19,16 @@ public class ServerManager {
 	private static UDPServer udpServer;
 	
 	/**
-	 * Returning array of added server
-	 * @return array of added server
+	 * Returning array of added server.
+	 * @return array of added server.
 	 */
 	public static Server[] getServers() {
 		return servers.toArray(Server[]::new);
 	}
 	
 	/**
-	 * Add default servers to server list
-	 * @param config Default server config
+	 * Add default servers to server list.
+	 * @param config Default server config.
 	 */
 	public static void addDefaultServers(Config config) {
 		addServer(tcpServer = new TCPServer(config.ip, config.tcpPort, config));
@@ -36,20 +36,24 @@ public class ServerManager {
 	}
 	
 	/**
-	 * Cleaning all server
+	 * Cleaning all server.
 	 */
 	protected static void removeAllServers() {
 		servers.clear();
 	}
 	
 	/**
-	 * Initalizing Server Manager
+	 * Initalizing Server Manager.
 	 */
 	public static void init() {
 		for (Server server : servers)
 			loadServer(server);
 	}
 	
+	/**
+	 * Loading server.
+	 * @param server Server instance.
+	 */
 	public static void loadServer(Server server) {
 		if (!server.isEnabled()) {
 			log.info(server.getName() + " was disabled");
@@ -68,7 +72,7 @@ public class ServerManager {
 	}
 	
 	/**
-	 * Shuttting down Server Manager
+	 * Shuttting down Server Manager.
 	 */
 	public static void shutdown() {
 		log.info("Server shutting down...");
@@ -77,6 +81,10 @@ public class ServerManager {
 			stopServer(server);
 	}
 	
+	/**
+	 * Stopping server.
+	 * @param server Server instance.
+	 */
 	public static void stopServer(Server server) {
 		try {
 			server.isRunned = false;
@@ -87,16 +95,16 @@ public class ServerManager {
 	}
 	
 	/**
-	 * Returns default TCP Server
-	 * @return Default TCP Server
+	 * Returns default TCP Server.
+	 * @return Default TCP Server.
 	 */
 	public static TCPServer getTcpServer() {
 		return tcpServer;
 	}
 
 	/**
-	 * Returns default UDP Server
-	 * @return Default UDP Server
+	 * Returns default UDP Server.
+	 * @return Default UDP Server.
 	 */
 	public static UDPServer getUdpServer() {
 		return udpServer;
@@ -104,16 +112,16 @@ public class ServerManager {
 
 
 	/**
-	 * Adding server 
-	 * @param server Server object
+	 * Adding server.
+	 * @param server Server object.
 	 */
 	public static void addServer(Server server) {
 		servers.add(server);
 	}
 	
 	/**
-	 * Removing server 
-	 * @param server Server object
+	 * Removing server.
+	 * @param server Server object.
 	 */
 	public static void removeServer(Server server) {
 		servers.remove(server);

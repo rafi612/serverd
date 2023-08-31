@@ -9,7 +9,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 
 /**
- * UDP client class
+ * UDP client class.
  */
 public class UDPClient extends SelectableClient {
 	/** UDP Socket*/
@@ -19,14 +19,13 @@ public class UDPClient extends SelectableClient {
 	protected InetSocketAddress address;
 
 	/**
-	 * UDPClient class constructor
+	 * UDPClient class constructor.
 	 * @param id Client's ID
 	 * @param selector Selector instance
 	 * @param udpSocket Datagram socket instance
 	 * @param address Client's address
-	 * @throws IOException
 	 */
-	public UDPClient(int id,Selector selector,DatagramChannel udpSocket,SocketAddress address) throws IOException {
+	public UDPClient(int id,Selector selector,DatagramChannel udpSocket,SocketAddress address) {
 		super(id,selector);
 		
 		this.udpSocket = udpSocket;

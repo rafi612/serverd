@@ -7,7 +7,7 @@ import com.serverd.command.CommandProcessor;
 import com.serverd.log.Log;
 
 /**
- * Client class
+ * Client class.
  */
 public class Client {
 	
@@ -33,7 +33,7 @@ public class Client {
 	protected Processor processor = new CommandProcessor(this);
 	
 	/**
-	 * Send continuation interface
+	 * Send continuation interface. Invoked when client send complete.
 	 */
 	@FunctionalInterface
 	public interface SendContinuation {
@@ -41,14 +41,16 @@ public class Client {
 	}
 
 	/**
-	 * Client type
+	 * Client type.
 	 */
 	public enum Type {
 		SENDER,RECEIVER,NONE;
 	}
 	
 	/**
-	 * Client protocol
+	 * Client protocol.
+	 * Representing Client protocol. Default {@link Protocol#TCP} or {@link Protocol#UDP}. 
+	 * Can be custom when set {@link Protocol#CUSTOM}. Custom protocol must have set name using {@link Protocol#setName setName} method.
 	 */
 	public enum Protocol {
 		TCP("TCP"),UDP("UDP"),CUSTOM("");
@@ -137,7 +139,6 @@ public class Client {
 	}
 	
 	/**
-	 * Returns client ID
 	 * @return Client's IP
 	 */
 	public String getIP() {
@@ -145,7 +146,6 @@ public class Client {
 	}
 	
 	/**
-	 * Returns client connected port
 	 * @return Client's port
 	 */
 	public int getPort() {
@@ -153,7 +153,6 @@ public class Client {
 	}
 	
 	/**
-	 * Returns client connection state
 	 * @return true if client is connected
 	 */
 	public boolean isConnected() {
@@ -161,7 +160,6 @@ public class Client {
 	}
 	
 	/**
-	 * Returns client joined state
 	 * @return true if client is joined
 	 */
 	public boolean isJoined() {
@@ -185,7 +183,6 @@ public class Client {
 	}
 	
 	/**
-	 * Returns client joiner object
 	 * @return client joiner object.
 	 */
 	public Client getJoiner() {
@@ -193,14 +190,16 @@ public class Client {
 	}
 	
 	/**
-	 * Locks client reading (Usually to prevent buffer overflow in Java NIO selectors)
-	 * @see #unlockRead
+	 * Locks client reading. 
+	 * Lock and Unlock is mechanism to control data flow in most async clients (NIO and NIO2)
+	 * @see Client#unlockRead unlockRead
 	 */
 	public void lockRead() {}
 	
 	/**
-	 * Unlocks client reading
-	 * @see #lockRead
+	 * Unlocks client reading. 
+	 * Lock and Unlock is mechanism to control data flow in most async clients (NIO and NIO2)
+	 * @see Client#lockRead lockRead
 	 */
 	public void unlockRead() {}
 	
@@ -214,7 +213,6 @@ public class Client {
 	}
 	
 	/**
-	 * Returns the ID of the client that is joined
 	 * @return Client's joined ID
 	 */
 	public int getJoinedID() {
@@ -222,7 +220,6 @@ public class Client {
 	}
 	
 	/**
-	 * Returns client ID
 	 * @return Client's ID 
 	 */
 	public int getID() {
@@ -230,7 +227,6 @@ public class Client {
 	}
 	
 	/**
-	 * Returns client name
 	 * @return Client's name
 	 */
 	public String getName() {
@@ -246,7 +242,6 @@ public class Client {
 	}
 	
 	/**
-	 * Returns client protocol enum
 	 * @return Client protocol enum
 	 */
 	public Protocol getProtocol() {
@@ -254,7 +249,6 @@ public class Client {
 	}
 	
 	/**
-	 * Returns client type enum
 	 * @return Client type enum
 	 */
 	public Type getType() {
@@ -263,8 +257,8 @@ public class Client {
 	
 	
 	/**
-	 * Returns client processor
 	 * @return Client processor
+	 * @see Processor
 	 */
 	public Processor getProcessor() {
 		return processor;
@@ -273,6 +267,7 @@ public class Client {
 	/**
 	 * Setting client processor
 	 * @param processor Client new processor
+	 * @see Processor
 	 */
 	public void setProcessor(Processor processor) {
 		this.processor = processor;

@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Logger class
+ * Logger class.
  */
 public class Log {
 	/** Colors*/
@@ -17,7 +17,7 @@ public class Log {
 	private String name;
 	
 	/**
-	 * Default constructor
+	 * Default constructor.
 	 * @param name Logger name
 	 */
 	public Log(String name) {
@@ -25,7 +25,6 @@ public class Log {
 	}
 
 	/**
-	 * Returning name of logger
 	 * @return Logger name
 	 */
 	public String getName() {
@@ -41,7 +40,7 @@ public class Log {
 	}
 
 	/**
-	 * Logging as Info level
+	 * Logging as Info level.
 	 * @param message Message to log
 	 */
 	public synchronized void info(String message) {
@@ -51,7 +50,7 @@ public class Log {
 	}
 	
 	/**
-	 * Logging as Warn level
+	 * Logging as Warning level.
 	 * @param message Message to log
 	 */
 	public synchronized void warn(String message) {
@@ -61,7 +60,7 @@ public class Log {
 	}
 	
 	/**
-	 * Logging as Error level
+	 * Logging as Error level.
 	 * @param message Message to log
 	 */
 	public synchronized void error(String message) {
@@ -71,7 +70,7 @@ public class Log {
 	}
 	
 	/**
-	 * Logging as Debug level
+	 * Logging as Debug level.
 	 * @param message Message to log
 	 */
 	public synchronized void debug(String message) {
@@ -81,7 +80,7 @@ public class Log {
 	}
 	
 	/**
-	 * Logging as Trace level
+	 * Logging as Trace level.
 	 * @param message Message to log
 	 */
 	public synchronized void trace(String message) {

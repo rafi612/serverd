@@ -10,7 +10,7 @@ import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.listener.ExecutionController;
 
 /**
- * Command Processor class
+ * Command Processor class.
  * Command Processor is simple default processor to process commands with some default commands
  */
 public class CommandProcessor extends Processor {
@@ -116,7 +116,6 @@ public class CommandProcessor extends Processor {
 	}
 	
 	/**
-	 * Returns current command
 	 * @return Current command
 	 */
 	public Command getCurrentCommand() {

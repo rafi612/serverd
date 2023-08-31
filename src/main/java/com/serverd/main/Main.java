@@ -6,6 +6,7 @@ import com.serverd.app.ServerdApplication;
 import com.serverd.client.ClientManager;
 import com.serverd.config.Config;
 import com.serverd.log.Log;
+import com.serverd.plugin.PluginLoadException;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.PluginUtils;
 import com.serverd.server.ServerManager;
@@ -121,11 +122,11 @@ public class Main {
 			log.info("Loading app " + appClass + "...");
 			try {
 				PluginUtils.loadPluginAsApp(appClass);
-			} catch (ClassNotFoundException e) {
-				System.err.println("Class " + appClass + " not found");
-				System.exit(1);
-			} catch (Exception e) {
-				System.err.println("App load error:" + e.getMessage());
+			} catch (PluginLoadException e) {
+				if (e.getCause() instanceof ClassNotFoundException) {
+					System.err.println("Class " + appClass + " not found");
+					System.exit(1);
+				} else System.err.println("App load error:" + e.getMessage());
 			}
 		}
 		

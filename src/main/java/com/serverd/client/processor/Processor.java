@@ -2,6 +2,12 @@ package com.serverd.client.processor;
 
 import com.serverd.client.Client;
 
+/**
+ * Processor is used to process messages received by clients.
+ * Each instance is assigned to a client. it can support joining, i.e. redirecting each message to the selected client,
+ * then adding the redirection yourself in the code. 
+ * The rest is implemented top-down so that NIO clients know how to route messages.
+ */
 public abstract class Processor {
 	
 	/** Client*/
@@ -11,7 +17,7 @@ public abstract class Processor {
 	protected boolean isSupportingJoining;
 	
 	/**
-	 * Processor class constructor
+	 * Processor class constructor.
 	 * @param client Client instance
 	 * @param isSupportingJoining is processor support joining clients?
 	 */
@@ -21,19 +27,19 @@ public abstract class Processor {
 	}
 	
 	/**
-	 * Processing byte message
+	 * Processing byte message.
 	 * @param buffer Byte buffer to process
 	 */
 	public abstract void processCommand(byte[] buffer);
 	
 	/**
-	 * Printing receive message
+	 * Printing receive message.
 	 * @param message Receive message
 	 */
 	public void printReceiveMessage(String message) {}
 	
 	/**
-	 * Printing send message
+	 * Printing send message.
 	 * @param message Send message
 	 */
 	public void printSendMessage(String message) {}

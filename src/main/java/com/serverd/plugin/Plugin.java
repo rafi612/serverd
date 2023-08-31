@@ -13,7 +13,7 @@ import com.serverd.command.Command;
 import com.serverd.log.Log;
 
 /**
- * Plugin instance class
+ * Plugin instance class.
  */
 public class Plugin {
 	private final Info info = new Info();
@@ -35,7 +35,7 @@ public class Plugin {
 	public String filename;
 	
 	/**
-	 * Plugin class constructor
+	 * Plugin class constructor.
 	 * @param filename Filename of plugin file
 	 * @param instance Instance of loaded plugin
 	 */
@@ -45,7 +45,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Start Plugin
+	 * Start Plugin.
 	 * @return true if plugin load succesfully
 	 */
 	public boolean start() {
@@ -69,7 +69,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Stop plugin
+	 * Stop plugin.
 	 */
 	public void stop() {
 		isRunned = false;
@@ -111,7 +111,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Print plugin debug message
+	 * Print plugin debug message.
 	 * @param message Message
 	 */
 	public void debug(String message) {
@@ -119,7 +119,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Print plugin trace message
+	 * Print plugin trace message.
 	 * @param message Message
 	 */
 	public void trace(String message) {
@@ -127,9 +127,9 @@ public class Plugin {
 	}
 	
 	/**
-	 * Returning instance of plugin interface, can be used to access variables in plugin main object
+	 * Returning instance of plugin interface, can be used to access variables in plugin main object.
 	 * @param <T> Target type
-	 * @return instance of plugin interface
+	 * @return instance of plugin interface.
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getInstance() {
@@ -137,32 +137,30 @@ public class Plugin {
 	}
 	
 	/**
-	 * Loading resource from classloader
+	 * Loading resource from classloader.
 	 * @param path Path to resource
-	 * @return {@link InputStream} to resource 
+	 * @return {@link InputStream} to resource
 	 */
 	public InputStream loadResource(String path) {
 		return instance.getClass().getResourceAsStream(path);
 	}
 	
 	/**
-	 * Returns info about plugin
-	 * @return Info object
+	 * @return Plugin info object.
 	 */
 	public Info getInfo() {
 		return info;
 	}
 	
 	/**
-	 * Returns plugin run state
-	 * @return true if plugin is runned
+	 * @return true if plugin is runned.
 	 */
 	public boolean isRunned() {
 		return isRunned;
 	}
 
 	/**
-	 * Loading plugin workspace folder, if not exists, creating it
+	 * Loading plugin workspace folder, if not exists, creating it.
 	 * @return File object
 	 */
 	public File loadWorkspace() {
@@ -174,14 +172,14 @@ public class Plugin {
 	}
 	
 	/**
-	 * Marking plugin as application plugin
+	 * Marking plugin as application plugin.
 	 */
 	public void markAsApp() {
 		isApp = true;
 	}
 	
 	/**
-	 * Adding ConnectListener
+	 * Adding ConnectListener.
 	 * @param listener Listener instance
 	 */
 	public void addConnectListener(ConnectListener listener) {
@@ -189,7 +187,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Removing ConnectListener
+	 * Removing ConnectListener.
 	 * @param listener Listener instance
 	 */
 	public void removeConnectListener(ConnectListener listener){
@@ -197,7 +195,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Adding ExecutionController
+	 * Adding ExecutionController.
 	 * @param listener Listener instance
 	 */
 	public void addExecutionController(ExecutionController listener) {
@@ -205,7 +203,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Removing ExecutionController
+	 * Removing ExecutionController.
 	 * @param listener Listener instance
 	 */
 	public void removeExecutionController(ExecutionController listener) {
@@ -214,7 +212,7 @@ public class Plugin {
 	
 	
 	/**
-	 * Adding command to plugin commands list
+	 * Adding command to plugin commands list.
 	 * @param command Command instance
 	 */
 	public void addCommand(Command command) {
@@ -222,7 +220,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Removing command from plugin commands list
+	 * Removing command from plugin commands list.
 	 * @param command Command instance
 	 */
 	public void removeCommand(Command command) {
@@ -231,7 +229,7 @@ public class Plugin {
 	
 	
 	/**
-	 * Adding server to plugin servers list
+	 * Adding server to plugin servers list.
 	 * @param server Server instance
 	 */
 	public void addServer(Server server) {
@@ -240,7 +238,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Removing Server from plugin servers list
+	 * Removing Server from plugin servers list.
 	 * @param server Server instance
 	 */
 	public void removeServer(Server server) {
@@ -248,7 +246,7 @@ public class Plugin {
 	}
 
 	/**
-	 * Plugin information class
+	 * Plugin information class.
 	 */
 	public static class Info {
 		/** Info fields*/
