@@ -45,7 +45,7 @@ public abstract class Processor {
 	public void printSendMessage(String message) {}
 
 	/**
-	 * Returning true if processor supporting joining.
+	 * Check if processor supporting joining client.
 	 * @return true if processor supporting joining.
 	 */
 	public boolean isSupportedJoining() {
