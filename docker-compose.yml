@@ -4,6 +4,9 @@ services:
   serverd:
     image: rafi612/serverd
     container_name: serverd
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - 9999:9999/tcp
       - 9998:9998/udp
