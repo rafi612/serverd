@@ -53,7 +53,7 @@ class ConfigTest {
         Path path = Paths.get(testFilePath);
         Files.deleteIfExists(path);
         
-        Main.workingdir = ServerdApplication.getWorkDir("serverd");
+        Main.workingDir = ServerdApplication.getWorkDir("serverd");
     }
     
     @Test
@@ -190,8 +190,8 @@ class ConfigTest {
         Config expectedConfig = new Config();
         
         // Act
-        Main.workingdir = tempDir.getPath();
-        Config.save(new File(Main.workingdir,"config.properties"), expectedConfig, "test");
+        Main.workingDir = tempDir.getPath();
+        Config.save(new File(Main.workingDir,"config.properties"), expectedConfig, "test");
         Config actualConfig = Config.loadDefault();
         
         // Assert

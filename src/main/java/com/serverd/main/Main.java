@@ -14,7 +14,7 @@ import com.serverd.server.ServerManager;
 public class Main {
 	public static final String VERSION = "v1.2.0";
 	
-	public static String workingdir = ServerdApplication.getWorkDir("serverd");
+	public static String workingDir = ServerdApplication.getWorkDir("serverd");
 	
 	public static void main(String[] args) {
 		Log log = new Log("ServerD");
@@ -30,14 +30,14 @@ public class Main {
 					System.err.println("--working-loc: missing argument");
 					break;
 				}
-				workingdir = args[i + 1];
+				workingDir = args[i + 1];
 			}
 		
 		//create work dir
-		File workdirFile = new File(workingdir);
+		File workdirFile = new File(workingDir);
 		if (!workdirFile.exists())
 			if (!workdirFile.mkdir()) {
-				log.error("Failed to create working directory in " + workingdir);
+				log.error("Failed to create working directory in " + workingDir);
 				System.exit(1);
 			}
 		

@@ -111,7 +111,7 @@ public class Config {
 	 * @throws IOException when IO error.
 	 */
 	public static Config loadDefault() throws IOException {
-		return Config.load(new File(Main.workingdir,"config.properties"), Config.class);
+		return Config.load(new File(Main.workingDir,"config.properties"), Config.class);
 	}
 	
 	@SuppressWarnings("unchecked")
