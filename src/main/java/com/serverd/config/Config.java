@@ -20,19 +20,25 @@ import com.serverd.main.Main;
 public class Config {
 
 	@ConfigProperty("ip")
+	@FromEnv("IP")
 	public String ip = "0.0.0.0";
 	
 	@ConfigProperty("tcp.port")
+	@FromEnv("TCP_PORT")
 	public int tcpPort = 9999;
 	
 	@ConfigProperty("udp.port")
+	@FromEnv("UDP_PORT")
 	public int udpPort = 9998;
 
 	@ConfigProperty("timeout")
+	@FromEnv("TIMEOUT")
 	public int timeout = 0;
 	
 	@ConfigProperty("enable.tcp")
+	@FromEnv("ENABLE_TCP")
 	public boolean enableTcp = true;
+	@FromEnv("ENABLE_UDP")
 	@ConfigProperty("enable.udp")
 	public boolean enableUdp = true;
 	

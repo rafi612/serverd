@@ -6,10 +6,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.*;
 
 /**
- * Config property declaration.
+ * Getting config property from environment.
  */
 @Retention(RUNTIME)
 @Target(FIELD)
-public @interface ConfigProperty {
+public @interface FromEnv {
 	String value();
 }
