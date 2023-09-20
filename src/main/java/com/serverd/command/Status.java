@@ -7,7 +7,7 @@ import com.serverd.client.ClientManager;
 import com.serverd.plugin.Plugin;
 
 public class Status extends Command {
-	public Status() {
+	protected Status() {
 		command = "/status";
 		help = "/status - shows status of all clients";
 	}

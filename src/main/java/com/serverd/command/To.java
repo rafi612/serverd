@@ -9,7 +9,7 @@ import com.serverd.client.Client.JoinException;
 import com.serverd.plugin.Plugin;
 
 public class To extends Command {
-	public To() {
+	protected To() {
 		command = "/to";
 		help = "/to <id> <command> - sending command without joining to client";
 	}

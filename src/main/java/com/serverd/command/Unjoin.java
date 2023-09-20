@@ -6,7 +6,7 @@ import com.serverd.client.Client;
 import com.serverd.plugin.Plugin;
 
 public class Unjoin extends Command {
-	public Unjoin() {
+	protected Unjoin() {
 		command = "/unjoin";
 		help = "/unjoin - unjoin current client";
 	}
