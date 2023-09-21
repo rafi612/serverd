@@ -305,10 +305,10 @@ public class Client {
 		Client cl = ClientManager.getClient(joinid);
 		
 		if (cl == null)
-			throw new JoinException("wrong client ID");
+			throw new JoinException("Wrong client ID");
 		
 		if (isJoined())
-			throw new JoinException("client already joined");
+			throw new JoinException("Client already joined");
 		
 		joinedid = joinid;
 		type = Type.SENDER;
