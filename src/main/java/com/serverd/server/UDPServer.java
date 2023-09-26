@@ -69,7 +69,7 @@ public class UDPServer extends SelectableServer {
 					} else {
 						UDPClient client = (UDPClient) key.attachment();
 						try {
-							client.getProcessor().processCommand(client.rawdataReceive());
+							client.getProcessor().receive(client.rawdataReceive());
 						} catch (IOException e) {
 							client.crash(e);
 							continue;
@@ -114,7 +114,7 @@ public class UDPServer extends SelectableServer {
 		byte[] data = new byte[buffer.limit()];
 		buffer.get(data, 0, buffer.limit());
 		
-		client.getProcessor().processCommand(data);
+		client.getProcessor().receive(data);
 	}
 
 	@Override

@@ -72,7 +72,7 @@ public class TCPServer extends Server {
         	
         	client.setAfterReceive(() -> {
         		client.receive((bytes) -> {
-        			client.getProcessor().processCommand(bytes);
+        			client.getProcessor().receive(bytes);
         		});
         	});
         	client.invokeReceive();

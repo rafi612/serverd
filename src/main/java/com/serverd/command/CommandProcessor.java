@@ -47,7 +47,7 @@ public class CommandProcessor extends Processor {
 		client.log.info("<Sended> " + message);
 	}
 
-	public void processCommand(byte[] buffer) {	
+	public void receive(byte[] buffer) {	
 		
 		try {		
 			if (currentCommand == null || !currentCommand.isRunned()) {

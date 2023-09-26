@@ -75,7 +75,7 @@ class ClientTest {
 			client.onceJoin(client2.getID());
 			
 			//simulating receiving response
-			client.processor.processCommand("Test".getBytes());
+			client.processor.receive("Test".getBytes());
 			
 			assertAll(
 				() -> assertEquals(client.getJoinedID(),-1),

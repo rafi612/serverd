@@ -27,10 +27,10 @@ public abstract class Processor {
 	}
 	
 	/**
-	 * Processing byte message.
+	 * Processing received byte message.
 	 * @param buffer Byte buffer to process
 	 */
-	public abstract void processCommand(byte[] buffer);
+	public abstract void receive(byte[] buffer);
 	
 	/**
 	 * Printing receive message.

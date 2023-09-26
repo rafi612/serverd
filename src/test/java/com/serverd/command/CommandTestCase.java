@@ -33,11 +33,11 @@ class CommandTestCase {
 		client.log.info("Executing command: " + comm);
 		
 		CommandProcessor.commands.add(command);
-		client.getProcessor().processCommand(comm.getBytes());
+		client.getProcessor().receive(comm.getBytes());
 		
 		while (((CommandProcessor)client.getProcessor()).getCurrentCommand() != null) 
 			if (client.receiveIndex < client.receiveQueue.size())
-				client.getProcessor().processCommand(client.rawdataReceive());
+				client.getProcessor().receive(client.rawdataReceive());
 			else
 				break;
 		
