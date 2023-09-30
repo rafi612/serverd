@@ -9,7 +9,7 @@ import com.serverd.plugin.Plugin.Info;
 class PluginUtilsTest {	
 	
 	@AfterEach
-	void tearDown() throws Exception {
+	void tearDown() {
 		PluginManager.unloadAllPlugins();
 	}
 	

@@ -7,7 +7,7 @@ class LogTest {
 	Log logger;
 
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
 		logger = new Log("Test");
 	}
 

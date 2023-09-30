@@ -53,7 +53,7 @@ class PluginTest
 	}
 
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
 		plugin = new Plugin("test",instance = new TestPlugin());
 		plugin.getInfo().name = "Test";
 	}
@@ -87,8 +87,8 @@ class PluginTest
 		plugin.stop();
 		
 		assertAll(
-			() -> assertEquals(plugin.isRunned(), false),
-			() -> assertEquals(instance.stopped, true)
+			() -> assertFalse(plugin.isRunned()),
+			() -> assertTrue(instance.stopped)
 		);
 	}
 	

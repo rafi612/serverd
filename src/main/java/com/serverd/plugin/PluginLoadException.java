@@ -6,7 +6,7 @@ package com.serverd.plugin;
 public class PluginLoadException extends Exception {
 	private static final long serialVersionUID = 1L;
 	
-	private String pluginName;
+	private final String pluginName;
 
 	/**
 	 * PluginLoadException constructor.

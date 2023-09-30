@@ -10,7 +10,7 @@ import java.nio.channels.CompletionHandler;
 import com.serverd.client.ClientManager;
 import com.serverd.client.TCPClient;
 import com.serverd.config.Config;
-import com.serverd.util.Util;
+import com.serverd.utils.Utils;
 
 /**
  * TCP Server class
@@ -55,7 +55,7 @@ public class TCPServer extends Server {
         
     	//keep thread alive
     	while (isRunned()) 
-    		Util.sleep(1000);
+    		Utils.sleep(1000);
 	}
 
 	/**
@@ -70,11 +70,10 @@ public class TCPServer extends Server {
         	ClientManager.setupClient(client);
         	ClientManager.addClient(client);
         	
-        	client.setAfterReceive(() -> {
-        		client.receive((bytes) -> {
-        			client.getProcessor().receive(bytes);
-        		});
-        	});
+        	client.setAfterReceive(() ->
+					client.receive((bytes) ->
+							client.getProcessor().receive(bytes)
+					));
         	client.invokeReceive();
     		
     	} catch (IOException e) {

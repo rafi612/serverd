@@ -2,7 +2,6 @@ package com.serverd.client;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterEach;
@@ -16,7 +15,7 @@ import com.serverd.plugin.Plugin.Info;
 
 class ClientManagerTest {	
 	@AfterEach
-	void tearDown() throws Exception {
+	void tearDown() {
 		for (Client client : ClientManager.clients.values())
 			client.closeClient();
 		ClientManager.clients.clear();
@@ -63,7 +62,7 @@ class ClientManagerTest {
 			{
 				plugin.addConnectListener(new ConnectListener() {
 					@Override
-					public void onDisconnect(Plugin plugin, Client client) throws IOException {
+					public void onDisconnect(Plugin plugin, Client client) {
 						disconnectExecuted.set(true);
 					}
 					

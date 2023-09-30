@@ -66,9 +66,8 @@ public class Config {
 			return config;
 		} catch (IllegalArgumentException | IllegalAccessException | InstantiationException  
 				| InvocationTargetException | NoSuchMethodException  | SecurityException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return null;
 	}
 	
 	/**
@@ -92,7 +91,7 @@ public class Config {
 			}
 			properties.store(output, comment);
 		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -105,8 +104,8 @@ public class Config {
 	 * @throws IOException when IO error.
 	 */
 	public static boolean createIfNotExists(File file,Object config,String comment) throws IOException {
-		boolean before = !file.exists();
-		if (before)
+		boolean before = file.exists();
+		if (!before)
 			save(file,config,comment);
 		return !before;
 	}

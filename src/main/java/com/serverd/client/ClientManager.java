@@ -15,19 +15,20 @@ public class ClientManager {
 	/** Client's hashmap*/
 	public static HashMap<Integer,Client> clients = new HashMap<>();
 	
-	static boolean tcpRunned = false,udpRunned = false;
-	
 	private static Log log = new Log("ServerD");
 	
 	/**
 	 * Deleting client.
-	 * @param clientid Client ID to remove
+	 * @param clientId Client ID to remove
 	 */
-	public static synchronized void delete(int clientid) {	
-		if (clients.size() == 0)
+	public static synchronized void delete(int clientId) {
+		if (clients.isEmpty())
 			return;
 		
-		Client client = getClient(clientid);
+		Client client = getClient(clientId);
+
+		if (client == null)
+			return;
 		
 		if (client.isJoined())
 			client.unjoin();
@@ -44,9 +45,9 @@ public class ClientManager {
 			
 		client.closeClient();
 
-		clients.remove(clientid);
+		clients.remove(clientId);
 			
-		log.info("Client " + clientid + " has been closed");
+		log.info("Client " + clientId + " has been closed");
 	}
 	
 	/**

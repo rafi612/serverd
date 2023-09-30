@@ -9,8 +9,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -134,16 +135,17 @@ class ConfigTest {
         String comment = "Test comment";
         testConfig.stringProperty = "test string value";
         testConfig.intProperty = 123;
-        File outputFile = new File(tempDir,"output.properties");
+        File outputFile = new File(tempDir,"test-config" + new Random().nextInt() + ".properties");
 
         // Create file before running the test
-        outputFile.createNewFile();
+        if (!outputFile.createNewFile())
+            fail("Output file not created");
 
         // Act
-        Config.createIfNotExists(outputFile, testConfig, comment);
+        boolean result = Config.createIfNotExists(outputFile, testConfig, comment);
 
         // Assert
-        assertTrue(outputFile.exists());
+        assertFalse(result);
     }
 
     @Test
@@ -152,7 +154,7 @@ class ConfigTest {
         String comment = "Test comment";
         testConfig.stringProperty = "test string value";
         testConfig.intProperty = 123;
-        File outputFile = new File(tempDir,"output.properties");
+        File outputFile = new File(tempDir,"test-config" + + new Random().nextInt() + ".properties");
 
         // Act
         Config.createIfNotExists(outputFile, testConfig, comment);
@@ -172,7 +174,7 @@ class ConfigTest {
         File outputFile = new File(tempDir,"output.properties");
 
         // Create file before running the test with some initial content
-        Files.write(outputFile.toPath(), Arrays.asList("initial line"), StandardCharsets.UTF_8);
+        Files.write(outputFile.toPath(), List.of("initial line"), StandardCharsets.UTF_8);
 
         // Act
         Config.createIfNotExists(outputFile, testConfig, comment);

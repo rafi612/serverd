@@ -18,7 +18,7 @@ class ClientTest {
 	}
 	
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
 		client = new TestClient(0);
 		client2 = new TestClient(1);
 		
@@ -27,7 +27,7 @@ class ClientTest {
 	}
 
 	@AfterEach
-	void tearDown() throws Exception {
+	void tearDown() {
 		ClientManager.clients.clear();
 	}
 

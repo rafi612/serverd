@@ -14,7 +14,7 @@ import com.serverd.config.Config;
 
 class TCPServerTest {
 	private static boolean availableTCP(int port) {
-		try (ServerSocket server = new ServerSocket(port,50,InetAddress.getByName("0.0.0.0"))){
+		try (ServerSocket server = new ServerSocket(port,50,InetAddress.getByName("0.0.0.0"))) {
 			return true;
 		} catch (IOException ignored) {
 			return false;
@@ -46,8 +46,8 @@ class TCPServerTest {
 	        Thread.sleep(100);
 
 	        clientSocket.getOutputStream().write("/disconnect".getBytes());
-	        
-	        assertTrue(!availableTCP(9999));
+
+            assertFalse(availableTCP(9999));
 	    } catch (IOException e) {
 	        fail("Failed to connect to TCP server: " + e.getMessage());
 	    }

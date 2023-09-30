@@ -11,7 +11,7 @@ import com.serverd.log.Log;
  */
 public class Client {
 	
-	private int id;
+	private final int id;
 	
 	/** Connected */
 	protected boolean connected;
@@ -285,7 +285,7 @@ public class Client {
 	/**
 	 * Join exception
 	 */
-	public class JoinException extends Exception {
+	public static class JoinException extends Exception {
 		private static final long serialVersionUID = 1L;
 		/**
 		 * JoinException class constructor

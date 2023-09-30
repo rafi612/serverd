@@ -18,5 +18,5 @@ public interface ExecutionController {
 	 * @return whether the command should execute
 	 * @throws IOException when client throw {@link IOException}.
 	 */
-	public boolean controlCommand(String command,String[] args,Client client,Plugin plugin) throws IOException;
+	boolean controlCommand(String command,String[] args,Client client,Plugin plugin) throws IOException;
 }

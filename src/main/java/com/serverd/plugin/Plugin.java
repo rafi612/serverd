@@ -53,10 +53,10 @@ public class Plugin {
 		
 		log = new Log(info.name);
 		
-		String errormessage = instance.init(this);
+		String errorMessage = instance.init(this);
 		
-		if (errormessage != null && !errormessage.equals("")) {
-			error("Plugin init failed: " + errormessage);
+		if (errorMessage != null && !errorMessage.isEmpty()) {
+			error("Plugin init failed: " + errorMessage);
 			return false;
 		}
 
@@ -250,10 +250,10 @@ public class Plugin {
 	 */
 	public static class Info {
 		/** Info fields*/
-		public String name,author,decription,version;
+		public String name,author,description,version;
 
 		public String toString() {
-			return "Name: " + name + "\nAuthor: " + author + "\nDescription: " + decription + "\nVersion: " + version;
+			return "Name: " + name + "\nAuthor: " + author + "\nDescription: " + description + "\nVersion: " + version;
 		}
 	}
 }

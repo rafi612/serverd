@@ -144,7 +144,7 @@ public abstract class Command implements Codes,Cloneable {
 	 * @param runned Runned
 	 */
 	public void setRunned(boolean runned) {
-		this.runned = true;
+		this.runned = runned;
 	}
 	
 	/**
@@ -164,7 +164,7 @@ public abstract class Command implements Codes,Cloneable {
 	 * @throws IOException when I/O error occurs.
 	 */
 	public void send(Client client,String message) throws IOException {
-		send(client,message,() -> done());
+		send(client,message, this::done);
 	}
 	
 	/**
@@ -175,7 +175,7 @@ public abstract class Command implements Codes,Cloneable {
 	 * @throws IOException when I/O error occurs.
 	 */
 	public void send(Client client,String message,SendContinuation continuation) throws IOException {
-		client.send(message, () -> continuation.invoke());
+		client.send(message, continuation);
 	}
 	
 	/**
@@ -186,7 +186,7 @@ public abstract class Command implements Codes,Cloneable {
 	 * @throws IOException when I/O error occurs.
 	 */
 	public void send(Client client,byte[] bytes) throws IOException {
-		send(client,bytes,() -> done());
+		send(client,bytes, this::done);
 	}
 	
 	/**
@@ -197,7 +197,7 @@ public abstract class Command implements Codes,Cloneable {
 	 * @throws IOException when I/O error occurs.
 	 */
 	public void send(Client client,byte[] bytes,SendContinuation continuation) throws IOException {
-		client.rawdataSend(bytes, () -> continuation.invoke());
+		client.rawdataSend(bytes, continuation);
 	}
 	
 	/**

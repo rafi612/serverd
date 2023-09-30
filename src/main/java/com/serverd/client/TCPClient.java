@@ -130,9 +130,8 @@ public class TCPClient extends AsyncClient {
 		try {
 			return ((InetSocketAddress) tcpSocket.getRemoteAddress()).getAddress().getHostAddress();
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return null;
 	}
 	
 	@Override
@@ -140,8 +139,7 @@ public class TCPClient extends AsyncClient {
 		try {
 			return ((InetSocketAddress) tcpSocket.getRemoteAddress()).getPort();
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return 0;
 	}
 }

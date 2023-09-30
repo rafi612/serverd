@@ -18,9 +18,9 @@ public class Rawdata extends Command {
 		if (checkArgs(args,client, 1)) {	
 			if (client.isJoined()) {
 				send(client,ok(),() -> {
-					int buffersize = Integer.parseInt(args[0]);
+					int bufferSize = Integer.parseInt(args[0]);
 					
-					client.log.info("Raw data mode started," + buffersize + " bytes can be sended");
+					client.log.info("Raw data mode started," + bufferSize + " bytes can be sended");
 					
 					Client joined = client.getJoiner();
 					
@@ -30,7 +30,7 @@ public class Rawdata extends Command {
 							send(joined,bytes,() -> {
 								sended += bytes.length;
 								
-								if (sended >= buffersize)
+								if (sended >= bufferSize)
 									send(client,ok());
 								else 
 									receive(this);

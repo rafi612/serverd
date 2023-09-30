@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import com.serverd.client.ClientManager;
 
 class DisconnectTest extends CommandTestCase {
-	Disconnect diconnectCommand = new Disconnect();
+	Disconnect disconnectCommand = new Disconnect();
 	
 	@Test
 	void executeTest() throws Exception {
-		executeTest(diconnectCommand, testClient);
+		executeTest(disconnectCommand, testClient);
 		
 		assertAll(
 			() -> assertFalse(testClient.isConnected()),

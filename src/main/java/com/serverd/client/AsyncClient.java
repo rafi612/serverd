@@ -68,7 +68,4 @@ public class AsyncClient extends Client {
 		if (!readPending)
 			invokeReceive();
 	}
-	
-	@Override
-	public void lockRead() {}
 }

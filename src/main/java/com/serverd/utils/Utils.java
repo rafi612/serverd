@@ -1,18 +1,18 @@
-package com.serverd.util;
+package com.serverd.utils;
 
 /**
  * Utilities class.
  */
-public class Util {
+public class Utils {
 	/**
 	 * Sleep for specific time, can be used instead {@link Thread#sleep(long)} to not have to catch {@link InterruptedException}.
-	 * @param milis Time in miliseconds
+	 * @param millis Time in milliseconds
 	 */
-	public static void sleep(long milis) {
+	public static void sleep(long millis) {
 		try {
-			Thread.sleep(milis);
+			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 }

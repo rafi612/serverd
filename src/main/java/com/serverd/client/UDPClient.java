@@ -54,7 +54,7 @@ public class UDPClient extends SelectableClient {
 	}
 	
 	@Override
-	public void rawdataSend(byte[] bytes,SendContinuation continuation) throws IOException {
+	public void rawdataSend(byte[] bytes,SendContinuation continuation) {
 		getKey().interestOps(SelectionKey.OP_WRITE);
 		
 		queueBuffer(bytes,continuation);
@@ -83,7 +83,7 @@ public class UDPClient extends SelectableClient {
 		try {
 			udpSocket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 

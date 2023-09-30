@@ -8,8 +8,7 @@ import java.nio.channels.Selector;
 /**
  * Selectable Client class. Used by NIO selectable clients.
  */
-public abstract class SelectableClient extends Client 
-{
+public abstract class SelectableClient extends Client {
 	/** Selector */
 	protected Selector selector;
 	
@@ -100,7 +99,7 @@ public abstract class SelectableClient extends Client
 	 */
 	public abstract SelectionKey getKey();
 	/**
-	 * Sending buffer when write key is ready, invoked by {@link processQueue}.
+	 * Sending buffer when write key is ready, invoked by {@link SelectableClient#processQueue}.
 	 * @param buffer Buffer to process
 	 * @throws IOException when I/O error occurs.
 	 */

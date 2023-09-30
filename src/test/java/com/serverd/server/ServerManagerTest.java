@@ -6,24 +6,22 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 class ServerManagerTest {
 	
-	class TestServer extends Server {
+	static class TestServer extends Server {
 		public boolean isStarted,isStopped;
 		
 		public TestServer() { super("Test Server",null,0,null); }
 
 		@Override
-		public void start() throws IOException { isStarted = true; }
+		public void start() { isStarted = true; }
 
 		@Override
-		public void stop() throws IOException { isStopped = true; }
+		public void stop() { isStopped = true; }
 	}
 	
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
 		ServerManager.removeAllServers();
 	}
 
@@ -52,7 +50,7 @@ class ServerManagerTest {
 		
 		Server[] servers = ServerManager.getServers();
 		for (Server server : servers)
-			assertTrue(((TestServer)server).isEnabled);
+			assertTrue(server.isEnabled);
 	}
 	
 	@Test
@@ -67,7 +65,7 @@ class ServerManagerTest {
 		for (Server server : servers)
 			assertAll(
 				() -> assertTrue(((TestServer)server).isStopped),
-				() -> assertFalse(((TestServer)server).isRunned)
+				() -> assertFalse(server.isRunned)
  			);
 	}
 

@@ -36,9 +36,8 @@ public class PluginUtils {
 			Class<?> classToLoad = PluginUtils.class.getClassLoader().loadClass(classname);
 			
 			ServerdPlugin instance = (ServerdPlugin) classToLoad.getDeclaredConstructor().newInstance();
-			Plugin plugin = new Plugin(classfile,instance);
-			
-			return plugin;
+
+            return new Plugin(classfile,instance);
 		} catch (ClassNotFoundException e) {
 			throw new PluginLoadException(classname,"Plugin Main class not found",e);
 		} catch (NoClassDefFoundError e) {

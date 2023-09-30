@@ -71,6 +71,14 @@ public abstract class Server {
 	public String getName() {
 		return name;
 	}
+
+	/**
+	 * Setting server name.
+	 * @param name Server name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	/**
 	 * @return true if server is runned.

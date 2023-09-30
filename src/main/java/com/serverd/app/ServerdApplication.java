@@ -7,12 +7,12 @@ import java.util.Arrays;
 import com.serverd.main.Main;
 
 /**
- * Allows to running ServerD inside plugin to create self contained app.
+ * Allows to run ServerD inside plugin to create self-contained app.
  */
 public class ServerdApplication {
 	
 	/**
-	 * Running ServerD and loading class as plugin to create self contained app.
+	 * Running ServerD and loading class as plugin to create self-contained app.
 	 * @param appClass App class object
 	 */
 	public static void run(Class<?> appClass) {
@@ -20,7 +20,7 @@ public class ServerdApplication {
 	}
 	
 	/**
-	 * Running ServerD and loading class as plugin to create self contained app.
+	 * Running ServerD and loading class as plugin to create self-contained app.
 	 * @param appClass App class object
 	 * @param args Command line arguments
 	 */
@@ -29,7 +29,7 @@ public class ServerdApplication {
 	}
 	
 	/**
-	 * Running ServerD and loading class as plugin to create self contained app.
+	 * Running ServerD and loading class as plugin to create self-contained app.
 	 * @param appClass App class object
 	 * @param args Command line arguments
 	 * @param otherPlugins Want to load another plugins?
@@ -39,7 +39,7 @@ public class ServerdApplication {
 	}
 
 	/**
-	 * Running ServerD and loading class as plugin to create self contained app.
+	 * Running ServerD and loading class as plugin to create self-contained app.
 	 * @param appClass App class object
 	 * @param args Command line arguments
 	 * @param otherPlugins Want to load another plugins?
@@ -72,15 +72,15 @@ public class ServerdApplication {
 	 * @return Working directory path.
 	 */
 	public static String getWorkDir(String name) {
-		String osname = System.getProperty("os.name").toLowerCase();
-		String userhome = System.getProperty("user.home");
+		String osName = System.getProperty("os.name").toLowerCase();
+		String userHome = System.getProperty("user.home");
 		
-		if (osname.startsWith("windows"))
+		if (osName.startsWith("windows"))
 			return Paths.get(System.getenv("APPDATA"),name).toString();
-		else if (osname.contains("nux") || osname.contains("freebsd"))
-			return Paths.get(userhome,".config",name).toString();
-		else if (osname.contains("mac") || osname.contains("darwin"))
-			return Paths.get(userhome,"Library","Application Support",name).toString();
-		return userhome;
+		else if (osName.contains("nux") || osName.contains("freebsd"))
+			return Paths.get(userHome,".config",name).toString();
+		else if (osName.contains("mac") || osName.contains("darwin"))
+			return Paths.get(userHome,"Library","Application Support",name).toString();
+		return userHome;
 	}
 }
