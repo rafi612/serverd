@@ -40,7 +40,7 @@ public abstract class Command implements Codes,Cloneable {
 	 * Checking amount of arguments.
 	 * @param args Arguments
 	 * @param length Arguments length
-	 * @param flag One of {@link ARGS_LESS},{@link ARGS_GOOD},{@link ARGS_MORE}
+	 * @param flag One of {@link Command#ARGS_LESS},{@link Command#ARGS_GOOD},{@link Command#ARGS_MORE}
 	 * @return true when arguments are valid
 	 */
 	protected boolean checkArgs(String[] args,int length,int flag) {
@@ -55,7 +55,7 @@ public abstract class Command implements Codes,Cloneable {
 	}
 	
 	/**
-	 * Checking amount of arguments, using {@link ARGS_GOOD} as default.
+	 * Checking amount of arguments, using {@link Command#ARGS_GOOD} as default.
 	 * @param args Arguments
 	 * @param length Arguments length
 	 * @return true when arguments are valid
@@ -69,7 +69,7 @@ public abstract class Command implements Codes,Cloneable {
 	 * @param args Arguments
 	 * @param client Client instance 
 	 * @param length Arguments length
-	 * @param flag One of {@link ARGS_LESS},{@link ARGS_GOOD},{@link ARGS_MORE}
+	 * @param flag One of {@link Command#ARGS_LESS},{@link Command#ARGS_GOOD},{@link Command#ARGS_MORE}
 	 * @return true when arguments are valid
 	 * @throws IOException when client throw {@link IOException}.
 	 */
@@ -98,7 +98,7 @@ public abstract class Command implements Codes,Cloneable {
 	}
 	
 	/**
-	 * Checking amount of arguments and sending message to client, using {@link ARGS_GOOD} as default.
+	 * Checking amount of arguments and sending message to client, using {@link Command#ARGS_GOOD} as default.
 	 * @param args Arguments
 	 * @param client Client instance 
 	 * @param length Arguments length
