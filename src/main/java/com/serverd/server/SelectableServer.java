@@ -27,7 +27,7 @@ public abstract class SelectableServer extends Server {
 	}
 	
 	/**
-	 * selecting Selector and removing clients that have exceeded the timeout.
+	 * Selecting Selector and removing clients that have exceeded the timeout.
 	 * @param selector Selector object
 	 * @param channel Server channel object
 	 * @param timeout Timeout value
