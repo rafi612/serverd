@@ -100,7 +100,7 @@ public class Config {
 	 * @param file File to save
 	 * @param config Config instance
 	 * @param comment Comment
-	 * @return if config exists before.
+	 * @return if config was created while calling this method.
 	 * @throws IOException when IO error.
 	 */
 	public static boolean createIfNotExists(File file,Object config,String comment) throws IOException {

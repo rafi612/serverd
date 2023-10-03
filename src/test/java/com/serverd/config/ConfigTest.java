@@ -123,10 +123,11 @@ class ConfigTest {
         File outputFile = new File(tempDir,"output.properties");
 
         // Act
-        Config.createIfNotExists(outputFile, testConfig, comment);
+        boolean result = Config.createIfNotExists(outputFile, testConfig, comment);
 
         // Assert
         assertTrue(outputFile.exists());
+        assertTrue(result);
     }
 
     @Test
