@@ -9,7 +9,6 @@ import com.serverd.client.Client;
  * The rest is implemented top-down so that NIO clients know how to route messages.
  */
 public abstract class Processor {
-	
 	/** Client*/
 	protected Client client;
 	
