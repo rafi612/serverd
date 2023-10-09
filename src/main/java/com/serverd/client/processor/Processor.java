@@ -17,7 +17,7 @@ public abstract class Processor {
 	
 	/**
 	 * Processor class constructor.
-	 * @param client Client instance
+	 * @param client Client instance.
 	 * @param isSupportingJoining is processor support joining clients?
 	 */
 	public Processor(Client client,boolean isSupportingJoining) {
