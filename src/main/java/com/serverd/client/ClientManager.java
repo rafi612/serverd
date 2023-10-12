@@ -44,10 +44,9 @@ public class ClientManager {
 			}
 			
 		client.closeClient();
-
+		client.getProcessor().printDeleteMessage(client, log);
+		
 		clients.remove(clientId);
-			
-		log.info("Client " + clientId + " has been closed");
 	}
 	
 	/**

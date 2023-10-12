@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import com.serverd.client.Client;
 import com.serverd.client.processor.Processor;
+import com.serverd.log.Log;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.listener.ExecutionController;
@@ -39,12 +40,17 @@ public class CommandProcessor extends Processor {
 		super(client,true);
 	}
 
+	@Override
 	public void printReceiveMessage(String message) {
 		client.log.info("<Reveived> " + message);
 	}
-	
+	@Override
 	public void printSendMessage(String message) {
 		client.log.info("<Sended> " + message);
+	}
+	@Override
+	public void printDeleteMessage(Client client,Log log) {
+		log.info("Client " + client.getID() + " has been closed");
 	}
 
 	public void receive(byte[] buffer) {	

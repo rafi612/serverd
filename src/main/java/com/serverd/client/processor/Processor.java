@@ -1,6 +1,8 @@
 package com.serverd.client.processor;
 
 import com.serverd.client.Client;
+import com.serverd.client.ClientManager;
+import com.serverd.log.Log;
 
 /**
  * Processor is used to process messages received by clients.
@@ -42,6 +44,13 @@ public abstract class Processor {
 	 * @param message Send message
 	 */
 	public void printSendMessage(String message) {}
+	
+	/**
+	 * Printing message when client was deleted and connection closed.
+	 * @param client Client instance.
+	 * @param log Logger from upstream class (Recently {@link ClientManager}
+	 */
+	public void printDeleteMessage(Client client,Log log) {}
 
 	/**
 	 * Check if processor supporting joining client.
