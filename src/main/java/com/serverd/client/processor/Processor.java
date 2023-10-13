@@ -48,7 +48,7 @@ public abstract class Processor {
 	/**
 	 * Printing message when client was deleted and connection closed.
 	 * @param client Client instance.
-	 * @param log Logger from upstream class (Recently {@link ClientManager}
+	 * @param log Logger from upstream class (Recently {@link ClientManager}.
 	 */
 	public void printDeleteMessage(Client client,Log log) {}
 
