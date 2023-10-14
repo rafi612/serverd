@@ -29,19 +29,19 @@ public abstract class Processor {
 	
 	/**
 	 * Processing received byte message.
-	 * @param buffer Byte buffer to process
+	 * @param buffer Byte buffer to process.
 	 */
 	public abstract void receive(byte[] buffer);
 	
 	/**
 	 * Printing receive message.
-	 * @param message Receive message
+	 * @param message Receive message.
 	 */
 	public void printReceiveMessage(String message) {}
 	
 	/**
 	 * Printing send message.
-	 * @param message Send message
+	 * @param message Send message.
 	 */
 	public void printSendMessage(String message) {}
 	
