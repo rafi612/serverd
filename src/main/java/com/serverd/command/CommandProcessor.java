@@ -53,8 +53,7 @@ public class CommandProcessor extends Processor {
 		log.info("Client " + client.getID() + " has been closed");
 	}
 
-	public void receive(byte[] buffer) {	
-		
+	public void receive(byte[] buffer) {
 		try {		
 			if (currentCommand == null || !currentCommand.isRunned()) {
 				String command_str = new String(buffer,0,buffer.length);
@@ -130,7 +129,7 @@ public class CommandProcessor extends Processor {
 	
 	
 	/**
-	 * Getting build in commands by name 
+	 * Getting build-in commands by name 
 	 * @param name Command name
 	 * @return Command object
 	 */
@@ -142,7 +141,7 @@ public class CommandProcessor extends Processor {
 	}
 	
 	/**
-	 * Get all build in commands
+	 * Get all build-in commands
 	 * @return Command {@link ArrayList}
 	 */
 	public static ArrayList<Command> getCommandsList() {
