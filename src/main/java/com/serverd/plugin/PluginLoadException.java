@@ -10,8 +10,8 @@ public class PluginLoadException extends Exception {
 
 	/**
 	 * PluginLoadException constructor.
-	 * @param pluginName Plugin name
-	 * @param message Error message
+	 * @param pluginName Plugin name.
+	 * @param message Error message.
 	 */
 	public PluginLoadException(String pluginName,String message) {
 		super(message);
@@ -20,9 +20,9 @@ public class PluginLoadException extends Exception {
 
 	/**
 	 * PluginLoadException constructor.
-	 * @param pluginName Plugin name
-	 * @param message Error message
-	 * @param cause Throwable cause instance
+	 * @param pluginName Plugin name.
+	 * @param message Error message.
+	 * @param cause Throwable cause instance.
 	 */
 	public PluginLoadException(String pluginName,String message, Throwable cause) {
 		super(message, cause);
