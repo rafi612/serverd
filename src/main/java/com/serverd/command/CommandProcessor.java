@@ -12,7 +12,7 @@ import com.serverd.plugin.listener.ExecutionController;
 
 /**
  * Command Processor class.
- * Command Processor is simple default processor to process commands with some default commands
+ * Command Processor is simple default processor to process commands with some default commands.
  */
 public class CommandProcessor extends Processor {
 	
@@ -121,7 +121,7 @@ public class CommandProcessor extends Processor {
 	}
 	
 	/**
-	 * @return Current command
+	 * @return Current command.
 	 */
 	public Command getCurrentCommand() {
 		return currentCommand;
@@ -129,9 +129,9 @@ public class CommandProcessor extends Processor {
 	
 	
 	/**
-	 * Getting build-in commands by name 
-	 * @param name Command name
-	 * @return Command object
+	 * Getting build-in commands by name .
+	 * @param name Command name.
+	 * @return Command object.
 	 */
 	public static Command getCommandByName(String name) {
 		for (Command command : commands)
@@ -141,8 +141,8 @@ public class CommandProcessor extends Processor {
 	}
 	
 	/**
-	 * Get all build-in commands
-	 * @return Command {@link ArrayList}
+	 * Get all build-in commands.
+	 * @return Command {@link ArrayList}.
 	 */
 	public static ArrayList<Command> getCommandsList() {
 		return commands;
