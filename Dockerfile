@@ -1,4 +1,4 @@
-FROM eclipse-temurin:20-jdk as build
+FROM eclipse-temurin:21-jdk as build
 
 WORKDIR /workspace/app
 
@@ -6,7 +6,7 @@ COPY . .
 
 RUN ./mvnw package -DskipTests -Dmaven.javadoc.skip=true -Dmaven.source.skip=true
 
-FROM eclipse-temurin:20-jre
+FROM eclipse-temurin:21-jre
 
 VOLUME /app/data
 
