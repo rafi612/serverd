@@ -67,10 +67,10 @@ public class TCPServer extends Server {
     		log.info("Connection accepted from client!");
         	
         	TCPClient client = new TCPClient(ClientManager.getFreeClientID(),clientSocketChannel,config);
+       	    client.setProcessor(getProcessorFactory().get(client));
+
         	ClientManager.setupClient(client);
         	ClientManager.addClient(client);
-
-        	client.setProcessor(getProcessorFactory().get(client));
         	
         	client.setAfterReceive(() ->
 					client.receive((bytes) ->
