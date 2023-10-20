@@ -3,6 +3,9 @@ package com.serverd.server;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.serverd.client.processor.Processor;
+import com.serverd.client.processor.ProcessorFactory;
+import com.serverd.command.CommandProcessor;
 import com.serverd.config.Config;
 import com.serverd.log.Log;
 
@@ -17,6 +20,8 @@ public class ServerManager {
 
 	private static TCPServer tcpServer;
 	private static UDPServer udpServer;
+	
+	private static ProcessorFactory defaultProcessorFactory;
 	
 	/**
 	 * Returning array of added server.
@@ -46,6 +51,8 @@ public class ServerManager {
 	 * Initalizing Server Manager.
 	 */
 	public static void init() {
+		resetDefaultProcessorFactory();
+		
 		for (Server server : servers)
 			loadServer(server);
 	}
@@ -126,4 +133,29 @@ public class ServerManager {
 	public static void removeServer(Server server) {
 		servers.remove(server);
 	}
+	
+	/**
+	 * Setting default processor factory.
+	 * @param factory Factory interface or lambda.
+	 * @see Processor
+	 */
+	public static void setDefaultProcessorFactory(ProcessorFactory factory) {
+		defaultProcessorFactory = factory;
+	}
+	
+	/**
+	 * @return Default processor factory.
+	 * @see Processor
+	 */
+	public static ProcessorFactory getDefaultProcessorFactory() {
+		return defaultProcessorFactory;
+	}
+	
+	/**
+	 * Resetting processor factory to default.
+	 */
+	public static void resetDefaultProcessorFactory() {
+		setDefaultProcessorFactory(CommandProcessor::new);
+	}
+	
 }

@@ -70,7 +70,7 @@ public class TCPServer extends Server {
         	ClientManager.setupClient(client);
         	ClientManager.addClient(client);
 
-        	client.setProcessor(processorFactory.get(client));
+        	client.setProcessor(getProcessorFactory().get(client));
         	
         	client.setAfterReceive(() ->
 					client.receive((bytes) ->
