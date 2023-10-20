@@ -111,6 +111,8 @@ public class UDPServer extends SelectableServer {
 		
 		ClientManager.setupClient(client);
 		
+    	client.setProcessor(processorFactory.get(client));
+		
 		byte[] data = new byte[buffer.limit()];
 		buffer.get(data, 0, buffer.limit());
 		

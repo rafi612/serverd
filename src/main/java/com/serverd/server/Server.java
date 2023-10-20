@@ -2,6 +2,9 @@ package com.serverd.server;
 
 import java.io.IOException;
 
+import com.serverd.client.Client;
+import com.serverd.client.processor.Processor;
+import com.serverd.command.CommandProcessor;
 import com.serverd.config.Config;
 import com.serverd.log.Log;
 
@@ -9,7 +12,6 @@ import com.serverd.log.Log;
  * Server class
  */
 public abstract class Server {
-	
 	/** Logger */
 	protected Log log;
 	
@@ -27,6 +29,17 @@ public abstract class Server {
 	
 	/** Config */
 	protected Config config;
+	
+	/** Processor factory */
+	protected ProcessorFactory processorFactory;
+	
+	/**
+	 * Processor Factory interface.
+	 */
+	@FunctionalInterface
+	public interface ProcessorFactory {
+		Processor get(Client client);
+	}
 
 	/**
 	 * Server class constructor.
@@ -42,6 +55,8 @@ public abstract class Server {
 		this.ip = ip;
 		this.port = port;
 		this.config = config;
+		
+		resetProcessorFactory();
 	}
 	
 	/**
@@ -85,6 +100,30 @@ public abstract class Server {
 	 */
 	public boolean isRunned() {
 		return isRunned;
+	}
+	
+	/**
+	 * Setting processor factory.
+	 * @param Factory Factory interface or lambda.
+	 * @see Processor
+	 */
+	public void setProcessorFactory(ProcessorFactory factory) {
+		this.processorFactory = factory;
+	}
+	
+	/**
+	 * @return Processor factory of server.
+	 * @see Processor
+	 */
+	public ProcessorFactory getProcessorFactory() {
+		return processorFactory;
+	}
+	
+	/**
+	 * Resetting processor factory to default.
+	 */
+	public void resetProcessorFactory() {
+		setProcessorFactory((client) -> new CommandProcessor(client));
 	}
 	
 	/**

@@ -69,6 +69,8 @@ public class TCPServer extends Server {
         	TCPClient client = new TCPClient(ClientManager.getFreeClientID(),clientSocketChannel,config);
         	ClientManager.setupClient(client);
         	ClientManager.addClient(client);
+
+        	client.setProcessor(processorFactory.get(client));
         	
         	client.setAfterReceive(() ->
 					client.receive((bytes) ->
