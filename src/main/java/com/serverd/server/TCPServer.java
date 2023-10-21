@@ -21,10 +21,10 @@ public class TCPServer extends Server {
 	protected AsynchronousServerSocketChannel tcpChannel;
 
 	/**
-	 * TCP Server constructor
-	 * @param ip Server IP
-	 * @param port Server port
-	 * @param config Global config
+	 * TCP Server constructor.
+	 * @param ip Server IP.
+	 * @param port Server port.
+	 * @param config Global config.
 	 */
 	public TCPServer(String ip,int port,Config config) {
 		super("TCP Server",ip,port,config);
@@ -59,8 +59,8 @@ public class TCPServer extends Server {
 	}
 
 	/**
-	 * Accepting connection
-	 * @param clientSocketChannel client channel
+	 * Accepting connection.
+	 * @param clientSocketChannel Client channel.
 	 */
 	protected void acceptConnection(AsynchronousSocketChannel clientSocketChannel) {
     	try {

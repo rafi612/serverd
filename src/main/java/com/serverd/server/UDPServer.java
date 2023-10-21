@@ -22,10 +22,10 @@ public class UDPServer extends SelectableServer {
 	public static DatagramChannel udpChannel;
 
 	/**
-	 * UDP Server default constructor
-	 * @param ip Server IP
-	 * @param port Server port
-	 * @param config Global config
+	 * UDP Server default constructor.
+	 * @param ip Server IP.
+	 * @param port Server port.
+	 * @param config Global config.
 	 */
 	public UDPServer(String ip,int port,Config config) {
 		super("UDP Server",ip,port,config);
