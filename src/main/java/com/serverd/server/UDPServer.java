@@ -14,7 +14,7 @@ import com.serverd.client.UDPClient;
 import com.serverd.config.Config;
 
 /**
- * UDP Server class
+ * UDP Server class.
  */
 public class UDPServer extends SelectableServer {
 	
@@ -121,7 +121,7 @@ public class UDPServer extends SelectableServer {
 	@Override
 	public void stop() throws IOException {
 		if (udpChannel != null) {
-			log.info("Stopping UDP server..");
+			log.info("Stopping UDP server...");
 			udpChannel.close();
 		}
 	}

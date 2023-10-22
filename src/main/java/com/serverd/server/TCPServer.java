@@ -13,7 +13,7 @@ import com.serverd.config.Config;
 import com.serverd.utils.Utils;
 
 /**
- * TCP Server class
+ * TCP Server class.
  */
 public class TCPServer extends Server {
 	
@@ -87,7 +87,7 @@ public class TCPServer extends Server {
 	@Override
 	public void stop() throws IOException {		
 		if (tcpChannel != null) {
-			log.info("Stopping TCP server..");
+			log.info("Stopping TCP server...");
 			tcpChannel.close();
 		}
 	}
