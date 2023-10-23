@@ -95,7 +95,15 @@ public class UDPServer extends SelectableServer {
 		udpChannel.close();
 	}
 	
-	public void addConnection(DatagramChannel channel,InetSocketAddress address,Selector selector,ByteBuffer buffer) throws IOException {
+	/**
+	 * Initializing UDP connection.
+	 * @param channel Selectable channel instance.
+	 * @param address Socket address.
+	 * @param selector Selector instance.
+	 * @param buffer First received buffer.
+	 * @throws IOException when socket throws I/O error.
+	 */
+	protected void addConnection(DatagramChannel channel,InetSocketAddress address,Selector selector,ByteBuffer buffer) throws IOException {
 		DatagramChannel dc = DatagramChannel.open();
 		dc.configureBlocking(false);
 		dc.socket().setReuseAddress(true);

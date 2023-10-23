@@ -10,7 +10,7 @@ import com.serverd.config.Config;
 import com.serverd.log.Log;
 
 /**
- * Server manager class
+ * Server manager class.
  */
 public class ServerManager {
 	
