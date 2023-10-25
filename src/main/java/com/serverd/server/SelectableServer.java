@@ -17,10 +17,10 @@ public abstract class SelectableServer extends Server {
 
 	/**
 	 * SelectableServer class constructor.
-	 * @param name Server name
-	 * @param ip Server IP
-	 * @param port Server port
-	 * @param config Global config
+	 * @param name Server name.
+	 * @param ip Server IP.
+	 * @param port Server port.
+	 * @param config Global config.
 	 */
 	public SelectableServer(String name,String ip,int port,Config config) {
 		super(name,ip,port,config);
@@ -28,9 +28,9 @@ public abstract class SelectableServer extends Server {
 	
 	/**
 	 * Selecting Selector and removing clients that have exceeded the timeout.
-	 * @param selector Selector object
-	 * @param channel Server channel object
-	 * @param timeout Timeout value
+	 * @param selector Selector object.
+	 * @param channel Server channel object.
+	 * @param timeout Timeout value.
 	 * @throws IOException if selector throw I/O error.
 	 */
 	protected void selectWithTimeout(Selector selector,SelectableChannel channel,int timeout) throws IOException {
