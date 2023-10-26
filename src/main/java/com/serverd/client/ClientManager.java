@@ -9,7 +9,8 @@ import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.listener.ConnectListener;
 
 /**
- * Client Manager.
+ * Client manager class.
+ * Client manager allows to manage clients connected to server.
  */
 public class ClientManager {
 	/** Client's hashmap*/
@@ -19,7 +20,7 @@ public class ClientManager {
 	
 	/**
 	 * Deleting client.
-	 * @param clientId Client ID to remove
+	 * @param clientId Client ID to remove.
 	 */
 	public static synchronized void delete(int clientId) {
 		if (clients.isEmpty())
@@ -88,7 +89,7 @@ public class ClientManager {
 	
 	/**
 	 * Adding client.
-	 * @param client Client object
+	 * @param client Client object.
 	 */
 	public static void addClient(Client client) {
 		clients.put(client.getID(),client);
