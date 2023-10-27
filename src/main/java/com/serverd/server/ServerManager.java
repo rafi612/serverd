@@ -3,6 +3,7 @@ package com.serverd.server;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.serverd.client.ClientManager;
 import com.serverd.client.processor.Processor;
 import com.serverd.client.processor.ProcessorFactory;
 import com.serverd.command.CommandProcessor;
@@ -35,9 +36,9 @@ public class ServerManager {
 	 * Add default servers to server list.
 	 * @param config Default server config.
 	 */
-	public static void addDefaultServers(Config config) {
-		addServer(tcpServer = new TCPServer(config.ip, config.tcpPort, config));
-		addServer(udpServer = new UDPServer(config.ip, config.udpPort, config));
+	public static void addDefaultServers(ClientManager clientManager,Config config) {
+		addServer(tcpServer = new TCPServer(config.ip, config.tcpPort,clientManager, config));
+		addServer(udpServer = new UDPServer(config.ip, config.udpPort,clientManager, config));
 	}
 	
 	/**

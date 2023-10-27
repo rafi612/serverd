@@ -3,12 +3,20 @@ package com.serverd.app;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.serverd.client.ClientManager;
 import com.serverd.plugin.PluginManager;
 
 class ServerdApplicationTest {
+
+	ClientManager clientManager;
+
+	@BeforeEach
+	void setUp() {
+		clientManager = new ClientManager();
+	}
 	
 	@AfterEach
 	void tearDown() throws Exception {
@@ -19,7 +27,7 @@ class ServerdApplicationTest {
 	void run_Test() {
 		System.setProperty("running.app", "true");
 		ServerdApplication.run(AppTestPlugin.class);
-		ClientManager.shutdown();
+		clientManager.shutdown();
 		assertEquals("true",System.getProperty("after.run"));
 	}
 

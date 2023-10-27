@@ -14,12 +14,12 @@ class StatusTest extends CommandTestCase {
 		executeTest(statusCommand, testClient);
 		
 		//checking amount of lines in status message, one line is one client
-		assertEquals(testClient.getSend()[0].split("\n").length, ClientManager.getClientConnectedAmount());
+		assertEquals(testClient.getSend()[0].split("\n").length, clientManager.getClientConnectedAmount());
 	}
 	
 	@Test
 	void executeTest_NoClients() throws Exception {
-		ClientManager.delete(testClient.getID());
+		clientManager.delete(testClient.getID());
 		
 		executeTest(statusCommand, testClient);
 		

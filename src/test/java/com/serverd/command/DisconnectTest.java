@@ -15,7 +15,7 @@ class DisconnectTest extends CommandTestCase {
 		
 		assertAll(
 			() -> assertFalse(testClient.isConnected()),
-			() -> assertNull(ClientManager.getClient(testClient.getID()))
+			() -> assertNull(testClient.getClientManager().getClient(testClient.getID()))
 		);
 	}
 

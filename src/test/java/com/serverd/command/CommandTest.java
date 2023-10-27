@@ -2,6 +2,7 @@ package com.serverd.command;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.serverd.client.ClientManager;
 import org.junit.jupiter.api.Test;
 
 import com.serverd.client.Client;
@@ -9,8 +10,9 @@ import com.serverd.plugin.Plugin;
 
 class CommandTest {
 	@Test
-	void checkArgsWithClient_Test() {	
-		TestClient client = new TestClient();
+	void checkArgsWithClient_Test() {
+		ClientManager clientManager = new ClientManager();
+		TestClient client = new TestClient(clientManager);
 		
 		Command command = new Command() {
 			@Override

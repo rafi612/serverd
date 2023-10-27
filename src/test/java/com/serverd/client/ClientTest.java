@@ -10,25 +10,29 @@ import org.junit.jupiter.api.Test;
 
 class ClientTest {
 	Client client,client2;
+
+	ClientManager clientManager;
 		
 	private static class TestClient extends Client {
-		public TestClient(int id) {
-			super(id);
+		public TestClient(int id,ClientManager clientManager) {
+			super(id,clientManager);
 		}
 	}
 	
 	@BeforeEach
 	void setUp() {
-		client = new TestClient(0);
-		client2 = new TestClient(1);
-		
-		ClientManager.addClient(client);
-		ClientManager.addClient(client2);
+		clientManager = new ClientManager();
+
+		client = new TestClient(0,clientManager);
+		client2 = new TestClient(1,clientManager);
+
+		clientManager.addClient(client);
+		clientManager.addClient(client2);
 	}
 
 	@AfterEach
 	void tearDown() {
-		ClientManager.clients.clear();
+		clientManager.clients.clear();
 	}
 
 	@Test
@@ -94,19 +98,19 @@ class ClientTest {
 	
 	@Test
 	void crash_Test() {
-		Client client = new Client(0);
-		
-		ClientManager.addClient(client);
+		Client client = new Client(0,clientManager);
+
+		clientManager.addClient(client);
 		client.crash(new IOException("Test"));
 		
-		assertNull(ClientManager.getClient(0));
+		assertNull(clientManager.getClient(0));
 	}
 	
 	@Test
 	void crash_WhenJoinedUnjoin_Test() {
-		Client client = new Client(0);
-		
-		ClientManager.addClient(client);
+		Client client = new Client(0,clientManager);
+
+		clientManager.addClient(client);
 		
 		assertDoesNotThrow(() -> client.join(client2.getID()));
 		client.crash(new IOException("Test"));

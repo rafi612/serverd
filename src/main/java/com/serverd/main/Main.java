@@ -3,6 +3,7 @@ package com.serverd.main;
 import java.io.File;
 
 import com.serverd.app.ServerdApplication;
+import com.serverd.client.Client;
 import com.serverd.client.ClientManager;
 import com.serverd.config.Config;
 import com.serverd.log.Log;
@@ -100,13 +101,15 @@ public class Main {
 		}
 		
 		System.out.println("ServerD " + VERSION);
+
+		ClientManager clientManager = new ClientManager();
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			ServerManager.shutdown();
-			ClientManager.shutdown();
+			clientManager.shutdown();
 		}));
-		
-		ServerManager.addDefaultServers(config);
+
+		ServerManager.addDefaultServers(clientManager,config);
 
 		try {
 			PluginManager.init(workdirFile);

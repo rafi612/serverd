@@ -2,6 +2,7 @@ package com.serverd.server;
 
 import java.io.IOException;
 
+import com.serverd.client.ClientManager;
 import com.serverd.client.processor.Processor;
 import com.serverd.client.processor.ProcessorFactory;
 import com.serverd.command.CommandProcessor;
@@ -28,6 +29,8 @@ public abstract class Server {
 	
 	private ProcessorFactory processorFactory;
 
+	protected ClientManager clientManager;
+
 	/**
 	 * Server class constructor.
 	 * @param name Server name
@@ -35,13 +38,15 @@ public abstract class Server {
 	 * @param port Server port
 	 * @param config Global config
 	 */
-	public Server(String name,String ip,int port,Config config) {
+	public Server(String name, String ip, int port, ClientManager clientManager,Config config) {
 		log = new Log(name);
 		
 		this.name = name;
 		this.ip = ip;
 		this.port = port;
 		this.config = config;
+
+		this.clientManager = clientManager;
 		
 		resetProcessorFactory();
 	}

@@ -8,6 +8,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.serverd.client.Client;
+import com.serverd.client.ClientManager;
 import org.junit.jupiter.api.Test;
 
 import com.serverd.config.Config;
@@ -24,7 +26,8 @@ class TCPServerTest {
 	
 	@Test
 	void startTcpServer_Test() throws IOException, InterruptedException {
-		TCPServer server = new TCPServer("0.0.0.0",9999,new Config());
+		ClientManager clientManager = new ClientManager();
+		TCPServer server = new TCPServer("0.0.0.0",9999,clientManager,new Config());
 		
 	    assumeTrue(availableTCP(9999));
 

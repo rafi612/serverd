@@ -25,8 +25,8 @@ public class UDPClient extends SelectableClient {
 	 * @param udpSocket Datagram socket instance
 	 * @param address Client's address
 	 */
-	public UDPClient(int id,Selector selector,DatagramChannel udpSocket,SocketAddress address) {
-		super(id,selector);
+	public UDPClient(int id,ClientManager clientManager,Selector selector,DatagramChannel udpSocket,SocketAddress address) {
+		super(id,clientManager,selector);
 		
 		this.udpSocket = udpSocket;
 		this.address = (InetSocketAddress) address;

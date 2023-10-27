@@ -26,11 +26,13 @@ public class AsyncClient extends Client {
 	}
 
 	/**
-	 * Async Client Constructor.
-	 * @param id Client id
-	 */
-	public AsyncClient(int id) {
-		super(id);
+     * Async Client Constructor.
+     *
+     * @param id Client id.
+     * @param clientManager Client manager instance.
+     */
+	public AsyncClient(int id, ClientManager clientManager) {
+		super(id,clientManager);
 	}
 	
 	/**

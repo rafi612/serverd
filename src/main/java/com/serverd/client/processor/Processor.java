@@ -45,7 +45,7 @@ public abstract class Processor {
 		client.log().error("Client " + client.getID() + " crashed: " + exception.getMessage());
 
 		client.closeClient();
-		ClientManager.delete(client.getID());
+		client.getClientManager().delete(client.getID());
 	}
 	
 	/**

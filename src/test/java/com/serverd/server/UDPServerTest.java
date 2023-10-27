@@ -8,6 +8,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import com.serverd.client.ClientManager;
 import org.junit.jupiter.api.Test;
 
 import com.serverd.config.Config;
@@ -24,7 +25,8 @@ class UDPServerTest {
 	
 	@Test
 	void startUdpServer_Test() throws InterruptedException, IOException {
-	    UDPServer server = new UDPServer("0.0.0.0", 9998, new Config());
+		ClientManager clientManager = new ClientManager();
+	    UDPServer server = new UDPServer("0.0.0.0", 9998,clientManager, new Config());
 	    server.isRunned = true;
 	    
 	    assumeTrue(availableUDP(9998));

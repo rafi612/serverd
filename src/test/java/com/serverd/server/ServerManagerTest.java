@@ -11,7 +11,7 @@ class ServerManagerTest {
 	static class TestServer extends Server {
 		public boolean isStarted,isStopped;
 		
-		public TestServer() { super("Test Server",null,0,null); }
+		public TestServer() { super("Test Server",null,0,null,null); }
 
 		@Override
 		public void start() { isStarted = true; }
@@ -35,7 +35,7 @@ class ServerManagerTest {
 	
 	@Test
 	void addDefaultServers_Test() {
-		ServerManager.addDefaultServers(new Config());
+		ServerManager.addDefaultServers(null,new Config());
 		
 		assertEquals(2,ServerManager.getServers().length);
 	}

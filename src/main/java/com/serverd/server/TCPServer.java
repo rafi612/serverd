@@ -26,8 +26,8 @@ public class TCPServer extends Server {
 	 * @param port Server port.
 	 * @param config Global config.
 	 */
-	public TCPServer(String ip,int port,Config config) {
-		super("TCP Server",ip,port,config);
+	public TCPServer(String ip,int port,ClientManager clientManager,Config config) {
+		super("TCP Server",ip,port,clientManager,config);
 		
 		isEnabled = config.enableTcp;
 	}
@@ -65,12 +65,12 @@ public class TCPServer extends Server {
 	protected void acceptConnection(AsynchronousSocketChannel clientSocketChannel) {
     	try {
     		log.info("Connection accepted from client!");
-        	
-        	TCPClient client = new TCPClient(ClientManager.getFreeClientID(),clientSocketChannel,config.timeout);
+
+        	TCPClient client = new TCPClient(clientManager.getFreeClientID(),clientManager,clientSocketChannel,config.timeout);
        	    client.setProcessor(getProcessorFactory().get(client));
 
-        	ClientManager.setupClient(client);
-        	ClientManager.addClient(client);
+			clientManager.setupClient(client);
+        	clientManager.addClient(client);
         	
         	client.setAfterReceive(() ->
 					client.receive((bytes) ->

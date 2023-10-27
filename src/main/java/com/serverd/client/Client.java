@@ -31,6 +31,8 @@ public class Client {
 	
 	/** Processor */
 	protected Processor processor = new CommandProcessor(this);
+
+	private final ClientManager clientManager;
 	
 	/**
 	 * Send continuation interface. Invoked when client send complete.
@@ -79,8 +81,9 @@ public class Client {
 	 * Client class constructor
 	 * @param id Client ID
 	 */
-	public Client(int id) {
+	public Client(int id,ClientManager clientManager) {
 		this.id = id;
+		this.clientManager = clientManager;
 		
 		connected = true;
 		name = "Client " + id;
@@ -186,7 +189,7 @@ public class Client {
 	 * @return client joiner object.
 	 */
 	public Client getJoiner() {
-		return ClientManager.getClient(getJoinedID());
+		return clientManager.getClient(getJoinedID());
 	}
 	
 	/**
@@ -272,6 +275,13 @@ public class Client {
 	public void setProcessor(Processor processor) {
 		this.processor = processor;
 	}
+
+	/**
+	 * @return Client manager of this client.
+	 */
+	public ClientManager getClientManager() {
+		return clientManager;
+	}
 	
 	/**
 	 * Converts byte buffer to String message
@@ -309,7 +319,7 @@ public class Client {
 	 * @throws JoinException when join error occur 
 	 */
 	public void join(int joinid) throws JoinException {		
-		Client cl = ClientManager.getClient(joinid);
+		Client cl = clientManager.getClient(joinid);
 		
 		if (cl == null)
 			throw new JoinException("Wrong client ID");
@@ -328,7 +338,7 @@ public class Client {
 	 * Unjoining client
 	 */
 	public void unjoin() {
-		Client cl = ClientManager.getClient(joinedid);
+		Client cl = clientManager.getClient(joinedid);
 		
 		if (cl == null)
 			return;
@@ -362,6 +372,7 @@ public class Client {
 	public void crash(Exception exception) {
 		if (!crashed && connected) {
 			crashed = true;
+
 			processor.handleError(exception);
 		}
 	}	

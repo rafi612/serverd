@@ -5,6 +5,7 @@ import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 
+import com.serverd.client.ClientManager;
 import com.serverd.client.SelectableClient;
 import com.serverd.config.Config;
 
@@ -22,8 +23,8 @@ public abstract class SelectableServer extends Server {
 	 * @param port Server port.
 	 * @param config Global config.
 	 */
-	public SelectableServer(String name,String ip,int port,Config config) {
-		super(name,ip,port,config);
+	public SelectableServer(String name, String ip, int port, ClientManager clientManager,Config config) {
+		super(name,ip,port,clientManager,config);
 	}
 	
 	/**

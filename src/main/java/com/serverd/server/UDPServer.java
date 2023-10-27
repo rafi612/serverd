@@ -29,8 +29,8 @@ public class UDPServer extends SelectableServer {
 	 * @param port Server port.
 	 * @param config Global config.
 	 */
-	public UDPServer(String ip,int port,Config config) {
-		super("UDP Server",ip,port,config);
+	public UDPServer(String ip,int port,ClientManager clientManager,Config config) {
+		super("UDP Server",ip,port,clientManager,config);
 
 		isEnabled = config.enableUdp;
 		timeout = config.timeout;
@@ -112,15 +112,15 @@ public class UDPServer extends SelectableServer {
 		dc.bind(channel.socket().getLocalSocketAddress());
 		dc.connect(address);
 		
-		UDPClient client = new UDPClient(ClientManager.getFreeClientID(), selector, dc, address);
-		ClientManager.addClient(client);
+		UDPClient client = new UDPClient(clientManager.getFreeClientID(),clientManager, selector, dc, address);
+		clientManager.addClient(client);
 		
 		dc.register(selector, SelectionKey.OP_READ,client);
 		
 		log.info("Connection founded in " + client.getIP() + ":" + client.getPort());	
 		
     	client.setProcessor(getProcessorFactory().get(client));
-		ClientManager.setupClient(client);
+		clientManager.setupClient(client);
 		
 		byte[] data = new byte[buffer.limit()];
 		buffer.get(data, 0, buffer.limit());

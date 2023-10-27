@@ -14,15 +14,15 @@ import com.serverd.plugin.listener.ConnectListener;
  */
 public class ClientManager {
 	/** Client's hashmap*/
-	public static HashMap<Integer,Client> clients = new HashMap<>();
+	public HashMap<Integer,Client> clients = new HashMap<>();
 	
-	private static Log log = new Log("ServerD");
+	private Log log = new Log("ServerD");
 	
 	/**
 	 * Deleting client.
 	 * @param clientId Client ID to remove.
 	 */
-	public static synchronized void delete(int clientId) {
+	public synchronized void delete(int clientId) {
 		if (clients.isEmpty())
 			return;
 		
@@ -53,7 +53,7 @@ public class ClientManager {
 	/**
 	 * Shutting down server.
 	 */
-	public static void shutdown() {
+	public void shutdown() {
 		log.info("Closing clients...");
 		for (Client client : clients.values())
 			client.closeClient();
@@ -67,7 +67,7 @@ public class ClientManager {
 	 * Searching first free client ID.
 	 * @return first free ID.
 	 */
-	public static int getFreeClientID() {
+	public int getFreeClientID() {
 		int i = 0;
 		while (clients.containsKey(i))
 			i++;
@@ -80,7 +80,7 @@ public class ClientManager {
 	 * @param client {@link Client} instance
 	 * @throws IOException when {@link ConnectListener} throws error.
 	 */
-	public static void setupClient(Client client) throws IOException {		
+	public void setupClient(Client client) throws IOException {
 		//plugin connect listener
 		for (Plugin plugin : PluginManager.getPlugins())
 			for (ConnectListener cl : plugin.connectListeners)
@@ -91,7 +91,7 @@ public class ClientManager {
 	 * Adding client.
 	 * @param client Client object.
 	 */
-	public static void addClient(Client client) {
+	public void addClient(Client client) {
 		clients.put(client.getID(),client);
 	}
 	
@@ -99,14 +99,14 @@ public class ClientManager {
 	 * Returning all clients.
 	 * @return Array of clients.
 	 */
-	public static Client[] getAllClients() {
+	public Client[] getAllClients() {
 		return clients.values().toArray(Client[]::new);
 	}
 	
 	/**
 	 * @return clients amount number.
 	 */
-	public static int getClientConnectedAmount() {
+	public int getClientConnectedAmount() {
 		return clients.size();
 	}
 	
@@ -115,7 +115,7 @@ public class ClientManager {
 	 * @param id Client ID.
 	 * @return Client instance.
 	 */
-	public static Client getClient(int id) {
+	public Client getClient(int id) {
 		return clients.get(id);
 	}
 }

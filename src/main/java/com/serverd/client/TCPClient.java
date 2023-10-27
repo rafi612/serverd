@@ -24,8 +24,8 @@ public class TCPClient extends AsyncClient {
 	 * @param id Client's ID
 	 * @param socket Socket instance
 	 */
-	public TCPClient(int id,AsynchronousSocketChannel socket,int timeout) {
-		super(id);
+	public TCPClient(int id,ClientManager clientManager,AsynchronousSocketChannel socket,int timeout) {
+		super(id,clientManager);
 		this.timeout = timeout;
 		
 		protocol = Protocol.TCP;

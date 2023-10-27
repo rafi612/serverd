@@ -26,8 +26,8 @@ public abstract class SelectableClient extends Client {
 	 * @param id client ID
 	 * @param selector client Selector object
 	 */
-	public SelectableClient(int id,Selector selector) {
-		super(id);
+	public SelectableClient(int id,ClientManager clientManager,Selector selector) {
+		super(id,clientManager);
 		this.selector = selector;
 		
 		updateTimeout();

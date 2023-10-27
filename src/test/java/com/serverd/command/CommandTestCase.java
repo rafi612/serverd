@@ -12,14 +12,18 @@ import com.serverd.plugin.PluginManager;
 
 class CommandTestCase {
 	TestClient testClient;
+
+	ClientManager clientManager;
 	
 	@BeforeEach
 	void setUp() throws Exception {
+		clientManager = new ClientManager();
+
 		CommandProcessor.commands.clear();
 		PluginManager.plugins.clear();
-		ClientManager.clients.clear();
+		clientManager.clients.clear();
 		
-		testClient = new TestClient();
+		testClient = new TestClient(clientManager);
 		testClient.init();
 	}
 	
@@ -59,14 +63,14 @@ class DoubleClientCommandTestCase extends CommandTestCase {
 	@BeforeEach
 	void setUp() throws Exception {
 		super.setUp();
-		testClient2 = new TestClient();
+		testClient2 = new TestClient(clientManager);
 		testClient2.init();
 	}
 	@AfterEach
 	void tearDown() throws Exception {
 		super.tearDown();
 		testClient2.destroy();
-		ClientManager.clients.clear();
+		clientManager.clients.clear();
 	}	
 }
 
@@ -78,18 +82,18 @@ class TestClient extends Client {
 	
 	protected int receiveIndex;
 	
-	public TestClient() {
-		super(ClientManager.getFreeClientID());
+	public TestClient(ClientManager clientManager) {
+		super(clientManager.getFreeClientID(),clientManager);
 		protocol = Protocol.CUSTOM;
 		connected = true;
 	}
 	
 	public void init() {
-		ClientManager.addClient(this);
+		getClientManager().addClient(this);
 	}
 	
 	public void destroy() {
-		ClientManager.delete(getID());
+		getClientManager().delete(getID());
 	}
 	
 	@Override

@@ -15,10 +15,10 @@ public class Close extends Command {
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException {
 		if (checkArgs(args,client, 1)) {
-			int closeid = Integer.parseInt(args[0]);
+			int closeId = Integer.parseInt(args[0]);
 			
-			if (ClientManager.getClient(closeid) != null) {
-				ClientManager.delete(closeid);
+			if (client.getClientManager().getClient(closeId) != null) {
+				client.getClientManager().delete(closeId);
 				send(client,ok());	
 			} 
 			else send(client,"ERROR client not found");

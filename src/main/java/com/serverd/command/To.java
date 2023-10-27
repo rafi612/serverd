@@ -22,7 +22,7 @@ public class To extends Command {
 			String com = String.join(" ", Arrays.copyOfRange(args,1,args.length));
 			int id = Integer.parseInt(args[0]);
 
-			Client targetClient = ClientManager.getClient(id);
+			Client targetClient = client.getClientManager().getClient(id);
 			try {
 				client.onceJoin(id);
 				send(targetClient,com);

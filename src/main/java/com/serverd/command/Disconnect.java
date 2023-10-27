@@ -18,7 +18,7 @@ public class Disconnect extends Command {
 			client.unjoin();
 		
 		client.closeClient();
-		ClientManager.delete(client.getID());
+		client.getClientManager().delete(client.getID());
 		
 		done();
 	}

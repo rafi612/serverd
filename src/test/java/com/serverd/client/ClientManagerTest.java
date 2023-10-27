@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.serverd.plugin.Plugin;
@@ -13,40 +14,48 @@ import com.serverd.plugin.ServerdPlugin;
 import com.serverd.plugin.listener.ConnectListener;
 import com.serverd.plugin.Plugin.Info;
 
-class ClientManagerTest {	
+class ClientManagerTest {
+
+	ClientManager clientManager;
+
+	@BeforeEach
+	void setUp() {
+		clientManager = new ClientManager();
+	}
+
 	@AfterEach
 	void tearDown() {
-		for (Client client : ClientManager.clients.values())
+		for (Client client : clientManager.clients.values())
 			client.closeClient();
-		ClientManager.clients.clear();
+		clientManager.clients.clear();
 	}
 	
 	@Test
 	void delete_Test() {
 		int count = 10;
 		for (int i = 0;i < count;i++)
-			ClientManager.addClient(new Client(i));
+			clientManager.addClient(new Client(i,clientManager));
+
+		clientManager.delete(5);
 		
-		ClientManager.delete(5);
-		
-		assertEquals(ClientManager.clients.size(), 9);
+		assertEquals(clientManager.clients.size(), 9);
 	}
 	
 	@Test
 	void delete_WhenJoinedUnjoin_Test() throws Exception {
 		int count = 10;
 		for (int i = 0;i < count;i++)
-			ClientManager.addClient(new Client(i));
+			clientManager.addClient(new Client(i,clientManager));
 		
-		Client client1 = ClientManager.getClient(4);
-		Client client2 = ClientManager.getClient(5);
+		Client client1 = clientManager.getClient(4);
+		Client client2 = clientManager.getClient(5);
 		
 		client1.join(client2.getID());
-		
-		ClientManager.delete(client2.getID());
+
+		clientManager.delete(client2.getID());
 		
 		assertAll(
-			() -> assertEquals(9,ClientManager.clients.size()),
+			() -> assertEquals(9,clientManager.clients.size()),
 			() -> assertFalse(client1.isJoined()),
 			() -> assertFalse(client2.isJoined())
 		);
@@ -84,33 +93,33 @@ class ClientManagerTest {
 		plugin.start();
 		PluginManager.addPlugin(plugin);
 		
-		Client client = new Client(0);
-		ClientManager.addClient(client);
-		
-		ClientManager.delete(client.getID());
+		Client client = new Client(0,clientManager);
+		clientManager.addClient(client);
+
+		clientManager.delete(client.getID());
 		
 		assertTrue(disconnectExecuted.get());
 	}
 	
 	@Test
 	void delete_ClientsSizeEqualsZero_Test() {
-		ClientManager.delete(0);
+		clientManager.delete(0);
 		
-		assertEquals(ClientManager.getClientConnectedAmount(), 0);
+		assertEquals(clientManager.getClientConnectedAmount(), 0);
 	}
 	
 	@Test
 	void shutdown_StopClients_Test() {
 		class TestClient extends Client {
-			public TestClient(int id) { super(id); }
+			public TestClient(int id) { super(id,clientManager); }
 
 			public void run() { connected = true; }
 		}
-		TestClient client = new TestClient(ClientManager.getFreeClientID());
+		TestClient client = new TestClient(clientManager.getFreeClientID());
 		client.run();
-		ClientManager.addClient(client);
-		
-		ClientManager.shutdown();
+		clientManager.addClient(client);
+
+		clientManager.shutdown();
 		
 		assertFalse(client.isConnected());
 	}
@@ -141,7 +150,7 @@ class ClientManagerTest {
 		});
 		
 		PluginManager.addPlugin(plugin);
-		ClientManager.shutdown();
+		clientManager.shutdown();
 		
 		assertTrue(pluginStopped.get());
 	}
@@ -150,25 +159,25 @@ class ClientManagerTest {
 	void getAllClients_Test() {
 		int count = 10;
 		for (int i = 0;i < count;i++)
-			ClientManager.addClient(new Client(i));
+			clientManager.addClient(new Client(i,clientManager));
 		
-		Client[] clients = ClientManager.getAllClients();
+		Client[] clients = clientManager.getAllClients();
 		assertEquals(clients.length, count);
 		
 		for (int i = 0;i < count;i++)
-			assertTrue(ClientManager.clients.containsValue(clients[i]));
+			assertTrue(clientManager.clients.containsValue(clients[i]));
 	}
 	
 	@Test
 	void getFreeClientID_Test() {
 		for (int i = 0;i < 10;i++) {
-			ClientManager.addClient(new Client(ClientManager.getFreeClientID()));
+			clientManager.addClient(new Client(clientManager.getFreeClientID(),clientManager));
 		}
 		
-		assertEquals(ClientManager.getFreeClientID(), 10);
+		assertEquals(clientManager.getFreeClientID(), 10);
+
+		clientManager.delete(5);
 		
-		ClientManager.delete(5);
-		
-		assertEquals(ClientManager.getFreeClientID(), 5);
+		assertEquals(clientManager.getFreeClientID(), 5);
 	}
 }
