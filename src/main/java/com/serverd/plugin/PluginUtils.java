@@ -11,7 +11,7 @@ public class PluginUtils {
 	/**
 	 * Loading plugin from classpath by plugin name.
 	 * @param classname Main plugin class name
-	 * @return Plugin instance
+	 * @return Plugin instance.
 	 * @throws PluginLoadException when plugin load failed.
 	 */
 	public static Plugin loadPluginFromClassName(String classname) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PluginLoadException {
@@ -25,8 +25,8 @@ public class PluginUtils {
 	
 	/**
 	 * Loading plugin object without starting it from classpath by plugin name.
-	 * @param classname Main plugin class name
-	 * @return Plugin instance
+	 * @param classname Main plugin class name.
+	 * @return Plugin instance.
 	 * @throws PluginLoadException when plugin load failed.
 	 */
 	public static Plugin loadPluginInstanceFromClassName(String classname) throws PluginLoadException  {
@@ -49,7 +49,7 @@ public class PluginUtils {
 	
 	/**
 	 * Loading plugin as app from class name.
-	 * @param appClass Main app class name
+	 * @param appClass Main app class name.
 	 * @throws PluginLoadException when plugin load failed.
 	 */
 	public static void loadPluginAsApp(String appClass) throws PluginLoadException {
