@@ -18,22 +18,22 @@ public class Log {
 	
 	/**
 	 * Default constructor.
-	 * @param name Logger name
+	 * @param name Logger name.
 	 */
 	public Log(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * @return Logger name
+	 * @return Logger name.
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * Setting logger name
-	 * @param name Name of logger
+	 * Setting logger name.
+	 * @param name Name of logger.
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -41,7 +41,7 @@ public class Log {
 
 	/**
 	 * Logging as Info level.
-	 * @param message Message to log
+	 * @param message Message to log.
 	 */
 	public synchronized void info(String message) {
 		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
@@ -51,7 +51,7 @@ public class Log {
 	
 	/**
 	 * Logging as Warning level.
-	 * @param message Message to log
+	 * @param message Message to log.
 	 */
 	public synchronized void warn(String message) {
 		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
@@ -61,7 +61,7 @@ public class Log {
 	
 	/**
 	 * Logging as Error level.
-	 * @param message Message to log
+	 * @param message Message to log.
 	 */
 	public synchronized void error(String message) {
 		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
@@ -71,7 +71,7 @@ public class Log {
 	
 	/**
 	 * Logging as Debug level.
-	 * @param message Message to log
+	 * @param message Message to log.
 	 */
 	public synchronized void debug(String message) {
 		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
@@ -81,7 +81,7 @@ public class Log {
 	
 	/**
 	 * Logging as Trace level.
-	 * @param message Message to log
+	 * @param message Message to log.
 	 */
 	public synchronized void trace(String message) {
 		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
