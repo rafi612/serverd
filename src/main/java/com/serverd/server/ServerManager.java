@@ -157,5 +157,4 @@ public class ServerManager {
 	public static void resetDefaultProcessorFactory() {
 		setDefaultProcessorFactory(CommandProcessor::new);
 	}
-	
 }

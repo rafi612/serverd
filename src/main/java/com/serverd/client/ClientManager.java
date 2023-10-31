@@ -112,7 +112,7 @@ public class ClientManager {
 	
 	/**
 	 * Returns client instance by ID.
-	 * @param id Client ID
+	 * @param id Client ID.
 	 * @return Client instance.
 	 */
 	public static Client getClient(int id) {
