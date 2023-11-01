@@ -2,6 +2,7 @@
  * ServerD server and plugins framework module.
  */
 open module serverd {
+	exports com.serverd.app;
 	exports com.serverd.utils;
 	exports com.serverd.log;
 	exports com.serverd.client;

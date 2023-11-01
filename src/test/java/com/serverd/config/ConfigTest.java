@@ -53,8 +53,6 @@ class ConfigTest {
         // Delete the test properties file from the temporary directory
         Path path = Paths.get(testFilePath);
         Files.deleteIfExists(path);
-        
-        Main.workingDir = ServerdApplication.getWorkDir("serverd");
     }
     
     @Test
@@ -193,9 +191,10 @@ class ConfigTest {
         Config expectedConfig = new Config();
         
         // Act
-        Main.workingDir = tempDir.getPath();
-        Config.save(new File(Main.workingDir,"config.properties"), expectedConfig, "test");
-        Config actualConfig = Config.loadDefault();
+        ServerdApplication app = new ServerdApplication();
+        app.setWorkdir(tempDir.getAbsoluteFile());
+        Config.save(new File(app.getWorkdir().getAbsolutePath(),"config.properties"), expectedConfig, "test");
+        Config actualConfig = Config.loadDefault(app);
         
         // Assert
         assertNotNull(actualConfig);

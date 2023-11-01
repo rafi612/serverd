@@ -22,6 +22,12 @@ class ServerdApplicationTest {
 	void tearDown() throws Exception {
 		PluginManager.unloadAllPlugins();
 	}
+
+	@Test
+	void app_Test() {
+		ServerdApplication app = new ServerdApplication();
+		app.run();
+	}
 	
 	@Test
 	void run_Test() {
