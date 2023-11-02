@@ -18,11 +18,11 @@ import com.serverd.log.Log;
 public class Plugin {
 	private final Info info = new Info();
 	
-	public ArrayList<ConnectListener> connectListeners = new ArrayList<ConnectListener>();
-	public ArrayList<ExecutionController> executionControllers = new ArrayList<ExecutionController>();
+	public ArrayList<ConnectListener> connectListeners = new ArrayList<>();
+	public ArrayList<ExecutionController> executionControllers = new ArrayList<>();
 	
-	public ArrayList<Command> commands = new ArrayList<Command>();
-	public ArrayList<Server> servers = new ArrayList<Server>();
+	public ArrayList<Command> commands = new ArrayList<>();
+	public ArrayList<Server> servers = new ArrayList<>();
 	
 	private final ServerdPlugin instance;
 
@@ -87,7 +87,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Print plugin info message
+	 * Print plugin info message.
 	 * @param message Message
 	 */
 	public void info(String message) {
@@ -95,7 +95,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Print plugin warning message
+	 * Print plugin warning message.
 	 * @param message Message
 	 */
 	public void warn(String message) {
@@ -103,7 +103,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Print plugin error message
+	 * Print plugin error message.
 	 * @param message Message
 	 */
 	public void error(String message) {
