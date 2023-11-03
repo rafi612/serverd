@@ -83,6 +83,7 @@ public class Plugin {
 		
 		for (Server server : servers)
 			ServerManager.stopServer(server);
+
 		servers.clear();
 	}
 	
