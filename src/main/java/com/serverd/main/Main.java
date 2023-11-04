@@ -106,7 +106,7 @@ public class Main {
 		}));
 		
 		ServerManager.addDefaultServers(config);
-			
+
 		try {
 			PluginManager.init(workdirFile);
 			if (plugins) {

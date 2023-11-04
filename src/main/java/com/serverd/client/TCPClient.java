@@ -31,7 +31,6 @@ public class TCPClient extends AsyncClient {
 		protocol = Protocol.TCP;
 		tcpSocket = socket;
 	}
-
 	
 	@Override
 	public void send(String mess,SendContinuation continuation) throws IOException {
@@ -75,7 +74,7 @@ public class TCPClient extends AsyncClient {
 	}
 	
 	@Override
-	public void rawdataSend(byte[] bytes,SendContinuation continuation) throws IOException {
+	public void rawdataSend(byte[] bytes,SendContinuation continuation) {
 		writeBuffer.clear();
 		writeBuffer.put(bytes);
 		writeBuffer.flip();
@@ -86,7 +85,6 @@ public class TCPClient extends AsyncClient {
 		tcpSocket.write(writeBuffer, null, new CompletionHandler<Integer, Void>() {
 			@Override
 			public void completed(Integer bytesWritten, Void attachment) {
-				
 				if (writeBuffer.hasRemaining()) {
 					tcpSocket.write(writeBuffer, null, this);
 				} else {
