@@ -35,10 +35,10 @@ public class ClientManager {
 			client.unjoin();
 		
 		//plugin connect listener
-		for (Plugin p : PluginManager.getPlugins())
-			for (ConnectListener cl : p.connectListeners) {
+		for (Plugin plugin : PluginManager.getPlugins())
+			for (ConnectListener cl : plugin.connectListeners) {
 				try {
-					cl.onDisconnect(p,client);
+					cl.onDisconnect(plugin,client);
 				} catch (IOException e) {
 					log.error("Error in Disconnect Listener: " + e.getMessage());
 				}
@@ -82,9 +82,9 @@ public class ClientManager {
 	 */
 	public static void setupClient(Client client) throws IOException {		
 		//plugin connect listener
-		for (Plugin p : PluginManager.getPlugins())
-			for (ConnectListener cl : p.connectListeners)
-				cl.onConnect(p,client);
+		for (Plugin plugin : PluginManager.getPlugins())
+			for (ConnectListener cl : plugin.connectListeners)
+				cl.onConnect(plugin,client);
 	}
 	
 	/**
