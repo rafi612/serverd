@@ -152,7 +152,7 @@ public class PluginManager {
 		String[] pluginsNames = new String[plugins.size()];
 		
 		for (int i = 0;i < pluginsNames.length;i++)
-			pluginsNames[i] = plugins.get(i).filename;
+			pluginsNames[i] = plugins.get(i).name;
 		
 		return pluginsNames;
 	}
@@ -164,7 +164,7 @@ public class PluginManager {
 	 */
 	public static Plugin getByFileName(String name) {
 		for (Plugin plugin : plugins)
-			if (plugin.filename.equals(name))
+			if (plugin.name.equals(name))
 				return plugin;
 		return null;
 	}
@@ -204,7 +204,7 @@ public class PluginManager {
 	 * @return true if plugin load successfully
 	 */
 	public static boolean enablePlugin(Plugin plugin) {
-		pluginsDisabled.remove(plugin.filename);
+		pluginsDisabled.remove(plugin.name);
 		rewritePluginDisableFile();
 		return plugin.start();
 	}
@@ -214,7 +214,7 @@ public class PluginManager {
 	 * @param plugin Plugin instance
 	 */
 	public static void disablePlugin(Plugin plugin) {
-		pluginsDisabled.add(plugin.filename);
+		pluginsDisabled.add(plugin.name);
 		rewritePluginDisableFile();
 		plugin.stop();
 	}

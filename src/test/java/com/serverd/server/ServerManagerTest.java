@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ServerManagerTest {
+
+	ServerManager serverManager = new ServerManager();
 	
 	static class TestServer extends Server {
 		public boolean isStarted,isStopped;
@@ -22,33 +24,33 @@ class ServerManagerTest {
 	
 	@BeforeEach
 	void setUp() {
-		ServerManager.removeAllServers();
+		serverManager.removeAllServers();
 	}
 
 	@Test
 	void addServer_Test() {
 		TestServer server = new TestServer();
-		ServerManager.addServer(server);
+		serverManager.addServer(server);
 		
-		assertEquals(1,ServerManager.getServers().length);
+		assertEquals(1,serverManager.getServers().length);
 	}
 	
 	@Test
 	void addDefaultServers_Test() {
-		ServerManager.addDefaultServers(null,new Config());
+		serverManager.addDefaultServers(null,new Config());
 		
-		assertEquals(2,ServerManager.getServers().length);
+		assertEquals(2,serverManager.getServers().length);
 	}
 	
 	@Test
 	void init_Test() {
 		int number = 10;
 		for (int i = 0;i < number;i++)
-			ServerManager.addServer(new TestServer());
+			serverManager.addServer(new TestServer());
+
+		serverManager.init();
 		
-		ServerManager.init();
-		
-		Server[] servers = ServerManager.getServers();
+		Server[] servers = serverManager.getServers();
 		for (Server server : servers)
 			assertTrue(server.isEnabled);
 	}
@@ -57,11 +59,11 @@ class ServerManagerTest {
 	void shutdown_Test() {
 		int number = 10;
 		for (int i = 0;i < number;i++)
-			ServerManager.addServer(new TestServer());
+			serverManager.addServer(new TestServer());
+
+		serverManager.shutdown();
 		
-		ServerManager.shutdown();
-		
-		Server[] servers = ServerManager.getServers();
+		Server[] servers = serverManager.getServers();
 		for (Server server : servers)
 			assertAll(
 				() -> assertTrue(((TestServer)server).isStopped),

@@ -31,6 +31,16 @@ public abstract class Server {
 
 	protected ClientManager clientManager;
 
+	public ServerManager getServerManager() {
+		return serverManager;
+	}
+
+	public void setServerManager(ServerManager serverManager) {
+		this.serverManager = serverManager;
+	}
+
+	protected ServerManager serverManager;
+
 	/**
 	 * Server class constructor.
 	 * @param name Server name
@@ -38,7 +48,7 @@ public abstract class Server {
 	 * @param port Server port
 	 * @param config Global config
 	 */
-	public Server(String name, String ip, int port, ClientManager clientManager,Config config) {
+	public Server(String name, String ip, int port,ClientManager clientManager,Config config) {
 		log = new Log(name);
 		
 		this.name = name;
@@ -108,7 +118,7 @@ public abstract class Server {
 	 * @see Processor
 	 */
 	public ProcessorFactory getProcessorFactory() {
-		return processorFactory == null ? ServerManager.getDefaultProcessorFactory() : processorFactory;
+		return processorFactory == null ? serverManager.getDefaultProcessorFactory() : processorFactory;
 	}
 	
 	/**

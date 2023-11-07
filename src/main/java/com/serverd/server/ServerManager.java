@@ -14,21 +14,20 @@ import com.serverd.log.Log;
  * Server manager class.
  */
 public class ServerManager {
-	
 	private static final ArrayList<Server> servers = new ArrayList<>();
 	
 	private static final Log log = new Log("ServerD");
 
-	private static TCPServer tcpServer;
-	private static UDPServer udpServer;
+	private TCPServer tcpServer;
+	private UDPServer udpServer;
 	
-	private static ProcessorFactory defaultProcessorFactory;
+	private ProcessorFactory defaultProcessorFactory;
 	
 	/**
 	 * Returning array of added server.
 	 * @return array of added server.
 	 */
-	public static Server[] getServers() {
+	public Server[] getServers() {
 		return servers.toArray(Server[]::new);
 	}
 	
@@ -36,7 +35,7 @@ public class ServerManager {
 	 * Add default servers to server list.
 	 * @param config Default server config.
 	 */
-	public static void addDefaultServers(ClientManager clientManager,Config config) {
+	public void addDefaultServers(ClientManager clientManager,Config config) {
 		addServer(tcpServer = new TCPServer(config.ip, config.tcpPort,clientManager, config));
 		addServer(udpServer = new UDPServer(config.ip, config.udpPort,clientManager, config));
 	}
@@ -44,14 +43,14 @@ public class ServerManager {
 	/**
 	 * Cleaning all server.
 	 */
-	protected static void removeAllServers() {
+	protected void removeAllServers() {
 		servers.clear();
 	}
 	
 	/**
 	 * Initializing Server Manager.
 	 */
-	public static void init() {
+	public void init() {
 		resetDefaultProcessorFactory();
 		
 		for (Server server : servers)
@@ -62,7 +61,7 @@ public class ServerManager {
 	 * Loading server.
 	 * @param server Server instance.
 	 */
-	public static void loadServer(Server server) {
+	public void loadServer(Server server) {
 		if (!server.isEnabled()) {
 			log.info(server.getName() + " was disabled");
 			return;
@@ -82,7 +81,7 @@ public class ServerManager {
 	/**
 	 * Shutting down Server Manager.
 	 */
-	public static void shutdown() {
+	public void shutdown() {
 		log.info("Server shutting down...");
 		
 		for (Server server : servers)
@@ -93,7 +92,7 @@ public class ServerManager {
 	 * Stopping server.
 	 * @param server Server instance.
 	 */
-	public static void stopServer(Server server) {
+	public void stopServer(Server server) {
 		try {
 			server.isRunned = false;
 			server.stop();
@@ -106,7 +105,7 @@ public class ServerManager {
 	 * Returns default TCP Server.
 	 * @return Default TCP Server.
 	 */
-	public static TCPServer getTcpServer() {
+	public TCPServer getTcpServer() {
 		return tcpServer;
 	}
 
@@ -114,7 +113,7 @@ public class ServerManager {
 	 * Returns default UDP Server.
 	 * @return Default UDP Server.
 	 */
-	public static UDPServer getUdpServer() {
+	public UDPServer getUdpServer() {
 		return udpServer;
 	}
 
@@ -123,7 +122,8 @@ public class ServerManager {
 	 * Adding server.
 	 * @param server Server object.
 	 */
-	public static void addServer(Server server) {
+	public void addServer(Server server) {
+		server.setServerManager(this);
 		servers.add(server);
 	}
 	
@@ -131,7 +131,7 @@ public class ServerManager {
 	 * Removing server.
 	 * @param server Server object.
 	 */
-	public static void removeServer(Server server) {
+	public void removeServer(Server server) {
 		servers.remove(server);
 	}
 	
@@ -140,7 +140,7 @@ public class ServerManager {
 	 * @param factory Factory interface or lambda.
 	 * @see Processor
 	 */
-	public static void setDefaultProcessorFactory(ProcessorFactory factory) {
+	public void setDefaultProcessorFactory(ProcessorFactory factory) {
 		defaultProcessorFactory = factory;
 	}
 	
@@ -148,14 +148,14 @@ public class ServerManager {
 	 * @return Default processor factory.
 	 * @see Processor
 	 */
-	public static ProcessorFactory getDefaultProcessorFactory() {
+	public ProcessorFactory getDefaultProcessorFactory() {
 		return defaultProcessorFactory;
 	}
 	
 	/**
 	 * Resetting processor factory to default.
 	 */
-	public static void resetDefaultProcessorFactory() {
+	public void resetDefaultProcessorFactory() {
 		setDefaultProcessorFactory(CommandProcessor::new);
 	}
 }

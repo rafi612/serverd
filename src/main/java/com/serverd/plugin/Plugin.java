@@ -3,7 +3,6 @@ package com.serverd.plugin;
 import com.serverd.plugin.listener.ConnectListener;
 import com.serverd.plugin.listener.ExecutionController;
 import com.serverd.server.Server;
-import com.serverd.server.ServerManager;
 
 import java.io.File;
 import java.io.InputStream;
@@ -32,20 +31,24 @@ public class Plugin {
 	
 	private Log log;
 	
-	public String filename;
+	public String name;
 	
 	/**
 	 * Plugin class constructor.
-	 * @param filename Filename of plugin file
+	 * @param name Name of plugin
 	 * @param instance Instance of loaded plugin
 	 */
-	public Plugin(String filename,ServerdPlugin instance) {
-		this.filename = filename;
+	public Plugin(String name,ServerdPlugin instance) {
+		this.name = name;
 		this.instance = instance;
 	}
 	
 	/**
+<<<<<<< HEAD
 	 * Start a plugin.
+=======
+	 * Start Plugin.
+>>>>>>> e2538a2 (feat: make ServerManager as object)
 	 * @return true if plugin load successfully
 	 */
 	public boolean start() {
@@ -82,8 +85,7 @@ public class Plugin {
 		executionControllers.clear();
 		
 		for (Server server : servers)
-			ServerManager.stopServer(server);
-
+			server.getServerManager().stopServer(server);
 		servers.clear();
 	}
 	
@@ -234,7 +236,7 @@ public class Plugin {
 	 * @param server Server instance
 	 */
 	public void addServer(Server server) {
-		ServerManager.loadServer(server);
+		//ServerManager.loadServer(server);
 		servers.add(server);
 	}
 	

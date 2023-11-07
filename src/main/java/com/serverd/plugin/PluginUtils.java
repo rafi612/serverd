@@ -13,7 +13,7 @@ public class PluginUtils {
 	 * @return Plugin instance.
 	 * @throws PluginLoadException when plugin load failed.
 	 */
-	public static Plugin loadPluginFromClassName(String className) throws IllegalArgumentException, SecurityException, PluginLoadException {
+	public static Plugin loadPluginFromClassName(String className) throws PluginLoadException {
 		Plugin plugin = loadPluginInstanceFromClassName(className);
 		
 		plugin.start();

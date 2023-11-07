@@ -17,7 +17,10 @@ import com.serverd.server.ServerManager;
  */
 public class ServerdApplication {
 	private final String name;
+
 	private ClientManager clientManager;
+	private ServerManager serverManager;
+	private PluginManager pluginManager;
 	private String splash = "ServerD " + Main.VERSION;
 	private File workdir;
 	private final Log log = new Log("ServerD");
@@ -43,13 +46,16 @@ public class ServerdApplication {
 			config = loadConfig();
 
 		clientManager = new ClientManager();
+		serverManager = new ServerManager();
+
+		pluginManager = new PluginManager();
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			ServerManager.shutdown();
+			serverManager.shutdown();
 			clientManager.shutdown();
 		}));
 
-		ServerManager.addDefaultServers(clientManager,config);
+		serverManager.addDefaultServers(clientManager,config);
 
 		try {
 			PluginManager.init(workdir);
@@ -75,7 +81,7 @@ public class ServerdApplication {
 		}
 
 		log.info("Starting servers...");
-		ServerManager.init();
+		serverManager.init();
 	}
 
 	public void createWorkDir() {
@@ -188,10 +194,6 @@ public class ServerdApplication {
 		plugins = b;
 	}
 
-	public ClientManager getClientManager() {
-		return clientManager;
-	}
-
 	public String getSplash() {
 		return splash;
 	}
@@ -219,7 +221,20 @@ public class ServerdApplication {
 	public boolean isLoadingApp() {
 		return isLoadingApp;
 	}
-	
+
+	public ClientManager getClientManager() {
+		return clientManager;
+	}
+
+	public ServerManager getServerManager() {
+		return serverManager;
+	}
+
+	public PluginManager getPluginManager() {
+		return pluginManager;
+	}
+
+
 	/**
 	 * Running ServerD and loading class as plugin to create self-contained app.
 	 * @param appClass App class object.
