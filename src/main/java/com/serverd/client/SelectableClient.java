@@ -22,7 +22,7 @@ public abstract class SelectableClient extends Client {
 	private SendContinuation sendContinuation;
 	
 	/**
-	 * NonBlockingClient constructor.
+	 * SelectableClient constructor.
 	 * @param id client ID
 	 * @param selector client Selector object
 	 */
@@ -34,7 +34,7 @@ public abstract class SelectableClient extends Client {
 	}
 	
 	/**
-	 * Updating last read time. Invoke after read.
+	 * Updating last read time. This will be invoked after read.
 	 */
 	protected void updateTimeout() {
 		lastReadTime = System.currentTimeMillis();
@@ -94,8 +94,7 @@ public abstract class SelectableClient extends Client {
 	}
 	
 	/**
-	 * Getting selection key.
-	 * @return SelectionKey
+	 * @return SelectionKey for Client.
 	 */
 	public abstract SelectionKey getKey();
 	/**
