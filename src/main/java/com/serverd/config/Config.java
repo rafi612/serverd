@@ -96,7 +96,7 @@ public class Config {
 	}
 	
 	/**
-	 * Creating config when it does not exists.
+	 * Creating config when it does not exist.
 	 * @param file File to save
 	 * @param config Config instance
 	 * @param comment Comment
