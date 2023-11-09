@@ -98,7 +98,7 @@ public class Client {
 	}
 	
 	/**
-	 * Sending message without executing {@link SendContinuation} 
+	 * Sending message without executing {@link SendContinuation}.
 	 * @param message Message to send
 	 * @throws IOException when socket throw error
 	 */
@@ -107,7 +107,7 @@ public class Client {
 	}
 	
 	/**
-	 * Sending message, when complete executing {@link SendContinuation}
+	 * Sending message, when complete executing {@link SendContinuation}.
 	 * @param message Message to send
 	 * @param continuation Send continuation handler
 	 * @throws IOException when socket throw error
@@ -115,7 +115,7 @@ public class Client {
 	public void send(String message,SendContinuation continuation) throws IOException {}
 	
 	/**
-	 * Sending raw data without executing {@link SendContinuation} 
+	 * Sending raw data without executing {@link SendContinuation}.
 	 * @param bytes Byte array
 	 * @throws IOException when socket throw error
 	 */
@@ -124,7 +124,7 @@ public class Client {
 	}
 	
 	/**
-	 * Sending raw data, when complete executing {@link SendContinuation}
+	 * Sending raw data, when complete executing {@link SendContinuation}.
 	 * @param bytes Byte array
 	 * @param continuation Send continuation handler
 	 * @throws IOException when socket throw error
