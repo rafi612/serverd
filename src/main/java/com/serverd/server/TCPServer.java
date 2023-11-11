@@ -66,7 +66,7 @@ public class TCPServer extends Server {
     	try {
     		log.info("Connection accepted from client!");
         	
-        	TCPClient client = new TCPClient(ClientManager.getFreeClientID(),clientSocketChannel,config);
+        	TCPClient client = new TCPClient(ClientManager.getFreeClientID(),clientSocketChannel,config.timeout);
        	    client.setProcessor(getProcessorFactory().get(client));
 
         	ClientManager.setupClient(client);

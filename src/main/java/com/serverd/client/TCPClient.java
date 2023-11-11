@@ -16,17 +16,17 @@ public class TCPClient extends AsyncClient {
 	
 	/** Socket*/
 	protected AsynchronousSocketChannel tcpSocket;
-	/** Config*/
-	protected Config config;
+	/** Timeout*/
+	protected int timeout;
 	
 	/**
 	 * TCPClient class constructor.
 	 * @param id Client's ID
 	 * @param socket Socket instance
 	 */
-	public TCPClient(int id,AsynchronousSocketChannel socket,Config config) {
+	public TCPClient(int id,AsynchronousSocketChannel socket,int timeout) {
 		super(id);
-		this.config = config;
+		this.timeout = timeout;
 		
 		protocol = Protocol.TCP;
 		tcpSocket = socket;
@@ -44,7 +44,7 @@ public class TCPClient extends AsyncClient {
 		receiveBuffer.clear();
 		
 		readPending = true;
-		tcpSocket.read(receiveBuffer,config.timeout,TimeUnit.MILLISECONDS, null, new CompletionHandler<Integer, Void>() {
+		tcpSocket.read(receiveBuffer,timeout,TimeUnit.MILLISECONDS, null, new CompletionHandler<Integer, Void>() {
 
 			@Override
 			public void completed(Integer len, Void attachment) {
