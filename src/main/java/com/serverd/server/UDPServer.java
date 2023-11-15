@@ -21,6 +21,8 @@ public class UDPServer extends SelectableServer {
 	/** UDP Channel*/
 	public static DatagramChannel udpChannel;
 
+	private int timeout;
+
 	/**
 	 * UDP Server default constructor.
 	 * @param ip Server IP.
@@ -31,6 +33,7 @@ public class UDPServer extends SelectableServer {
 		super("UDP Server",ip,port,config);
 
 		isEnabled = config.enableUdp;
+		timeout = config.timeout;
 	}
 
 	@Override
@@ -44,10 +47,9 @@ public class UDPServer extends SelectableServer {
 		udpChannel.register(selector, SelectionKey.OP_READ);
 		
 		ByteBuffer buffer = ByteBuffer.allocate(Client.BUFFER);
-		while (isRunned())
-		{
+		while (isRunned()) {
 			//timeout checking and selecting
-			selectWithTimeout(selector, udpChannel,config.timeout);
+			selectWithTimeout(selector, udpChannel,timeout);
 			
 			Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
 			while (keys.hasNext()) {
@@ -132,6 +134,21 @@ public class UDPServer extends SelectableServer {
 			log.info("Stopping UDP server...");
 			udpChannel.close();
 		}
+	}
+
+	/**
+	 * Setting client timeout
+	 * @param timeout Client timeout.
+	 */
+	public void setTimeout(int timeout) {
+		this.timeout = timeout;
+	}
+
+	/**
+	 * @return Client timeout
+	 */
+	public int getTimeout() {
+		return timeout;
 	}
 
 }
