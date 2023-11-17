@@ -79,7 +79,7 @@ public class ServerManager {
 	}
 	
 	/**
-	 * Shuttting down Server Manager.
+	 * Shutting down Server Manager.
 	 */
 	public static void shutdown() {
 		log.info("Server shutting down...");

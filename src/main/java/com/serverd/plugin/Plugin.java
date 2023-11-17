@@ -46,7 +46,7 @@ public class Plugin {
 	
 	/**
 	 * Start Plugin.
-	 * @return true if plugin load succesfully
+	 * @return true if plugin load successfully
 	 */
 	public boolean start() {
 		instance.metadata(info);

@@ -78,9 +78,9 @@ public class PluginManager {
 	/**
 	 * Load plugin from specific file, plugin must have <b>Plugin-Main-Class</b> attribute with class name .
 	 * in <b>manifest</b> to detect main class
-	 * @param file Flie to plugin
+	 * @param file File to plugin
 	 * @param enable Enable plugin on load
-	 * @throws PluginLoadException when plugin was not succesfully loaded.
+	 * @throws PluginLoadException when plugin was not successfully loaded.
 	 */
 	public static void load(File file,boolean enable) throws PluginLoadException {
 		log.info("Loading plugin " + file.getName());
@@ -201,7 +201,7 @@ public class PluginManager {
 	/**
 	 * Enabling plugin.
 	 * @param plugin Plugin instance
-	 * @return true if plugin load succesfully
+	 * @return true if plugin load successfully
 	 */
 	public static boolean enablePlugin(Plugin plugin) {
 		pluginsDisabled.remove(plugin.filename);
