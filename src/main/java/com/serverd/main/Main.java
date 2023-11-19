@@ -49,6 +49,7 @@ public class Main {
 			config = Config.load(configFile, Config.class);
 		} catch (Exception e) {
 			log.error("Error: " + e.getMessage());
+			e.printStackTrace();
 			System.exit(1);
 		}
 		

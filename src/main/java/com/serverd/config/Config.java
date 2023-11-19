@@ -62,6 +62,14 @@ public class Config {
 					field.setAccessible(true);
 					field.set(config, parseType(properties.getProperty(annotation.value()),field.getType()));
 				}
+
+				if (field.isAnnotationPresent(FromEnv.class)) {
+					FromEnv annotation = field.getAnnotation(FromEnv.class);
+					if (System.getenv(annotation.value()) != null) {
+						field.setAccessible(true);
+						field.set(config, parseType(System.getenv(annotation.value()),field.getType()));
+					}
+				}
 			}
 			return config;
 		} catch (IllegalArgumentException | IllegalAccessException | InstantiationException  
