@@ -45,7 +45,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Start Plugin.
+	 * Start a plugin.
 	 * @return true if plugin load successfully
 	 */
 	public boolean start() {
@@ -69,7 +69,7 @@ public class Plugin {
 	}
 	
 	/**
-	 * Stop plugin.
+	 * Stop a plugin.
 	 */
 	public void stop() {
 		isRunned = false;
