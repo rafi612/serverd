@@ -41,7 +41,7 @@ public abstract class SelectableClient extends Client {
 	}
 	
 	/**
-	 * @return Read time
+	 * @return Read time.
 	 */
 	public long getLastReadTime() {
 		return lastReadTime;
