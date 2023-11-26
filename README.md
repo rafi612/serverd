@@ -5,29 +5,30 @@
 [![License](https://img.shields.io/github/license/rafi612/serverd)](https://github.com/rafi612/serverd/blob/main/LICENSE)
 [![Repo size](https://img.shields.io/github/repo-size/rafi612/serverd)](https://github.com/rafi612/serverd)
 
-ServerD is TCP and UDP server which allows to communicate between clients and manage them.
+**ServerD** is a framework that allows creating network applications implementing either 
+a known protocol or a custom one on the _TCP_, _UDP_, or other layer. ServerD has huge API
+which can be used to implement our own protocol on transport layer (e.g. TCP) 
+or use some existing protocols (e.g. _HTTP_). 
 
-# Building
-## Requirements
-- JDK 11+
-- Maven or Ant
+ServerD currently have only implementation of _TCP_ and _UDP_
+transport layer and simple command protocol to show how program work. 
+Other protocols can be implemented using plugins created by other developers.
+ServerD may receive official implementations of certain protocols in the future.
 
-To build run the command: `mvn package`
+# Getting started
+ServerD have API which can be used both to create a standalone application and as a plugin. More information below.
 
-If you don't have Maven you can use Maven wrapper: `./mvnw package`
-
-Jar file can be found in `./target`
-
-You can also build using Ant by command: `ant`
-
-# Plugins
+### Plugins
 ServerD have plugin API which allows to create advanced plugins to extends program functionality.
 
 **API includes:**
 - Events (Connection and Disconnection event etc.) support
-- Custom commands support
-- Debugger
-- Plugin workspaces
+- Simple protocol (that can be replaced by your own)
+- Custom transport layer support.
+- Custom protocol implementation support.
+- Creating own servers support.
+- Logger.
+- Plugin workspaces.
 
 And much more.
 
@@ -74,11 +75,36 @@ Plugins can be created using all Java-compatible languages (Kotlin, Scala etc.)
 
 For more info look for **Documentation**.
 
-# Documentation
+### Creating own self-contained application.
+Same API can be used both to create a standalone application and as a plugin.
+To start application you can put this code into main method:
 
+```java
+public class Example {
+    public static void main(String[] args) {
+        ServerdApplication.run(ExamplePluginClass.class);
+    }
+}
+```
+
+# Documentation
 To generate Javadoc run command: `./mwnw javadoc:javadoc`
 
 Javadoc can be found in `./target/apidocs/index.html` or `./target/ServerD-<version>-javadoc.jar` as jar file.
+
+# Building
+### Requirements
+- JDK 11+
+- Maven or Ant
+
+### Building
+To build run the command: `mvn package`
+
+If you don't have Maven you can use Maven wrapper: `./mvnw package`
+
+Jar file can be found in `./target`
+
+You can also build using Ant by command: `ant`
 
 # Docker
 
@@ -98,6 +124,10 @@ services:
   serverd:
     image: rafi612/serverd
     container_name: serverd
+    environment:
+      - TIMEOUT=90000
+      - ENABLE_TCP=true
+      - ENABLE_UDP=true
     ports:
       - 9999:9999/tcp
       - 9998:9998/udp

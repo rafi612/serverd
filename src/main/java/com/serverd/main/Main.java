@@ -12,7 +12,7 @@ import com.serverd.plugin.PluginUtils;
 import com.serverd.server.ServerManager;
 
 public class Main {
-	public static final String VERSION = "v1.2.0";
+	public static final String VERSION = "v1.0.0";
 	
 	public static String workingDir = ServerdApplication.getWorkDir("serverd");
 	
