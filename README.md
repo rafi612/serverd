@@ -108,7 +108,7 @@ You can also build using Ant by command: `ant`
 
 # Docker
 
-ServerD can be runned using Docker. 
+ServerD can be run using Docker. 
 
 To build Docker image run command:
 `docker build -t rafi612/serverd .`
