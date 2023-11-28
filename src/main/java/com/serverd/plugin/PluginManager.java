@@ -23,7 +23,6 @@ public class PluginManager {
 	public static File pluginDataDir;
 	public static File pluginAppDataDir;
 	public static File pluginDisabledFile;
-	
 	public static List<String> pluginsDisabled;
 	
 	public static ArrayList<Plugin> plugins = new ArrayList<>();
