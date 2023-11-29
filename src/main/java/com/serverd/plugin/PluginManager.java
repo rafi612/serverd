@@ -163,8 +163,9 @@ public class PluginManager {
 	 * @return Plugin instance
 	 */
 	public static Plugin getByFileName(String name) {
-		for (Plugin p : plugins)
-			if (p.filename.equals(name)) return p;
+		for (Plugin plugin : plugins)
+			if (plugin.filename.equals(name))
+				return plugin;
 		return null;
 	}
 	
