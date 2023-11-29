@@ -49,11 +49,7 @@ public class Plugin {
 	}
 	
 	/**
-<<<<<<< HEAD
 	 * Start a plugin.
-=======
-	 * Start Plugin.
->>>>>>> e2538a2 (feat: make ServerManager as object)
 	 * @return true if plugin load successfully
 	 */
 	public boolean start() {
