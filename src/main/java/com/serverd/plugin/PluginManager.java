@@ -13,27 +13,35 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+import com.serverd.app.ServerdApplication;
 import com.serverd.log.Log;
 
 /**
  * Plugin manager.
  */
 public class PluginManager {
-	public static File pluginDir;
-	public static File pluginDataDir;
-	public static File pluginAppDataDir;
-	public static File pluginDisabledFile;
-	public static List<String> pluginsDisabled;
+	public File pluginDir;
+	public File pluginDataDir;
+	public File pluginAppDataDir;
+	public File pluginDisabledFile;
 	
-	public static ArrayList<Plugin> plugins = new ArrayList<>();
+	public List<String> pluginsDisabled;
 
-	private static final Log log = new Log("Plugin Manager");
+	public ArrayList<Plugin> plugins = new ArrayList<>();
+
+	private final Log log = new Log("Plugin Manager");
+
+	private ServerdApplication app;
+
+	public PluginManager(ServerdApplication app) {
+		this.app = app;
+	}
 	
 	/**
 	 * Init method.
 	 * @param workdir Working dir file
 	 */
-	public static void init(File workdir) throws IOException {
+	public void init(File workdir) throws IOException {
 		pluginDir = new File(workdir,"plugins");
 		pluginDataDir = new File(workdir,"pluginsdata");
 			
@@ -60,7 +68,7 @@ public class PluginManager {
 	/**
 	 * Loading all plugins.
 	 */
-	public static void loadPlugins() {
+	public void loadPlugins() {
 		File[] files = pluginDir.listFiles();
 		
 		if (files != null) {
@@ -81,7 +89,7 @@ public class PluginManager {
 	 * @param enable Enable plugin on load
 	 * @throws PluginLoadException when plugin was not successfully loaded.
 	 */
-	public static void load(File file,boolean enable) throws PluginLoadException {
+	public void load(File file,boolean enable) throws PluginLoadException {
 		log.info("Loading plugin " + file.getName());
 
 		try {
@@ -103,7 +111,7 @@ public class PluginManager {
 			Class<?> classToLoad = Class.forName(classname, true, classloader);
 
 			ServerdPlugin instance = (ServerdPlugin) classToLoad.getDeclaredConstructor().newInstance();
-			Plugin plugin = new Plugin(file.getName(),instance);
+			Plugin plugin = new Plugin(file.getName(),this,instance);
 			
 			if (enable) 
 				plugin.start();
@@ -118,12 +126,18 @@ public class PluginManager {
 			throw new PluginLoadException(file.getName(),"Plugin load failed: " + e.getMessage(),e);
 		}		
 	}
+
+	public void shutdown() {
+		log.info("Stopping plugins...");
+		for (Plugin plugin : plugins)
+			plugin.stop();
+	}
 	
 	/**
 	 * Adding plugin to manager.
 	 * @param plugin Plugin instance
 	 */
-	public static void addPlugin(Plugin plugin) {
+	public void addPlugin(Plugin plugin) {
 		plugins.add(plugin);
 	}
 	
@@ -131,7 +145,7 @@ public class PluginManager {
 	 * Unloading plugin from manager.
 	 * @param plugin Plugin instance
 	 */
-	public static void unloadPlugin(Plugin plugin) {
+	public void unloadPlugin(Plugin plugin) {
 		plugin.stop();
 		plugins.remove(plugin);
 	}
@@ -139,7 +153,7 @@ public class PluginManager {
 	/**
 	 * Unloading all plugins.
 	 */
-	public static void unloadAllPlugins() {
+	public void unloadAllPlugins() {
 		for (int i = 0;i < plugins.size();i++)
 			unloadPlugin(plugins.get(i));
 	}
@@ -148,7 +162,7 @@ public class PluginManager {
 	 * List all plugins names.
 	 * @return Array of names
 	 */
-	public static String[] listPluginsName() {
+	public String[] listPluginsName() {
 		String[] pluginsNames = new String[plugins.size()];
 		
 		for (int i = 0;i < pluginsNames.length;i++)
@@ -162,7 +176,7 @@ public class PluginManager {
 	 * @param name Plugin name
 	 * @return Plugin instance
 	 */
-	public static Plugin getByFileName(String name) {
+	public Plugin getByFileName(String name) {
 		for (Plugin plugin : plugins)
 			if (plugin.name.equals(name))
 				return plugin;
@@ -174,7 +188,7 @@ public class PluginManager {
 	 * @param id Plugin ID
 	 * @return Plugin instance by ID
 	 */
-	public static Plugin getPluginByID(int id) {
+	public Plugin getPluginByID(int id) {
 		if (id < 0 || id > plugins.size())
 			return null;
 		return plugins.get(id);
@@ -186,7 +200,7 @@ public class PluginManager {
 	 * @param plugin Plugin instance
 	 * @return plugin ID
 	 */
-	public static int getIDByPlugin(Plugin plugin) {
+	public int getIDByPlugin(Plugin plugin) {
 		return plugins.indexOf(plugin);
 	}
 	
@@ -194,7 +208,7 @@ public class PluginManager {
 	 * Get plugins loaded amount.
 	 * @return plugin loaded amount
 	 */
-	public static int getPluginsAmountLoaded() {
+	public int getPluginsAmountLoaded() {
 		return plugins.size();
 	}
 	
@@ -203,7 +217,7 @@ public class PluginManager {
 	 * @param plugin Plugin instance
 	 * @return true if plugin load successfully
 	 */
-	public static boolean enablePlugin(Plugin plugin) {
+	public boolean enablePlugin(Plugin plugin) {
 		pluginsDisabled.remove(plugin.name);
 		rewritePluginDisableFile();
 		return plugin.start();
@@ -213,7 +227,7 @@ public class PluginManager {
 	 * Disabling plugin.
 	 * @param plugin Plugin instance
 	 */
-	public static void disablePlugin(Plugin plugin) {
+	public void disablePlugin(Plugin plugin) {
 		pluginsDisabled.add(plugin.name);
 		rewritePluginDisableFile();
 		plugin.stop();
@@ -223,14 +237,19 @@ public class PluginManager {
 	 * Returns all plugins.
 	 * @return all plugins table
 	 */
-	public static Plugin[] getPlugins() {
+	public Plugin[] getPlugins() {
 		return plugins.toArray(Plugin[]::new);
+	}
+
+
+	public ServerdApplication getApp() {
+		return app;
 	}
 	
 	/**
 	 * Rewriting plugins_disabled.conf.
 	 */
-	private static void rewritePluginDisableFile() {
+	private void rewritePluginDisableFile() {
 		try (FileWriter writer = new FileWriter(pluginDisabledFile)) {
 			for (String str : pluginsDisabled) 
 				writer.write(str + System.lineSeparator());

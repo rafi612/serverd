@@ -1,5 +1,7 @@
 package com.serverd.plugin;
 
+import com.serverd.app.ServerdApplication;
+
 import java.io.File;
 
 /**
@@ -10,14 +12,15 @@ public class PluginUtils {
 	/**
 	 * Loading plugin from classpath by plugin name.
 	 * @param className Main plugin class name
+	 * @param pluginManager Plugin manager.
 	 * @return Plugin instance.
 	 * @throws PluginLoadException when plugin load failed.
 	 */
-	public static Plugin loadPluginFromClassName(String className) throws PluginLoadException {
-		Plugin plugin = loadPluginInstanceFromClassName(className);
+	public static Plugin loadPluginFromClassName(String className,PluginManager pluginManager) throws PluginLoadException {
+		Plugin plugin = loadPluginInstanceFromClassName(className,pluginManager);
 		
 		plugin.start();
-		PluginManager.addPlugin(plugin);
+		pluginManager.addPlugin(plugin);
 		
 		return plugin;
 	}
@@ -25,10 +28,11 @@ public class PluginUtils {
 	/**
 	 * Loading plugin object without starting it from classpath by plugin name.
 	 * @param className Main plugin class name.
+	 * @param pluginManager Plugin manager.
 	 * @return Plugin instance.
 	 * @throws PluginLoadException when plugin load failed.
 	 */
-	public static Plugin loadPluginInstanceFromClassName(String className) throws PluginLoadException  {
+	public static Plugin loadPluginInstanceFromClassName(String className, PluginManager pluginManager) throws PluginLoadException  {
 		try {
 			String classFile = className.replace(".", File.separator) + ".class";
 			
@@ -36,7 +40,7 @@ public class PluginUtils {
 			
 			ServerdPlugin instance = (ServerdPlugin) classToLoad.getDeclaredConstructor().newInstance();
 
-            return new Plugin(classFile,instance);
+            return new Plugin(classFile,pluginManager,instance);
 		} catch (ClassNotFoundException e) {
 			throw new PluginLoadException(className,"Plugin Main class not found",e);
 		} catch (NoClassDefFoundError e) {
@@ -51,10 +55,10 @@ public class PluginUtils {
 	 * @param appClass Main app class name.
 	 * @throws PluginLoadException when plugin load failed.
 	 */
-	public static void loadPluginAsApp(String appClass) throws PluginLoadException {
-		Plugin plugin = PluginUtils.loadPluginInstanceFromClassName(appClass);
+	public static void loadPluginAsApp(String appClass,PluginManager pluginManager) throws PluginLoadException {
+		Plugin plugin = PluginUtils.loadPluginInstanceFromClassName(appClass,pluginManager);
 		plugin.markAsApp();
-		PluginManager.addPlugin(plugin);
+		pluginManager.addPlugin(plugin);
 		plugin.start();
 	}
 	

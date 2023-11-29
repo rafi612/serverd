@@ -1,5 +1,6 @@
 package com.serverd.plugin;
 
+import com.serverd.app.ServerdApplication;
 import com.serverd.plugin.listener.ConnectListener;
 import com.serverd.plugin.listener.ExecutionController;
 import com.serverd.server.Server;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 
 import com.serverd.command.Command;
 import com.serverd.log.Log;
+import com.serverd.server.ServerManager;
 
 /**
  * Plugin instance class.
@@ -32,15 +34,18 @@ public class Plugin {
 	private Log log;
 	
 	public String name;
-	
+
+	private PluginManager pluginManager;
+
 	/**
 	 * Plugin class constructor.
 	 * @param name Name of plugin
 	 * @param instance Instance of loaded plugin
 	 */
-	public Plugin(String name,ServerdPlugin instance) {
+	public Plugin(String name,PluginManager pluginManager,ServerdPlugin instance) {
 		this.name = name;
 		this.instance = instance;
+		this.pluginManager = pluginManager;
 	}
 	
 	/**
@@ -167,11 +172,15 @@ public class Plugin {
 	 * @return File object
 	 */
 	public File loadWorkspace() {
-		File file = isApp && PluginManager.pluginAppDataDir != null ? PluginManager.pluginAppDataDir : new File(PluginManager.pluginDataDir,info.name);
+		File file = isApp && pluginManager.pluginAppDataDir != null ? pluginManager.pluginAppDataDir : new File(pluginManager.pluginDataDir,info.name);
 		if (!file.exists())
 			file.mkdir();
 		
 		return file;
+	}
+
+	public ServerdApplication getApp() {
+		return pluginManager.getApp();
 	}
 	
 	/**

@@ -14,12 +14,12 @@ public class PluginsList extends Command {
 	
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException {
-		String[] pluginNames = PluginManager.listPluginsName();
+		String[] pluginNames = client.getApp().getPluginManager().listPluginsName();
 		
 		if (pluginNames.length > 0) {
 			String message = "Plugins installed:\n";
 			for (String name : pluginNames) 
-				message += name + "\tEnable:" + PluginManager.getByFileName(name).isRunned() + "\n";
+				message += name + "\tEnable:" + client.getApp().getPluginManager().getByFileName(name).isRunned() + "\n";
 			send(client,message);
 		}
 		else send(client,"No plugins installed");

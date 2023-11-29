@@ -2,16 +2,28 @@ package com.serverd.command;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.serverd.app.ServerdApplication;
 import com.serverd.client.ClientManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.serverd.client.Client;
 import com.serverd.plugin.Plugin;
 
 class CommandTest {
+
+	ServerdApplication app;
+	ClientManager clientManager;
+
+	@BeforeEach
+	void setUp() {
+		app = new ServerdApplication();
+		clientManager = app.getClientManager();
+	}
+
 	@Test
 	void checkArgsWithClient_Test() {
-		ClientManager clientManager = new ClientManager();
+
 		TestClient client = new TestClient(clientManager);
 		
 		Command command = new Command() {

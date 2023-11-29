@@ -117,9 +117,9 @@ public class UDPServer extends SelectableServer {
 		
 		dc.register(selector, SelectionKey.OP_READ,client);
 		
-		log.info("Connection founded in " + client.getIP() + ":" + client.getPort());	
-		
-    	client.setProcessor(getProcessorFactory().get(client));
+		log.info("Connection founded in " + client.getIP() + ":" + client.getPort());
+
+		setupClientProcessor(client,getProcessorFactory().get(client));
 		clientManager.setupClient(client);
 		
 		byte[] data = new byte[buffer.limit()];

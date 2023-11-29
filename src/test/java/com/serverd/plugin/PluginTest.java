@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 
+import com.serverd.app.ServerdApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,9 @@ class PluginTest
 	
 	Plugin plugin;
 	TestPlugin instance;
+
+	ServerdApplication app;
+	PluginManager pluginManager;
 	
 	private static class TestPlugin implements ServerdPlugin {
 		public Action action = Action.OK;
@@ -54,7 +58,10 @@ class PluginTest
 
 	@BeforeEach
 	void setUp() {
-		plugin = new Plugin("test",instance = new TestPlugin());
+		app = new ServerdApplication();
+		pluginManager = app.getPluginManager();
+
+		plugin = new Plugin("test",pluginManager,instance = new TestPlugin());
 		plugin.getInfo().name = "Test";
 	}
 	
@@ -107,10 +114,10 @@ class PluginTest
 	//First repeat create workspace, second repeat load exists workspace
 	@RepeatedTest(2)
 	void loadWorkspace_Test() {
-		PluginManager.pluginDataDir = tempDir;
+		pluginManager.pluginDataDir = tempDir;
 		
 		File workspace = plugin.loadWorkspace();
 		
-		assertEquals(workspace.getAbsolutePath(), new File(PluginManager.pluginDataDir, plugin.getInfo().name).getAbsolutePath());
+		assertEquals(new File(pluginManager.pluginDataDir, plugin.getInfo().name).getAbsolutePath(),workspace.getAbsolutePath());
 	}
 }

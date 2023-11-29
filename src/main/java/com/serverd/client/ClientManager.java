@@ -3,6 +3,7 @@ package com.serverd.client;
 import java.io.IOException;
 import java.util.HashMap;
 
+import com.serverd.app.ServerdApplication;
 import com.serverd.log.Log;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.PluginManager;
@@ -17,6 +18,12 @@ public class ClientManager {
 	public HashMap<Integer,Client> clients = new HashMap<>();
 	
 	private Log log = new Log("ServerD");
+
+	private final ServerdApplication app;
+
+	public ClientManager(ServerdApplication app) {
+		this.app = app;
+	}
 	
 	/**
 	 * Deleting client.
@@ -35,7 +42,7 @@ public class ClientManager {
 			client.unjoin();
 		
 		//plugin connect listener
-		for (Plugin plugin : PluginManager.getPlugins())
+		for (Plugin plugin : app.getPluginManager().getPlugins())
 			for (ConnectListener cl : plugin.connectListeners) {
 				try {
 					cl.onDisconnect(plugin,client);
@@ -57,10 +64,6 @@ public class ClientManager {
 		log.info("Closing clients...");
 		for (Client client : clients.values())
 			client.closeClient();
-		
-		log.info("Stopping plugins...");
-		for (Plugin plugin : PluginManager.getPlugins())
-			plugin.stop();
 	}
 	
 	/**
@@ -82,9 +85,13 @@ public class ClientManager {
 	 */
 	public void setupClient(Client client) throws IOException {
 		//plugin connect listener
-		for (Plugin plugin : PluginManager.getPlugins())
+		for (Plugin plugin : app.getPluginManager().getPlugins())
 			for (ConnectListener cl : plugin.connectListeners)
 				cl.onConnect(plugin,client);
+	}
+
+	public ServerdApplication getApp() {
+		return app;
 	}
 	
 	/**

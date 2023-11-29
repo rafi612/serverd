@@ -3,6 +3,7 @@ package com.serverd.server;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.serverd.app.ServerdApplication;
 import com.serverd.client.ClientManager;
 import com.serverd.client.processor.Processor;
 import com.serverd.client.processor.ProcessorFactory;
@@ -22,6 +23,13 @@ public class ServerManager {
 	private UDPServer udpServer;
 	
 	private ProcessorFactory defaultProcessorFactory;
+
+	private ServerdApplication app;
+
+
+	public ServerManager(ServerdApplication app) {
+		this.app = app;
+	}
 	
 	/**
 	 * Returning array of added server.
@@ -124,6 +132,7 @@ public class ServerManager {
 	 */
 	public void addServer(Server server) {
 		server.setServerManager(this);
+		server.setApp(app);
 		servers.add(server);
 	}
 	

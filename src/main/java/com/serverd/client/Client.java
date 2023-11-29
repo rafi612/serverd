@@ -2,6 +2,7 @@ package com.serverd.client;
 
 import java.io.IOException;
 
+import com.serverd.app.ServerdApplication;
 import com.serverd.client.processor.Processor;
 import com.serverd.command.CommandProcessor;
 import com.serverd.log.Log;
@@ -81,7 +82,7 @@ public class Client {
 	 * Client class constructor
 	 * @param id Client ID
 	 */
-	public Client(int id,ClientManager clientManager) {
+	public Client(int id, ClientManager clientManager) {
 		this.id = id;
 		this.clientManager = clientManager;
 		
@@ -281,6 +282,10 @@ public class Client {
 	 */
 	public ClientManager getClientManager() {
 		return clientManager;
+	}
+
+	public ServerdApplication getApp() {
+		return clientManager.getApp();
 	}
 	
 	/**

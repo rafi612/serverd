@@ -1,5 +1,7 @@
 package com.serverd.client;
 
+import com.serverd.app.ServerdApplication;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -25,7 +27,7 @@ public class UDPClient extends SelectableClient {
 	 * @param udpSocket Datagram socket instance
 	 * @param address Client's address
 	 */
-	public UDPClient(int id,ClientManager clientManager,Selector selector,DatagramChannel udpSocket,SocketAddress address) {
+	public UDPClient(int id, ClientManager clientManager,Selector selector, DatagramChannel udpSocket, SocketAddress address) {
 		super(id,clientManager,selector);
 		
 		this.udpSocket = udpSocket;

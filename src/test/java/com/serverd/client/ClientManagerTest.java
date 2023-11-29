@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.serverd.app.ServerdApplication;
+import com.serverd.server.ServerManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,11 +18,17 @@ import com.serverd.plugin.Plugin.Info;
 
 class ClientManagerTest {
 
+	ServerdApplication app;
+
 	ClientManager clientManager;
+
+	PluginManager pluginManager;
 
 	@BeforeEach
 	void setUp() {
-		clientManager = new ClientManager();
+		app = new ServerdApplication();
+		clientManager = app.getClientManager();
+		pluginManager = app.getPluginManager();
 	}
 
 	@AfterEach
@@ -65,10 +73,9 @@ class ClientManagerTest {
 	void delete_IsDisconnectEventExecuting_Test() {
 		AtomicBoolean disconnectExecuted = new AtomicBoolean(false);
 		
-		Plugin plugin = new Plugin("test",new ServerdPlugin() {
+		Plugin plugin = new Plugin("test",pluginManager,new ServerdPlugin() {
 			@Override
-			public String init(Plugin plugin) 
-			{
+			public String init(Plugin plugin) {
 				plugin.addConnectListener(new ConnectListener() {
 					@Override
 					public void onDisconnect(Plugin plugin, Client client) {
@@ -91,7 +98,7 @@ class ClientManagerTest {
 			public void metadata(Info info) {}
 		});
 		plugin.start();
-		PluginManager.addPlugin(plugin);
+		pluginManager.addPlugin(plugin);
 		
 		Client client = new Client(0,clientManager);
 		clientManager.addClient(client);
@@ -122,37 +129,6 @@ class ClientManagerTest {
 		clientManager.shutdown();
 		
 		assertFalse(client.isConnected());
-	}
-	
-	@Test
-	void shutdown_StopPlugins_Test() {		
-		AtomicBoolean pluginStopped = new AtomicBoolean(false);
-		
-		Plugin plugin = new Plugin("test",new ServerdPlugin() {
-			@Override
-			public String init(Plugin plugin) 
-			{
-				return INIT_SUCCESS;
-			}
-			
-			@Override
-			public void work(Plugin plugin) {}
-			
-			@Override
-			public void stop(Plugin plugin) 
-			{
-				pluginStopped.set(true);
-			}
-			
-			@Override
-			public void metadata(Info info) {}
-			
-		});
-		
-		PluginManager.addPlugin(plugin);
-		clientManager.shutdown();
-		
-		assertTrue(pluginStopped.get());
 	}
 	
 	@Test

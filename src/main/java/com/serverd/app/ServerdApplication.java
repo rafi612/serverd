@@ -35,6 +35,10 @@ public class ServerdApplication {
 
 	public ServerdApplication(String name) {
 		this.name = name;
+		clientManager = new ClientManager(this);
+
+		serverManager = new ServerManager(this);
+		pluginManager = new PluginManager(this);
 	}
 
 	public void run() {
@@ -45,23 +49,19 @@ public class ServerdApplication {
 		if (config == null)
 			config = loadConfig();
 
-		clientManager = new ClientManager();
-		serverManager = new ServerManager();
-
-		pluginManager = new PluginManager();
-
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			serverManager.shutdown();
 			clientManager.shutdown();
+			pluginManager.shutdown();
 		}));
 
 		serverManager.addDefaultServers(clientManager,config);
 
 		try {
-			PluginManager.init(workdir);
+			pluginManager.init(workdir);
 			if (plugins) {
 				log.info("Loading plugins...");
-				PluginManager.loadPlugins();
+				pluginManager.loadPlugins();
 			}
 		} catch (Exception e) {
 			log.error("Error: " + e.getMessage());
@@ -71,7 +71,7 @@ public class ServerdApplication {
 		if (isLoadingApp) {
 			log.info("Loading app " + appClassName + "...");
 			try {
-				PluginUtils.loadPluginAsApp(appClassName);
+				PluginUtils.loadPluginAsApp(appClassName,pluginManager);
 			} catch (PluginLoadException e) {
 				if (e.getCause() instanceof ClassNotFoundException) {
 					System.err.println("Class " + appClassName + " not found");

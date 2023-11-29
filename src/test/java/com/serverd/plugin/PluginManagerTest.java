@@ -7,10 +7,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.serverd.app.ServerdApplication;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -24,6 +26,9 @@ class PluginManagerTest {
 	
 	@TempDir
 	File tempWorkDir;
+
+	ServerdApplication app;
+	PluginManager pluginManager;
 	
 	@Nested
 	class LoadPluginsFromFile {
@@ -34,65 +39,67 @@ class PluginManagerTest {
 		
 		@BeforeEach
 		void setUp() {
-			PluginManager.unloadAllPlugins();
-			
-			PluginManager.pluginDir = testPluginDir;
-			PluginManager.pluginsDisabled = List.of();
+			app = new ServerdApplication();
+			pluginManager = app.getPluginManager();
+			pluginManager.unloadAllPlugins();
+
+			pluginManager.pluginDir = testPluginDir;
+			pluginManager.pluginsDisabled = List.of();
 			jarFile = new File(testPluginDir,"TestPlugin.jar");
 		}
 		
 		@AfterEach
 		void tearDown() throws Exception {
-			PluginManager.unloadAllPlugins();
+			pluginManager.unloadAllPlugins();
 		}
 		
 		@Test
 		void loadPlugins_Test() {
-			assertDoesNotThrow(PluginManager::loadPlugins);
+			assertDoesNotThrow(pluginManager::loadPlugins);
 		}
 		
 		@Test
 		void loadPlugins_withPluginFile_Test() throws FileNotFoundException, IOException {
 			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), true, true);
 			
-			assertDoesNotThrow(PluginManager::loadPlugins);
+			assertDoesNotThrow(pluginManager::loadPlugins);
 		}
 		
 		@Test
 		void loadPlugins_withPluginFilePluginDisabled_Test() throws FileNotFoundException, IOException {
-			PluginManager.pluginsDisabled = List.of(jarFile.getName());
+			pluginManager.pluginsDisabled = List.of(jarFile.getName());
 			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), true, true);
 			
-			assertDoesNotThrow(PluginManager::loadPlugins);
-			assertFalse(PluginManager.getPluginByID(0).isRunned());
+			assertDoesNotThrow(pluginManager::loadPlugins);
+			assertFalse(pluginManager.getPluginByID(0).isRunned());
 		}
 		
 		@Test
-		void loadPlugins_withPluginFileCauseError_Test() throws FileNotFoundException, IOException {
+		void loadPlugins_withPluginFileCauseError_Test() throws IOException {
 			createPluginFile(jarFile, false, "test.class", true, true);
 			
-			assertDoesNotThrow(PluginManager::loadPlugins);
+			assertDoesNotThrow(pluginManager::loadPlugins);
 		}
 		
 		@Test
-		void load_Test() throws FileNotFoundException, IOException {
+		void load_Test() throws  IOException {
 			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), true, true);
 			
-			assertDoesNotThrow(() -> PluginManager.load(jarFile, true));
+			assertDoesNotThrow(() -> pluginManager.load(jarFile, true));
 		}
 		
 		@Test
-		void load_notEnabled_Test() throws FileNotFoundException, IOException {
+		void load_notEnabled_Test() throws IOException {
 			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), true, true);
 			
-			assertDoesNotThrow(() -> PluginManager.load(jarFile, false));
+			assertDoesNotThrow(() -> pluginManager.load(jarFile, false));
 		}
 		
 		@Test
 		void load_pluginMainClassNotExists_Test() throws FileNotFoundException, IOException {			
 			createPluginFile(jarFile, false, "test.class", true, true);
 			
-			var exception = assertThrows(PluginLoadException.class,() -> PluginManager.load(jarFile, true));
+			var exception = assertThrows(PluginLoadException.class,() -> pluginManager.load(jarFile, true));
 			assertTrue(exception.getCause() instanceof ClassNotFoundException);
 		}
 		
@@ -100,7 +107,7 @@ class PluginManagerTest {
 		void load_noManifestExists_Test() throws FileNotFoundException, IOException {
 			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), false, false);
 			
-			var exception = assertThrows(PluginLoadException.class,() -> PluginManager.load(jarFile, true));
+			var exception = assertThrows(PluginLoadException.class,() -> pluginManager.load(jarFile, true));
 			assertTrue(exception.getCause() instanceof Exception);
 		}
 		
@@ -108,7 +115,7 @@ class PluginManagerTest {
 		void load_noManifestPluginMainClassEntry_Test() throws FileNotFoundException, IOException {
 			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), true, false);
 			
-			assertThrows(PluginLoadException.class,() -> PluginManager.load(jarFile, false));
+			assertThrows(PluginLoadException.class,() -> pluginManager.load(jarFile, false));
 		}
 		
 		void createPluginFile(File file,boolean mainClass,String mainClassName,boolean hasManifest,boolean mainClassManifest) throws FileNotFoundException, IOException {
@@ -141,66 +148,95 @@ class PluginManagerTest {
 	
 	@BeforeEach
 	void setUp() throws Exception {
+		app = new ServerdApplication();
+		pluginManager = new PluginManager(app);
+		pluginManager.unloadAllPlugins();
+		pluginManager.init(tempWorkDir);
 		
-		PluginManager.init(tempWorkDir);
-		
-		plugin = PluginUtils.loadPluginFromClassName(PluginManagerTestPlugin.class.getName());
+		plugin = PluginUtils.loadPluginFromClassName(PluginManagerTestPlugin.class.getName(),pluginManager);
 	}
 	
 	@AfterEach
 	void tearDown() throws Exception {
-		PluginManager.unloadPlugin(plugin);
+		pluginManager.unloadPlugin(plugin);
 	}
 	
 	@Test
 	void getByFileName_Test() {
-		assertNotNull(PluginManager.getByFileName(plugin.name));
+		assertNotNull(pluginManager.getByFileName(plugin.name));
 	}
 	
 	@Test
 	void getPluginByID_Test() {
-		assertNotNull(PluginManager.getPluginByID(0));
+		assertNotNull(pluginManager.getPluginByID(0));
 	}
 	
 	@Test
 	void getPluginByID_IdLowerThanZero_Test() {
-		assertNull(PluginManager.getPluginByID(-1));
+		assertNull(pluginManager.getPluginByID(-1));
 	}
 	
 	@Test
 	void getPluginByID_IdGreaterThanMaxPlugin_Test() {
-		assertNull(PluginManager.getPluginByID(PluginManager.getPluginsAmountLoaded() + 1));
+		assertNull(pluginManager.getPluginByID(pluginManager.getPluginsAmountLoaded() + 1));
 	}
 	
 	@Test
 	void shouldGetPluginByIDReturnNullOnWrongID() {
-		assertNull(PluginManager.getPluginByID(10));
+		assertNull(pluginManager.getPluginByID(10));
 	}
 
 	@Test
 	void shouldGetByFileNameReturnNullOnWrongName() {
-		assertNull(PluginManager.getByFileName("Test"));
+		assertNull(pluginManager.getByFileName("Test"));
 	}
 	
 	@Test
 	void listPluginsName_Test() {
 		assertAll(
-			() -> assertEquals(PluginManager.listPluginsName().length,PluginManager.getPluginsAmountLoaded()),
-			() -> assertEquals(PluginManager.listPluginsName()[PluginManager.getIDByPlugin(plugin)],plugin.name)
+			() -> assertEquals(pluginManager.listPluginsName().length,pluginManager.getPluginsAmountLoaded()),
+			() -> assertEquals(pluginManager.listPluginsName()[pluginManager.getIDByPlugin(plugin)],plugin.name)
 		);
 	}
 	
 	@Test
 	void disablePlugin_Test() {
-		PluginManager.disablePlugin(plugin);
+		pluginManager.disablePlugin(plugin);
 		
 		assertFalse(plugin.isRunned());
 	}
 	
 	@Test
 	void EnablePlugin_Test() {
-		PluginManager.enablePlugin(plugin);
+		pluginManager.enablePlugin(plugin);
 		assertTrue(plugin.isRunned());
+	}
+
+	@Test
+	void shutdown_StopPlugins_Test() {
+		AtomicBoolean pluginStopped = new AtomicBoolean(false);
+		Plugin plugin = new Plugin("test",pluginManager,new ServerdPlugin() {
+			@Override
+			public String init(Plugin plugin) {
+				return INIT_SUCCESS;
+			}
+
+			@Override
+			public void work(Plugin plugin) {}
+
+			@Override
+			public void stop(Plugin plugin) {
+				pluginStopped.set(true);
+			}
+
+			@Override
+			public void metadata(Info info) {}
+		});
+
+		pluginManager.addPlugin(plugin);
+		pluginManager.shutdown();
+
+		assertTrue(pluginStopped.get());
 	}
 }
 

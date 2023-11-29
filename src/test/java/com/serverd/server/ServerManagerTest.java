@@ -1,5 +1,6 @@
 package com.serverd.server;
 
+import com.serverd.app.ServerdApplication;
 import com.serverd.config.Config;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,7 +9,8 @@ import org.junit.jupiter.api.Test;
 
 class ServerManagerTest {
 
-	ServerManager serverManager = new ServerManager();
+	ServerdApplication app;
+	ServerManager serverManager;
 	
 	static class TestServer extends Server {
 		public boolean isStarted,isStopped;
@@ -24,6 +26,8 @@ class ServerManagerTest {
 	
 	@BeforeEach
 	void setUp() {
+		app = new ServerdApplication();
+		serverManager = app.getServerManager();
 		serverManager.removeAllServers();
 	}
 

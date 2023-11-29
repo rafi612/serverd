@@ -2,20 +2,31 @@ package com.serverd.plugin;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.serverd.app.ServerdApplication;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.serverd.plugin.Plugin.Info;
 
-class PluginUtilsTest {	
+class PluginUtilsTest {
+
+	PluginManager pluginManager;
+	ServerdApplication app;
+
+	@BeforeEach
+	void setUp() {
+		app = new ServerdApplication();
+		pluginManager = app.getPluginManager();
+	}
 	
 	@AfterEach
 	void tearDown() {
-		PluginManager.unloadAllPlugins();
+		pluginManager.unloadAllPlugins();
 	}
 	
 	@Test
 	void loadPluginFromClassName_Test() {
-		assertDoesNotThrow(() -> PluginUtils.loadPluginFromClassName(PluginUtilsTestPlugin.class.getName()));
+		assertDoesNotThrow(() -> PluginUtils.loadPluginFromClassName(PluginUtilsTestPlugin.class.getName(),pluginManager));
 	}
 }
 

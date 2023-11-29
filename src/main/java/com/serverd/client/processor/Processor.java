@@ -1,5 +1,6 @@
 package com.serverd.client.processor;
 
+import com.serverd.app.ServerdApplication;
 import com.serverd.client.Client;
 import com.serverd.client.ClientManager;
 import com.serverd.log.Log;
@@ -17,6 +18,8 @@ public abstract class Processor {
 	
 	/** Is supporting joining */
 	protected boolean isSupportingJoining;
+
+	protected ServerdApplication app;
 	
 	/**
 	 * Processor class constructor.
@@ -73,5 +76,13 @@ public abstract class Processor {
 	 */
 	public boolean isSupportedJoining() {
 		return isSupportingJoining;
+	}
+
+	public ServerdApplication getApp() {
+		return app;
+	}
+
+	public void setApp(ServerdApplication app) {
+		this.app = app;
 	}
 }

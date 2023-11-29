@@ -2,6 +2,8 @@ package com.serverd.server;
 
 import java.io.IOException;
 
+import com.serverd.app.ServerdApplication;
+import com.serverd.client.Client;
 import com.serverd.client.ClientManager;
 import com.serverd.client.processor.Processor;
 import com.serverd.client.processor.ProcessorFactory;
@@ -40,6 +42,8 @@ public abstract class Server {
 	}
 
 	protected ServerManager serverManager;
+
+	protected ServerdApplication app;
 
 	/**
 	 * Server class constructor.
@@ -168,5 +172,18 @@ public abstract class Server {
 	 */
 	public void setPort(int port) {
 		this.port = port;
+	}
+
+	protected void setupClientProcessor(Client client, Processor processor) {
+		processor.setApp(app);
+		client.setProcessor(processor);
+	}
+
+	public ServerdApplication getApp() {
+		return app;
+	}
+
+	public void setApp(ServerdApplication app) {
+		this.app = app;
 	}
 }

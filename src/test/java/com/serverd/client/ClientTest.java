@@ -4,11 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 
+import com.serverd.app.ServerdApplication;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ClientTest {
+
+	ServerdApplication app;
 	Client client,client2;
 
 	ClientManager clientManager;
@@ -21,7 +24,8 @@ class ClientTest {
 	
 	@BeforeEach
 	void setUp() {
-		clientManager = new ClientManager();
+		app = new ServerdApplication();
+		clientManager = app.getClientManager();
 
 		client = new TestClient(0,clientManager);
 		client2 = new TestClient(1,clientManager);

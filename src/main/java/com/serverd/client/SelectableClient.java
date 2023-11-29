@@ -1,5 +1,7 @@
 package com.serverd.client;
 
+import com.serverd.app.ServerdApplication;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -26,7 +28,7 @@ public abstract class SelectableClient extends Client {
 	 * @param id client ID
 	 * @param selector client Selector object
 	 */
-	public SelectableClient(int id,ClientManager clientManager,Selector selector) {
+	public SelectableClient(int id, ClientManager clientManager,Selector selector) {
 		super(id,clientManager);
 		this.selector = selector;
 		

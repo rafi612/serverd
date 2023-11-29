@@ -14,7 +14,9 @@ public class PluginCommand extends Command {
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException {
 		if (checkArgs(args,client, 2)) {
-			Plugin p = PluginManager.getByFileName(args[1]);
+			PluginManager pluginManager = client.getApp().getPluginManager();
+
+			Plugin p = pluginManager.getByFileName(args[1]);
 			
 			if (p == null) {
 				send(client,error("Not found"));
@@ -22,7 +24,7 @@ public class PluginCommand extends Command {
 				if (p.isRunned()) {
 					send(client,error("Plugin is already runned"));
 				} else {
-					if (PluginManager.enablePlugin(p))
+					if (pluginManager.enablePlugin(p))
 						send(client,ok());
 					else
 						send(client,error("Plugin load failed"));
@@ -31,7 +33,7 @@ public class PluginCommand extends Command {
 				if (!p.isRunned()) {
 					send(client,error("Plugin is already stopped"));
 				} else {
-					PluginManager.disablePlugin(p);
+					pluginManager.disablePlugin(p);
 					send(client,ok());
 				}
 			} else if (args[0].equals("info")) {

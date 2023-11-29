@@ -65,7 +65,7 @@ public class CommandProcessor extends Processor {
 				
 				//execution controller
 				boolean command_accepted = true;
-				for (Plugin p : PluginManager.getPlugins()) {
+				for (Plugin p : client.getApp().getPluginManager().getPlugins()) {
 					if (!command_accepted)
 						break;
 					
@@ -86,7 +86,7 @@ public class CommandProcessor extends Processor {
 				Command comm = getCommandByName(command);
 				//search in plugins
 				if (comm == null)
-					for (Plugin p : PluginManager.getPlugins())
+					for (Plugin p : client.getApp().getPluginManager().getPlugins())
 						for (Command c : p.commands)
 							if (command.equals(c.command)) {
 								plugin = p;

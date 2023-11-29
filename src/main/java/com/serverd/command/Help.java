@@ -18,7 +18,7 @@ public class Help extends Command {
 		for (Command com : CommandProcessor.getCommandsList())
 			help += com.help + "\n";
 		
-		for (Plugin p : PluginManager.getPlugins())
+		for (Plugin p : client.getApp().getPluginManager().getPlugins())
 			for (Command com : p.commands)
 				help += com.help + "\n";
 		send(client,help);

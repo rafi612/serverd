@@ -3,6 +3,7 @@ package com.serverd.command;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.serverd.app.ServerdApplication;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -14,13 +15,18 @@ class CommandTestCase {
 	TestClient testClient;
 
 	ClientManager clientManager;
+	PluginManager pluginManager;
+
+	ServerdApplication app;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		clientManager = new ClientManager();
+		app = new ServerdApplication();
+		clientManager = app.getClientManager();
+		pluginManager = app.getPluginManager();
 
 		CommandProcessor.commands.clear();
-		PluginManager.plugins.clear();
+		pluginManager.plugins.clear();
 		clientManager.clients.clear();
 		
 		testClient = new TestClient(clientManager);

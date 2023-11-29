@@ -12,15 +12,21 @@ import com.serverd.plugin.PluginManager;
 class ServerdApplicationTest {
 
 	ClientManager clientManager;
+	PluginManager pluginManager;
+
+	ServerdApplication app;
+
 
 	@BeforeEach
 	void setUp() {
-		clientManager = new ClientManager();
+		app = new ServerdApplication();
+		clientManager = app.getClientManager();
+		pluginManager = app.getPluginManager();
 	}
 	
 	@AfterEach
 	void tearDown() throws Exception {
-		PluginManager.unloadAllPlugins();
+		pluginManager.unloadAllPlugins();
 	}
 
 	@Test
