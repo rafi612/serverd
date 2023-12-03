@@ -32,6 +32,14 @@ public abstract class Processor {
 	 * @param buffer Byte buffer to process.
 	 */
 	public abstract void receive(byte[] buffer);
+
+	/**
+	 * Handling exception thrown by client.
+	 * @param exception Exception to handle.
+	 */
+	public void handleError(Exception exception) {
+		client.log.error("Client " + client.getID() + " crashed: " + exception.getMessage());
+	}
 	
 	/**
 	 * Printing receive message.

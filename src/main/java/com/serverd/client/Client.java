@@ -358,7 +358,7 @@ public class Client {
 				unjoin();
 			
 			crashed = true;
-			log.error("Client " + id + " crashed: " + exception.getMessage());
+			processor.handleError(exception);
 			
 			closeClient();
 			ClientManager.delete(id);
