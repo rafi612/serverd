@@ -6,7 +6,8 @@ import com.serverd.log.Log;
 
 /**
  * Processor is used to process messages received by clients.
- * Each instance is assigned to a client. it can support joining, i.e. redirecting each message to the selected client,
+ * Each instance is assigned to a client. Instances are created by {@link ProcessorFactory}.
+ * It can support joining, i.e. redirecting each message to the selected client,
  * then adding the redirection yourself in the code. 
  * The rest is implemented top-down so that NIO clients know how to route messages.
  */
