@@ -349,7 +349,7 @@ public class Client {
 	}
 	
 	/**
-	 * Crash handler
+	 * Crash handler.
 	 * @param exception Exception
 	 */
 	public void crash(Exception exception) {
