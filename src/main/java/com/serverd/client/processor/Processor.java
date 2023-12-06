@@ -39,7 +39,13 @@ public abstract class Processor {
 	 * @param exception Exception to handle.
 	 */
 	public void handleError(Exception exception) {
+		if (client.isJoined())
+			client.unjoin();
+
 		client.log.error("Client " + client.getID() + " crashed: " + exception.getMessage());
+
+		client.closeClient();
+		ClientManager.delete(client.getID());
 	}
 	
 	/**

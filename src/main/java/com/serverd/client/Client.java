@@ -354,14 +354,8 @@ public class Client {
 	 */
 	public void crash(Exception exception) {
 		if (!crashed && connected) {
-			if (isJoined())
-				unjoin();
-			
 			crashed = true;
 			processor.handleError(exception);
-			
-			closeClient();
-			ClientManager.delete(id);
 		}
 	}	
 }
