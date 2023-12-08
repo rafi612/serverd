@@ -1,7 +1,6 @@
 package com.serverd.plugin;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Plugin utilities.
@@ -10,12 +9,12 @@ public class PluginUtils {
 	
 	/**
 	 * Loading plugin from classpath by plugin name.
-	 * @param classname Main plugin class name
+	 * @param className Main plugin class name
 	 * @return Plugin instance.
 	 * @throws PluginLoadException when plugin load failed.
 	 */
-	public static Plugin loadPluginFromClassName(String classname) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, PluginLoadException {
-		Plugin plugin = loadPluginInstanceFromClassName(classname);
+	public static Plugin loadPluginFromClassName(String className) throws IllegalArgumentException, SecurityException, PluginLoadException {
+		Plugin plugin = loadPluginInstanceFromClassName(className);
 		
 		plugin.start();
 		PluginManager.addPlugin(plugin);
@@ -25,25 +24,25 @@ public class PluginUtils {
 	
 	/**
 	 * Loading plugin object without starting it from classpath by plugin name.
-	 * @param classname Main plugin class name.
+	 * @param className Main plugin class name.
 	 * @return Plugin instance.
 	 * @throws PluginLoadException when plugin load failed.
 	 */
-	public static Plugin loadPluginInstanceFromClassName(String classname) throws PluginLoadException  {
+	public static Plugin loadPluginInstanceFromClassName(String className) throws PluginLoadException  {
 		try {
-			String classfile = classname.replace(".", File.separator) + ".class";
+			String classFile = className.replace(".", File.separator) + ".class";
 			
-			Class<?> classToLoad = PluginUtils.class.getClassLoader().loadClass(classname);
+			Class<?> classToLoad = PluginUtils.class.getClassLoader().loadClass(className);
 			
 			ServerdPlugin instance = (ServerdPlugin) classToLoad.getDeclaredConstructor().newInstance();
 
-            return new Plugin(classfile,instance);
+            return new Plugin(classFile,instance);
 		} catch (ClassNotFoundException e) {
-			throw new PluginLoadException(classname,"Plugin Main class not found",e);
+			throw new PluginLoadException(className,"Plugin Main class not found",e);
 		} catch (NoClassDefFoundError e) {
-			throw new PluginLoadException(classname,"Plugin load failed, can't load class: " + e.getMessage(),e);
+			throw new PluginLoadException(className,"Plugin load failed, can't load class: " + e.getMessage(),e);
 		} catch (Exception e) {
-			throw new PluginLoadException(classname,"Plugin load failed: " + e.getMessage(),e);
+			throw new PluginLoadException(className,"Plugin load failed: " + e.getMessage(),e);
 		}	
 	}
 	
