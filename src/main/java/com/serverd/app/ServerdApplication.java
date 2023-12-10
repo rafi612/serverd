@@ -1,6 +1,7 @@
 package com.serverd.app;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 
 import com.serverd.client.ClientManager;
@@ -29,36 +30,45 @@ public class ServerdApplication {
 	private String appClassName;
 	private boolean wasInitialized = false;
 
+	private final DirectorySchema directorySchema;
+
 	public ServerdApplication() {
 		this("serverd");
 	}
 
 	public ServerdApplication(String name) {
+		this(name,new DirectorySchema());
+	}
+
+	public ServerdApplication(String name, DirectorySchema directorySchema) {
 		this.name = name;
 
 		clientManager = new ClientManager(this);
 		serverManager = new ServerManager(this);
 		pluginManager = new PluginManager(this);
+
+		this.directorySchema = directorySchema;
 	}
 
 	public void init() {
-		System.out.println(splash);
-
-		createWorkDir();
-
-		if (config == null)
-			config = loadConfig();
-
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			serverManager.shutdown();
-			clientManager.shutdown();
-			pluginManager.shutdown();
-		}));
-
-		serverManager.addDefaultServers(clientManager,config);
-
 		try {
-			pluginManager.init(workdir);
+			System.out.println(splash);
+
+			createWorkDir();
+			directorySchema.init(workdir);
+
+			if (config == null)
+				config = loadConfig();
+
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+				serverManager.shutdown();
+				clientManager.shutdown();
+				pluginManager.shutdown();
+			}));
+
+			serverManager.addDefaultServers(clientManager,config);
+
+			pluginManager.init(workdir,directorySchema);
 			if (plugins) {
 				log.info("Loading plugins...");
 				pluginManager.loadPlugins();
@@ -104,7 +114,7 @@ public class ServerdApplication {
 
 	public Config loadConfig() {
 		try {
-			File configFile = new File(workdir,"config.properties");
+			File configFile = new File(directorySchema.get(workdir,DirectorySchema.SERVERD_ROOT_DIR),"config.properties");
 			Config.createIfNotExists(configFile, new Config(), "Default ServerD config file");
 			return Config.load(configFile, Config.class);
 		} catch (Exception e) {
@@ -144,6 +154,12 @@ public class ServerdApplication {
 		//create work dir
 		setWorkdir(new File(workingDir));
 		createWorkDir();
+
+		try {
+			directorySchema.init(workdir);
+		} catch (IOException e) {
+			log.error("Error while creating directories: " + e.getMessage());
+		}
 
 		//load config
 		Config config = loadConfig();
@@ -246,6 +262,9 @@ public class ServerdApplication {
 		return pluginManager;
 	}
 
+	public DirectorySchema getDirectorySchema() {
+		return directorySchema;
+	}
 
 	/**
 	 * Running ServerD and loading class as plugin to create self-contained app.

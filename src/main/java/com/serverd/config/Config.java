@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 import java.util.Properties;
 
+import com.serverd.app.DirectorySchema;
 import com.serverd.app.ServerdApplication;
 import com.serverd.main.Main;
 
@@ -125,7 +126,7 @@ public class Config {
 	 * @throws IOException when IO error.
 	 */
 	public static Config loadDefault(ServerdApplication app) throws IOException {
-		return Config.load(new File(app.getWorkdir(),"config.properties"), Config.class);
+		return Config.load(new File(app.getDirectorySchema().get(app.getWorkdir(), DirectorySchema.SERVERD_ROOT_DIR),"config.properties"), Config.class);
 	}
 	
 	@SuppressWarnings("unchecked")

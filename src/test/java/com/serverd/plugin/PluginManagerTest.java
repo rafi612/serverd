@@ -12,6 +12,7 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.serverd.app.DirectorySchema;
 import com.serverd.app.ServerdApplication;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -148,10 +149,13 @@ class PluginManagerTest {
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		app = new ServerdApplication();
+		DirectorySchema directorySchema = new DirectorySchema();
+		directorySchema.init(tempWorkDir);
+
+		app = new ServerdApplication("test",directorySchema);
 		pluginManager = new PluginManager(app);
 		pluginManager.unloadAllPlugins();
-		pluginManager.init(tempWorkDir);
+		pluginManager.init(tempWorkDir,directorySchema);
 		
 		plugin = PluginUtils.loadPluginFromClassName(PluginManagerTestPlugin.class.getName(),pluginManager);
 	}

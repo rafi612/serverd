@@ -13,6 +13,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+import com.serverd.app.DirectorySchema;
 import com.serverd.app.ServerdApplication;
 import com.serverd.log.Log;
 
@@ -41,24 +42,17 @@ public class PluginManager {
 	 * Init method.
 	 * @param workdir Working dir file
 	 */
-	public void init(File workdir) throws IOException {
-		pluginDir = new File(workdir,"plugins");
-		pluginDataDir = new File(workdir,"pluginsdata");
+	public void init(File workdir, DirectorySchema directorySchema) throws IOException {
+		pluginDir = directorySchema.get(workdir, directorySchema.PLUGIN_DIR);
+		pluginDataDir = directorySchema.get(workdir, directorySchema.PLUGINS_DATA_DIR);
 			
-		pluginDisabledFile = new File(workdir,"plugins_disabled.conf");
+		pluginDisabledFile = new File(directorySchema.get(workdir,directorySchema.SERVERD_ROOT_DIR), "plugins_disabled.conf");
 		
 		if (!workdir.getName().equals("serverd"))
-			pluginAppDataDir = new File(workdir,"appdata");
+			pluginAppDataDir = directorySchema.get(workdir, directorySchema.APP_DATA_DIR);
 		else
 			pluginAppDataDir = null;
-		
-		//create plugin dir
-		if (!pluginDir.exists() && !pluginDir.mkdir())
-			throw new IOException("Failed to create plugin dir");
-		
-		if (!pluginDataDir.exists() && !pluginDataDir.mkdir())
-			throw new IOException("Failed to create plugin data dir");
-		
+
 		if (!pluginDisabledFile.exists() && !pluginDisabledFile.createNewFile())
 			throw new IOException("Failed to create plugin disabled file");
 
