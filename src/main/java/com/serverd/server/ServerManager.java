@@ -74,6 +74,9 @@ public class ServerManager {
 			log.info(server.getName() + " was disabled");
 			return;
 		}
+
+		server.setServerManager(this);
+		server.setApp(app);
 			
 		new Thread(() -> {
 			try {
@@ -131,8 +134,6 @@ public class ServerManager {
 	 * @param server Server object.
 	 */
 	public void addServer(Server server) {
-		server.setServerManager(this);
-		server.setApp(app);
 		servers.add(server);
 	}
 	

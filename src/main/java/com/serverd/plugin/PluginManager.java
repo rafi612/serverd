@@ -43,13 +43,13 @@ public class PluginManager {
 	 * @param workdir Working dir file
 	 */
 	public void init(File workdir, DirectorySchema directorySchema) throws IOException {
-		pluginDir = directorySchema.get(workdir, directorySchema.PLUGIN_DIR);
-		pluginDataDir = directorySchema.get(workdir, directorySchema.PLUGINS_DATA_DIR);
+		pluginDir = directorySchema.get(workdir, DirectorySchema.PLUGIN_DIR);
+		pluginDataDir = directorySchema.get(workdir, DirectorySchema.PLUGINS_DATA_DIR);
 			
-		pluginDisabledFile = new File(directorySchema.get(workdir,directorySchema.SERVERD_ROOT_DIR), "plugins_disabled.conf");
+		pluginDisabledFile = new File(directorySchema.get(workdir, DirectorySchema.SERVERD_ROOT_DIR), "plugins_disabled.conf");
 		
 		if (!workdir.getName().equals("serverd"))
-			pluginAppDataDir = directorySchema.get(workdir, directorySchema.APP_DATA_DIR);
+			pluginAppDataDir = directorySchema.get(workdir, DirectorySchema.APP_DATA_DIR);
 		else
 			pluginAppDataDir = null;
 
