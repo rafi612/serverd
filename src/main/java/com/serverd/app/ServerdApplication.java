@@ -6,7 +6,6 @@ import java.nio.file.Paths;
 import com.serverd.client.ClientManager;
 import com.serverd.config.Config;
 import com.serverd.log.Log;
-import com.serverd.main.Main;
 import com.serverd.plugin.PluginLoadException;
 import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.PluginUtils;
@@ -16,18 +15,19 @@ import com.serverd.server.ServerManager;
  * Allows to run ServerD inside plugin to create self-contained app.
  */
 public class ServerdApplication {
-	private final String name;
-
-	private ClientManager clientManager;
-	private ServerManager serverManager;
-	private PluginManager pluginManager;
-	private String splash = "ServerD " + Main.VERSION;
-	private File workdir;
 	private final Log log = new Log("ServerD");
+	public static final String SERVERD_VERSION = "v1.0.0";
+	private final String name;
+	private final ClientManager clientManager;
+	private final ServerManager serverManager;
+	private final PluginManager pluginManager;
+	private String splash = "ServerD " + SERVERD_VERSION;
+	private File workdir;
 	private Config config;
 	private boolean plugins;
 	private boolean isLoadingApp;
 	private String appClassName;
+	private boolean wasInitialized = false;
 
 	public ServerdApplication() {
 		this("serverd");
@@ -35,13 +35,13 @@ public class ServerdApplication {
 
 	public ServerdApplication(String name) {
 		this.name = name;
-		clientManager = new ClientManager(this);
 
+		clientManager = new ClientManager(this);
 		serverManager = new ServerManager(this);
 		pluginManager = new PluginManager(this);
 	}
 
-	public void run() {
+	public void init() {
 		System.out.println(splash);
 
 		createWorkDir();
@@ -71,14 +71,21 @@ public class ServerdApplication {
 		if (isLoadingApp) {
 			log.info("Loading app " + appClassName + "...");
 			try {
-				PluginUtils.loadPluginAsApp(appClassName,pluginManager);
+				PluginUtils.loadPluginAsApp(appClassName, pluginManager);
 			} catch (PluginLoadException e) {
 				if (e.getCause() instanceof ClassNotFoundException) {
-					System.err.println("Class " + appClassName + " not found");
+					log.error("Class " + appClassName + " not found");
 					System.exit(1);
-				} else System.err.println("App load error:" + e.getMessage());
+				} else log.error("App load error:" + e.getMessage());
 			}
 		}
+
+		wasInitialized = true;
+	}
+
+	public void run() {
+		if (!wasInitialized)
+			init();
 
 		log.info("Starting servers...");
 		serverManager.init();
@@ -111,9 +118,14 @@ public class ServerdApplication {
 		return new File(ServerdApplication.getWorkDir(name));
 	}
 
-	public void loadApp(String className) {
+	public void loadPluginAppFromName(String className) {
 		isLoadingApp = true;
-		appClassName = className;
+		this.appClassName = className;
+	}
+
+	public void loadPluginApp(Class<?> appClass) {
+		isLoadingApp = true;
+		this.appClassName = appClass.getName();
 	}
 
 	public void parseCmdArgs(String[] args) {
@@ -187,7 +199,7 @@ public class ServerdApplication {
 		loadPlugins(plugins);
 
 		if (isLoadingApp())
-			loadApp(appClassName);
+			loadPluginAppFromName(appClassName);
 	}
 
 	public void loadPlugins(boolean b) {
@@ -274,7 +286,7 @@ public class ServerdApplication {
 		app.parseCmdArgs(args);
 		app.loadPlugins(otherPlugins);
 		app.setWorkdir(new File(workdir));
-		app.loadApp(appClass.getName());
+		app.loadPluginApp(appClass);
 		app.run();
 	}
 	

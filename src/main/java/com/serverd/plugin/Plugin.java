@@ -241,7 +241,7 @@ public class Plugin {
 	 * @param server Server instance
 	 */
 	public void addServer(Server server) {
-		//ServerManager.loadServer(server);
+		getApp().getServerManager().loadServer(server);
 		servers.add(server);
 	}
 	

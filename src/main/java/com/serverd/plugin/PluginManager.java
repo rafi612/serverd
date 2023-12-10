@@ -31,7 +31,7 @@ public class PluginManager {
 
 	private final Log log = new Log("Plugin Manager");
 
-	private ServerdApplication app;
+	private final ServerdApplication app;
 
 	public PluginManager(ServerdApplication app) {
 		this.app = app;
