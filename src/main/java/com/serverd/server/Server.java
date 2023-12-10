@@ -17,7 +17,7 @@ public abstract class Server {
 	
 	/** Is enabled*/
 	protected boolean isEnabled = true;
-	/** Is runned*/
+	/** Is runned */
 	protected boolean isRunned;
 
 	/** IP */
@@ -87,7 +87,7 @@ public abstract class Server {
 	}
 	
 	/**
-	 * @return true if server is runned.
+	 * @return true if server is run.
 	 */
 	public boolean isRunned() {
 		return isRunned;
