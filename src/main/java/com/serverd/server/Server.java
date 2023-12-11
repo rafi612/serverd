@@ -14,19 +14,15 @@ import com.serverd.log.Log;
 public abstract class Server {
 	/** Logger */
 	protected Log log;
-	
 	/** Is enabled*/
 	protected boolean isEnabled = true;
 	/** Is runned */
 	protected boolean isRunned;
-
 	/** IP */
 	protected String ip;
 	/** Port */
 	protected int port;
-	
 	private String name;
-	
 	/** Config */
 	protected Config config;
 	
@@ -127,4 +123,27 @@ public abstract class Server {
 	 * @throws IOException if server throws I/O error.
 	 */
 	public abstract void stop() throws IOException;
+
+	/**
+	 * @return Server IP Address.
+	 */
+	public String getIp() {
+		return ip;
+	}
+
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	/**
+	 * @return Server port.
+	 */
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
 }
