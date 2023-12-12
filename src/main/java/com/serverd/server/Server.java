@@ -127,7 +127,7 @@ public abstract class Server {
 	/**
 	 * @return Server IP Address.
 	 */
-	public String getIp() {
+	public String getIP() {
 		return ip;
 	}
 
