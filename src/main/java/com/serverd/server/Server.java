@@ -132,7 +132,11 @@ public abstract class Server {
 	}
 
 
-	public void setIp(String ip) {
+	/**
+	 * Setting server IP.
+	 * @param ip Server IP
+	 */
+	public void setIP(String ip) {
 		this.ip = ip;
 	}
 
@@ -143,6 +147,10 @@ public abstract class Server {
 		return port;
 	}
 
+	/**
+	 * Setting server port.
+	 * @param port Server port
+	 */
 	public void setPort(int port) {
 		this.port = port;
 	}
