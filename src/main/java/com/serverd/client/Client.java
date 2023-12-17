@@ -23,9 +23,8 @@ public class Client {
 	public static final int BUFFER = 65536;
 	
 	private String name;
-	
-	/** Logger */
-	public Log log;
+
+	private final Log log;
 	
 	private boolean onceJoin = false;
 	
@@ -279,7 +278,14 @@ public class Client {
 	 * @return String message
 	 */
 	public String toMessage(byte[] buffer) {
-		return new String(buffer,0,buffer.length);
+		return new String(buffer);
+	}
+
+	/**
+	 * @return client logger.
+	 */
+	public Log log() {
+		return log;
 	}
 	
 	/**
