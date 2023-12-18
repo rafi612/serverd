@@ -24,7 +24,8 @@ public class Client {
 	
 	private String name;
 
-	private final Log log;
+	/** Logger */
+	protected final Log log;
 	
 	private boolean onceJoin = false;
 	

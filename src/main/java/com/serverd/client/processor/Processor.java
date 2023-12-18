@@ -42,7 +42,7 @@ public abstract class Processor {
 		if (client.isJoined())
 			client.unjoin();
 
-		client.log.error("Client " + client.getID() + " crashed: " + exception.getMessage());
+		client.log().error("Client " + client.getID() + " crashed: " + exception.getMessage());
 
 		client.closeClient();
 		ClientManager.delete(client.getID());

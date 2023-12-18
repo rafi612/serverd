@@ -20,7 +20,7 @@ public class Rawdata extends Command {
 				send(client,ok(),() -> {
 					int bufferSize = Integer.parseInt(args[0]);
 					
-					client.log.info("Raw data mode started," + bufferSize + " bytes can be sended");
+					client.log().info("Raw data mode started," + bufferSize + " bytes can be sended");
 					
 					Client joined = client.getJoiner();
 					

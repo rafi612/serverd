@@ -30,7 +30,7 @@ class CommandTestCase {
 	
 	public static void executeTest(Command command,String[] args,TestClient client) throws Exception {
 		String comm = command.command + " " + String.join(" ", args);
-		client.log.info("Executing command: " + comm);
+		client.log().info("Executing command: " + comm);
 		
 		CommandProcessor.commands.add(command);
 		client.getProcessor().receive(comm.getBytes());
