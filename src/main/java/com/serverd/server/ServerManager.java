@@ -48,7 +48,7 @@ public class ServerManager {
 	}
 	
 	/**
-	 * Initalizing Server Manager.
+	 * Initializing Server Manager.
 	 */
 	public static void init() {
 		resetDefaultProcessorFactory();
