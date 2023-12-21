@@ -14,9 +14,9 @@ import com.serverd.log.Log;
  */
 public class ServerManager {
 	
-	private static ArrayList<Server> servers = new ArrayList<>();
+	private static final ArrayList<Server> servers = new ArrayList<>();
 	
-	private static Log log = new Log("ServerD");
+	private static final Log log = new Log("ServerD");
 
 	private static TCPServer tcpServer;
 	private static UDPServer udpServer;
