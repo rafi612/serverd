@@ -59,7 +59,7 @@ public class TCPServer extends Server {
 	}
 
 	/**
-	 * Accepting connection.
+	 * Accepting connection from client.
 	 * @param clientSocketChannel Client channel.
 	 */
 	protected void acceptConnection(AsynchronousSocketChannel clientSocketChannel) {
