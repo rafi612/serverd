@@ -92,7 +92,7 @@ public class Log {
 	/**
 	 * Return a logger named corresponding to the class passed as parameter.
 	 * @param clazz The returned logger will be named after clazz.
-	 * @return Logger instance,
+	 * @return Logger instance.
 	 */
 	public static Log get(Class<?> clazz) {
 		return new Log(clazz.getName());
