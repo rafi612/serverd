@@ -9,7 +9,7 @@ import com.serverd.config.Config;
 import com.serverd.log.Log;
 
 /**
- * Server class
+ * Server class.
  */
 public abstract class Server {
 	/** Logger */
