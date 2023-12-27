@@ -42,11 +42,11 @@ public class CommandProcessor extends Processor {
 
 	@Override
 	public void printReceiveMessage(String message) {
-		client.log().info("<Reveived> " + message);
+		client.log().info("<Received> " + message);
 	}
 	@Override
 	public void printSendMessage(String message) {
-		client.log().info("<Sended> " + message);
+		client.log().info("<Sent> " + message);
 	}
 	@Override
 	public void printDeleteMessage(Client client,Log log) {

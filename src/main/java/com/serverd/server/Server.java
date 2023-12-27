@@ -14,7 +14,7 @@ import com.serverd.log.Log;
 public abstract class Server {
 	/** Logger */
 	protected Log log;
-	/** Is enabled*/
+	/** Is enabled */
 	protected boolean isEnabled = true;
 	/** Is runned */
 	protected boolean isRunned;
