@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class DirectorySchema {
 
-    HashMap<String,String> dirs = new HashMap<>();
+    private final HashMap<String,String> dirs = new HashMap<>();
 
     public static String PLUGIN_DIR = "plugins";
     public static String PLUGINS_DATA_DIR = "pluginsdata";

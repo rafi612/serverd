@@ -24,7 +24,7 @@ public class ServerManager {
 	
 	private ProcessorFactory defaultProcessorFactory;
 
-	private ServerdApplication app;
+	private final ServerdApplication app;
 
 
 	public ServerManager(ServerdApplication app) {
