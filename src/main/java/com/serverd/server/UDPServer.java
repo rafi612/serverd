@@ -47,7 +47,7 @@ public class UDPServer extends SelectableServer {
 		udpChannel.register(selector, SelectionKey.OP_READ);
 		
 		ByteBuffer buffer = ByteBuffer.allocate(Client.BUFFER);
-		while (isRunned()) {
+		while (isRunning()) {
 			//timeout checking and selecting
 			selectWithTimeout(selector, udpChannel,timeout);
 			

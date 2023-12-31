@@ -4,15 +4,27 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * Directory schema class.
+ * Directory schema is used to determinate directory structure of app.
+ * This can be passed as argument in constructor of {@link ServerdApplication}
+ */
 public class DirectorySchema {
 
     private final HashMap<String,String> dirs = new HashMap<>();
 
-    public static String PLUGIN_DIR = "plugins";
-    public static String PLUGINS_DATA_DIR = "pluginsdata";
-    public static String APP_DATA_DIR = "appdata";
-    public static String SERVERD_ROOT_DIR = ".";
+    /** Default plugins dir */
+    public static final String PLUGIN_DIR = "plugins";
+    /** Default plugins data dir*/
+    public static final String PLUGINS_DATA_DIR = "pluginsdata";
+    /** Default app data dir */
+    public static final String APP_DATA_DIR = "appdata";
+    /** Default root dir */
+    public static final String SERVERD_ROOT_DIR = ".";
 
+    /**
+     * Default constructor.
+     */
     public DirectorySchema() {
         add(PLUGIN_DIR);
         add(PLUGINS_DATA_DIR);
@@ -20,6 +32,11 @@ public class DirectorySchema {
         add(SERVERD_ROOT_DIR);
     }
 
+    /**
+     * Initializing directory schema.
+     * @param workdir Current work dir
+     * @throws IOException when I/O error will occur.
+     */
     public void init(File workdir) throws IOException {
         for (String id : dirs.keySet()) {
             File file = new File(workdir,dirs.get(id));
@@ -28,37 +45,73 @@ public class DirectorySchema {
         }
     }
 
+    /**
+     * Adding path to directory schema with same identifier as path.
+     * @param path Directory path
+     */
     public void add(String path) {
         add(path, path);
     }
 
-    public void add(String id, String path) {
-        if (dirs.containsKey(id))
+    /**
+     * Adding path to directory schema with custom key.
+     * @param key Path identifier.
+     * @param path Directory path
+     */
+    public void add(String key, String path) {
+        if (dirs.containsKey(key))
             throw new IllegalArgumentException("Directory schema already contains directory with this ID");
 
-        dirs.put(id,path);
+        dirs.put(key,path);
     }
 
+    /**
+     * Returning {@link File} object of given folder.
+     * @param workdir Current work dir.
+     * @param key Path identifier.
+     * @return {@link File} object of directory.
+     */
+    public File get(File workdir,String key) {
+        return new File(workdir,dirs.get(key).replace("/",File.pathSeparator));
+    }
+
+    /**
+     * Settings plugin dir
+     * @param dir Directory path.
+     * @return Self instance.
+     */
     public DirectorySchema pluginDir(String dir) {
         dirs.put(PLUGIN_DIR,dir);
         return this;
     }
 
+    /**
+     * Settings plugin data dir
+     * @param dir Directory path.
+     * @return Self instance.
+     */
     public DirectorySchema pluginDataDir(String dir) {
         dirs.put(PLUGINS_DATA_DIR,dir);
         return this;
     }
 
+    /**
+     * Settings app data dir
+     * @param dir Directory path.
+     * @return Self instance.
+     */
     public DirectorySchema appDataDir(String dir) {
         dirs.put(APP_DATA_DIR,dir);
         return this;
     }
-    public DirectorySchema serverdRootDir(String dir) {
+
+    /**
+     * Settings root dir
+     * @param dir Directory path.
+     * @return Self instance.
+     */
+    public DirectorySchema rootDir(String dir) {
         dirs.put(SERVERD_ROOT_DIR,dir);
         return this;
-    }
-
-    public File get(File workdir,String id) {
-        return new File(workdir,dirs.get(id).replace("/",File.pathSeparator));
     }
 }

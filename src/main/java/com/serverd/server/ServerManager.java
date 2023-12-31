@@ -16,14 +16,10 @@ import com.serverd.log.Log;
  */
 public class ServerManager {
 	private static final ArrayList<Server> servers = new ArrayList<>();
-	
 	private static final Log log = new Log("ServerD");
-
 	private TCPServer tcpServer;
 	private UDPServer udpServer;
-	
 	private ProcessorFactory defaultProcessorFactory;
-
 	private final ServerdApplication app;
 
 
@@ -80,7 +76,7 @@ public class ServerManager {
 			
 		new Thread(() -> {
 			try {
-				server.isRunned = true;
+				server.isRunning = true;
 				log.info("Starting " + server.getName());
 				server.start();
 			} catch (IOException e) {
@@ -105,7 +101,7 @@ public class ServerManager {
 	 */
 	public void stopServer(Server server) {
 		try {
-			server.isRunned = false;
+			server.isRunning = false;
 			server.stop();
 		} catch (IOException e) {
 			log.error("Shutdown error: " + e.getMessage());

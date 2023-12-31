@@ -54,7 +54,7 @@ public class TCPServer extends Server {
         });
         
     	//keep thread alive
-    	while (isRunned()) 
+    	while (isRunning())
     		Utils.sleep(1000);
 	}
 
@@ -79,7 +79,7 @@ public class TCPServer extends Server {
         	client.invokeReceive();
     		
     	} catch (IOException e) {
-    		if (isRunned())
+    		if (isRunning())
 				log.error("Server error: " + e.getMessage());
     	}
 	}

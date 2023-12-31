@@ -39,7 +39,7 @@ class UDPServerTest {
 	    UDPServer server = new UDPServer("0.0.0.0", 9998,clientManager, new Config());
 		server.setApp(app);
 
-	    server.isRunned = true;
+	    server.isRunning = true;
 	    
 	    assumeTrue(availableUDP(9998));
 	    

@@ -4,8 +4,12 @@ import com.serverd.app.ServerdApplication;
 
 public class Main {
 	public static void main(String[] args) {
-		ServerdApplication app = new ServerdApplication();
-		app.parseCmdArgs(args);
-		app.run();
+		try {
+			ServerdApplication app = new ServerdApplication();
+			app.parseCmdArgs(args);
+			app.run();
+		} catch (RuntimeException e) {
+			System.exit(-1);
+		}
 	}
 }

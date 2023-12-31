@@ -71,7 +71,7 @@ class ServerManagerTest {
 		for (Server server : servers)
 			assertAll(
 				() -> assertTrue(((TestServer)server).isStopped),
-				() -> assertFalse(server.isRunned)
+				() -> assertFalse(server.isRunning)
  			);
 	}
 

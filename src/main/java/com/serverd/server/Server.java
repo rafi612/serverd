@@ -19,31 +19,23 @@ public abstract class Server {
 	protected Log log;
 	/** Is enabled */
 	protected boolean isEnabled = true;
-	/** Is runned */
-	protected boolean isRunned;
+	/** Is running */
+	protected boolean isRunning;
 	/** IP */
 	protected String ip;
 	/** Port */
 	protected int port;
-	private String name;
 	/** Config */
 	protected Config config;
-	
-	private ProcessorFactory processorFactory;
-
+	/** Client manager*/
 	protected ClientManager clientManager;
-
-	public ServerManager getServerManager() {
-		return serverManager;
-	}
-
-	public void setServerManager(ServerManager serverManager) {
-		this.serverManager = serverManager;
-	}
-
+	/** Server manager*/
 	protected ServerManager serverManager;
-
+	/** Application object */
 	protected ServerdApplication app;
+
+	private ProcessorFactory processorFactory;
+	private String name;
 
 	/**
 	 * Server class constructor.
@@ -104,8 +96,8 @@ public abstract class Server {
 	/**
 	 * @return true if server is run.
 	 */
-	public boolean isRunned() {
-		return isRunned;
+	public boolean isRunning() {
+		return isRunning;
 	}
 	
 	/**
@@ -150,7 +142,6 @@ public abstract class Server {
 		return ip;
 	}
 
-
 	/**
 	 * Setting server IP.
 	 * @param ip Server IP
@@ -174,15 +165,43 @@ public abstract class Server {
 		this.port = port;
 	}
 
+	/**
+	 * @return {@link ServerManager} of this server.
+	 */
+	public ServerManager getServerManager() {
+		return serverManager;
+	}
+
+	/**
+	 * Setting {@link ServerManager} for this server.
+	 * @param serverManager Server manager object.
+	 */
+	public void setServerManager(ServerManager serverManager) {
+		this.serverManager = serverManager;
+	}
+
+	/**
+	 * Setting up processor object for client.
+	 * Can be used in inherited class.
+	 * @param client Client object.
+	 * @param processor Processor object.
+	 */
 	protected void setupClientProcessor(Client client, Processor processor) {
 		processor.setApp(app);
 		client.setProcessor(processor);
 	}
 
+	/**
+	 * @return {@link ServerdApplication} object of server.
+	 */
 	public ServerdApplication getApp() {
 		return app;
 	}
 
+	/**
+	 * Setting {@link ServerdApplication} object to server.
+	 * @param app {@link ServerdApplication} object.
+	 */
 	public void setApp(ServerdApplication app) {
 		this.app = app;
 	}

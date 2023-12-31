@@ -9,12 +9,12 @@ import java.nio.ByteBuffer;
  */
 public class AsyncClient extends Client {
 	
-	/**Write Buffer*/
+	/** Write Buffer */
 	protected ByteBuffer writeBuffer = ByteBuffer.allocate(BUFFER);
-	/**Receive Buffer*/
+	/** Receive Buffer */
 	protected ByteBuffer receiveBuffer = ByteBuffer.allocate(BUFFER);
 	
-	/**Read pending*/
+	/** Read pending */
 	protected boolean readPending = false;
 	
 	private Runnable afterReceive;
