@@ -45,7 +45,7 @@ public abstract class Server {
 	 * @param config Global config
 	 */
 	public Server(String name, String ip, int port,ClientManager clientManager,Config config) {
-		log = new Log(name);
+		log = Log.get(getClass());
 		
 		this.name = name;
 		this.ip = ip;

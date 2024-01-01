@@ -19,7 +19,7 @@ public class ServerdApplication {
 	/** ServerD version */
 	public static final String SERVERD_VERSION = "v1.0.0";
 
-	private final Log log = new Log("ServerD");
+	private final Log log = Log.get(ServerdApplication.class);
 	private final String name;
 	private final ClientManager clientManager;
 	private final ServerManager serverManager;

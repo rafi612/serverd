@@ -16,7 +16,7 @@ import com.serverd.log.Log;
  */
 public class ServerManager {
 	private static final ArrayList<Server> servers = new ArrayList<>();
-	private static final Log log = new Log("ServerD");
+	private static final Log log = Log.get(ServerManager.class);
 	private TCPServer tcpServer;
 	private UDPServer udpServer;
 	private ProcessorFactory defaultProcessorFactory;
@@ -80,7 +80,7 @@ public class ServerManager {
 				log.info("Starting " + server.getName());
 				server.start();
 			} catch (IOException e) {
-				log.error("Server error: " + e.getMessage());
+				log.error("[" + server.getName() + "] Server error: " + e.getMessage());
 			}
 		},server.getName()).start();
 	}

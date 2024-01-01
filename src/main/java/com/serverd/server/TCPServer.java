@@ -49,7 +49,7 @@ public class TCPServer extends Server {
             	if (e instanceof AsynchronousCloseException)
             		return;
             	
-            	log.error("Server error: " + e.getMessage());
+            	log.error("TCP Server error: " + e.getMessage());
             }
         });
         
@@ -80,7 +80,7 @@ public class TCPServer extends Server {
     		
     	} catch (IOException e) {
     		if (isRunning())
-				log.error("Server error: " + e.getMessage());
+				log.error("TCP Server error: " + e.getMessage());
     	}
 	}
 

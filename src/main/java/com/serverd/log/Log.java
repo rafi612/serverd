@@ -43,50 +43,80 @@ public class Log {
 	 * Logging as Info level.
 	 * @param message Message to log.
 	 */
-	public synchronized void info(String message) {
-		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
-		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_GREEN + 
-				"INFO " + ANSI_RESET + message);
+	public void info(String message) {
+		log("INFO",ANSI_GREEN,message);
 	}
 	
 	/**
 	 * Logging as Warning level.
 	 * @param message Message to log.
 	 */
-	public synchronized void warn(String message) {
-		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
-		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_YELLOW + 
-				"WARN " + ANSI_RESET + message);
+	public void warn(String message) {
+		log("WARN",ANSI_YELLOW,message);
 	}
 	
 	/**
 	 * Logging as Error level.
 	 * @param message Message to log.
 	 */
-	public synchronized void error(String message) {
-		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
-		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_RED + 
-				"ERROR " + ANSI_RESET + message);
+	public void error(String message) {
+		log("ERROR",ANSI_RED,message);
 	}
 	
 	/**
 	 * Logging as Debug level.
 	 * @param message Message to log.
 	 */
-	public synchronized void debug(String message) {
-		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
-		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_PURPLE + 
-				"DEBUG " + ANSI_RESET + message);
+	public void debug(String message) {
+		log("DEBUG",ANSI_PURPLE,message);
 	}
 	
 	/**
 	 * Logging as Trace level.
 	 * @param message Message to log.
 	 */
-	public synchronized void trace(String message) {
+	public void trace(String message) {
+		log("TRACE",ANSI_BLUE,message);
+	}
+
+	/**
+	 * Logging as described level.
+	 * @param level Log level.
+	 * @param color Color ANSI code.
+	 * @param message Message.
+	 */
+	protected synchronized void log(String level,String color,String message) {
 		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
-		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + name  + "] " + ANSI_BLUE + 
-				"TRACE " + ANSI_RESET + message);
+		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + formatName(name)  + "] "
+				+ "-- "
+				+ color + level + " " + ANSI_RESET + message);
+	}
+
+	private String formatName(String name) {
+		StringBuilder sb = new StringBuilder();
+
+		String packageName = shortenPackageName(name);
+		sb.append(String.format("%-30s", packageName));
+		sb.append(" ");
+
+		return sb.toString();
+	}
+
+	private String shortenPackageName(String fullPackageName) {
+		String[] packages = fullPackageName.split("\\.");
+		StringBuilder sb = new StringBuilder();
+
+		if (packages.length > 1) {
+			for (int i = 0; i < packages.length - 2; i++) {
+				sb.append(packages[i].charAt(0)).append(".");
+			}
+			sb.append(packages[packages.length - 2]);
+			sb.append(".");
+		}
+
+		sb.append(packages[packages.length - 1]);
+
+		return sb.toString();
 	}
 
 	/**

@@ -30,7 +30,7 @@ public class PluginManager {
 
 	public ArrayList<Plugin> plugins = new ArrayList<>();
 
-	private final Log log = new Log("Plugin Manager");
+	private final Log log = Log.get(PluginManager.class);
 
 	private final ServerdApplication app;
 

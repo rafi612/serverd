@@ -49,6 +49,20 @@ public class Client {
 	public enum Type {
 		SENDER,RECEIVER,NONE;
 	}
+
+	/**
+	 * Logger for client.
+	 */
+	protected class ClientLog extends Log {
+		public ClientLog(String name) {
+			super(name);
+		}
+
+		@Override
+		protected synchronized void log(String level,String color,String message) {
+			super.log(level,color,"[Client " + id + "] " + message);
+		}
+	}
 	
 	/**
 	 * Client protocol.
@@ -89,7 +103,7 @@ public class Client {
 		connected = true;
 		name = "Client " + id;
 		
-		log = new Log("Client " + id);
+		log = new ClientLog(getClass().getName());
 	}
 	
 	/**

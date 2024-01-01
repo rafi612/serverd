@@ -17,7 +17,7 @@ public class ClientManager {
 	/** Client's hashmap*/
 	public HashMap<Integer,Client> clients = new HashMap<>();
 	
-	private Log log = new Log("ServerD");
+	private final Log log = Log.get(ClientManager.class);
 
 	private final ServerdApplication app;
 
