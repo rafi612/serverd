@@ -93,13 +93,7 @@ public class Log {
 	}
 
 	private String formatName(String name) {
-		StringBuilder sb = new StringBuilder();
-
-		String packageName = shortenPackageName(name);
-		sb.append(String.format("%-30s", packageName));
-		sb.append(" ");
-
-		return sb.toString();
+		return String.format("%-30s", shortenPackageName(name));
 	}
 
 	private String shortenPackageName(String fullPackageName) {
