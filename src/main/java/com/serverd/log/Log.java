@@ -101,13 +101,11 @@ public class Log {
 		StringBuilder sb = new StringBuilder();
 
 		if (packages.length > 1) {
-			for (int i = 0; i < packages.length - 2; i++) {
+			for (int i = 0; i < packages.length - 2; i++)
 				sb.append(packages[i].charAt(0)).append(".");
-			}
 			sb.append(packages[packages.length - 2]);
 			sb.append(".");
 		}
-
 		sb.append(packages[packages.length - 1]);
 
 		return sb.toString();
