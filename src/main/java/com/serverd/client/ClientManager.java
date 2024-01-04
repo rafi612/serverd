@@ -6,7 +6,6 @@ import java.util.HashMap;
 import com.serverd.app.ServerdApplication;
 import com.serverd.log.Log;
 import com.serverd.plugin.Plugin;
-import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.listener.ConnectListener;
 
 /**

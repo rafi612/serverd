@@ -3,7 +3,6 @@ package com.serverd.command;
 import java.io.IOException;
 
 import com.serverd.client.Client;
-import com.serverd.client.ClientManager;
 import com.serverd.plugin.Plugin;
 
 public class Disconnect extends Command {

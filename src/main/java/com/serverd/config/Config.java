@@ -14,7 +14,6 @@ import java.util.Properties;
 
 import com.serverd.app.DirectorySchema;
 import com.serverd.app.ServerdApplication;
-import com.serverd.main.Main;
 
 /**
  * Default config instance and config loader and writer.

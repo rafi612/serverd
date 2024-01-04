@@ -1,7 +1,5 @@
 package com.serverd.client;
 
-import com.serverd.app.ServerdApplication;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;

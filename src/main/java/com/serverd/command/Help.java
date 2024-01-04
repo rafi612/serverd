@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import com.serverd.client.Client;
 import com.serverd.plugin.Plugin;
-import com.serverd.plugin.PluginManager;
 
 public class Help extends Command {
 	protected Help() {

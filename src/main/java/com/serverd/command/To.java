@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import com.serverd.client.Client;
-import com.serverd.client.ClientManager;
 import com.serverd.client.Client.JoinException;
 import com.serverd.plugin.Plugin;
 

@@ -1,7 +1,5 @@
 package com.serverd.plugin;
 
-import com.serverd.app.ServerdApplication;
-
 import java.io.File;
 
 /**

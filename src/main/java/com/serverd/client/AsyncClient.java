@@ -1,7 +1,5 @@
 package com.serverd.client;
 
-import com.serverd.app.ServerdApplication;
-
 import java.nio.ByteBuffer;
 
 /**
