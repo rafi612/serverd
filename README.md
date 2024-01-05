@@ -82,7 +82,7 @@ To start application you can put this code into main method:
 ```java
 public class Example {
     public static void main(String[] args) {
-        ServerdApplication.run(ExamplePluginClass.class);
+        ServerdApplication.run(Example.class);
     }
 }
 ```
