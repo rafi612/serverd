@@ -85,18 +85,20 @@ public class Log {
 	 * @param color Color ANSI code.
 	 * @param message Message.
 	 */
-	protected synchronized void log(String level,String color,String message) {
-		String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
-		System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + formatName(name)  + "] "
-				+ "-- "
-				+ color + level + " " + ANSI_RESET + message);
+	protected void log(String level,String color,String message) {
+		synchronized (Log.class) {
+			String date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date());
+			System.out.println(ANSI_WHITE + date + ANSI_RESET + " [" + formatName(name)  + "] "
+					+ "-- "
+					+ color + level + " " + ANSI_RESET + message);
+		}
 	}
 
-	private String formatName(String name) {
+	private static String formatName(String name) {
 		return String.format("%-30s", shortenPackageName(name));
 	}
 
-	private String shortenPackageName(String fullPackageName) {
+	private static String shortenPackageName(String fullPackageName) {
 		String[] packages = fullPackageName.split("\\.");
 		StringBuilder sb = new StringBuilder();
 
