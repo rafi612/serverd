@@ -27,7 +27,7 @@ public class ServerdApplication {
 	private String splash = "ServerD " + SERVERD_VERSION;
 	private File workdir;
 	private Config config;
-	private boolean plugins;
+	private boolean plugins = true;
 	private boolean isLoadingApp;
 	private String appClassName;
 	private boolean wasInitialized = false;
@@ -264,7 +264,7 @@ public class ServerdApplication {
 	}
 
 	/**
-	 * Setting if app loads external plugins.
+	 * Setting if app loads external plugins. Plugins loading are enabled by default.
 	 * @param wantPlugins true if you want load plugins.
 	 */
 	public void loadPlugins(boolean wantPlugins) {

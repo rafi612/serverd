@@ -55,7 +55,7 @@ public class Plugin {
 	public boolean start() {
 		instance.metadata(info);
 		
-		log = new Log(info.name);
+		log = Log.get(instance.getClass());
 		
 		String errorMessage = instance.init(this);
 		
