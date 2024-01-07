@@ -72,7 +72,7 @@ public class DirectorySchema {
      * @return {@link File} object of directory.
      */
     public File get(File workdir,String key) {
-        return new File(workdir,dirs.get(key).replace("/",File.pathSeparator));
+        return new File(workdir,dirs.get(key).replace("/",File.separator));
     }
 
     /**
