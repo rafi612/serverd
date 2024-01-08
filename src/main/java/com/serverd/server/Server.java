@@ -53,8 +53,6 @@ public abstract class Server {
 		this.config = config;
 
 		this.clientManager = clientManager;
-		
-		resetProcessorFactory();
 	}
 	
 	/**
