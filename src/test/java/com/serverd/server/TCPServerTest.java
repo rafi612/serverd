@@ -9,13 +9,20 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.serverd.app.ServerdApplication;
-import com.serverd.client.Client;
-import com.serverd.client.ClientManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.serverd.config.Config;
 
 class TCPServerTest {
+
+	ServerdApplication app;
+
+	@BeforeEach
+	void setUp() {
+		app = new ServerdApplication();
+	}
+
 	private static boolean availableTCP(int port) {
 		try (ServerSocket server = new ServerSocket(port,50,InetAddress.getByName("0.0.0.0"))) {
 			return true;
@@ -27,8 +34,9 @@ class TCPServerTest {
 	
 	@Test
 	void startTcpServer_Test() throws IOException, InterruptedException {
-		ClientManager clientManager = new ServerdApplication().getClientManager();
-		TCPServer server = new TCPServer("0.0.0.0",9999,clientManager,new Config());
+		TCPServer server = new TCPServer("0.0.0.0",9999,app.getClientManager(),new Config());
+		server.setApp(app);
+		server.setServerManager(app.getServerManager());
 		
 	    assumeTrue(availableTCP(9999));
 

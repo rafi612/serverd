@@ -25,7 +25,7 @@ class ServerdApplicationTest {
 	}
 	
 	@AfterEach
-	void tearDown() throws Exception {
+	void tearDown() {
 		pluginManager.unloadAllPlugins();
 	}
 

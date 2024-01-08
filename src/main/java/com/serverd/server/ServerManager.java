@@ -19,7 +19,7 @@ public class ServerManager {
 	private static final Log log = Log.get(ServerManager.class);
 	private TCPServer tcpServer;
 	private UDPServer udpServer;
-	private ProcessorFactory defaultProcessorFactory;
+	private ProcessorFactory defaultProcessorFactory = (CommandProcessor::new);
 	private final ServerdApplication app;
 
 
@@ -55,8 +55,6 @@ public class ServerManager {
 	 * Initializing Server Manager.
 	 */
 	public void init() {
-		resetDefaultProcessorFactory();
-		
 		for (Server server : servers)
 			loadServer(server);
 	}
