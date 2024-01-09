@@ -71,7 +71,7 @@ public class UDPServer extends SelectableServer {
 					} else {
 						UDPClient client = (UDPClient) key.attachment();
 						try {
-							client.getProcessor().receive(client.rawdataReceive());
+							client.getProcessor().receive(client.receive());
 						} catch (IOException e) {
 							client.crash(e);
 							continue;

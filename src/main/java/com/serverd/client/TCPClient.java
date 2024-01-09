@@ -34,7 +34,7 @@ public class TCPClient extends AsyncClient {
 	public void send(String mess,SendContinuation continuation) throws IOException {
 		processor.printSendMessage(mess);
 		
-		rawdataSend(mess.getBytes(),continuation);
+		send(mess.getBytes(),continuation);
 	}
 	
 	@Override
@@ -72,7 +72,7 @@ public class TCPClient extends AsyncClient {
 	}
 	
 	@Override
-	public void rawdataSend(byte[] bytes,SendContinuation continuation) {
+	public void send(byte[] bytes, SendContinuation continuation) {
 		writeBuffer.clear();
 		writeBuffer.put(bytes);
 		writeBuffer.flip();

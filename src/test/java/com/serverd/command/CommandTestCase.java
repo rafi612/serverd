@@ -47,7 +47,7 @@ class CommandTestCase {
 		
 		while (((CommandProcessor)client.getProcessor()).getCurrentCommand() != null) 
 			if (client.receiveIndex < client.receiveQueue.size())
-				client.getProcessor().receive(client.rawdataReceive());
+				client.getProcessor().receive(client.receive());
 			else
 				break;
 		
@@ -103,7 +103,7 @@ class TestClient extends Client {
 	}
 	
 	@Override
-	public byte[] rawdataReceive() {
+	public byte[] receive() {
 		System.out.println(receiveIndex);
 		return receiveQueue.get(receiveIndex++);
 	}
@@ -116,7 +116,7 @@ class TestClient extends Client {
 	}
 	
 	@Override
-	public void rawdataSend(byte[] buffer,SendContinuation runnable) throws IOException {
+	public void send(byte[] buffer, SendContinuation runnable) throws IOException {
 		rawDataSendQueue.add(buffer);
 		runnable.invoke();
 	}

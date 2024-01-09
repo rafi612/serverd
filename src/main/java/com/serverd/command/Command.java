@@ -179,7 +179,7 @@ public abstract class Command implements Codes,Cloneable {
 	}
 	
 	/**
-	 * Wrapping {@link Client#rawdataSend(byte[], SendContinuation)} method in commands,
+	 * Wrapping {@link Client#send(byte[], SendContinuation)} method in commands,
 	 * automatically done command after sending.
 	 * @param client Client instance
 	 * @param bytes Bytes to send
@@ -190,14 +190,14 @@ public abstract class Command implements Codes,Cloneable {
 	}
 	
 	/**
-	 * Wrapping {@link Client#rawdataSend(byte[], SendContinuation)} method in commands.
+	 * Wrapping {@link Client#send(byte[], SendContinuation)} method in commands.
 	 * @param client Client instance
 	 * @param bytes Bytes to send
 	 * @param continuation Send continuation executed after send complete
 	 * @throws IOException when I/O error occurs.
 	 */
 	public void send(Client client,byte[] bytes,SendContinuation continuation) throws IOException {
-		client.rawdataSend(bytes, continuation);
+		client.send(bytes, continuation);
 	}
 	
 	/**

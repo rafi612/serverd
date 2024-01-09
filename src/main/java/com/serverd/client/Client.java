@@ -110,12 +110,12 @@ public class Client {
 	 * @return byte array of data
 	 * @throws IOException when socket throw error
 	 */
-	protected byte[] rawdataReceive() throws IOException {
+	protected byte[] receive() throws IOException {
 		return new byte[BUFFER];
 	}
 	
 	/**
-	 * Sending message without executing {@link SendContinuation}.
+	 * Sending string message without executing {@link SendContinuation}.
 	 * @param message Message to send
 	 * @throws IOException when socket throw error
 	 */
@@ -124,7 +124,7 @@ public class Client {
 	}
 	
 	/**
-	 * Sending message, when complete executing {@link SendContinuation}.
+	 * Sending string message, when complete executing {@link SendContinuation}.
 	 * @param message Message to send
 	 * @param continuation Send continuation handler
 	 * @throws IOException when socket throw error
@@ -132,21 +132,21 @@ public class Client {
 	public void send(String message,SendContinuation continuation) throws IOException {}
 	
 	/**
-	 * Sending raw data without executing {@link SendContinuation}.
+	 * Sending byte array, without executing {@link SendContinuation}.
 	 * @param bytes Byte array
 	 * @throws IOException when socket throw error
 	 */
-	public void rawdataSend(byte[] bytes) throws IOException {
-		rawdataSend(bytes,() -> {});
+	public void send(byte[] bytes) throws IOException {
+		send(bytes,() -> {});
 	}
 	
 	/**
-	 * Sending raw data, when complete executing {@link SendContinuation}.
+	 * Sending byte array, when complete executing {@link SendContinuation}.
 	 * @param bytes Byte array
 	 * @param continuation Send continuation handler
 	 * @throws IOException when socket throw error
 	 */
-	public void rawdataSend(byte[] bytes,SendContinuation continuation) throws IOException {}
+	public void send(byte[] bytes, SendContinuation continuation) throws IOException {}
 	
 	/**
 	 * Closing socket
