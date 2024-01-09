@@ -1,7 +1,7 @@
 package com.serverd.plugin;
 
 /**
- * Plugin load exception.
+ * Exception thrown when plugin load failed.
  */
 public class PluginLoadException extends Exception {
 	private static final long serialVersionUID = 1L;
@@ -30,7 +30,7 @@ public class PluginLoadException extends Exception {
 	}
 	
 	/**
-	 * @return plugin name.
+	 * Returns plugin name.
 	 */
 	public String getPluginName() {
 		return pluginName;

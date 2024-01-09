@@ -3,7 +3,7 @@ package com.serverd.plugin;
 import java.io.File;
 
 /**
- * Plugin utilities.
+ * Plugin utilities class.
  */
 public class PluginUtils {
 	

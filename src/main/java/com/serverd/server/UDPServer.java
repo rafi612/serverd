@@ -14,7 +14,7 @@ import com.serverd.client.UDPClient;
 import com.serverd.config.Config;
 
 /**
- * UDP Server class.
+ * Implementing server for UDP protocol.
  */
 public class UDPServer extends SelectableServer {
 	

@@ -13,7 +13,7 @@ import com.serverd.config.Config;
 import com.serverd.utils.Utils;
 
 /**
- * TCP Server class.
+ * Implementing server for TCP protocol.
  */
 public class TCPServer extends Server {
 	

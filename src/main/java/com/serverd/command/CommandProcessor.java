@@ -5,9 +5,7 @@ import java.util.Arrays;
 
 import com.serverd.client.Client;
 import com.serverd.client.processor.Processor;
-import com.serverd.log.Log;
 import com.serverd.plugin.Plugin;
-import com.serverd.plugin.PluginManager;
 import com.serverd.plugin.listener.ExecutionController;
 
 /**
@@ -51,7 +49,7 @@ public class CommandProcessor extends Processor {
 
 	public void receive(byte[] buffer) {
 		try {		
-			if (currentCommand == null || !currentCommand.isRunned()) {
+			if (currentCommand == null || !currentCommand.isRunning()) {
 				String command_str = new String(buffer,0,buffer.length);
 				printReceiveMessage(command_str);
 				
@@ -105,7 +103,7 @@ public class CommandProcessor extends Processor {
 					} 
 				} else {
 					currentCommand = cmd;
-					cmd.setRunned(true);
+					cmd.setRunning(true);
 					cmd.execute(args, client, plugin);
 				}
 			} else {
@@ -117,7 +115,7 @@ public class CommandProcessor extends Processor {
 	}
 	
 	/**
-	 * @return Current command.
+	 * Returns current command.
 	 */
 	public Command getCurrentCommand() {
 		return currentCommand;

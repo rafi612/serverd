@@ -18,7 +18,7 @@ import com.serverd.app.ServerdApplication;
 import com.serverd.log.Log;
 
 /**
- * Plugin manager.
+ * Class used to manage loaded plugins.
  */
 public class PluginManager {
 	public File pluginDir;
@@ -178,9 +178,8 @@ public class PluginManager {
 	}
 	
 	/**
-	 * Getting plugin instance by ID.
+	 * Returns plugin instance by ID.
 	 * @param id Plugin ID
-	 * @return Plugin instance by ID
 	 */
 	public Plugin getPluginByID(int id) {
 		if (id < 0 || id > plugins.size())
@@ -190,17 +189,15 @@ public class PluginManager {
 	
 	
 	/**
-	 * Getting plugin ID by plugin instance.
+	 * Returns plugin ID by plugin instance.
 	 * @param plugin Plugin instance
-	 * @return plugin ID
 	 */
 	public int getIDByPlugin(Plugin plugin) {
 		return plugins.indexOf(plugin);
 	}
 	
 	/**
-	 * Get plugins loaded amount.
-	 * @return plugin loaded amount
+	 * Returns plugins loaded amount.
 	 */
 	public int getPluginsAmountLoaded() {
 		return plugins.size();
@@ -228,14 +225,16 @@ public class PluginManager {
 	}
 	
 	/**
-	 * Returns all plugins.
-	 * @return all plugins table
+	 * Returns all plugins array.
 	 */
 	public Plugin[] getPlugins() {
 		return plugins.toArray(Plugin[]::new);
 	}
 
 
+	/**
+	 * Returns application context object.
+	 */
 	public ServerdApplication getApp() {
 		return app;
 	}

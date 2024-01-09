@@ -8,7 +8,8 @@ import com.serverd.command.CommandProcessor;
 import com.serverd.log.Log;
 
 /**
- * Client class.
+ * Representation of connected client.
+ * This class is meant to be extended by specific client implementations.
  */
 public class Client {
 	
@@ -149,35 +150,35 @@ public class Client {
 	public void send(byte[] bytes, SendContinuation continuation) throws IOException {}
 	
 	/**
-	 * Closing socket
+	 * Closing client (may close sockets etc.)
 	 */
 	public void closeClient() {
 		connected = false;
 	}
 	
 	/**
-	 * @return Client's IP
+	 * Returns client's IP
 	 */
 	public String getIP() {
 		return "";
 	}
 	
 	/**
-	 * @return Client's port
+	 * Returns client's port
 	 */
 	public int getPort() {
 		return 0;
 	}
 	
 	/**
-	 * @return true if client is connected
+	 * Returns true if client is connected
 	 */
 	public boolean isConnected() {
 		return connected;
 	}
 	
 	/**
-	 * @return true if client is joined
+	 * Returns true if client is joined
 	 */
 	public boolean isJoined() {
 		return joinedid != -1;
@@ -200,7 +201,7 @@ public class Client {
 	}
 	
 	/**
-	 * @return client joiner object.
+	 * Returns client joiner object.
 	 */
 	public Client getJoiner() {
 		return clientManager.getClient(getJoinedID());
@@ -230,21 +231,21 @@ public class Client {
 	}
 	
 	/**
-	 * @return Client's joined ID
+	 * Returns client's joined ID
 	 */
 	public int getJoinedID() {
 		return joinedid;
 	}
 	
 	/**
-	 * @return Client's ID 
+	 * Returns client's ID
 	 */
 	public int getID() {
 		return id;
 	}
 	
 	/**
-	 * @return Client's name
+	 * Returns client's name
 	 */
 	public String getName() {
 		return name;
@@ -259,14 +260,14 @@ public class Client {
 	}
 	
 	/**
-	 * @return Client protocol enum
+	 * Returns client protocol enum
 	 */
 	public Protocol getProtocol() {
 		return protocol;
 	}
 	
 	/**
-	 * @return Client type enum
+	 * Returns client type enum
 	 */
 	public Type getType() {
 		return type;
@@ -274,7 +275,7 @@ public class Client {
 	
 	
 	/**
-	 * @return Client processor
+	 * Returns client processor
 	 * @see Processor
 	 */
 	public Processor getProcessor() {
@@ -291,7 +292,7 @@ public class Client {
 	}
 
 	/**
-	 * @return Client manager of this client.
+	 * Returns client manager of this client.
 	 */
 	public ClientManager getClientManager() {
 		return clientManager;
@@ -311,7 +312,7 @@ public class Client {
 	}
 
 	/**
-	 * @return client logger.
+	 * Returns client logger object.
 	 */
 	public Log log() {
 		return log;
@@ -384,7 +385,7 @@ public class Client {
 	}
 	
 	/**
-	 * Crash handler.
+	 * Invoking exception handler. Can be invoked when client occurs exception.
 	 * @param exception Exception
 	 */
 	public void crash(Exception exception) {

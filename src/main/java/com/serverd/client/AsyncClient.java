@@ -43,8 +43,7 @@ public class AsyncClient extends Client {
 	
 
 	/**
-	 * Returning after receive handler.
-	 * @return after receive handler.
+	 * Returns after receive handler.
 	 */
 	public Runnable getAfterReceive() {
 		return afterReceive;

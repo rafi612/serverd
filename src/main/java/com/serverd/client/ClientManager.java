@@ -104,15 +104,14 @@ public class ClientManager {
 	}
 	
 	/**
-	 * Returning all clients.
-	 * @return Array of clients.
+	 * Returns array of all clients stored by this client manager.
 	 */
 	public Client[] getAllClients() {
 		return clients.values().toArray(Client[]::new);
 	}
 	
 	/**
-	 * @return clients amount number.
+	 * Returns clients amount number.
 	 */
 	public int getClientConnectedAmount() {
 		return clients.size();
@@ -121,7 +120,6 @@ public class ClientManager {
 	/**
 	 * Returns client instance by ID.
 	 * @param id Client ID.
-	 * @return Client instance.
 	 */
 	public Client getClient(int id) {
 		return clients.get(id);

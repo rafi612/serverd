@@ -146,7 +146,7 @@ public class ServerdApplication {
     }
 
 	/**
-	 * @return Default working directory for application.
+	 * Returns default working directory for application.
 	 */
 	public File getDefaultWorkDir() {
 		return new File(ServerdApplication.getWorkDir(name));
@@ -272,7 +272,7 @@ public class ServerdApplication {
 	}
 
 	/**
-	 * @return App splash string displayed on start of application.
+	 * Returns app splash string displayed on start of application.
 	 */
 	public String getSplash() {
 		return splash;
@@ -287,7 +287,7 @@ public class ServerdApplication {
 	}
 
 	/**
-	 * @return Config object of application.
+	 * Returns config object of application.
 	 */
 	public Config getConfig() {
 		return config;
@@ -302,7 +302,7 @@ public class ServerdApplication {
 	}
 
 	/**
-	 * @return Application working directory.
+	 * Returns application working directory.
 	 */
 	public File getWorkdir() {
 		return workdir;
@@ -325,28 +325,28 @@ public class ServerdApplication {
 	}
 
 	/**
-	 * @return {@link ClientManager} of application.
+	 * Returns {@link ClientManager} of application.
 	 */
 	public ClientManager getClientManager() {
 		return clientManager;
 	}
 
 	/**
-	 * @return {@link ServerManager} of application.
+	 * Returns {@link ServerManager} of application.
 	 */
 	public ServerManager getServerManager() {
 		return serverManager;
 	}
 
 	/**
-	 * @return {@link PluginManager} of application.
+	 * Returns {@link PluginManager} of application.
 	 */
 	public PluginManager getPluginManager() {
 		return pluginManager;
 	}
 
 	/**
-	 * @return {@link DirectorySchema} of application.
+	 * Returns {@link DirectorySchema} of application.
 	 */
 	public DirectorySchema getDirectorySchema() {
 		return directorySchema;
@@ -406,7 +406,6 @@ public class ServerdApplication {
 	
 	/**
 	 * Returns default working directory.
-	 * @return Working directory path.
 	 */
 	public static String getWorkDir(String name) {
 		String osName = System.getProperty("os.name").toLowerCase();

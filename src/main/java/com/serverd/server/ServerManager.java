@@ -13,6 +13,8 @@ import com.serverd.log.Log;
 
 /**
  * Server manager class.
+ * It maintains a list of servers, handles server initialization, loading, and shutdown procedures.
+ * Additionally, it provides methods for adding, removing servers, setting default processors, and obtaining default TCP and UDP servers.
  */
 public class ServerManager {
 	private static final ArrayList<Server> servers = new ArrayList<>();

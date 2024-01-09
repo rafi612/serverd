@@ -8,7 +8,7 @@ import java.nio.channels.InterruptedByTimeoutException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * TCP client class.
+ * Client class implementing TCP protocol.
  */
 public class TCPClient extends AsyncClient {	
 	

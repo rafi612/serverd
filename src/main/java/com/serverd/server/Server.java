@@ -12,7 +12,8 @@ import com.serverd.config.Config;
 import com.serverd.log.Log;
 
 /**
- * Server class.
+ * Class can be used to create server instance.
+ * This class is meant to be extended by specific server implementations.
  */
 public abstract class Server {
 	/** Logger */

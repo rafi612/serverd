@@ -41,7 +41,7 @@ public abstract class SelectableClient extends Client {
 	}
 	
 	/**
-	 * @return Read time.
+	 * Returns read time.
 	 */
 	public long getLastReadTime() {
 		return lastReadTime;
@@ -94,7 +94,7 @@ public abstract class SelectableClient extends Client {
 	}
 	
 	/**
-	 * @return SelectionKey for Client.
+	 * Returns {@link SelectionKey} for Client.
 	 */
 	public abstract SelectionKey getKey();
 	/**

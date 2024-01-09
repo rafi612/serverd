@@ -8,5 +8,8 @@ import com.serverd.client.Client;
  */
 @FunctionalInterface
 public interface ProcessorFactory {
+	/**
+	 * Produces {@link Processor} instance.
+	 */
 	Processor get(Client client);
 }

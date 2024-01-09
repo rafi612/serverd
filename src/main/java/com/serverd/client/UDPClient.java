@@ -9,13 +9,13 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 
 /**
- * UDP client class.
+ * Client class implementing UDP protocol.
  */
 public class UDPClient extends SelectableClient {
 	/** UDP Socket*/
 	protected DatagramChannel udpSocket;
 	
-	/** IP*/
+	/** Packet address*/
 	protected InetSocketAddress address;
 
 	/**

@@ -86,6 +86,9 @@ public abstract class Processor {
 		return isSupportingJoining;
 	}
 
+	/**
+	 * Returns application instance
+	 */
 	public ServerdApplication getApp() {
 		return app;
 	}

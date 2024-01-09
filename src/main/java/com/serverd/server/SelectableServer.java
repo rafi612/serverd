@@ -39,7 +39,7 @@ public abstract class SelectableServer extends Server {
 		selector.select(timeout);
 		if (timeout > 0 && System.currentTimeMillis() - lastTimeout >= timeout) {
 			for (SelectionKey key : selector.keys()) {
-				//check if can be readable
+				//check if channel can be readable
 				if (key.channel().equals(channel))
 					continue;
 				//check timeout

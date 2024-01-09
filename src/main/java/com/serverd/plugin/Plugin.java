@@ -131,9 +131,8 @@ public class Plugin {
 	}
 	
 	/**
-	 * Returning instance of plugin interface, can be used to access variables in plugin main object.
+	 * Returns instance of plugin interface, can be used to access variables in plugin main object.
 	 * @param <T> Target type
-	 * @return instance of plugin interface.
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getInstance() {
@@ -150,14 +149,14 @@ public class Plugin {
 	}
 	
 	/**
-	 * @return Plugin info object.
+	 * Returns plugin info object.
 	 */
 	public Info getInfo() {
 		return info;
 	}
 	
 	/**
-	 * @return true if plugin is runned.
+	 * Returns <code>true</code> if plugin is running.
 	 */
 	public boolean isRunned() {
 		return isRunned;
@@ -165,7 +164,7 @@ public class Plugin {
 
 	/**
 	 * Loading plugin workspace folder, if not exists, creating it.
-	 * @return File object
+	 * @return File object.
 	 */
 	public File loadWorkspace() {
 		File file = isApp && pluginManager.pluginAppDataDir != null ? pluginManager.pluginAppDataDir : new File(pluginManager.pluginDataDir,info.name);

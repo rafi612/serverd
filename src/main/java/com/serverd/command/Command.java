@@ -24,7 +24,7 @@ public abstract class Command implements Codes,Cloneable {
 	/** More arguments */
 	protected static final int ARGS_MORE = 0b00000100; 
 	
-	private boolean runned = false;
+	private boolean isRunning = false;
 	
 	/**
 	 * Receive continuation interface.
@@ -119,7 +119,7 @@ public abstract class Command implements Codes,Cloneable {
 	}
 	
 	/**
-	 * @return command name.
+	 * Returns command name.
 	 */
 	public String getName() {
 		return command;
@@ -129,22 +129,22 @@ public abstract class Command implements Codes,Cloneable {
 	 * Setting command state as done.
 	 */
 	public void done() {
-		runned = false;
+		isRunning = false;
 	}
 	
 	/**
-	 * @return true if command is runned.
+	 * Returns <code>true</code> if command is running.
 	 */
-	public boolean isRunned() {
-		return runned;
+	public boolean isRunning() {
+		return isRunning;
 	}
 	
 	/**
-	 * Setting if command is runned.
-	 * @param runned Runned
+	 * Settings if command is running.
+	 * @param isRunning is running.
 	 */
-	public void setRunned(boolean runned) {
-		this.runned = runned;
+	public void setRunning(boolean isRunning) {
+		this.isRunning = isRunning;
 	}
 	
 	/**

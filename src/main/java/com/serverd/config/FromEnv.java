@@ -7,6 +7,15 @@ import java.lang.annotation.*;
 
 /**
  * Getting config property from environment.
+ * <ul>
+ * <li>{@link String}</li>
+ * <li>{@link Integer}</li>
+ * <li>{@link Long}</li>
+ * <li>{@link Float}</li>
+ * <li>{@link Double}</li>
+ * <li>{@link Boolean}</li>
+ * </ul>
+ * Types are automatically parsed by {@link Config#load} function.
  */
 @Retention(RUNTIME)
 @Target(FIELD)
