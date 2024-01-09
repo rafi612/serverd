@@ -96,6 +96,10 @@ public class UDPServer extends SelectableServer {
 		}
 		udpChannel.close();
 	}
+
+	protected void printOpenMessage(Client client) {
+		log.info("Connection founded in " + client.getIP() + ":" + client.getPort());
+	}
 	
 	/**
 	 * Initializing UDP connection.
@@ -117,7 +121,7 @@ public class UDPServer extends SelectableServer {
 		
 		dc.register(selector, SelectionKey.OP_READ,client);
 		
-		log.info("Connection founded in " + client.getIP() + ":" + client.getPort());
+		printOpenMessage(client);
 
 		setupClientProcessor(client,getProcessorFactory().get(client));
 		clientManager.setupClient(client);

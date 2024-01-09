@@ -49,9 +49,9 @@ public class ClientManager {
 					log.error("Error in Disconnect Listener: " + e.getMessage());
 				}
 			}
-			
+
+		client.getProcessor().onClose();
 		client.closeClient();
-		client.getProcessor().printDeleteMessage(client, log);
 		
 		clients.remove(clientId);
 	}
@@ -83,6 +83,8 @@ public class ClientManager {
 	 * @throws IOException when {@link ConnectListener} throws error.
 	 */
 	public void setupClient(Client client) throws IOException {
+		client.getProcessor().onOpen();
+
 		//plugin connect listener
 		for (Plugin plugin : app.getPluginManager().getPlugins())
 			for (ConnectListener cl : plugin.connectListeners)

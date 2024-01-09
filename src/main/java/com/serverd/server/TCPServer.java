@@ -58,13 +58,17 @@ public class TCPServer extends Server {
     		Utils.sleep(1000);
 	}
 
+	protected void printOpenMessage() {
+		log.info("Connection accepted from client!");
+	}
+
 	/**
 	 * Accepting connection from client.
 	 * @param clientSocketChannel Client channel.
 	 */
 	protected void acceptConnection(AsynchronousSocketChannel clientSocketChannel) {
     	try {
-    		log.info("Connection accepted from client!");
+			printOpenMessage();
 
         	TCPClient client = new TCPClient(clientManager.getFreeClientID(),clientManager,clientSocketChannel,config.timeout);
        	    client.setProcessor(getProcessorFactory().get(client));

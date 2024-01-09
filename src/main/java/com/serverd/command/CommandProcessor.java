@@ -48,10 +48,6 @@ public class CommandProcessor extends Processor {
 	public void printSendMessage(String message) {
 		client.log().info("<Sent> " + message);
 	}
-	@Override
-	public void printDeleteMessage(Client client,Log log) {
-		log.info("Client " + client.getID() + " has been closed");
-	}
 
 	public void receive(byte[] buffer) {
 		try {		

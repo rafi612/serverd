@@ -16,7 +16,6 @@ public class Client {
 	
 	/** Connected */
 	protected boolean connected;
-	private boolean crashed = false;
 	
 	private int joinedid = -1;
 	
@@ -389,10 +388,6 @@ public class Client {
 	 * @param exception Exception
 	 */
 	public void crash(Exception exception) {
-		if (!crashed && connected) {
-			crashed = true;
-
-			processor.handleError(exception);
-		}
+		processor.handleError(exception);
 	}	
 }

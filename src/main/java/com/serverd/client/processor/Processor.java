@@ -2,7 +2,6 @@ package com.serverd.client.processor;
 
 import com.serverd.app.ServerdApplication;
 import com.serverd.client.Client;
-import com.serverd.client.ClientManager;
 import com.serverd.log.Log;
 
 /**
@@ -13,12 +12,16 @@ import com.serverd.log.Log;
  * The rest is implemented top-down so that NIO clients know how to route messages.
  */
 public abstract class Processor {
+
+	private static final Log log = Log.get(Processor.class);
+
 	/** Client*/
 	protected Client client;
 	
 	/** Is supporting joining */
 	protected boolean isSupportingJoining;
 
+	/** App context*/
 	protected ServerdApplication app;
 	
 	/**
@@ -30,12 +33,24 @@ public abstract class Processor {
 		this.client = client;
 		this.isSupportingJoining = isSupportingJoining;
 	}
+
+	/**
+	 * Executed when the client opens the connection.
+	 */
+	public void onOpen() {}
 	
 	/**
 	 * Processing received byte message.
 	 * @param buffer Byte buffer to process.
 	 */
 	public abstract void receive(byte[] buffer);
+
+	/**
+	 * Executed when the client closes the connection.
+	 */
+	public void onClose() {
+		log.info("Client " + client.getID() + " has been closed");
+	}
 
 	/**
 	 * Handling exception thrown by client.
@@ -62,13 +77,6 @@ public abstract class Processor {
 	 * @param message Send message.
 	 */
 	public void printSendMessage(String message) {}
-	
-	/**
-	 * Printing message when client was deleted and connection closed.
-	 * @param client Client instance.
-	 * @param log Logger from upstream class (Recently {@link ClientManager}).
-	 */
-	public void printDeleteMessage(Client client,Log log) {}
 
 	/**
 	 * Check if processor supporting joining client.
