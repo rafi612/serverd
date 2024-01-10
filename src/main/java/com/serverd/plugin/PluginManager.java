@@ -93,16 +93,16 @@ public class PluginManager {
 			
 			//getting class name
 			Manifest manifest = new Manifest(new URL("jar:" + file.toURI().toURL() + "!/" + JarFile.MANIFEST_NAME).openStream());
-			Attributes attribs = manifest.getMainAttributes();
+			Attributes attributes = manifest.getMainAttributes();
 			
-			if (attribs.getValue("Plugin-Main-Class") == null) {
+			if (attributes.getValue("Plugin-Main-Class") == null) {
 				classloader.close();
 				throw new PluginLoadException(file.getName(),"Broken plugin, Plugin-Main-Class manifest attribute not found");
 			}
 			
-			String classname = attribs.getValue("Plugin-Main-Class");
+			String className = attributes.getValue("Plugin-Main-Class");
 			
-			Class<?> classToLoad = Class.forName(classname, true, classloader);
+			Class<?> classToLoad = Class.forName(className, true, classloader);
 
 			ServerdPlugin instance = (ServerdPlugin) classToLoad.getDeclaredConstructor().newInstance();
 			Plugin plugin = new Plugin(file.getName(),this,instance);
