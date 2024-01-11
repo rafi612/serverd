@@ -77,8 +77,7 @@ public class PluginManager {
 	}
 	
 	/**
-	 * Load plugin from specific file, plugin must have <b>Plugin-Main-Class</b> attribute with class name .
-	 * in <b>manifest</b> to detect main class
+	 * Load plugin from specific file, plugin must have <b>Plugin-Main-Class</b> attribute with class name in <b>manifest</b> to detect main class.
 	 * @param file File to plugin
 	 * @param enable Enable plugin on load
 	 * @throws PluginLoadException when plugin was not successfully loaded.
