@@ -18,7 +18,7 @@ public class Client {
 	/** Connected */
 	protected boolean connected;
 	
-	private int joinedid = -1;
+	private int joinedId = -1;
 	
 	/** Max buffer size */
 	public static final int BUFFER = 65536;
@@ -181,7 +181,7 @@ public class Client {
 	 * Returns true if client is joined
 	 */
 	public boolean isJoined() {
-		return joinedid != -1;
+		return joinedId != -1;
 	}
 	
 	/**
@@ -234,7 +234,7 @@ public class Client {
 	 * Returns client's joined ID
 	 */
 	public int getJoinedID() {
-		return joinedid;
+		return joinedId;
 	}
 	
 	/**
@@ -334,11 +334,11 @@ public class Client {
 	
 	/**
 	 * Joining to another client
-	 * @param joinid Client ID to join
+	 * @param joinId Client ID to join
 	 * @throws JoinException when join error occur 
 	 */
-	public void join(int joinid) throws JoinException {		
-		Client cl = clientManager.getClient(joinid);
+	public void join(int joinId) throws JoinException {
+		Client cl = clientManager.getClient(joinId);
 		
 		if (cl == null)
 			throw new JoinException("Wrong client ID");
@@ -346,10 +346,10 @@ public class Client {
 		if (isJoined())
 			throw new JoinException("Client already joined");
 		
-		joinedid = joinid;
+		joinedId = joinId;
 		type = Type.SENDER;
 		
-		cl.joinedid = id;
+		cl.joinedId = id;
 		cl.type = Type.RECEIVER;
 	}
 	
@@ -357,31 +357,31 @@ public class Client {
 	 * Unjoining client
 	 */
 	public void unjoin() {
-		Client cl = clientManager.getClient(joinedid);
+		Client cl = clientManager.getClient(joinedId);
 		
 		if (cl == null)
 			return;
 		
-		cl.joinedid = -1;
+		cl.joinedId = -1;
 		cl.type = Type.NONE;
 		
-		joinedid = -1;
+		joinedId = -1;
 		type = Type.NONE;
 	}
 	
 	/**
 	 * Join once to client, after receive response, 
 	 * client will disconnect automatically (used by <b>/to</b> command)
-	 * @param joinid Client ID to join once
+	 * @param joinId Client ID to join once
 	 * @throws JoinException when join error occur 
 	 */
-	public void onceJoin(int joinid) throws JoinException {
-		if (joinid == id)
+	public void onceJoin(int joinId) throws JoinException {
+		if (joinId == id)
 			throw new JoinException("can't join to self");
 		
 		onceJoin = true;
 		
-		join(joinid);
+		join(joinId);
 	}
 	
 	/**
