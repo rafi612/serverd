@@ -15,7 +15,7 @@ class ServerManagerTest {
 	static class TestServer extends Server {
 		public boolean isStarted,isStopped;
 		
-		public TestServer() { super("Test Server",null,0,null,null); }
+		public TestServer() { super("Test Server",null,0,null); }
 
 		@Override
 		public void start() { isStarted = true; }

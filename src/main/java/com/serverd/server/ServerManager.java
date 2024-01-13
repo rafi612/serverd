@@ -42,8 +42,8 @@ public class ServerManager {
 	 * @param config Default server config.
 	 */
 	public void addDefaultServers(ClientManager clientManager,Config config) {
-		addServer(tcpServer = new TCPServer(config.ip, config.tcpPort,clientManager, config));
-		addServer(udpServer = new UDPServer(config.ip, config.udpPort,clientManager, config));
+		addServer(tcpServer = new TCPServer(config.ip, config.tcpPort,clientManager, config.timeout));
+		addServer(udpServer = new UDPServer(config.ip, config.udpPort,clientManager, config.timeout));
 	}
 	
 	/**
@@ -67,7 +67,6 @@ public class ServerManager {
 	 */
 	public void loadServer(Server server) {
 		if (!server.isEnabled()) {
-			log.info(server.getName() + " was disabled");
 			return;
 		}
 

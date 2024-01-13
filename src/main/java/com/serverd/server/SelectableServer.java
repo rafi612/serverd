@@ -21,10 +21,9 @@ public abstract class SelectableServer extends Server {
 	 * @param name Server name.
 	 * @param ip Server IP.
 	 * @param port Server port.
-	 * @param config Global config.
 	 */
-	public SelectableServer(String name, String ip, int port, ClientManager clientManager,Config config) {
-		super(name,ip,port,clientManager,config);
+	public SelectableServer(String name, String ip, int port, ClientManager clientManager) {
+		super(name,ip,port,clientManager);
 	}
 	
 	/**

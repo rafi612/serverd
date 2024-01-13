@@ -26,8 +26,6 @@ public abstract class Server {
 	protected String ip;
 	/** Port */
 	protected int port;
-	/** Config */
-	protected Config config;
 	/** Client manager*/
 	protected ClientManager clientManager;
 	/** Server manager*/
@@ -43,15 +41,13 @@ public abstract class Server {
 	 * @param name Server name
 	 * @param ip Server IP
 	 * @param port Server port
-	 * @param config Global config
 	 */
-	public Server(String name, String ip, int port,ClientManager clientManager,Config config) {
+	public Server(String name, String ip, int port,ClientManager clientManager) {
 		log = Log.get(getClass());
 		
 		this.name = name;
 		this.ip = ip;
 		this.port = port;
-		this.config = config;
 
 		this.clientManager = clientManager;
 	}

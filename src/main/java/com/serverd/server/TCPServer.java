@@ -20,16 +20,17 @@ public class TCPServer extends Server {
 	/** TCP Channel */
 	protected AsynchronousServerSocketChannel tcpChannel;
 
+	private int timeout;
+
 	/**
 	 * TCP Server constructor.
 	 * @param ip Server IP.
 	 * @param port Server port.
-	 * @param config Global config.
 	 */
-	public TCPServer(String ip,int port,ClientManager clientManager,Config config) {
-		super("TCP Server",ip,port,clientManager,config);
+	public TCPServer(String ip,int port,ClientManager clientManager,int timeout) {
+		super("TCP Server",ip,port,clientManager);
 		
-		isEnabled = config.enableTcp;
+		this.timeout = timeout;
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class TCPServer extends Server {
     	try {
 			printOpenMessage();
 
-        	TCPClient client = new TCPClient(clientManager.getFreeClientID(),clientManager,clientSocketChannel,config.timeout);
+        	TCPClient client = new TCPClient(clientManager.getFreeClientID(),clientManager,clientSocketChannel,timeout);
        	    client.setProcessor(getProcessorFactory().get(client));
 
 			clientManager.setupClient(client);
@@ -94,5 +95,20 @@ public class TCPServer extends Server {
 			log.info("Stopping TCP server...");
 			tcpChannel.close();
 		}
+	}
+
+	/**
+	 * Setting client timeout
+	 * @param timeout Client timeout.
+	 */
+	public void setTimeout(int timeout) {
+		this.timeout = timeout;
+	}
+
+	/**
+	 * @return Client timeout
+	 */
+	public int getTimeout() {
+		return timeout;
 	}
 }

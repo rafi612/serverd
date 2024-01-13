@@ -36,7 +36,7 @@ class UDPServerTest {
 	@Test
 	void startUdpServer_Test() throws InterruptedException, IOException {
 		ClientManager clientManager = app.getClientManager();
-	    UDPServer server = new UDPServer("0.0.0.0", 9998,clientManager, new Config());
+	    UDPServer server = new UDPServer("0.0.0.0", 9998,clientManager,0);
 		server.setApp(app);
 		server.setServerManager(app.getServerManager());
 

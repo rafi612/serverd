@@ -29,11 +29,10 @@ public class UDPServer extends SelectableServer {
 	 * @param port Server port.
 	 * @param config Global config.
 	 */
-	public UDPServer(String ip,int port,ClientManager clientManager,Config config) {
-		super("UDP Server",ip,port,clientManager,config);
+	public UDPServer(String ip,int port,ClientManager clientManager,int timeout) {
+		super("UDP Server",ip,port,clientManager);
 
-		isEnabled = config.enableUdp;
-		timeout = config.timeout;
+		this.timeout = timeout;
 	}
 
 	@Override

@@ -34,7 +34,7 @@ class TCPServerTest {
 	
 	@Test
 	void startTcpServer_Test() throws IOException, InterruptedException {
-		TCPServer server = new TCPServer("0.0.0.0",9999,app.getClientManager(),new Config());
+		TCPServer server = new TCPServer("0.0.0.0",9999,app.getClientManager(),0);
 		server.setApp(app);
 		server.setServerManager(app.getServerManager());
 		
