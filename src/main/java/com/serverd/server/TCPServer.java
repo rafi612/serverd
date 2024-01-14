@@ -9,7 +9,6 @@ import java.nio.channels.CompletionHandler;
 
 import com.serverd.client.ClientManager;
 import com.serverd.client.TCPClient;
-import com.serverd.config.Config;
 import com.serverd.utils.Utils;
 
 /**
@@ -26,6 +25,8 @@ public class TCPServer extends Server {
 	 * TCP Server constructor.
 	 * @param ip Server IP.
 	 * @param port Server port.
+	 * @param clientManager Client manager object.
+	 * @param timeout Timeout value.
 	 */
 	public TCPServer(String ip,int port,ClientManager clientManager,int timeout) {
 		super("TCP Server",ip,port,clientManager);

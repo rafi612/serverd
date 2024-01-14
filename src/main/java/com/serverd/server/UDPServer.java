@@ -11,7 +11,6 @@ import java.util.Iterator;
 import com.serverd.client.Client;
 import com.serverd.client.ClientManager;
 import com.serverd.client.UDPClient;
-import com.serverd.config.Config;
 
 /**
  * Implementing server for UDP protocol.
@@ -27,7 +26,8 @@ public class UDPServer extends SelectableServer {
 	 * UDP Server default constructor.
 	 * @param ip Server IP.
 	 * @param port Server port.
-	 * @param config Global config.
+	 * @param clientManager Client manager object.
+	 * @param timeout Timeout value.
 	 */
 	public UDPServer(String ip,int port,ClientManager clientManager,int timeout) {
 		super("UDP Server",ip,port,clientManager);

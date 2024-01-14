@@ -41,6 +41,7 @@ public abstract class Server {
 	 * @param name Server name
 	 * @param ip Server IP
 	 * @param port Server port
+	 * @param clientManager Client manager object.
 	 */
 	public Server(String name, String ip, int port,ClientManager clientManager) {
 		log = Log.get(getClass());

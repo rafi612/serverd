@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 import com.serverd.command.Command;
 import com.serverd.log.Log;
-import com.serverd.server.ServerManager;
 
 /**
  * Plugin instance class.
@@ -35,7 +34,7 @@ public class Plugin {
 	
 	public String name;
 
-	private PluginManager pluginManager;
+	private final PluginManager pluginManager;
 
 	/**
 	 * Plugin class constructor.

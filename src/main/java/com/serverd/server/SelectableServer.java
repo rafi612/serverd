@@ -7,7 +7,6 @@ import java.nio.channels.Selector;
 
 import com.serverd.client.ClientManager;
 import com.serverd.client.SelectableClient;
-import com.serverd.config.Config;
 
 /**
  * Server class for selectable servers (Using java NIO API).
@@ -21,6 +20,7 @@ public abstract class SelectableServer extends Server {
 	 * @param name Server name.
 	 * @param ip Server IP.
 	 * @param port Server port.
+	 * @param clientManager Client manager object.
 	 */
 	public SelectableServer(String name, String ip, int port, ClientManager clientManager) {
 		super(name,ip,port,clientManager);

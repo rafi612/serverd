@@ -32,6 +32,7 @@ class ServerdApplicationTest {
 	@Test
 	void app_Test() {
 		ServerdApplication app = new ServerdApplication();
+		app.loadPlugins(false);
 		app.run();
 	}
 	
