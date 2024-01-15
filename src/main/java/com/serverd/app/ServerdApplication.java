@@ -3,6 +3,7 @@ package com.serverd.app;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import com.serverd.client.ClientManager;
 import com.serverd.config.Config;
@@ -32,6 +33,7 @@ public class ServerdApplication {
 	private String appClassName;
 	private boolean wasInitialized = false;
 	private final DirectorySchema directorySchema;
+	private final ArrayList<String> pluginsList = new ArrayList<>();
 
 	/**
 	 * Constructor setting default app name to "serverd".
@@ -88,6 +90,12 @@ public class ServerdApplication {
 			pluginManager.init(workdir,directorySchema);
 			if (plugins) {
 				log.info("Loading plugins...");
+
+				for (String pluginClass : pluginsList) {
+					log.info("Loading plugin class " + pluginClass);
+					PluginUtils.loadPluginFromClassName(pluginClass,pluginManager);
+				}
+
 				pluginManager.loadPlugins();
 			}
 		} catch (Exception e) {
@@ -261,6 +269,25 @@ public class ServerdApplication {
 
 		if (isLoadingApp())
 			loadPluginAppFromName(appClassName);
+	}
+
+	/**
+	 * Loading plugin from given class name.
+	 * @param className Class name.
+	 */
+	public void loadPlugin(String className) {
+		if (wasInitialized)
+			throw new IllegalStateException("Plugin must be loaded before app initialization");
+
+		pluginsList.add(className);
+	}
+
+	/**
+	 * Loading plugin from given class object.
+	 * @param clazz Class object.
+	 */
+	public void loadPlugin(Class<?> clazz) {
+		loadPlugin(clazz.getName());
 	}
 
 	/**

@@ -18,7 +18,7 @@ public class PluginsList extends Command {
 		if (pluginNames.length > 0) {
 			String message = "Plugins installed:\n";
 			for (String name : pluginNames) 
-				message += name + "\tEnable:" + client.getApp().getPluginManager().getByFileName(name).isRunned() + "\n";
+				message += name + "\tEnable:" + client.getApp().getPluginManager().getByFileName(name).isRunning() + "\n";
 			send(client,message);
 		}
 		else send(client,"No plugins installed");

@@ -72,7 +72,7 @@ class PluginManagerTest {
 			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), true, true);
 			
 			assertDoesNotThrow(pluginManager::loadPlugins);
-			assertFalse(pluginManager.getPluginByID(0).isRunned());
+			assertFalse(pluginManager.getPluginByID(0).isRunning());
 		}
 		
 		@Test
@@ -207,13 +207,13 @@ class PluginManagerTest {
 	void disablePlugin_Test() {
 		pluginManager.disablePlugin(plugin);
 		
-		assertFalse(plugin.isRunned());
+		assertFalse(plugin.isRunning());
 	}
 	
 	@Test
 	void EnablePlugin_Test() {
 		pluginManager.enablePlugin(plugin);
-		assertTrue(plugin.isRunned());
+		assertTrue(plugin.isRunning());
 	}
 
 	@Test

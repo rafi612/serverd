@@ -26,7 +26,7 @@ public class Plugin {
 	
 	private final ServerdPlugin instance;
 
-	private boolean isRunned = false;
+	private boolean isRunning = false;
 	
 	private boolean isApp = false;
 	
@@ -66,7 +66,7 @@ public class Plugin {
 		Thread thread = new Thread(() -> instance.work(this));
 		thread.start();
 		
-		isRunned = true;
+		isRunning = true;
 		
 		return true;
 	}
@@ -75,7 +75,7 @@ public class Plugin {
 	 * Stop a plugin.
 	 */
 	public void stop() {
-		isRunned = false;
+		isRunning = false;
 		
 		instance.stop(this);
 		
@@ -157,8 +157,8 @@ public class Plugin {
 	/**
 	 * Returns <code>true</code> if plugin is running.
 	 */
-	public boolean isRunned() {
-		return isRunned;
+	public boolean isRunning() {
+		return isRunning;
 	}
 
 	/**

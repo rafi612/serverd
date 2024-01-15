@@ -21,7 +21,7 @@ public class PluginCommand extends Command {
 			if (p == null) {
 				send(client,error("Not found"));
 			} else if (args[0].equals("enable")) {
-				if (p.isRunned()) {
+				if (p.isRunning()) {
 					send(client,error("Plugin is already runned"));
 				} else {
 					if (pluginManager.enablePlugin(p))
@@ -30,7 +30,7 @@ public class PluginCommand extends Command {
 						send(client,error("Plugin load failed"));
 				}
 			} else if (args[0].equals("disable")) {
-				if (!p.isRunned()) {
+				if (!p.isRunning()) {
 					send(client,error("Plugin is already stopped"));
 				} else {
 					pluginManager.disablePlugin(p);

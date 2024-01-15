@@ -94,7 +94,7 @@ class PluginTest
 		plugin.stop();
 		
 		assertAll(
-			() -> assertFalse(plugin.isRunned()),
+			() -> assertFalse(plugin.isRunning()),
 			() -> assertTrue(instance.stopped)
 		);
 	}
