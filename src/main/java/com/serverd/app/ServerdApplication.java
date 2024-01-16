@@ -86,8 +86,24 @@ public class ServerdApplication {
 			}));
 
 			serverManager.addDefaultServers(clientManager,config);
-
 			pluginManager.init(workdir,directorySchema);
+
+			wasInitialized = true;
+		} catch (Exception e) {
+			log.error("Error: " + e.getMessage());
+			throwAppError(e);
+		}
+	}
+
+	/**
+	 * Starting application.
+	 * Invoking {@link ServerdApplication#init()} automatically when not initialized before.
+	 */
+	public void run() {
+		if (!wasInitialized)
+			init();
+
+		try {
 			if (plugins) {
 				log.info("Loading plugins...");
 
@@ -114,17 +130,6 @@ public class ServerdApplication {
 				} else log.error("App load error:" + e.getMessage());
 			}
 		}
-
-		wasInitialized = true;
-	}
-
-	/**
-	 * Starting application.
-	 * Invoking {@link ServerdApplication#init()} automatically when not initialized before.
-	 */
-	public void run() {
-		if (!wasInitialized)
-			init();
 
 		log.info("Starting servers...");
 		serverManager.init();
@@ -276,9 +281,6 @@ public class ServerdApplication {
 	 * @param className Class name.
 	 */
 	public void loadPlugin(String className) {
-		if (wasInitialized)
-			throw new IllegalStateException("Plugin must be loaded before app initialization");
-
 		pluginsList.add(className);
 	}
 
