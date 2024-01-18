@@ -6,7 +6,8 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 
 /**
- * Selectable Client class. Used by NIO selectable clients.
+ * Class representing selectable clients.
+ * Primary used by NIO selectable clients.
  */
 public abstract class SelectableClient extends Client {
 	/** Selector */

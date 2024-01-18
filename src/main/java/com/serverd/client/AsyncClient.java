@@ -3,7 +3,8 @@ package com.serverd.client;
 import java.nio.ByteBuffer;
 
 /**
- * Async Client class. Used by NIO2 clients.
+ * Class representing asynchronous clients.
+ * Primary used by NIO2 client implementations.
  */
 public class AsyncClient extends Client {
 	
