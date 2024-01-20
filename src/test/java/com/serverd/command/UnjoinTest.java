@@ -9,14 +9,14 @@ class UnjoinTest extends DoubleClientCommandTestCase {
 	
 	@Test
 	void executeTest() throws Exception {
-		testClient.join(testClient2.getID());
+		((CommandProcessor)testClient.getProcessor()).join(testClient2.getID());
 		
 		executeTest(unjoinCommand, testClient);
 		
 		assertAll(
 			() -> assertEquals(testClient.getSend()[0], "OK"),
-			() -> assertFalse(testClient.isJoined()),
-			() -> assertFalse(testClient2.isJoined())
+			() -> assertFalse(((CommandProcessor)testClient.getProcessor()).isJoined()),
+			() -> assertFalse(((CommandProcessor)testClient2.getProcessor()).isJoined())
 		);
 	}
 }

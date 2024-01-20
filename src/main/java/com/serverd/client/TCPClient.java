@@ -77,9 +77,6 @@ public class TCPClient extends AsyncClient {
 		writeBuffer.put(bytes);
 		writeBuffer.flip();
 		
-		if (isJoined())
-			getJoiner().lockRead();
-		
 		tcpSocket.write(writeBuffer, null, new CompletionHandler<Integer, Void>() {
 			@Override
 			public void completed(Integer bytesWritten, Void attachment) {
@@ -95,9 +92,6 @@ public class TCPClient extends AsyncClient {
 					}
 					
 					unlockRead();
-					
-					if (getJoiner() != null)
-						getJoiner().unlockRead();
 				}
 			}
 

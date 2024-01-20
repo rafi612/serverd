@@ -17,9 +17,6 @@ public abstract class Processor {
 
 	/** Client*/
 	protected Client client;
-	
-	/** Is supporting joining */
-	protected boolean isSupportingJoining;
 
 	/** App context*/
 	protected ServerdApplication app;
@@ -27,11 +24,9 @@ public abstract class Processor {
 	/**
 	 * Processor class constructor.
 	 * @param client Client instance.
-	 * @param isSupportingJoining is processor support joining clients?
 	 */
-	public Processor(Client client,boolean isSupportingJoining) {
+	public Processor(Client client) {
 		this.client = client;
-		this.isSupportingJoining = isSupportingJoining;
 	}
 
 	/**
@@ -57,9 +52,6 @@ public abstract class Processor {
 	 * @param exception Exception to handle.
 	 */
 	public void handleError(Exception exception) {
-		if (client.isJoined())
-			client.unjoin();
-
 		client.log().error("Client " + client.getID() + " crashed: " + exception.getMessage());
 
 		client.closeClient();
@@ -77,14 +69,6 @@ public abstract class Processor {
 	 * @param message Send message.
 	 */
 	public void printSendMessage(String message) {}
-
-	/**
-	 * Check if processor supporting joining client.
-	 * @return true if processor supporting joining.
-	 */
-	public boolean isSupportedJoining() {
-		return isSupportingJoining;
-	}
 
 	/**
 	 * Returns application instance

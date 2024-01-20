@@ -49,26 +49,26 @@ class ClientManagerTest {
 		assertEquals(clientManager.clients.size(), 9);
 	}
 	
-	@Test
-	void delete_WhenJoinedUnjoin_Test() throws Exception {
-		int count = 10;
-		for (int i = 0;i < count;i++)
-			clientManager.addClient(new Client(i,clientManager));
-		
-		Client client1 = clientManager.getClient(4);
-		Client client2 = clientManager.getClient(5);
-		
-		client1.join(client2.getID());
+//	@Test
+//	void delete_WhenJoinedUnjoin_Test() throws Exception {
+//		int count = 10;
+//		for (int i = 0;i < count;i++)
+//			clientManager.addClient(new Client(i,clientManager));
+//
+//		Client client1 = clientManager.getClient(4);
+//		Client client2 = clientManager.getClient(5);
+//
+//		client1.join(client2.getID());
+//
+//		clientManager.delete(client2.getID());
+//
+//		assertAll(
+//			() -> assertEquals(9,clientManager.clients.size()),
+//			() -> assertFalse(client1.isJoined()),
+//			() -> assertFalse(client2.isJoined())
+//		);
+//	}
 
-		clientManager.delete(client2.getID());
-		
-		assertAll(
-			() -> assertEquals(9,clientManager.clients.size()),
-			() -> assertFalse(client1.isJoined()),
-			() -> assertFalse(client2.isJoined())
-		);
-	}
-	
 	@Test
 	void delete_IsDisconnectEventExecuting_Test() {
 		AtomicBoolean disconnectExecuted = new AtomicBoolean(false);

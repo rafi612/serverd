@@ -175,7 +175,8 @@ public abstract class Command implements Codes,Cloneable {
 	 * @throws IOException when I/O error occurs.
 	 */
 	public void send(Client client,String message,SendContinuation continuation) throws IOException {
-		client.send(message, continuation);
+		CommandProcessor processor = (CommandProcessor) client.getProcessor();
+		processor.send(message, continuation);
 	}
 	
 	/**
@@ -197,7 +198,8 @@ public abstract class Command implements Codes,Cloneable {
 	 * @throws IOException when I/O error occurs.
 	 */
 	public void send(Client client,byte[] bytes,SendContinuation continuation) throws IOException {
-		client.send(bytes, continuation);
+		CommandProcessor processor = (CommandProcessor) client.getProcessor();
+		processor.send(bytes, continuation);
 	}
 	
 	/**

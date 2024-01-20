@@ -86,8 +86,6 @@ public class UDPServer extends SelectableServer {
 					
 					if (client.processQueue()) {
 						key.interestOps(SelectionKey.OP_READ);
-						if (client.isJoined())
-							client.getJoiner().unlockRead();
 					}
 					key.interestOps(SelectionKey.OP_READ);
 				}

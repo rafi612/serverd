@@ -57,9 +57,6 @@ public abstract class SelectableClient extends Client {
 		writeBuffer.put(buffer);
 		writeBuffer.flip();
 		
-		if (isJoined())
-			getJoiner().lockRead();
-		
 		sendContinuation = continuation;
 	}
 	
@@ -84,10 +81,11 @@ public abstract class SelectableClient extends Client {
 	 */
 	public boolean processQueue() throws IOException {
 		processSend(writeBuffer);
-		sendContinuation.invoke();
-		sendContinuation = null;
 		
 		if (writeBuffer.remaining() == 0) {
+			sendContinuation.invoke();
+			sendContinuation = null;
+
 			writeBuffer.clear();
 			return true;
 		}

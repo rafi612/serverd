@@ -13,7 +13,8 @@ public class Unjoin extends Command {
 	
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException  {
-		client.unjoin();
+		CommandProcessor processor = (CommandProcessor) client.getProcessor();
+		processor.unjoin();
 		send(client,ok());
 	}
 }

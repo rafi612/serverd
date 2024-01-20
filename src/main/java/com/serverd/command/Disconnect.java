@@ -12,10 +12,6 @@ public class Disconnect extends Command {
 	}
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException {
-		//unjoining
-		if (client.isJoined())
-			client.unjoin();
-		
 		client.closeClient();
 		client.getClientManager().delete(client.getID());
 		

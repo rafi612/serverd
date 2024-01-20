@@ -13,12 +13,14 @@ public class Status extends Command {
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException {
 		String message = client.getClientManager().getClientConnectedAmount() == 0 ? "No clients connected" : "";
+
+		CommandProcessor processor = (CommandProcessor) client.getProcessor();
 		
 		for (Client c : client.getClientManager().getAllClients())
 			message += c.getName() 
 				+ ": ID:" + c.getID()
 				+ " Connected:" + c.isConnected()
-				+ " Joined:" + c.getJoinedID()
+				+ " Joined:" + processor.getJoinedID()
 				+ " Protocol:" + c.getProtocol().getName() 
 				+ " IP:" + c.getIP() + ":" + c.getPort() + "\n";
 		

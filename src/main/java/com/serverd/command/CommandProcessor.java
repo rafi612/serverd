@@ -1,5 +1,6 @@
 package com.serverd.command;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,6 +17,8 @@ public class CommandProcessor extends Processor {
 	
 	/** Commands */
 	protected static ArrayList<Command> commands = new ArrayList<>();
+
+	private int joinedId = -1;
 	
 	static {
 		commands.add(new Disconnect());
@@ -34,7 +37,7 @@ public class CommandProcessor extends Processor {
 	private Command currentCommand;
 	
 	public CommandProcessor(Client client) {
-		super(client,true);
+		super(client);
 	}
 
 	@Override
@@ -49,7 +52,7 @@ public class CommandProcessor extends Processor {
 	public void receive(byte[] buffer) {
 		try {		
 			if (currentCommand == null || !currentCommand.isRunning()) {
-				String command_str = new String(buffer,0,buffer.length);
+				String command_str = new String(buffer);
 				printReceiveMessage(command_str);
 				
 				String[] command_raw = command_str.split(" ");
@@ -92,11 +95,10 @@ public class CommandProcessor extends Processor {
 					cmd = (Command) comm.clone();
 				
 				if (cmd == null) {
-					if (client.getJoinedID() == -1)
-						client.send(Codes.unknownCommand());
-					else {
-						client.getJoiner().send(command_str);
-					} 
+					if (getJoinedID() == -1)
+						send(Codes.unknownCommand(),() -> {});
+					else
+						send(getJoiner(),command_str,() -> {});
 				} else {
 					currentCommand = cmd;
 					cmd.setRunning(true);
@@ -109,6 +111,152 @@ public class CommandProcessor extends Processor {
 			client.crash(e);
 		}
 	}
+
+	public void handleError(Exception exception) {
+		if (isJoined())
+			unjoin();
+
+		super.handleError(exception);
+	}
+
+	public void onClose() {
+		if (isJoined())
+			unjoin();
+
+		super.onClose();
+	}
+
+	/**
+	 * Sending byte message to client.
+	 * Wrapping {@link Client#send(byte[], Client.SendContinuation)} to properly handle locking.
+	 * @param bytes Byte array
+	 * @param continuation Send continuation handler
+	 * @throws IOException when socket throw error.
+	 */
+	protected void send(byte[] bytes, Client.SendContinuation continuation) throws IOException {
+		send(client,bytes,continuation);
+	}
+
+	/**
+	 * Sending byte message to client.
+	 * Wrapping {@link Client#send(String, Client.SendContinuation)} to properly handle locking.
+	 * @param message String message
+	 * @param continuation Send continuation handler
+	 * @throws IOException when socket throw error.
+	 */
+	protected void send(String message, Client.SendContinuation continuation) throws IOException {
+		send(client,message,continuation);
+	}
+
+	/**
+	 * Sending byte message to client.
+	 * Wrapping {@link Client#send(byte[], Client.SendContinuation)} to properly handle locking.
+	 * @param client Client instance
+	 * @param bytes Byte array
+	 * @param continuation Send continuation handler
+	 * @throws IOException when socket throw error.
+	 */
+	protected void send(Client client,byte[] bytes, Client.SendContinuation continuation) throws IOException {
+		if (isJoined())
+			getJoiner().lockRead();
+
+		client.send(bytes,() -> {
+			continuation.invoke();
+
+			if (getJoiner() != null)
+				getJoiner().unlockRead();
+		});
+	}
+
+	/**
+	 * Sending byte message to client.
+	 * Wrapping {@link Client#send(String, Client.SendContinuation)} to properly handle locking.
+	 * @param client Client instance
+	 * @param message String message
+	 * @param continuation Send continuation handler
+	 * @throws IOException when socket throw error.
+	 */
+	protected void send(Client client,String message, Client.SendContinuation continuation) throws IOException {
+		if (isJoined())
+			getJoiner().lockRead();
+
+		client.send(message,() -> {
+			continuation.invoke();
+
+			if (getJoiner() != null)
+				getJoiner().unlockRead();
+		});
+	}
+
+	/**
+	 * Join exception
+	 */
+	public static class JoinException extends Exception {
+		/**
+		 * JoinException class constructor
+		 * @param message Message
+		 */
+		public JoinException(String message) {
+			super(message);
+		}
+	}
+
+	/**
+	 * Returns true if client is joined
+	 */
+	public boolean isJoined() {
+		return joinedId != -1;
+	}
+
+	/**
+	 * Returns client's joined ID
+	 */
+	public int getJoinedID() {
+		return joinedId;
+	}
+
+	/**
+	 * Returns client joiner object.
+	 */
+	public Client getJoiner() {
+		return client.getClientManager().getClient(getJoinedID());
+	}
+
+	/**
+	 * Joining to another client
+	 * @param joinId Client ID to join
+	 * @throws JoinException when join error occur
+	 */
+	public void join(int joinId) throws JoinException {
+		Client cl = client.getClientManager().getClient(joinId);
+
+		if (cl == null)
+			throw new JoinException("Wrong client ID");
+
+		if (isJoined())
+			throw new JoinException("Client already joined");
+
+		joinedId = joinId;
+
+		CommandProcessor processor = (CommandProcessor) cl.getProcessor();
+
+		processor.joinedId = client.getID();
+	}
+
+	/**
+	 * Unjoining client
+	 */
+	public void unjoin() {
+		Client cl = client.getClientManager().getClient(joinedId);
+
+		if (cl == null)
+			return;
+
+		CommandProcessor processor = (CommandProcessor) cl.getProcessor();
+
+		processor.joinedId = -1;
+		joinedId = -1;
+	}
 	
 	/**
 	 * Returns current command.
@@ -119,7 +267,7 @@ public class CommandProcessor extends Processor {
 	
 	
 	/**
-	 * Getting build-in commands by name .
+	 * Getting build-in commands by name.
 	 * @param name Command name.
 	 * @return Command object.
 	 */

@@ -13,7 +13,8 @@ class RawdataTest extends DoubleClientCommandTestCase {
 				rawdataCommand,
 				args("100"),
 				testClient);
-		testClient.unjoin();
+		CommandProcessor processor = (CommandProcessor) testClient.getProcessor();
+		processor.unjoin();
 		
 		assertEquals(testClient.getSend()[0], "ERROR Not joined");
 	}
@@ -24,8 +25,9 @@ class RawdataTest extends DoubleClientCommandTestCase {
 		
 		//inserting bytes to receive queue
 		testClient.insertRawdataReceive(testBytes);
-		
-		testClient.join(testClient2.getID());
+
+		CommandProcessor processor = (CommandProcessor) testClient.getProcessor();
+		processor.join(testClient2.getID());
 		
 		//executing command
 		executeTest(

@@ -15,14 +15,15 @@ public class Rawdata extends Command {
 	
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException {
+		CommandProcessor processor = (CommandProcessor) client.getProcessor();
 		if (checkArgs(args,client, 1)) {	
-			if (client.isJoined()) {
+			if (processor.isJoined()) {
 				send(client,ok(),() -> {
 					int bufferSize = Integer.parseInt(args[0]);
 					
 					client.log().info("Raw data mode started," + bufferSize + " bytes can be sended");
 					
-					Client joined = client.getJoiner();
+					Client joined = processor.getJoiner();
 					
 					ReceiveContinuation receive = new ReceiveContinuation() {
 						@Override

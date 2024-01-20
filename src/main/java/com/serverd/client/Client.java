@@ -12,25 +12,16 @@ import com.serverd.log.Log;
  * This class is meant to be extended by specific client implementations.
  */
 public class Client {
-	
-	private final int id;
-	
-	/** Connected */
-	protected boolean connected;
-	
-	private int joinedId = -1;
-	
 	/** Max buffer size */
 	public static final int BUFFER = 65536;
-	
-	private String name;
-
 	/** Logger */
 	protected final Log log;
-	
 	/** Processor */
 	protected Processor processor = new CommandProcessor(this);
-
+	/** Connected */
+	protected boolean connected;
+	private final int id;
+	private String name;
 	private final ClientManager clientManager;
 	
 	/**
@@ -168,13 +159,6 @@ public class Client {
 	}
 	
 	/**
-	 * Returns true if client is joined
-	 */
-	public boolean isJoined() {
-		return joinedId != -1;
-	}
-	
-	/**
 	 * Check if client is selectable (Using Java NIO)
 	 * @return true if client is selectable
 	 */
@@ -189,13 +173,7 @@ public class Client {
 	public boolean isAsync() {
 		return this instanceof AsyncClient;
 	}
-	
-	/**
-	 * Returns client joiner object.
-	 */
-	public Client getJoiner() {
-		return clientManager.getClient(getJoinedID());
-	}
+
 	
 	/**
 	 * Locks client reading. 
@@ -210,13 +188,6 @@ public class Client {
 	 * @see Client#lockRead lockRead
 	 */
 	public void unlockRead() {}
-	
-	/**
-	 * Returns client's joined ID
-	 */
-	public int getJoinedID() {
-		return joinedId;
-	}
 	
 	/**
 	 * Returns client's ID
@@ -272,17 +243,11 @@ public class Client {
 		return clientManager;
 	}
 
+	/**
+	 * Returns application object.
+	 */
 	public ServerdApplication getApp() {
 		return clientManager.getApp();
-	}
-	
-	/**
-	 * Converts byte buffer to String message
-	 * @param buffer Byte buffer
-	 * @return String message
-	 */
-	public String toMessage(byte[] buffer) {
-		return new String(buffer);
 	}
 
 	/**
@@ -290,52 +255,6 @@ public class Client {
 	 */
 	public Log log() {
 		return log;
-	}
-	
-	/**
-	 * Join exception
-	 */
-	public static class JoinException extends Exception {
-		private static final long serialVersionUID = 1L;
-		/**
-		 * JoinException class constructor
-		 * @param message Message
-		 */
-		public JoinException(String message) {
-			super(message);
-		}
-	}
-	
-	/**
-	 * Joining to another client
-	 * @param joinId Client ID to join
-	 * @throws JoinException when join error occur 
-	 */
-	public void join(int joinId) throws JoinException {
-		Client cl = clientManager.getClient(joinId);
-		
-		if (cl == null)
-			throw new JoinException("Wrong client ID");
-		
-		if (isJoined())
-			throw new JoinException("Client already joined");
-		
-		joinedId = joinId;
-		
-		cl.joinedId = id;
-	}
-	
-	/**
-	 * Unjoining client
-	 */
-	public void unjoin() {
-		Client cl = clientManager.getClient(joinedId);
-		
-		if (cl == null)
-			return;
-		
-		cl.joinedId = -1;
-		joinedId = -1;
 	}
 	
 	/**

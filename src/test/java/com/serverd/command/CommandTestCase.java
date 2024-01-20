@@ -82,9 +82,9 @@ class DoubleClientCommandTestCase extends CommandTestCase {
 
 class TestClient extends Client {
 	protected ArrayList<byte[]> receiveQueue = new ArrayList<>();
-	private ArrayList<String> sendQueue = new ArrayList<>();
+	private final ArrayList<String> sendQueue = new ArrayList<>();
 	
-	private ArrayList<byte[]> rawDataSendQueue = new ArrayList<>();
+	private final ArrayList<byte[]> rawDataSendQueue = new ArrayList<>();
 	
 	protected int receiveIndex;
 	
@@ -110,7 +110,7 @@ class TestClient extends Client {
 	
 	@Override
 	public void send(String message,SendContinuation runnable) throws IOException {
-		log.info("<Sended> " + message);
+		log.info("<Sent> " + message);
 		sendQueue.add(message);
 		runnable.invoke();
 	}

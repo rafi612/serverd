@@ -16,8 +16,8 @@ class JoinTest extends DoubleClientCommandTestCase {
 		
 		assertAll(
 			() -> assertEquals(testClient.getSend()[0],"OK"),
-			() -> assertTrue(testClient.isJoined()),
-			() -> assertTrue(testClient2.isJoined())
+			() -> assertTrue(((CommandProcessor)testClient.getProcessor()).isJoined()),
+			() -> assertTrue(((CommandProcessor)testClient2.getProcessor()).isJoined())
 		);
 		
 	}

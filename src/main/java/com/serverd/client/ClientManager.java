@@ -37,9 +37,6 @@ public class ClientManager {
 		if (client == null)
 			return;
 		
-		if (client.isJoined())
-			client.unjoin();
-		
 		//plugin connect listener
 		for (Plugin plugin : app.getPluginManager().getPlugins())
 			for (ConnectListener cl : plugin.connectListeners) {
