@@ -28,8 +28,6 @@ public class Client {
 	/** Logger */
 	protected final Log log;
 	
-	private boolean onceJoin = false;
-	
 	/** Processor */
 	protected Processor processor = new CommandProcessor(this);
 
@@ -43,12 +41,6 @@ public class Client {
 		void invoke() throws IOException;
 	}
 
-	/**
-	 * Client type.
-	 */
-	public enum Type {
-		SENDER,RECEIVER,NONE;
-	}
 
 	/**
 	 * Logger for client.
@@ -86,9 +78,7 @@ public class Client {
 			this.name = name;
 		}
 	}
-	
-	/** Client's type*/
-	protected Type type = Type.NONE;
+
 	/** Client's protocol*/
 	protected Protocol protocol;
 	
@@ -222,15 +212,6 @@ public class Client {
 	public void unlockRead() {}
 	
 	/**
-	 * State of once join
-	 * @return true if client is once joined
-	 * @see Client#onceJoin
-	 */
-	public boolean isOnceJoined() {
-		return onceJoin;
-	}
-	
-	/**
 	 * Returns client's joined ID
 	 */
 	public int getJoinedID() {
@@ -264,13 +245,6 @@ public class Client {
 	 */
 	public Protocol getProtocol() {
 		return protocol;
-	}
-	
-	/**
-	 * Returns client type enum
-	 */
-	public Type getType() {
-		return type;
 	}
 	
 	
@@ -347,10 +321,8 @@ public class Client {
 			throw new JoinException("Client already joined");
 		
 		joinedId = joinId;
-		type = Type.SENDER;
 		
 		cl.joinedId = id;
-		cl.type = Type.RECEIVER;
 	}
 	
 	/**
@@ -363,25 +335,7 @@ public class Client {
 			return;
 		
 		cl.joinedId = -1;
-		cl.type = Type.NONE;
-		
 		joinedId = -1;
-		type = Type.NONE;
-	}
-	
-	/**
-	 * Join once to client, after receive response, 
-	 * client will disconnect automatically (used by <b>/to</b> command)
-	 * @param joinId Client ID to join once
-	 * @throws JoinException when join error occur 
-	 */
-	public void onceJoin(int joinId) throws JoinException {
-		if (joinId == id)
-			throw new JoinException("can't join to self");
-		
-		onceJoin = true;
-		
-		join(joinId);
 	}
 	
 	/**

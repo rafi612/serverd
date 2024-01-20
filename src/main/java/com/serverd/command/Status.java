@@ -18,8 +18,7 @@ public class Status extends Command {
 			message += c.getName() 
 				+ ": ID:" + c.getID()
 				+ " Connected:" + c.isConnected()
-				+ " Joined:" + c.getJoinedID() 
-				+ " Type:" + c.getType().toString() 
+				+ " Joined:" + c.getJoinedID()
 				+ " Protocol:" + c.getProtocol().getName() 
 				+ " IP:" + c.getIP() + ":" + c.getPort() + "\n";
 		

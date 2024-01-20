@@ -21,7 +21,6 @@ public class CommandProcessor extends Processor {
 		commands.add(new Disconnect());
 		commands.add(new Id());
 		commands.add(new Status());
-		commands.add(new To());
 		commands.add(new Join());
 		commands.add(new Close());
 		commands.add(new Unjoin());
@@ -96,9 +95,6 @@ public class CommandProcessor extends Processor {
 					if (client.getJoinedID() == -1)
 						client.send(Codes.unknownCommand());
 					else {
-						if (client.isOnceJoined())
-							client.unjoin();
-						
 						client.getJoiner().send(command_str);
 					} 
 				} else {

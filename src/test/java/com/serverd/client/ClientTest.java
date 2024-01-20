@@ -45,10 +45,7 @@ class ClientTest {
 			() -> assertDoesNotThrow(() -> client.join(client2.getID())),
 			
 			() -> assertEquals(client.getJoinedID(),client2.getID()),
-			() -> assertEquals(client2.getJoinedID(),client.getID()),
-			
-			() -> assertEquals(client.type, Client.Type.SENDER),
-			() -> assertEquals(client2.type, Client.Type.RECEIVER)
+			() -> assertEquals(client2.getJoinedID(),client.getID())
 		);
 	}
 	
@@ -70,34 +67,8 @@ class ClientTest {
 		
 		assertAll(
 			() -> assertEquals(client.getJoinedID(),-1),
-			() -> assertEquals(client2.getJoinedID(),-1),
-			
-			() -> assertEquals(client.type, Client.Type.NONE),
-			() -> assertEquals(client2.type, Client.Type.NONE)
+			() -> assertEquals(client2.getJoinedID(),-1)
 		);
-	}
-
-	@Test
-	void onceJoin_Test() {	
-		assertDoesNotThrow(() -> {
-			client.onceJoin(client2.getID());
-			
-			//simulating receiving response
-			client.processor.receive("Test".getBytes());
-			
-			assertAll(
-				() -> assertEquals(client.getJoinedID(),-1),
-				() -> assertEquals(client2.getJoinedID(),-1),
-					
-				() -> assertEquals(client.type, Client.Type.NONE),
-				() -> assertEquals(client2.type, Client.Type.NONE)
-			); 
-		});
-	}
-	
-	@Test
-	void onceJoin_SelfJoin_Test() {
-		assertThrows(Client.JoinException.class,() -> client.onceJoin(client.getID()));
 	}
 	
 	@Test
