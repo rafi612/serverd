@@ -20,6 +20,8 @@ public class Client {
 	protected Processor processor = new CommandProcessor(this);
 	/** Connected */
 	protected boolean connected;
+	/** Auto read*/
+	protected boolean autoRead = true;
 	private final int id;
 	private String name;
 	private final ClientManager clientManager;
@@ -31,7 +33,6 @@ public class Client {
 	public interface SendContinuation {
 		void invoke() throws IOException;
 	}
-
 
 	/**
 	 * Logger for client.
@@ -174,18 +175,33 @@ public class Client {
 		return this instanceof AsyncClient;
 	}
 
+	/**
+	 * Sets if {@link Client#unlockRead()} will be invoked automatically so that a user application doesn't need to call it at all.
+	 * The default value is true.
+	 */
+	public void setAutoRead(boolean autoRead) {
+		this.autoRead = autoRead;
+	}
+
+	/**
+	 * Returns true if and only if {@link Client#unlockRead()} will be invoked automatically so that a user application doesn't need to call it at all.
+	 * The default value is true.
+	 */
+	public boolean isAutoRead() {
+		return autoRead;
+	}
 	
 	/**
 	 * Locks client reading. 
 	 * Lock and Unlock is mechanism to control data flow in most async clients (NIO and NIO2)
-	 * @see Client#unlockRead unlockRead
+	 * @see Client#unlockRead
 	 */
 	public void lockRead() {}
 	
 	/**
 	 * Unlocks client reading. 
 	 * Lock and Unlock is mechanism to control data flow in most async clients (NIO and NIO2)
-	 * @see Client#lockRead lockRead
+	 * @see Client#lockRead
 	 */
 	public void unlockRead() {}
 	

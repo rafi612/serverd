@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import com.serverd.client.Client;
 import com.serverd.client.processor.Processor;
+import com.serverd.log.Log;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.listener.ExecutionController;
 
@@ -38,6 +39,13 @@ public class CommandProcessor extends Processor {
 	
 	public CommandProcessor(Client client) {
 		super(client);
+	}
+
+	Log log = Log.get(CommandProcessor.class);
+
+	@Override
+	public void onOpen() {
+		client.setAutoRead(false);
 	}
 
 	@Override
@@ -163,8 +171,11 @@ public class CommandProcessor extends Processor {
 		client.send(bytes,() -> {
 			continuation.invoke();
 
-			if (getJoiner() != null)
-				getJoiner().unlockRead();
+			client.unlockRead();
+
+			CommandProcessor clientProcessor = (CommandProcessor) client.getProcessor();
+			if (clientProcessor.getJoiner() != null)
+				clientProcessor.getJoiner().unlockRead();
 		});
 	}
 
@@ -183,8 +194,11 @@ public class CommandProcessor extends Processor {
 		client.send(message,() -> {
 			continuation.invoke();
 
-			if (getJoiner() != null)
-				getJoiner().unlockRead();
+			client.unlockRead();
+
+			CommandProcessor clientProcessor = (CommandProcessor) client.getProcessor();
+			if (clientProcessor.getJoiner() != null)
+				clientProcessor.getJoiner().unlockRead();
 		});
 	}
 
@@ -239,7 +253,6 @@ public class CommandProcessor extends Processor {
 		joinedId = joinId;
 
 		CommandProcessor processor = (CommandProcessor) cl.getProcessor();
-
 		processor.joinedId = client.getID();
 	}
 

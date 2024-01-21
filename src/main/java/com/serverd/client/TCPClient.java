@@ -91,7 +91,8 @@ public class TCPClient extends AsyncClient {
 						return;
 					}
 					
-					unlockRead();
+					if (autoRead)
+						unlockRead();
 				}
 			}
 

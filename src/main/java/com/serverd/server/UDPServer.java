@@ -83,11 +83,7 @@ public class UDPServer extends SelectableServer {
 				
 				if (key.isWritable()) {
 					UDPClient client = (UDPClient) key.attachment();
-					
-					if (client.processQueue()) {
-						key.interestOps(SelectionKey.OP_READ);
-					}
-					key.interestOps(SelectionKey.OP_READ);
+					client.processQueue();
 				}
 			}
 		}
