@@ -40,8 +40,8 @@ public abstract class Command implements Codes,Cloneable {
 	 * Checking amount of arguments.
 	 * @param args Arguments
 	 * @param length Arguments length
-	 * @param flag One of {@link Command#ARGS_LESS},{@link Command#ARGS_GOOD},{@link Command#ARGS_MORE}
-	 * @return true when arguments are valid
+	 * @param flag One of {@link Command#ARGS_LESS}, {@link Command#ARGS_GOOD},{@link Command#ARGS_MORE}
+	 * @return true when arguments are valid.
 	 */
 	protected boolean checkArgs(String[] args,int length,int flag) {
 		int argsCount = args.length;
@@ -58,7 +58,7 @@ public abstract class Command implements Codes,Cloneable {
 	 * Checking amount of arguments, using {@link Command#ARGS_GOOD} as default.
 	 * @param args Arguments
 	 * @param length Arguments length
-	 * @return true when arguments are valid
+	 * @return true when arguments are valid.
 	 */
 	protected boolean checkArgs(String[] args,int length) {
 		return checkArgs(args,length,ARGS_GOOD);
