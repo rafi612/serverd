@@ -6,13 +6,13 @@ import java.util.Arrays;
 
 import com.serverd.client.Client;
 import com.serverd.client.processor.Processor;
-import com.serverd.log.Log;
 import com.serverd.plugin.Plugin;
 import com.serverd.plugin.listener.ExecutionController;
 
 /**
  * Command Processor class.
  * Command Processor is simple default processor to process commands with some default commands.
+ * It supports joining, i.e. redirecting each message to the selected client.
  */
 public class CommandProcessor extends Processor {
 	
@@ -40,8 +40,6 @@ public class CommandProcessor extends Processor {
 	public CommandProcessor(Client client) {
 		super(client);
 	}
-
-	Log log = Log.get(CommandProcessor.class);
 
 	@Override
 	public void onOpen() {
