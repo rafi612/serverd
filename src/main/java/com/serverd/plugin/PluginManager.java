@@ -21,10 +21,10 @@ import com.serverd.log.Log;
  * Class used to manage loaded plugins.
  */
 public class PluginManager {
-	public File pluginDir;
-	public File pluginDataDir;
-	public File pluginAppDataDir;
-	public File pluginDisabledFile;
+	protected File pluginDir;
+	protected File pluginDataDir;
+	protected File pluginAppDataDir;
+	protected File pluginDisabledFile;
 	
 	public List<String> pluginsDisabled;
 
