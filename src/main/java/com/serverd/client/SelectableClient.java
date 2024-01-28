@@ -35,7 +35,7 @@ public abstract class SelectableClient extends Client {
 	}
 	
 	/**
-	 * Updating last read time. This will be invoked after read.
+	 * Updating last read time. This will be invoked after reading data from the socket.
 	 */
 	protected void updateTimeout() {
 		lastReadTime = System.currentTimeMillis();

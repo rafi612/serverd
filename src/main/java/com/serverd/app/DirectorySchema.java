@@ -34,7 +34,7 @@ public class DirectorySchema {
 
     /**
      * Initializing directory schema.
-     * @param workdir Current work dir
+     * @param workdir Current work dir.
      * @throws IOException when I/O error will occur.
      */
     public void init(File workdir) throws IOException {
@@ -47,7 +47,7 @@ public class DirectorySchema {
 
     /**
      * Adding path to directory schema with same identifier as path.
-     * @param path Directory path
+     * @param path Directory path.
      */
     public void add(String path) {
         add(path, path);
@@ -56,7 +56,7 @@ public class DirectorySchema {
     /**
      * Adding path to directory schema with custom key.
      * @param key Path identifier.
-     * @param path Directory path
+     * @param path Directory path.
      */
     public void add(String key, String path) {
         if (dirs.containsKey(key))
@@ -69,14 +69,13 @@ public class DirectorySchema {
      * Returning {@link File} object of given folder.
      * @param workdir Current work dir.
      * @param key Path identifier.
-     * @return {@link File} object of directory.
      */
     public File get(File workdir,String key) {
         return new File(workdir,dirs.get(key).replace("/",File.separator));
     }
 
     /**
-     * Settings plugin dir
+     * Settings plugin dir.
      * @param dir Directory path.
      * @return Self instance.
      */
@@ -86,7 +85,7 @@ public class DirectorySchema {
     }
 
     /**
-     * Settings plugin data dir
+     * Settings plugin data dir.
      * @param dir Directory path.
      * @return Self instance.
      */
@@ -96,7 +95,7 @@ public class DirectorySchema {
     }
 
     /**
-     * Settings app data dir
+     * Settings app data dir.
      * @param dir Directory path.
      * @return Self instance.
      */
@@ -106,7 +105,7 @@ public class DirectorySchema {
     }
 
     /**
-     * Settings root dir
+     * Settings root dir.
      * @param dir Directory path.
      * @return Self instance.
      */
