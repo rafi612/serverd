@@ -3,10 +3,9 @@ package com.serverd.config;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import java.io.File;
 import java.lang.annotation.*;
 
-/**
+/**dd
  * ConfigProperty is used to bind variable to value stored in the configuration file.
  * Supported variable types are:
  * <ul>

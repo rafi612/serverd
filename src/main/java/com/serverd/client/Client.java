@@ -75,8 +75,8 @@ public class Client {
 	protected Protocol protocol;
 	
 	/**
-	 * Client class constructor
-	 * @param id Client ID
+	 * Client class constructor.
+	 * @param id Client ID.
 	 */
 	public Client(int id, ClientManager clientManager) {
 		this.id = id;
@@ -132,44 +132,44 @@ public class Client {
 	public void send(byte[] bytes, SendContinuation continuation) throws IOException {}
 	
 	/**
-	 * Closing client (may close sockets etc.)
+	 * Closing client (may close sockets etc.).
 	 */
 	public void closeClient() {
 		connected = false;
 	}
 	
 	/**
-	 * Returns client's IP
+	 * Returns client's IP.
 	 */
 	public String getIP() {
 		return "";
 	}
 	
 	/**
-	 * Returns client's port
+	 * Returns client's port.
 	 */
 	public int getPort() {
 		return 0;
 	}
 	
 	/**
-	 * Returns true if client is connected
+	 * Returns true if client is connected.
 	 */
 	public boolean isConnected() {
 		return connected;
 	}
 	
 	/**
-	 * Check if client is selectable (Using Java NIO)
-	 * @return true if client is selectable
+	 * Check if client is selectable (Using Java NIO).
+	 * @return true if client is selectable.
 	 */
 	public boolean isSelectable() {
 		return this instanceof SelectableClient;
 	}
 	
 	/**
-	 * Check if client is async (Using Java NIO2)
-	 * @return true if client is selectable
+	 * Check if client is async (Using Java NIO2).
+	 * @return true if client is selectable.
 	 */
 	public boolean isAsync() {
 		return this instanceof AsyncClient;
@@ -193,42 +193,42 @@ public class Client {
 	
 	/**
 	 * Locks client reading. 
-	 * Lock and Unlock is mechanism to control data flow in most async clients (NIO and NIO2)
+	 * Lock and Unlock is mechanism to control data flow in most async clients (NIO and NIO2).
 	 * @see Client#unlockRead
 	 */
 	public void lockRead() {}
 	
 	/**
 	 * Unlocks client reading. 
-	 * Lock and Unlock is mechanism to control data flow in most async clients (NIO and NIO2)
+	 * Lock and Unlock is mechanism to control data flow in most async clients (NIO and NIO2).
 	 * @see Client#lockRead
 	 */
 	public void unlockRead() {}
 	
 	/**
-	 * Returns client's ID
+	 * Returns client's ID.
 	 */
 	public int getID() {
 		return id;
 	}
 	
 	/**
-	 * Returns client's name
+	 * Returns client's name.
 	 */
 	public String getName() {
 		return name;
 	}
 	
 	/**
-	 * Setting client name
-	 * @param name Client new name
+	 * Setting client name.
+	 * @param name Client new name.
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	
 	/**
-	 * Returns client protocol enum
+	 * Returns client protocol enum.
 	 */
 	public Protocol getProtocol() {
 		return protocol;
@@ -236,7 +236,7 @@ public class Client {
 	
 	
 	/**
-	 * Returns client processor
+	 * Returns client processor.
 	 * @see Processor
 	 */
 	public Processor getProcessor() {
@@ -244,8 +244,8 @@ public class Client {
 	}
 
 	/**
-	 * Setting client processor
-	 * @param processor Client new processor
+	 * Setting client processor.
+	 * @param processor Client new processor.
 	 * @see Processor
 	 */
 	public void setProcessor(Processor processor) {
@@ -275,7 +275,7 @@ public class Client {
 	
 	/**
 	 * Invoking exception handler. Can be invoked when client occurs exception.
-	 * @param exception Exception
+	 * @param exception Exception.
 	 */
 	public void crash(Exception exception) {
 		processor.handleError(exception);

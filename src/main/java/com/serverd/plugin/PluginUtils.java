@@ -9,7 +9,7 @@ public class PluginUtils {
 	
 	/**
 	 * Loading plugin from classpath by plugin name.
-	 * @param className Main plugin class name
+	 * @param className Main plugin class name.
 	 * @param pluginManager Plugin manager.
 	 * @return Plugin instance.
 	 * @throws PluginLoadException when plugin load failed.

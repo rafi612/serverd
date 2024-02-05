@@ -76,7 +76,7 @@ public class ClientManager {
 	/**
 	 * Configures client and executing connect listener.
 	 * Can be used in plugins on adding custom protocols.
-	 * @param client {@link Client} instance
+	 * @param client {@link Client} instance.
 	 * @throws IOException when {@link ConnectListener} throws error.
 	 */
 	public void setupClient(Client client) throws IOException {
