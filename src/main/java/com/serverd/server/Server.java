@@ -8,7 +8,6 @@ import com.serverd.client.ClientManager;
 import com.serverd.client.processor.Processor;
 import com.serverd.client.processor.ProcessorFactory;
 import com.serverd.command.CommandProcessor;
-import com.serverd.config.Config;
 import com.serverd.log.Log;
 
 /**
