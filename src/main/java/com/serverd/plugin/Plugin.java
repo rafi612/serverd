@@ -13,7 +13,9 @@ import com.serverd.command.Command;
 import com.serverd.log.Log;
 
 /**
- * Plugin instance class.
+ * The Plugin class represents a loaded plugin.
+ * Plugins extend the functionality of the application by providing
+ * additional features and capabilities.
  */
 public class Plugin {
 	private final Info info = new Info();
@@ -38,8 +40,8 @@ public class Plugin {
 
 	/**
 	 * Plugin class constructor.
-	 * @param name Name of plugin
-	 * @param instance Instance of loaded plugin
+	 * @param name Name of plugin.
+	 * @param instance Instance of loaded plugin.
 	 */
 	public Plugin(String name,PluginManager pluginManager,ServerdPlugin instance) {
 		this.name = name;
