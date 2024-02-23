@@ -33,8 +33,8 @@ public class Plugin {
 	private boolean isApp = false;
 	
 	private Log log;
-	
-	public String name;
+
+	private final String name;
 
 	private final PluginManager pluginManager;
 
@@ -154,6 +154,13 @@ public class Plugin {
 	 */
 	public Info getInfo() {
 		return info;
+	}
+
+	/**
+	 * Returns plugin name.
+	 */
+	public String getName() {
+		return name;
 	}
 	
 	/**

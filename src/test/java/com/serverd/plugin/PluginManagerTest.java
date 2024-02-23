@@ -167,7 +167,7 @@ class PluginManagerTest {
 	
 	@Test
 	void getByFileName_Test() {
-		assertNotNull(pluginManager.getByFileName(plugin.name));
+		assertNotNull(pluginManager.getByFileName(plugin.getName()));
 	}
 	
 	@Test
@@ -199,7 +199,7 @@ class PluginManagerTest {
 	void listPluginsName_Test() {
 		assertAll(
 			() -> assertEquals(pluginManager.listPluginsName().length,pluginManager.getPluginsAmountLoaded()),
-			() -> assertEquals(pluginManager.listPluginsName()[pluginManager.getIDByPlugin(plugin)],plugin.name)
+			() -> assertEquals(pluginManager.listPluginsName()[pluginManager.getIDByPlugin(plugin)],plugin.getName())
 		);
 	}
 	
