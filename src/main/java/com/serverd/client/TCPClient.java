@@ -20,7 +20,7 @@ public class TCPClient extends AsyncClient {
 	/**
 	 * TCPClient class constructor.
 	 * @param id Client's ID.
-	 * @param socket Socket instance.d
+	 * @param socket Socket instance.
 	 */
 	public TCPClient(int id,ClientManager clientManager,AsynchronousSocketChannel socket,int timeout) {
 		super(id,clientManager);
