@@ -177,7 +177,8 @@ public class Plugin {
 	public File loadWorkspace() {
 		File file = isApp && pluginManager.pluginAppDataDir != null ? pluginManager.pluginAppDataDir : new File(pluginManager.pluginDataDir,info.name);
 		if (!file.exists())
-			file.mkdir();
+			if (!file.mkdir())
+				throw new RuntimeException("Error when creating workspace for plugin.");
 		
 		return file;
 	}

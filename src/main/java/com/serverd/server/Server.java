@@ -37,9 +37,9 @@ public abstract class Server {
 
 	/**
 	 * Server class constructor.
-	 * @param name Server name
-	 * @param ip Server IP
-	 * @param port Server port
+	 * @param name Server name.
+	 * @param ip Server IP.
+	 * @param port Server port.
 	 * @param clientManager Client manager object.
 	 */
 	public Server(String name, String ip, int port,ClientManager clientManager) {
@@ -139,7 +139,7 @@ public abstract class Server {
 
 	/**
 	 * Setting server IP.
-	 * @param ip Server IP
+	 * @param ip Server IP.
 	 */
 	public void setIP(String ip) {
 		this.ip = ip;
@@ -154,7 +154,7 @@ public abstract class Server {
 
 	/**
 	 * Setting server port.
-	 * @param port Server port
+	 * @param port Server port.
 	 */
 	public void setPort(int port) {
 		this.port = port;
