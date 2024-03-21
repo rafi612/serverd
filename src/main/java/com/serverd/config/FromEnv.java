@@ -7,6 +7,7 @@ import java.lang.annotation.*;
 
 /**
  * Getting config property from environment.
+ * Supported variable types are:
  * <ul>
  * <li>{@link String}</li>
  * <li>{@link Integer}</li>
