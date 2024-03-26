@@ -39,37 +39,6 @@ class ClientTest {
 		clientManager.clients.clear();
 	}
 
-//	@Test
-//	void join_Test() {
-//		assertAll(
-//			() -> assertDoesNotThrow(() -> client.join(client2.getID())),
-//
-//			() -> assertEquals(client.getJoinedID(),client2.getID()),
-//			() -> assertEquals(client2.getJoinedID(),client.getID())
-//		);
-//	}
-	
-//	@Test
-//	void join_ClientOutOfRange_Test() {
-//		assertThrows(Client.JoinException.class, () -> client.join(10));
-//	}
-//
-//	@Test
-//	void join_ClientAlreadyJoined_Test() {
-//		assertDoesNotThrow(() -> client.join(client2.getID()));
-//		assertThrows(Client.JoinException.class, () -> client.join(client2.getID()));
-//	}
-	
-//	@Test
-//	void unjoin_Test() {
-//		assertDoesNotThrow(() -> client.join(client2.getID()));
-//		client.unjoin();
-//
-//		assertAll(
-//			() -> assertEquals(client.getJoinedID(),-1),
-//			() -> assertEquals(client2.getJoinedID(),-1)
-//		);
-//	}
 	
 	@Test
 	void crash_Test() {
@@ -80,16 +49,4 @@ class ClientTest {
 		
 		assertNull(clientManager.getClient(0));
 	}
-	
-//	@Test
-//	void crash_WhenJoinedUnjoin_Test() {
-//		Client client = new Client(0,clientManager);
-//
-//		clientManager.addClient(client);
-//
-//		assertDoesNotThrow(() -> client.join(client2.getID()));
-//		client.crash(new IOException("Test"));
-//
-//		assertFalse(client.isJoined());
-//	}
 }

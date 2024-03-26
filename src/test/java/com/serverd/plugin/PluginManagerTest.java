@@ -101,7 +101,7 @@ class PluginManagerTest {
 			createPluginFile(jarFile, false, "test.class", true, true);
 			
 			var exception = assertThrows(PluginLoadException.class,() -> pluginManager.load(jarFile, true));
-			assertTrue(exception.getCause() instanceof ClassNotFoundException);
+            assertInstanceOf(ClassNotFoundException.class, exception.getCause());
 		}
 		
 		@Test
@@ -109,7 +109,7 @@ class PluginManagerTest {
 			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), false, false);
 			
 			var exception = assertThrows(PluginLoadException.class,() -> pluginManager.load(jarFile, true));
-			assertTrue(exception.getCause() instanceof Exception);
+            assertInstanceOf(Exception.class, exception.getCause());
 		}
 		
 		@Test
