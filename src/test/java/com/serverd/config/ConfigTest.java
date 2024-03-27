@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import com.serverd.app.ServerdApplication;
-import com.serverd.main.Main;
 
 class ConfigTest {
 
@@ -30,7 +29,7 @@ class ConfigTest {
     
     private String testFilePath;
     
-    public TestConfig testConfig;
+    private TestConfig testConfig;
     
     @BeforeEach
     public void setUp() throws IOException {
@@ -206,7 +205,7 @@ class ConfigTest {
         assertEquals(expectedConfig.enableUdp, actualConfig.enableUdp);
     }
     
-    public static class TestConfig {
+    private static class TestConfig {
         @ConfigProperty("test.string.property")
         public String stringProperty;
         
