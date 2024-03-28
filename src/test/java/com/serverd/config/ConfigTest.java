@@ -205,7 +205,7 @@ class ConfigTest {
         assertEquals(expectedConfig.enableUdp, actualConfig.enableUdp);
     }
     
-    private static class TestConfig {
+    protected static class TestConfig {
         @ConfigProperty("test.string.property")
         public String stringProperty;
         
