@@ -25,7 +25,7 @@ public class ClientManager {
 	}
 	
 	/**
-	 * Deleting client.
+	 * Deleting client from Client Manager instance.
 	 * @param clientId Client ID to remove.
 	 */
 	public synchronized void delete(int clientId) {
@@ -93,7 +93,7 @@ public class ClientManager {
 	}
 	
 	/**
-	 * Adding client.
+	 * Adding client from Client Manager instance.
 	 * @param client Client object.
 	 */
 	public void addClient(Client client) {

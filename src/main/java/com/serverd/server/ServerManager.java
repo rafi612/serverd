@@ -53,7 +53,7 @@ public class ServerManager {
 	}
 	
 	/**
-	 * Cleaning all server.
+	 * Removing all server instances from Server Manager instance.
 	 */
 	protected void removeAllServers() {
 		servers.clear();
@@ -114,7 +114,6 @@ public class ServerManager {
 	
 	/**
 	 * Returns default TCP Server.
-	 * @return Default TCP Server.
 	 */
 	public TCPServer getTcpServer() {
 		return tcpServer;
@@ -122,7 +121,6 @@ public class ServerManager {
 
 	/**
 	 * Returns default UDP Server.
-	 * @return Default UDP Server.
 	 */
 	public UDPServer getUdpServer() {
 		return udpServer;
@@ -130,7 +128,7 @@ public class ServerManager {
 
 
 	/**
-	 * Adding server.
+	 * Adding server to Server Manager instance.
 	 * @param server Server object.
 	 */
 	public void addServer(Server server) {
@@ -138,7 +136,7 @@ public class ServerManager {
 	}
 	
 	/**
-	 * Removing server.
+	 * Removing server Server Manager instance.
 	 * @param server Server object.
 	 */
 	public void removeServer(Server server) {
