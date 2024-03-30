@@ -51,7 +51,7 @@ public class Plugin {
 	
 	/**
 	 * Start a plugin.
-	 * @return true if plugin load successfully
+	 * @return true if plugin load successfully.
 	 */
 	public boolean start() {
 		instance.metadata(info);
@@ -93,7 +93,7 @@ public class Plugin {
 	
 	/**
 	 * Print plugin info message.
-	 * @param message Message
+	 * @param message Message.
 	 */
 	public void info(String message) {
 		log.info(message);
@@ -101,7 +101,7 @@ public class Plugin {
 	
 	/**
 	 * Print plugin warning message.
-	 * @param message Message
+	 * @param message Message.
 	 */
 	public void warn(String message) {
 		log.warn(message);
@@ -109,7 +109,7 @@ public class Plugin {
 	
 	/**
 	 * Print plugin error message.
-	 * @param message Message
+	 * @param message Message.
 	 */
 	public void error(String message) {
 		log.error(message);
@@ -117,7 +117,7 @@ public class Plugin {
 	
 	/**
 	 * Print plugin debug message.
-	 * @param message Message
+	 * @param message Message.
 	 */
 	public void debug(String message) {
 		log.debug(message);
@@ -125,7 +125,7 @@ public class Plugin {
 	
 	/**
 	 * Print plugin trace message.
-	 * @param message Message
+	 * @param message Message.
 	 */
 	public void trace(String message) {
 		log.trace(message);
@@ -133,7 +133,7 @@ public class Plugin {
 	
 	/**
 	 * Returns instance of plugin interface, can be used to access variables in plugin main object.
-	 * @param <T> Target type
+	 * @param <T> Target type.
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getInstance() {
@@ -142,8 +142,8 @@ public class Plugin {
 	
 	/**
 	 * Loading resource from classloader.
-	 * @param path Path to resource
-	 * @return {@link InputStream} to resource
+	 * @param path Path to resource.
+	 * @return {@link InputStream} to resource.
 	 */
 	public InputStream loadResource(String path) {
 		return instance.getClass().getResourceAsStream(path);
@@ -183,6 +183,9 @@ public class Plugin {
 		return file;
 	}
 
+	/**
+	 * Returns application object.
+	 */
 	public ServerdApplication getApp() {
 		return pluginManager.getApp();
 	}
@@ -196,7 +199,7 @@ public class Plugin {
 	
 	/**
 	 * Adding ConnectListener.
-	 * @param listener Listener instance
+	 * @param listener Listener instance.
 	 */
 	public void addConnectListener(ConnectListener listener) {
 		connectListeners.add(listener);
@@ -204,7 +207,7 @@ public class Plugin {
 	
 	/**
 	 * Removing ConnectListener.
-	 * @param listener Listener instance
+	 * @param listener Listener instance.
 	 */
 	public void removeConnectListener(ConnectListener listener){
 		connectListeners.remove(listener);
@@ -212,7 +215,7 @@ public class Plugin {
 	
 	/**
 	 * Adding ExecutionController.
-	 * @param listener Listener instance
+	 * @param listener Listener instance.
 	 */
 	public void addExecutionController(ExecutionController listener) {
 		executionControllers.add(listener);
@@ -220,7 +223,7 @@ public class Plugin {
 	
 	/**
 	 * Removing ExecutionController.
-	 * @param listener Listener instance
+	 * @param listener Listener instance.
 	 */
 	public void removeExecutionController(ExecutionController listener) {
 		executionControllers.remove(listener);
@@ -229,7 +232,7 @@ public class Plugin {
 	
 	/**
 	 * Adding command to plugin commands list.
-	 * @param command Command instance
+	 * @param command Command instance.
 	 */
 	public void addCommand(Command command) {
 		commands.add(command);
@@ -237,7 +240,7 @@ public class Plugin {
 	
 	/**
 	 * Removing command from plugin commands list.
-	 * @param command Command instance
+	 * @param command Command instance.
 	 */
 	public void removeCommand(Command command) {
 		commands.remove(command);
@@ -246,7 +249,7 @@ public class Plugin {
 	
 	/**
 	 * Adding server to plugin servers list.
-	 * @param server Server instance
+	 * @param server Server instance.
 	 */
 	public void addServer(Server server) {
 		getApp().getServerManager().loadServer(server);
@@ -255,7 +258,7 @@ public class Plugin {
 	
 	/**
 	 * Removing Server from plugin servers list.
-	 * @param server Server instance
+	 * @param server Server instance.
 	 */
 	public void removeServer(Server server) {
 		servers.remove(server);

@@ -84,7 +84,7 @@ public class Config {
 	 * @param file File to save
 	 * @param config Config instance
 	 * @param comment Comment
-	 * @throws IOException when IO error.
+	 * @throws IOException when I/O error occurs.
 	 */
 	public static void save(File file,Object config,String comment) throws IOException {
 		try (OutputStream output = new FileOutputStream(file)) {
@@ -109,8 +109,8 @@ public class Config {
 	 * @param file File to save
 	 * @param config Config instance
 	 * @param comment Comment
-	 * @return if config was created while calling this method.
-	 * @throws IOException when IO error.
+	 * @return true if config was created while calling this method.
+	 * @throws IOException when I/O error occurs.
 	 */
 	public static boolean createIfNotExists(File file,Object config,String comment) throws IOException {
 		boolean before = file.exists();
@@ -121,8 +121,8 @@ public class Config {
 	
 	/**
 	 * Loading default server config.
-	 * @return Config instance
-	 * @throws IOException when IO error.
+	 * @return Loaded Config instance.
+	 * @throws IOException when I/O error occurs.
 	 */
 	public static Config loadDefault(ServerdApplication app) throws IOException {
 		return Config.load(new File(app.getDirectorySchema().get(app.getWorkdir(), DirectorySchema.SERVERD_ROOT_DIR),"config.properties"), Config.class);
