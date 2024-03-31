@@ -13,8 +13,6 @@ import com.serverd.client.ClientManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.serverd.config.Config;
-
 class UDPServerTest {
 
 	ServerdApplication app;

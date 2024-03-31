@@ -12,8 +12,6 @@ import com.serverd.app.ServerdApplication;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.serverd.config.Config;
-
 class TCPServerTest {
 
 	ServerdApplication app;
@@ -40,14 +38,13 @@ class TCPServerTest {
 		
 	    assumeTrue(availableTCP(9999));
 
-	    Thread serverThread = new Thread(() -> {
+	    new Thread(() -> {
 	        try {
 				server.start();
 			} catch (IOException e) {
 				fail("Start error: " + e.getMessage());
 			}
-	    });
-	    serverThread.start();
+	    }).start();
 
 	    while (availableTCP(9999))
 	        Thread.sleep(100);
