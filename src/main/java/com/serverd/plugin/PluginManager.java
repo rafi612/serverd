@@ -39,8 +39,8 @@ public class PluginManager {
 	}
 	
 	/**
-	 * Init method.
-	 * @param workdir Working dir file
+	 * Initializing plugin manager.
+	 * @param workdir Working dir file.
 	 */
 	public void init(File workdir, DirectorySchema directorySchema) throws IOException {
 		pluginDir = directorySchema.get(workdir, DirectorySchema.PLUGIN_DIR);
@@ -129,7 +129,7 @@ public class PluginManager {
 	
 	/**
 	 * Adding plugin to manager.
-	 * @param plugin Plugin instance
+	 * @param plugin Plugin instance.
 	 */
 	public void addPlugin(Plugin plugin) {
 		plugins.add(plugin);
@@ -137,7 +137,7 @@ public class PluginManager {
 	
 	/**
 	 * Unloading plugin from manager.
-	 * @param plugin Plugin instance
+	 * @param plugin Plugin instance.
 	 */
 	public void unloadPlugin(Plugin plugin) {
 		plugin.stop();
@@ -153,8 +153,7 @@ public class PluginManager {
 	}
 	
 	/**
-	 * List all plugins names.
-	 * @return Array of names
+	 * Returns array of all plugins names.
 	 */
 	public String[] listPluginsName() {
 		String[] pluginsNames = new String[plugins.size()];
@@ -166,9 +165,8 @@ public class PluginManager {
 	}
 	
 	/**
-	 * Returning plugin instance by name.
-	 * @param name Plugin name
-	 * @return Plugin instance
+	 * Returns plugin instance by name.
+	 * @param name Plugin name.
 	 */
 	public Plugin getByFileName(String name) {
 		for (Plugin plugin : plugins)
@@ -231,17 +229,13 @@ public class PluginManager {
 		return plugins.toArray(Plugin[]::new);
 	}
 
-
 	/**
 	 * Returns application context object.
 	 */
 	public ServerdApplication getApp() {
 		return app;
 	}
-	
-	/**
-	 * Rewriting plugins_disabled.conf.
-	 */
+
 	private void rewritePluginDisableFile() {
 		try (FileWriter writer = new FileWriter(pluginDisabledFile)) {
 			for (String str : pluginsDisabled) 
