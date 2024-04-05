@@ -99,15 +99,15 @@ public class TCPServer extends Server {
 	}
 
 	/**
-	 * Setting client timeout.
-	 * @param timeout Client timeout.
+	 * Setting timeout that will be set for client.
+	 * @param timeout Timeout for client.
 	 */
 	public void setTimeout(int timeout) {
 		this.timeout = timeout;
 	}
 
 	/**
-	 * @return Client timeout.
+	 * Returns timeout that will be set for client.
 	 */
 	public int getTimeout() {
 		return timeout;

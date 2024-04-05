@@ -27,7 +27,7 @@ public class UDPServer extends SelectableServer {
 	 * @param ip Server IP.
 	 * @param port Server port.
 	 * @param clientManager Client manager object.
-	 * @param timeout Timeout value.
+	 * @param timeout Read timeout.
 	 */
 	public UDPServer(String ip,int port,ClientManager clientManager,int timeout) {
 		super("UDP Server",ip,port,clientManager);
