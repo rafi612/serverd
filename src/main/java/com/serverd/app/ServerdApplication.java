@@ -188,7 +188,7 @@ public class ServerdApplication {
 	 * Can be used if we want to control application using some standard parameters.
 	 * <p> Command line parameters: </p>
 	 * <p> --working-loc - setting working location of app. </p>
-	 * <p> --noplugins - disabling plugins in app. </p>
+	 * <p> --no-plugins - disabling plugins in app. </p>
 	 * <p> --ip - setting IP for all servers. </p>
 	 * <p> --tcp-port - setting port for TCP Server. </p>
 	 * <p> --udp-port - setting port for UDP Server. </p>
@@ -225,7 +225,7 @@ public class ServerdApplication {
 			for (int i = 0;i < args.length;i++)
 				if(args[i].startsWith("--")) {
 					switch(args[i]) {
-						case "--noplugins":
+						case "--no-plugins":
 							plugins = false;
 							break;
 						case "--app-class":
