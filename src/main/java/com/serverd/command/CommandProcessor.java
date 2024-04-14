@@ -251,7 +251,7 @@ public class CommandProcessor extends Processor {
 		joinedId = joinId;
 
 		CommandProcessor processor = (CommandProcessor) cl.getProcessor();
-		processor.joinedId = client.getID();
+		processor.joinedId = client.getId();
 	}
 
 	/**

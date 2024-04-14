@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.serverd.client.ClientManager;
-
 class StatusTest extends CommandTestCase {
 	Status statusCommand = new Status();
 	
@@ -19,7 +17,7 @@ class StatusTest extends CommandTestCase {
 	
 	@Test
 	void executeTest_NoClients() throws Exception {
-		clientManager.delete(testClient.getID());
+		clientManager.delete(testClient.getId());
 		
 		executeTest(statusCommand, testClient);
 		

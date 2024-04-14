@@ -91,7 +91,7 @@ public class UDPServer extends SelectableServer {
 	}
 
 	protected void printOpenMessage(Client client) {
-		log.info("Connection founded in " + client.getIP() + ":" + client.getPort());
+		log.info("Connection founded in " + client.getIp() + ":" + client.getPort());
 	}
 	
 	/**

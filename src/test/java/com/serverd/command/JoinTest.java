@@ -11,7 +11,7 @@ class JoinTest extends DoubleClientCommandTestCase {
 	void executeTest() throws Exception {
 		executeTest(
 				joinCommand,
-				args(String.valueOf(testClient2.getID())), 
+				args(String.valueOf(testClient2.getId())),
 				testClient);
 		
 		assertAll(

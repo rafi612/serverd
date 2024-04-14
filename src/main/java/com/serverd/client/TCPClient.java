@@ -117,7 +117,7 @@ public class TCPClient extends AsyncClient {
 	
 	
 	@Override
-	public String getIP() {
+	public String getIp() {
 		try {
 			return ((InetSocketAddress) tcpSocket.getRemoteAddress()).getAddress().getHostAddress();
 		} catch (IOException e) {

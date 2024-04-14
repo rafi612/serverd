@@ -99,7 +99,7 @@ class TestClient extends Client {
 	}
 	
 	public void destroy() {
-		getClientManager().delete(getID());
+		getClientManager().delete(getId());
 	}
 	
 	@Override

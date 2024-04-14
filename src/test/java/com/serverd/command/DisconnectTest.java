@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.serverd.client.ClientManager;
-
 class DisconnectTest extends CommandTestCase {
 	Disconnect disconnectCommand = new Disconnect();
 	
@@ -15,7 +13,7 @@ class DisconnectTest extends CommandTestCase {
 		
 		assertAll(
 			() -> assertFalse(testClient.isConnected()),
-			() -> assertNull(testClient.getClientManager().getClient(testClient.getID()))
+			() -> assertNull(testClient.getClientManager().getClient(testClient.getId()))
 		);
 	}
 

@@ -141,7 +141,7 @@ public class Client {
 	/**
 	 * Returns client's IP.
 	 */
-	public String getIP() {
+	public String getIp() {
 		return "";
 	}
 	
@@ -208,7 +208,7 @@ public class Client {
 	/**
 	 * Returns client's ID.
 	 */
-	public int getID() {
+	public int getId() {
 		return id;
 	}
 	

@@ -12,6 +12,6 @@ public class Id extends Command {
 	}
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException {
-		send(client,String.valueOf(client.getID()));
+		send(client,String.valueOf(client.getId()));
 	}
 }

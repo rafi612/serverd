@@ -18,11 +18,11 @@ public class Status extends Command {
 		
 		for (Client c : client.getClientManager().getAllClients())
 			message += c.getName() 
-				+ ": ID:" + c.getID()
+				+ ": ID:" + c.getId()
 				+ " Connected:" + c.isConnected()
 				+ " Joined:" + processor.getJoinedID()
 				+ " Protocol:" + c.getProtocol().getName() 
-				+ " IP:" + c.getIP() + ":" + c.getPort() + "\n";
+				+ " IP:" + c.getIp() + ":" + c.getPort() + "\n";
 		
 		send(client,message);
 	}

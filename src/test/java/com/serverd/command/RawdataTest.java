@@ -27,7 +27,7 @@ class RawdataTest extends DoubleClientCommandTestCase {
 		testClient.insertRawdataReceive(testBytes);
 
 		CommandProcessor processor = (CommandProcessor) testClient.getProcessor();
-		processor.join(testClient2.getID());
+		processor.join(testClient2.getId());
 		
 		//executing command
 		executeTest(

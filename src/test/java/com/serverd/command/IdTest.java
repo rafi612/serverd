@@ -11,6 +11,6 @@ class IdTest extends CommandTestCase {
 	void executeTest() throws Exception {
 		executeTest(idCommand, testClient);
 		
-		assertEquals(Integer.parseInt(testClient.getSend()[0]), testClient.getID());
+		assertEquals(Integer.parseInt(testClient.getSend()[0]), testClient.getId());
 	}
 }

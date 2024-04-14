@@ -11,7 +11,7 @@ class CloseTest extends CommandTestCase {
 	void executeTest() throws Exception {
 		executeTest(
 				closeCommand, 
-				args(Integer.toString(testClient.getID())),
+				args(Integer.toString(testClient.getId())),
 				testClient);
 		
 		assertEquals(testClient.getSend()[0], "OK");

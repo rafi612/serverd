@@ -41,7 +41,7 @@ public abstract class Processor {
 	 * Executed when the client closes the connection.
 	 */
 	public void onClose() {
-		log.info("Client " + client.getID() + " has been closed");
+		log.info("Client " + client.getId() + " has been closed");
 	}
 
 	/**
@@ -49,10 +49,10 @@ public abstract class Processor {
 	 * @param exception Exception to handle.
 	 */
 	public void handleError(Exception exception) {
-		client.log().error("Client " + client.getID() + " crashed: " + exception.getMessage());
+		client.log().error("Client " + client.getId() + " crashed: " + exception.getMessage());
 
 		client.closeClient();
-		client.getClientManager().delete(client.getID());
+		client.getClientManager().delete(client.getId());
 	}
 	
 	/**

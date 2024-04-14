@@ -13,7 +13,7 @@ public class Disconnect extends Command {
 	@Override
 	public void execute(String[] args, Client client, Plugin plugin) throws IOException {
 		client.closeClient();
-		client.getClientManager().delete(client.getID());
+		client.getClientManager().delete(client.getId());
 		
 		done();
 	}

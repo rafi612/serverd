@@ -97,7 +97,7 @@ public class ClientManager {
 	 * @param client Client object.
 	 */
 	public void addClient(Client client) {
-		clients.put(client.getID(),client);
+		clients.put(client.getId(),client);
 	}
 	
 	/**

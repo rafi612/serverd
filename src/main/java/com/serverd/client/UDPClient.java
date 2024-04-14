@@ -68,7 +68,7 @@ public class UDPClient extends SelectableClient {
 	}
 	
 	@Override
-	public String getIP() {
+	public String getIp() {
 		return address.getAddress().getHostAddress();
 	}
 	

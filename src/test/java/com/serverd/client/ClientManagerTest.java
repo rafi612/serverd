@@ -82,7 +82,7 @@ class ClientManagerTest {
 		Client client = new Client(0,clientManager);
 		clientManager.addClient(client);
 
-		clientManager.delete(client.getID());
+		clientManager.delete(client.getId());
 		
 		assertTrue(disconnectExecuted.get());
 	}
