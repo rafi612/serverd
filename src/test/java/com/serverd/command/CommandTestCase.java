@@ -132,8 +132,4 @@ class TestClient extends Client {
 	public void insertRawdataReceive(byte[] bytes) {
 		receiveQueue.add(bytes);
 	}
-	
-	public void insertReceive(String message) {
-		receiveQueue.add(message.getBytes());
-	}
 }
