@@ -30,8 +30,7 @@ public class ServerManager {
 	}
 	
 	/**
-	 * Returning array of added server.
-	 * @return array of added server.
+	 * Returns array of all Server instances in this Server Manager.
 	 */
 	public Server[] getServers() {
 		return servers.toArray(Server[]::new);
