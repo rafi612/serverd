@@ -8,6 +8,7 @@ import com.serverd.plugin.Plugin;
 /**
  * Interface to control execution of commands in clients.
  */
+@Deprecated(since = "1.1.0")
 public interface ExecutionController {
 	/**
 	 * Controls whether the command can be executed.
