@@ -24,11 +24,11 @@ class PluginTest
 	PluginManager pluginManager;
 	
 	private static class TestPlugin implements ServerdPlugin {
-		public Action action = Action.OK;
-		public enum Action {
+		Action action = Action.OK;
+		enum Action {
 			OK,ERROR,EMPTY_STRING,NULL
 		}
-		public boolean stopped = false;
+		boolean stopped = false;
 		
 		@Override
 		public void metadata(Info info) {}
