@@ -16,7 +16,7 @@ class ClientTest {
 
 	ClientManager clientManager;
 		
-	private static class TestClient extends Client {
+	static class TestClient extends Client {
 		public TestClient(int id,ClientManager clientManager) {
 			super(id,clientManager);
 		}
