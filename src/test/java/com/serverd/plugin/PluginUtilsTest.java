@@ -41,8 +41,7 @@ class PluginUtilsTestPlugin implements ServerdPlugin {
 	}
 
 	@Override
-	public void work(Plugin plugin) {
-	}
+	public void work(Plugin plugin) {}
 
 	@Override
 	public void stop(Plugin plugin) {}	
