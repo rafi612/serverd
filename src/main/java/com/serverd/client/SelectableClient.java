@@ -13,9 +13,9 @@ public abstract class SelectableClient extends Client {
 	/** Selector */
 	protected Selector selector;
 	
-	/**Write Buffer*/
+	/** Write Buffer */
 	protected ByteBuffer writeBuffer = ByteBuffer.allocate(BUFFER);
-	/**Receive Buffer*/
+	/** Receive Buffer */
 	protected ByteBuffer receiveBuffer = ByteBuffer.allocate(BUFFER);
 
 	private long lastReadTime;
@@ -24,8 +24,8 @@ public abstract class SelectableClient extends Client {
 	
 	/**
 	 * SelectableClient constructor.
-	 * @param id client ID
-	 * @param selector client Selector object
+	 * @param id client ID.
+	 * @param selector Client's Selector object
 	 */
 	public SelectableClient(int id, ClientManager clientManager,Selector selector) {
 		super(id,clientManager);
@@ -50,7 +50,7 @@ public abstract class SelectableClient extends Client {
 	
 	/**
 	 * Queuing buffer to process it later when write key will ready.
-	 * @param buffer Byte buffer
+	 * @param buffer Byte buffer array.
 	 * @param continuation Send continuation handler
 	 */
 	protected void queueBuffer(byte[] buffer,SendContinuation continuation) {
@@ -105,7 +105,7 @@ public abstract class SelectableClient extends Client {
 	public abstract SelectionKey getKey();
 	/**
 	 * Sending buffer when write key is ready, invoked by {@link SelectableClient#processQueue}.
-	 * @param buffer Buffer to process
+	 * @param buffer Buffer to process.
 	 * @throws IOException when I/O error occurs.
 	 */
 	public abstract void processSend(ByteBuffer buffer) throws IOException;
