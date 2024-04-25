@@ -135,7 +135,7 @@ public class ServerManager {
 	}
 	
 	/**
-	 * Removing server Server Manager instance.
+	 * Removing server from Server Manager instance.
 	 * @param server Server object.
 	 */
 	public void removeServer(Server server) {
