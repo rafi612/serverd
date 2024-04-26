@@ -14,7 +14,7 @@ public class AppTestPlugin implements ServerdPlugin {
 	@Override
 	public String init(Plugin plugin) {
 		if (System.getProperty("running.app") != null) {
-			plugin.trace("Plugin runned as app");
+			plugin.trace("Plugin running as app");
 			System.setProperty("after.run", "true");	
 		}
 		return INIT_SUCCESS;
