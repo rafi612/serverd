@@ -12,8 +12,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import com.serverd.plugin.Plugin.Info;
 
-class PluginTest 
-{
+class PluginTest {
 	@TempDir
 	static File tempDir;
 	
@@ -22,7 +21,7 @@ class PluginTest
 
 	ServerdApplication app;
 	PluginManager pluginManager;
-	
+
 	private static class TestPlugin implements ServerdPlugin {
 		Action action = Action.OK;
 		enum Action {

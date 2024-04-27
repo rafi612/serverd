@@ -3,7 +3,6 @@ package com.serverd.plugin;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -50,7 +49,7 @@ class PluginManagerTest {
 		}
 		
 		@AfterEach
-		void tearDown() throws Exception {
+		void tearDown() {
 			pluginManager.unloadAllPlugins();
 		}
 		
@@ -60,14 +59,14 @@ class PluginManagerTest {
 		}
 		
 		@Test
-		void loadPlugins_withPluginFile_Test() throws FileNotFoundException, IOException {
+		void loadPlugins_withPluginFile_Test() throws IOException {
 			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), true, true);
 			
 			assertDoesNotThrow(pluginManager::loadPlugins);
 		}
 		
 		@Test
-		void loadPlugins_withPluginFilePluginDisabled_Test() throws FileNotFoundException, IOException {
+		void loadPlugins_withPluginFilePluginDisabled_Test() throws IOException {
 			pluginManager.pluginsDisabled = List.of(jarFile.getName());
 			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), true, true);
 			
@@ -97,7 +96,7 @@ class PluginManagerTest {
 		}
 		
 		@Test
-		void load_pluginMainClassNotExists_Test() throws FileNotFoundException, IOException {			
+		void load_pluginMainClassNotExists_Test() throws IOException {
 			createPluginFile(jarFile, false, "test.class", true, true);
 			
 			var exception = assertThrows(PluginLoadException.class,() -> pluginManager.load(jarFile, true));
@@ -105,7 +104,7 @@ class PluginManagerTest {
 		}
 		
 		@Test
-		void load_noManifestExists_Test() throws FileNotFoundException, IOException {
+		void load_noManifestExists_Test() throws IOException {
 			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), false, false);
 			
 			var exception = assertThrows(PluginLoadException.class,() -> pluginManager.load(jarFile, true));
@@ -113,13 +112,13 @@ class PluginManagerTest {
 		}
 		
 		@Test
-		void load_noManifestPluginMainClassEntry_Test() throws FileNotFoundException, IOException {
+		void load_noManifestPluginMainClassEntry_Test() throws IOException {
 			createPluginFile(jarFile, true, PluginManagerTestPlugin.class.getName(), true, false);
 			
 			assertThrows(PluginLoadException.class,() -> pluginManager.load(jarFile, false));
 		}
 		
-		void createPluginFile(File file,boolean mainClass,String mainClassName,boolean hasManifest,boolean mainClassManifest) throws FileNotFoundException, IOException {
+		void createPluginFile(File file,boolean mainClass,String mainClassName,boolean hasManifest,boolean mainClassManifest) throws IOException {
 			try (ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(file))) {
 				if (mainClass) {
 					//plugin class
@@ -161,7 +160,7 @@ class PluginManagerTest {
 	}
 	
 	@AfterEach
-	void tearDown() throws Exception {
+	void tearDown() {
 		pluginManager.unloadPlugin(plugin);
 	}
 	
