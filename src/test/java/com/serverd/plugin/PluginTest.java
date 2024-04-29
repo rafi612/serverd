@@ -105,12 +105,12 @@ class PluginTest {
 	
 	@Test
 	void loadResource_Test() {
-		//loads self class for test
+		// Loads self class for test
 		String resourcePath = "/" + PluginTest.class.getName().replace(".", "/") + ".class";
 		assertNotNull(plugin.loadResource(resourcePath));
 	}
 	
-	//First repeat create workspace, second repeat load exists workspace
+	// First repeat create workspace, second repeat load exists workspace
 	@RepeatedTest(2)
 	void loadWorkspace_Test() {
 		pluginManager.pluginDataDir = tempDir;
