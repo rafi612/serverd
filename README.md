@@ -119,7 +119,6 @@ Then run using command:
 Or create **docker-compose.yml** file and paste following:
 
 ```yaml
-version: '3'
 services:
   serverd:
     image: rafi612/serverd
