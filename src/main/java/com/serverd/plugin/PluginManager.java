@@ -190,7 +190,7 @@ public class PluginManager {
 	 * Returns plugin ID by plugin instance.
 	 * @param plugin Plugin instance
 	 */
-	public int getIDByPlugin(Plugin plugin) {
+	public int getIdByPlugin(Plugin plugin) {
 		return plugins.indexOf(plugin);
 	}
 	

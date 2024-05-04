@@ -198,7 +198,7 @@ class PluginManagerTest {
 	void listPluginsName_Test() {
 		assertAll(
 			() -> assertEquals(pluginManager.listPluginsName().length,pluginManager.getPluginsAmountLoaded()),
-			() -> assertEquals(pluginManager.listPluginsName()[pluginManager.getIDByPlugin(plugin)],plugin.getName())
+			() -> assertEquals(pluginManager.listPluginsName()[pluginManager.getIdByPlugin(plugin)],plugin.getName())
 		);
 	}
 	
