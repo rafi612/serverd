@@ -185,12 +185,12 @@ class PluginManagerTest {
 	}
 	
 	@Test
-	void shouldGetPluginByIDReturnNullOnWrongID() {
+	void should_GetPluginByID_ReturnNullOnWrongID() {
 		assertNull(pluginManager.getPluginByID(10));
 	}
 
 	@Test
-	void shouldGetByFileNameReturnNullOnWrongName() {
+	void should_GetByFileName_ReturnNullOnWrongName() {
 		assertNull(pluginManager.getByFileName("Test"));
 	}
 	
