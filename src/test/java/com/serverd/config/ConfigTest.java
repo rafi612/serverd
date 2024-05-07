@@ -139,11 +139,7 @@ class ConfigTest {
         if (!outputFile.createNewFile())
             fail("Output file not created");
 
-        // Act
-        boolean result = Config.createIfNotExists(outputFile, testConfig, comment);
-
-        // Assert
-        assertFalse(result);
+        assertFalse(Config.createIfNotExists(outputFile, testConfig, comment));
     }
 
     @Test
