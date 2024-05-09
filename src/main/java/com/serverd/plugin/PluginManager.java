@@ -60,13 +60,17 @@ public class PluginManager {
 	}
 
 	/**
-	 * Loading all plugins.
+	 * Loading plugins from plugins directory.
+	 * Skipping non-jar files.
 	 */
 	public void loadPlugins() {
 		File[] files = pluginDir.listFiles();
 		
 		if (files != null) {
 			for (File file : files) {
+				if (!file.getName().endsWith(".jar"))
+					return;
+
 				try {
 					load(file, !pluginsDisabled.contains(file.getName()));
 				} catch (PluginLoadException e) {
