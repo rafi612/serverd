@@ -120,12 +120,12 @@ public abstract class Server {
 	}
 	
 	/**
-	 * Starting server.
+	 * Inherited method that executing when server start working.
 	 * @throws IOException if server throws I/O error.
 	 */
 	public abstract void start() throws IOException;
 	/**
-	 * Stopping server.
+	 * Inherited method that executing when server stop working.
 	 * @throws IOException if server throws I/O error.
 	 */
 	public abstract void stop() throws IOException;
