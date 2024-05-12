@@ -57,6 +57,18 @@ class PluginManagerTest {
 		void loadPlugins_Test() {
 			assertDoesNotThrow(pluginManager::loadPlugins);
 		}
+
+		@Test
+		void loadPlugins_skipNonJarFile_Test() throws IOException {
+			File nonJarFile = new File(testPluginDir,"TestPlugin.zip");
+			if (!nonJarFile.createNewFile())
+				fail("File not created");
+
+			pluginManager.loadPlugins();
+
+			// check if file was not load (plugins amount should be zero)
+			assertEquals(0,pluginManager.getPluginsAmountLoaded());
+		}
 		
 		@Test
 		void loadPlugins_withPluginFile_Test() throws IOException {
