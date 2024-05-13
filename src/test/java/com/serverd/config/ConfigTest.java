@@ -148,7 +148,7 @@ class ConfigTest {
         String comment = "Test comment";
         testConfig.stringProperty = "test string value";
         testConfig.intProperty = 123;
-        File outputFile = new File(tempDir,"test-config" + + new Random().nextInt() + ".properties");
+        File outputFile = new File(tempDir,"test-config" + new Random().nextInt() + ".properties");
 
         // Act
         Config.createIfNotExists(outputFile, testConfig, comment);
