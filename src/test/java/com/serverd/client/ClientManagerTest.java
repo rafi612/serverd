@@ -45,7 +45,7 @@ class ClientManagerTest {
 
 		clientManager.delete(5);
 		
-		assertEquals(clientManager.clients.size(), 9);
+		assertEquals(count - 1,clientManager.clients.size());
 	}
 
 	@Test
