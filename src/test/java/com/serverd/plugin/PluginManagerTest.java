@@ -133,7 +133,7 @@ class PluginManagerTest {
 		void createPluginFile(File file,boolean mainClass,String mainClassName,boolean hasManifest,boolean mainClassManifest) throws IOException {
 			try (ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(file))) {
 				if (mainClass) {
-					//plugin class
+					// Plugin class
 					String pluginClassFile = mainClassName.replace(".", "/") + ".class";
 					
 					ZipEntry classZipEntry = new ZipEntry(pluginClassFile);
@@ -146,7 +146,7 @@ class PluginManagerTest {
 				}
 				
 				if (hasManifest) {
-					//manifest
+					// Manifest
 					String manifest = "Manifest-Version: 1.0\n" 
 							+ (mainClassManifest ? ("Plugin-Main-Class: " + mainClassName + "\n") : "");
 					ZipEntry manifestZipEntry = new ZipEntry(JarFile.MANIFEST_NAME);
