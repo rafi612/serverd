@@ -34,14 +34,14 @@ public abstract class SelectableServer extends Server {
 	 * @throws IOException if selector throw I/O error.
 	 */
 	protected void selectWithTimeout(Selector selector,SelectableChannel channel,int timeout) throws IOException {
-		//timeout checking and selecting
+		// Timeout checking and selecting
 		selector.select(timeout);
 		if (timeout > 0 && System.currentTimeMillis() - lastTimeout >= timeout) {
 			for (SelectionKey key : selector.keys()) {
-				//check if channel can be readable
+				// Check if channel can be readable
 				if (key.channel().equals(channel))
 					continue;
-				//check timeout
+				// Check timeout
 				SelectableClient client = (SelectableClient) key.attachment();
 				if (System.currentTimeMillis() - client.getLastReadTime() >= timeout)
 					client.crash(new IOException("Read timed out"));

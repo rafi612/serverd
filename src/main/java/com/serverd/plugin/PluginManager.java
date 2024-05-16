@@ -95,7 +95,7 @@ public class PluginManager {
 			        new URL[] { file.toURI().toURL() }
 			);
 			
-			//getting class name
+			// Getting class name
 			Manifest manifest = new Manifest(new URL("jar:" + file.toURI().toURL() + "!/" + JarFile.MANIFEST_NAME).openStream());
 			Attributes attributes = manifest.getMainAttributes();
 			

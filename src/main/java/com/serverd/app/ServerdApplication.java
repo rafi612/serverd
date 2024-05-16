@@ -198,7 +198,7 @@ public class ServerdApplication {
 	public void parseCmdArgs(String[] args) {
 		String workingDir = getDefaultWorkDir().getAbsolutePath();
 
-		//parse work dir argument
+		// Parse work dir argument
 		for (int i = 0;i < args.length;i++)
 			if(args[i].equals("--working-loc")) {
 				if (i + 1 > args.length) {
@@ -208,7 +208,7 @@ public class ServerdApplication {
 				workingDir = args[i + 1];
 			}
 
-		//create work dir
+		// Create work dir
 		setWorkdir(new File(workingDir));
 		createWorkDir();
 
@@ -218,10 +218,10 @@ public class ServerdApplication {
 			log.error("Error while creating directories: " + e.getMessage());
 		}
 
-		//load config
+		// Load config
 		Config config = loadConfig();
 		if (config != null) {
-			//parse other arguments
+			// Parse other arguments
 			for (int i = 0;i < args.length;i++)
 				if(args[i].startsWith("--")) {
 					switch(args[i]) {

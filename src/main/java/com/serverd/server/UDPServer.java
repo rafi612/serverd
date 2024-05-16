@@ -59,7 +59,7 @@ public class UDPServer extends SelectableServer {
 					continue;
 				
 				if (key.isReadable()) {
-					//new client
+					// New client
 					if (key.attachment() == null) {
 						buffer.clear();
 						DatagramChannel channel = (DatagramChannel) key.channel();
