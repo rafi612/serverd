@@ -23,7 +23,7 @@ class UDPServerTest {
 	}
 
 	
-	private static boolean availableUDP(int port) {
+	private static boolean availableUdp(int port) {
 		try (DatagramSocket socket = new DatagramSocket(port)) {
 			return true;
 		} catch (IOException ignored) {
@@ -40,7 +40,7 @@ class UDPServerTest {
 
 	    server.isRunning = true;
 	    
-	    assumeTrue(availableUDP(9998));
+	    assumeTrue(availableUdp(9998));
 	    
 	    new Thread(() -> {
 			try {

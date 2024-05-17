@@ -21,7 +21,7 @@ class TCPServerTest {
 		app = new ServerdApplication();
 	}
 
-	private static boolean availableTCP(int port) {
+	private static boolean availableTcp(int port) {
 		try (ServerSocket server = new ServerSocket(port,50,InetAddress.getByName("0.0.0.0"))) {
 			return true;
 		} catch (IOException ignored) {
@@ -36,7 +36,7 @@ class TCPServerTest {
 		server.setApp(app);
 		server.setServerManager(app.getServerManager());
 		
-	    assumeTrue(availableTCP(9999));
+	    assumeTrue(availableTcp(9999));
 
 	    new Thread(() -> {
 	        try {
@@ -46,7 +46,7 @@ class TCPServerTest {
 			}
 	    }).start();
 
-	    while (availableTCP(9999))
+	    while (availableTcp(9999))
 	        Thread.sleep(100);
 
 	    try (Socket clientSocket = new Socket("localhost", 9999)) {
@@ -56,7 +56,7 @@ class TCPServerTest {
 
 	        clientSocket.getOutputStream().write("/disconnect".getBytes());
 
-            assertFalse(availableTCP(9999));
+            assertFalse(availableTcp(9999));
 	    } catch (IOException e) {
 	        fail("Failed to connect to TCP server: " + e.getMessage());
 	    }
