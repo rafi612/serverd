@@ -81,7 +81,7 @@ public class Plugin {
 		
 		instance.stop(this);
 		
-		//clear interfaces
+		// Clear interface lists
 		commands.clear();
 		connectListeners.clear();
 		executionControllers.clear();
