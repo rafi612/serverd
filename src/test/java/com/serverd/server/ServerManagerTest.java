@@ -56,7 +56,7 @@ class ServerManagerTest {
 		
 		Server[] servers = serverManager.getServers();
 		for (Server server : servers)
-			assertTrue(server.isEnabled);
+			assertTrue(server.isEnabled());
 	}
 	
 	@Test
@@ -71,7 +71,7 @@ class ServerManagerTest {
 		for (Server server : servers)
 			assertAll(
 				() -> assertTrue(((TestServer)server).isStopped),
-				() -> assertFalse(server.isRunning)
+				() -> assertFalse(server.isRunning())
  			);
 	}
 
