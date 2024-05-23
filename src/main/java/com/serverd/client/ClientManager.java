@@ -63,8 +63,8 @@ public class ClientManager {
 	}
 	
 	/**
-	 * Searching first free client ID.
-	 * @return first free ID.
+	 * Searching for first free client ID available in client manager instance.
+	 * @return first free client ID.
 	 */
 	public int getFreeClientID() {
 		int i = 0;
