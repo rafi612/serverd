@@ -66,7 +66,7 @@ class PluginManagerTest {
 
 			pluginManager.loadPlugins();
 
-			// check if file was not load (plugins amount should be zero)
+			// Check if file was not load (plugins amount should be zero)
 			assertEquals(0,pluginManager.getPluginsAmountLoaded());
 		}
 		

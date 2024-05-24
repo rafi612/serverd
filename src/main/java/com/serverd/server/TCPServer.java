@@ -55,7 +55,7 @@ public class TCPServer extends Server {
             }
         });
         
-    	//keep thread alive
+    	// Keep thread alive
     	while (isRunning())
     		Utils.sleep(1000);
 	}

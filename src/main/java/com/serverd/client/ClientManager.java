@@ -37,7 +37,7 @@ public class ClientManager {
 		if (client == null)
 			return;
 		
-		//plugin connect listener
+		// Plugin connect listener
 		for (Plugin plugin : app.getPluginManager().getPlugins())
 			for (ConnectListener cl : plugin.connectListeners) {
 				try {
@@ -82,7 +82,7 @@ public class ClientManager {
 	public void setupClient(Client client) throws IOException {
 		client.getProcessor().onOpen();
 
-		//plugin connect listener
+		// Plugin connect listener
 		for (Plugin plugin : app.getPluginManager().getPlugins())
 			for (ConnectListener cl : plugin.connectListeners)
 				cl.onConnect(plugin,client);
