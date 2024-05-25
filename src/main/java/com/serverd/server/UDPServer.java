@@ -134,7 +134,7 @@ public class UDPServer extends SelectableServer {
 	}
 
 	/**
-	 * Setting client timeout.
+	 * Setting read timeout that will be set for client.
 	 * @param timeout Client timeout.
 	 */
 	public void setTimeout(int timeout) {
