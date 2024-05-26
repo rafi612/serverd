@@ -62,7 +62,7 @@ public class TCPClient extends AsyncClient {
 			@Override
 			public void failed(Throwable exc, Void attachment) {
 				readPending = false;
-				//check if exception is timeout
+				// Check if exception is timeout
 				if (exc instanceof InterruptedByTimeoutException)
 					crash(new IOException("Read timed out"));
 				else

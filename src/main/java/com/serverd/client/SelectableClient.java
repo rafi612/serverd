@@ -83,13 +83,13 @@ public abstract class SelectableClient extends Client {
 		processSend(writeBuffer);
 		
 		if (writeBuffer.remaining() == 0) {
-			// reset keys
+			// Reset keys
 			getKey().interestOps(0);
 
 			sendContinuation.invoke();
 			sendContinuation = null;
 
-			//unlock read (add OP_READ key)
+			// Unlock read (add OP_READ key)
 			if (autoRead)
 				unlockRead();
 
