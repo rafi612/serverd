@@ -125,6 +125,9 @@ public class PluginManager {
 		}		
 	}
 
+	/**
+	 * Shutting down plugin manager.
+	 */
 	public void shutdown() {
 		log.info("Stopping plugins...");
 		for (Plugin plugin : plugins)
