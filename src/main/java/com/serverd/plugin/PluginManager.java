@@ -155,6 +155,7 @@ public class PluginManager {
 	 * Unloading all plugins.
 	 */
 	public void unloadAllPlugins() {
+		// Don't use range loop to prevent ConcurrentModificationException
 		for (int i = 0;i < plugins.size();i++)
 			unloadPlugin(plugins.get(i));
 	}
